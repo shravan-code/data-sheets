@@ -17,6 +17,13 @@
                 <li><a href="../spark/index.html">Spark</a></li>
             </ul>
         </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span>Theme</span>
+            <span>
+                <span class="light-icon">&#9728;</span>
+                <span class="dark-icon">&#9790;</span>
+            </span>
+        </button>
         <footer>Python reference</footer>
     </aside>
 
@@ -82,5 +89,17 @@
             </div>
         </section>
     </main>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+    </script>
 </body>
 </html>
