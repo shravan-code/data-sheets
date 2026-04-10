@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Series</h1>
+        <p>Complete reference of all Series methods organized by category. A Series is a one-dimensional labeled array capable of holding any data type.</p>
+
+        <section>
+            <h2>Creation Methods</h2>
+
+            <h3>pd.Series() - Main Constructor</h3>
+<pre><code>import pandas as pd
+import numpy as np
+
+# From list
+s = pd.Series([1, 2, 3, 4, 5])
+
+# From list with custom index
+s = pd.Series([1, 2, 3], index=['a', 'b', 'c'])
+
+# From dictionary (keys become index)
+s = pd.Series({'Alice': 95000, 'Bob': 72000, 'Carol': 110000})
+
+# From scalar (broadcasts to index)
+s = pd.Series(5, index=range(5))
+
+# From numpy array
+s = pd.Series(np.array([1, 2, 3]))
+
+# With name
+s = pd.Series([1, 2, 3], name='my_series')
+
+# With dtype
+s = pd.Series([1, 2, 3], dtype='float32')</code></pre>
+
+            <h3>Other Creation Methods</h3>
+<pre><code># From array
+pd.Series.from_array(np.array([1, 2, 3]))
+
+# From dictionary
+pd.Series.from_dict({'a': 1, 'b': 2})</code></pre>
+        </section>
+
+        <section>
+            <h2>Attributes</h2>
+            <p>Attributes provide information about the Series structure.</p>
+
+<pre><code>s = pd.Series([1, 2, 3, 4, 5], index=['a', 'b', 'c', 'd', 'e'], name='numbers')
+
+s.values              # Underlying numpy array
+s.index               # Index labels
+s.dtype               # Data type
+s.name                # Name of Series
+s.shape               # Shape tuple (n,)
+s.size                # Number of elements
+s.ndim                # Number of dimensions (always 1)
+s.nbytes              # Bytes used
+s.empty               # True if Series is empty
+s.hasnans             # True if any NaN values
+s.is_unique           # True if all values are unique
+s.is_monotonic        # True if values are monotonic
+s.is_monotonic_increasing  # True if increasing
+s.is_monotonic_decreasing  # True if decreasing
+s.index.name          # Name of index
+s.dtype.name          # Name of dtype</code></pre>
+        </section>
+
+        <section>
+            <h2>Indexing and Selection</h2>
+
+            <h3>Basic Selection</h3>
+<pre><code>s = pd.Series([10, 20, 30, 40, 50], index=['a', 'b', 'c', 'd', 'e'])
+
+# By label
+s['a']                 # Returns: 10
+s['a':'c']             # Returns Series 'a' to 'c' (inclusive)
+
+# By position
+s[0]                  # Returns: 10 (first element)
+s[0:3]                # Returns first 3 elements
+
+# By list of positions
+s[[0, 2, 4]]          # Returns elements at positions 0, 2, 4
+
+# Boolean indexing
+s[s > 25]             # Values greater than 25
+s[s.isin([10, 30])]  # Values in list</code></pre>
+
+            <h3>.loc - Label-Based Selection</h3>
+<pre><code>s.loc['a']             # Single label
+s.loc['a':'c']         # Slice (inclusive on both ends)
+s.loc[['a', 'c']]      # List of labels
+s.loc[s > 25]         # Boolean mask</code></pre>
+
+            <h3>.iloc - Position-Based Selection</h3>
+<pre><code>s.iloc[0]             # Single position
+s.iloc[0:3]           # Slice (exclusive end, like Python)
+s.iloc[[0, 2, 4]]     # List of positions
+s.iloc[-1]            # Last element
+s.iloc[::2]           # Every other element</code></pre>
+
+            <h3>Fast Scalar Access</h3>
+<pre><code>s.at['a']             # Single value by label (fastest)
+s.iat[0]              # Single value by position (fastest)</code></pre>
+
+            <h3>Head, Tail, Sample</h3>
+<pre><code>s.head()              # First 5 elements
+s.head(3)             # First 3 elements
+s.tail()              # Last 5 elements
+s.tail(2)             # Last 2 elements
+s.sample()            # 1 random element
+s.sample(n=3)         # 3 random elements
+s.sample(frac=0.5)    # 50% random sample</code></pre>
+        </section>
+
+        <section>
+            <h2>Missing Data Methods</h2>
+
+            <h3>Detect Missing Values</h3>
+<pre><code>s.isna()              # True where NaN/None
+s.isnull()            # Alias for isna()
+s.notna()            # True where not NaN
+s.notnull()          # Alias for notna()</code></pre>
+
+            <h3>Fill Missing Values</h3>
+<pre><code># Fill with value
+s.fillna(0)           # Fill with 0
+s.fillna(method='ffill')   # Forward fill
+s.fillna(method='bfill')   # Backward fill
+s.fillna(s.mean())    # Fill with mean
+s.fillna({'a': 1, 'c': 3})  # Fill with dict</code></pre>
+
+            <h3>Drop Missing Values</h3>
+<pre><code>s.dropna()            # Remove NaN values</code></pre>
+
+            <h3>Interpolate</h3>
+<pre><code>s.interpolate()               # Linear interpolation
+s.interpolate(method='linear')
+s.interpolate(method='polynomial', order=2)
+s.interpolate(method='nearest')
+s.interpolate(method='time')       # For datetime index
+s.interpolate(limit=2)            # Limit consecutive fills</code></pre>
+
+            <h3>Where and Mask</h3>
+<pre><code>s.where(s > 0, other=0)     # Replace where False
+s.mask(s > 0, other=0)       # Replace where True</code></pre>
+        </section>
+
+        <section>
+            <h2>Statistical Methods</h2>
+
+            <h3>Basic Statistics</h3>
+<pre><code>s.mean()              # Mean
+s.sum()               # Sum
+s.std()               # Standard deviation
+s.var()               # Variance
+s.min()               # Minimum
+s.max()               # Maximum
+s.median()            # Median
+s.mode()              # Mode (most frequent)
+s.prod()               # Product
+s.abs()               # Absolute values
+
+# Along with skipna
+s.mean(skipna=False)  # Include NaN in calculation</code></pre>
+
+            <h3>Percentiles and Quantiles</h3>
+<pre><code>s.quantile(0.5)               # Median (50th percentile)
+s.quantile([0.25, 0.5, 0.75])  # Multiple quantiles
+s.quantile(0.75) - s.quantile(0.25)  # IQR</code></pre>
+
+            <h3>Count and Existence</h3>
+<pre><code>s.count()             # Count non-null values
+s.size               # Total elements (includes null)
+s.value_counts()     # Frequency of each unique value
+s.unique()           # Array of unique values
+s.nunique()          # Count of unique values
+s.is_unique          # True if all unique
+
+# Check existence
+s.any()              # True if any value is truthy
+s.all()              # True if all values are truthy
+s.contains('text')   # Contains substring
+s.isin([1, 2, 3])   # Is in list</code></pre>
+
+            <h3>Skewness and Kurtosis</h3>
+<pre><code>s.skew()              # Skewness
+s.kurt()              # Kurtosis
+s.kurtosis()          # Kurtosis (alias)</code></pre>
+        </section>
+
+        <section>
+            <h2>Ranking and Sorting</h2>
+
+            <h3>Sort Values</h3>
+<pre><code>s.sort_values()               # Ascending
+s.sort_values(ascending=False)  # Descending
+s.sort_values(na_position='last')  # NaN at end
+s.sort_values(na_position='first')  # NaN at start</code></pre>
+
+            <h3>Sort Index</h3>
+<pre><code>s.sort_index()               # Sort by index labels
+s.sort_index(ascending=False)</code></pre>
+
+            <h3>Rank</h3>
+<pre><code>s.rank()                        # Rank values (1 = smallest)
+s.rank(ascending=False)          # Rank descending
+s.rank(method='average')         # Average rank for ties (default)
+s.rank(method='min')              # Minimum rank for ties
+s.rank(method='max')             # Maximum rank for ties
+s.rank(method='dense')           # Dense rank (no gaps)
+s.rank(method='first')           # Rank by order of appearance
+s.rank(pct=True)                  # Percentage rank</code></pre>
+        </section>
+
+        <section>
+            <h2>Element-wise Operations</h2>
+
+            <h3>map() - Transform Values</h3>
+<pre><code># Using dict
+s.map({'a': 1, 'b': 2, 'c': 3})
+
+# Using function
+s.map(lambda x: x * 2)
+
+# Using Series
+s2 = pd.Series({'a': 1, 'b': 2, 'c': 3})
+s.map(s2)
+
+# Using 'first' for unmapped values
+s.map({'a': 1, 'b': 2}, na_action='ignore')</code></pre>
+
+            <h3>apply() - Apply Function</h3>
+<pre><code>s.apply(lambda x: x * 2)
+s.apply(np.sqrt)
+s.apply(np.ceil)
+s.apply(custom_function)</code></pre>
+
+            <h3>Comparison Operations</h3>
+<pre><code>s.eq(5)                # Equal to 5
+s.ne(5)                # Not equal to 5
+s.gt(5)                # Greater than 5
+s.lt(5)                # Less than 5
+s.ge(5)                # Greater or equal
+s.le(5)                # Less or equal
+s.between(3, 7)       # Between 3 and 7
+s.isin([1, 2, 3])     # Is in list</code></pre>
+        </section>
+
+        <section>
+            <h2>Aggregation Methods</h2>
+
+            <h3>Single Aggregation</h3>
+<pre><code>s.agg('mean')         # String shorthand
+s.agg(['mean', 'sum'])  # List of functions
+s.agg({
+    'mean': np.mean,
+    'sum': np.sum
+})</code></pre>
+
+            <h3>Multiple Aggregations</h3>
+<pre><code>s.agg(['min', 'max', 'mean', 'std', 'median'])</code></pre>
+
+            <h3>aggregate()</h3>
+<pre><code>s.aggregate('mean')
+s.aggregate(['mean', 'std'])</code></pre>
+        </section>
+
+        <section>
+            <h2>Transform Methods</h2>
+            <p>Transform returns a Series of the same shape with values computed from the function.</p>
+
+<pre><code>s.transform(lambda x: x * 2)
+s.transform([np.sqrt, np.abs])
+s.transform('abs')      # String method name</code></pre>
+        </section>
+
+        <section>
+            <h2>Cumulative Methods</h2>
+
+<pre><code>s.cumsum()             # Cumulative sum
+s.cumprod()            # Cumulative product
+s.cummax()             # Cumulative maximum
+s.cummin()             # Cumulative minimum
+s.cumcount()           # Cumulative count (0, 1, 2, ...)
+s.cumrank()            # Cumulative rank</code></pre>
+        </section>
+
+        <section>
+            <h2>Rolling and Expanding</h2>
+
+            <h3>Rolling Window</h3>
+<pre><code>s.rolling(3).mean()             # 3-period rolling mean
+s.rolling(3, min_periods=2).std()
+s.rolling(3).sum()
+s.rolling(3).min()
+s.rolling(3).max()
+s.rolling(3).median()
+s.rolling(3).quantile(0.5)
+s.rolling(3, center=True).mean()</code></pre>
+
+            <h3>Expanding</h3>
+<pre><code>s.expanding().mean()             # Expanding mean
+s.expanding().sum()
+s.expanding().max()
+s.expanding().min()</code></pre>
+
+            <h3>Exponentially Weighted</h3>
+<pre><code>s.ewm(span=12).mean()            # EWMA
+s.ewm(alpha=0.3).mean()
+s.ewm(halflife=6).mean()</code></pre>
+        </section>
+
+        <section>
+            <h2>Time Series Methods</h2>
+
+            <h3>Shift</h3>
+<pre><code>s.shift(1)               # Shift forward (lag)
+s.shift(-1)              # Shift backward (lead)
+s.shift(2, fill_value=0)  # With fill value</code></pre>
+
+            <h3>Diff and Pct Change</h3>
+<pre><code>s.diff()                # 1-period difference
+s.diff(periods=2)       # 2-period difference
+s.pct_change()          # Percentage change
+s.pct_change(periods=7)  # 7-period percentage change</code></pre>
+
+            <h3>Resample (for DatetimeIndex)</h3>
+<pre><code># Requires DatetimeIndex
+s.resample('M').mean()
+s.resample('D').sum()
+s.resample('Y').last()</code></pre>
+        </section>
+
+        <section>
+            <h2>String Methods (s.str)</h2>
+            <p>Vectorized string operations accessed via .str accessor.</p>
+
+            <h3>Case Operations</h3>
+<pre><code>s = pd.Series(['alice', 'BOB', 'Carol'])
+
+s.str.upper()                    # ALL CAPS
+s.str.lower()                    # all lower
+s.str.title()                    # Title Case
+s.str.capitalize()               # First char uppercase
+s.str.swapcase()                 # Swap case</code></pre>
+
+            <h3>Contains and Match</h3>
+<pre><code>s = pd.Series(['alice@example.com', 'bob@test.org', 'invalid'])
+
+s.str.contains('@')              # Contains substring
+s.str.startswith('a')            # Starts with
+s.str.endswith('.com')           # Ends with
+s.str.match(r'^[a-z]+@')         # Regex match from start
+s.str.fullmatch('alice')         # Full regex match</code></pre>
+
+            <h3>Find and Extract</h3>
+<pre><code>s = pd.Series(['abc123', 'def456'])
+
+s.str.find('a')                  # Position of substring (-1 if not found)
+s.str.rfind('a')                 # Position from right
+s.str.index('a')                 # Like find but raises error if not found
+s.str.count('a')                 # Count occurrences
+
+# Extract with regex
+s.str.extract(r'(\w+)(\d+)')      # Returns DataFrame with groups
+s.str.extract(r'(\w+)(\d+)', expand=False)  # Returns Series of tuples
+
+# Extract all matches
+s.str.extractall(r'(\w+)')       # For multiple matches
+
+# Find all
+s.str.findall(r'\d')             # List of all matches</code></pre>
+
+            <h3>Replace</h3>
+<pre><code>s.str.replace('old', 'new')      # Replace substring
+s.str.replace(r'\s+', '_', regex=True)  # Regex replace
+s.str.replace('a', 'A', n=1)       # Replace first occurrence</code></pre>
+
+            <h3>Split and Join</h3>
+<pre><code>s = pd.Series(['alice@example.com', 'bob@test.com'])
+
+s.str.split('@')                  # Split to list
+s.str.split('@', expand=True)    # Split to DataFrame columns
+s.str.split('@', n=1)             # Max 1 split
+
+# Join (for Series of lists)
+pd.Series([['a', 'b'], ['c', 'd']]).str.join('-')</code></pre>
+
+            <h3>Strip and Pad</h3>
+<pre><code>s = pd.Series(['  hello  ', '\tworld\n'])
+
+s.str.strip()                     # Remove leading/trailing whitespace
+s.str.lstrip()                    # Remove leading
+s.str.rstrip()                    # Remove trailing
+s.str.strip(' \t\n')              # Remove specific chars
+
+# Pad
+s.str.pad(10, ' ', 'left')        # Pad left
+s.str.pad(10, ' ', 'right')       # Pad right
+s.str.center(10, '-')             # Center
+s.str.zfill(5)                    # Zero-fill</code></pre>
+
+            <h3>Length and Checks</h3>
+<pre><code>s.str.len()                       # Length of each string
+s.str.isalpha()                   # All alphabetic
+s.str.isdigit()                    # All digits
+s.str.isalnum()                    # Alphanumeric
+s.str.isspace()                    # All whitespace
+s.str.islower()                    # All lowercase
+s.str.isupper()                  # All uppercase
+s.str.istitle()                   # Title case</code></pre>
+
+            <h3>Slice and Substring</h3>
+<pre><code>s = pd.Series(['abcdef', 'ghijkl'])
+
+s.str[0]                          # First character
+s.str[0:3]                        # Characters 0 to 2
+s.str[-3:]                        # Last 3 characters
+s.str.slice(0, 3)                 # Explicit slice</code></pre>
+        </section>
+
+        <section>
+            <h2>DateTime Methods (s.dt)</h2>
+            <p>Datetime operations accessed via .dt accessor. Requires datetime dtype.</p>
+
+            <h3>Component Accessors</h3>
+<pre><code>s = pd.Series(pd.date_range('2024-01-01', periods=5))
+
+s.dt.year              # Year
+s.dt.month             # Month (1-12)
+s.dt.day               # Day (1-31)
+s.dt.hour              # Hour (0-23)
+s.dt.minute            # Minute (0-59)
+s.dt.second            # Second (0-59)
+s.dt.microsecond       # Microsecond
+s.dt.nanosecond        # Nanosecond</code></pre>
+
+            <h3>Date Properties</h3>
+<pre><code>s.dt.quarter            # Quarter (1-4)
+s.dt.dayofweek         # Day number (0=Mon, 6=Sun)
+s.dt.day_name()        # Day name ('Monday', etc.)
+s.dt.month_name()      # Month name ('January', etc.)
+s.dt.dayofyear         # Day of year (1-366)
+s.dt.week              # Week number (0-52)
+s.dt.weekday           # Weekday (0-6)
+s.dt.days_in_month     # Days in month</code></pre>
+
+            <h3>Boolean Properties</h3>
+<pre><code>s.dt.is_month_start    # Is first day of month
+s.dt.is_month_end      # Is last day of month
+s.dt.is_quarter_start  # Is first day of quarter
+s.dt.is_quarter_end    # Is last day of quarter
+s.dt.is_year_start     # Is first day of year
+s.dt.is_year_end       # Is last day of year
+s.dt.is_leap_year      # Is leap year</code></pre>
+
+            <h3>Datetime Methods</h3>
+<pre><code>s.dt.to_period('M')    # Convert to Period (month)
+s.dt.to_period('Q')    # Convert to Period (quarter)
+s.dt.to_period('Y')    # Convert to Period (year)
+s.dt.to_timestamp()     # Convert to Timestamp
+
+# Format as string
+s.dt.strftime('%Y-%m-%d')
+s.dt.strftime('%B %d, %Y')
+
+# Normalize to midnight
+s.dt.normalize()
+
+# Floor and ceil
+s.dt.floor('D')        # Floor to day
+s.dt.ceil('H')         # Ceil to hour
+s.dt.round('H')        # Round to hour</code></pre>
+        </section>
+
+        <section>
+            <h2>Category Methods (s.cat)</h2>
+            <p>Categorical operations accessed via .cat accessor. Requires category dtype.</p>
+
+            <h3>Category Properties</h3>
+<pre><code>s = pd.Series(['a', 'b', 'a'], dtype='category')
+
+s.cat.categories        # All categories
+s.cat.codes             # Integer codes (0, 1, ...)
+s.cat.ordered           # True if ordered</code></pre>
+
+            <h3>Modify Categories</h3>
+<pre><code># Rename categories
+s.cat.rename_categories({'a': 'A', 'b': 'B'})
+
+# Reorder categories
+s.cat.reorder_categories(['b', 'a'], ordered=True)
+
+# Add categories
+s.cat.add_categories(['c'])
+
+# Remove categories
+s.cat.remove_categories(['c'])
+
+# Remove unused categories
+s.cat.remove_unused_categories()
+
+# Set categories
+s.cat.set_categories(['a', 'b', 'c'])</code></pre>
+
+            <h3>Ordered Operations</h3>
+<pre><code># Create ordered categorical
+s = pd.Series(['B', 'A', 'C'], dtype='category', 
+              categories=['A', 'B', 'C'], ordered=True)
+
+# Comparisons work for ordered categories
+s[s >= 'B']</code></pre>
+        </section>
+
+        <section>
+            <h2>GroupBy Methods</h2>
+
+            <h3>GroupBy Operations</h3>
+<pre><code># GroupBy on Series
+s.groupby(category_series).mean()
+s.groupby(category_series).sum()
+
+# Using index level (for MultiIndex)
+s.groupby(level=0).mean()</code></pre>
+
+            <h3>Rolling/Expanding within Group</h3>
+<pre><code># Create DataFrame with group column for proper groupby
+df = pd.DataFrame({
+    'group': ['A', 'A', 'B', 'B'],
+    'value': [1, 2, 3, 4]
+})
+df.groupby('group')['value'].rolling(2).mean()</code></pre>
+        </section>
+
+        <section>
+            <h2>Duplicates</h2>
+
+<pre><code>s.duplicated()          # True where value is duplicate
+s.drop_duplicates()     # Remove duplicates
+s.duplicated(keep='last')  # Keep last occurrence
+s.duplicated(keep=False)   # Keep all duplicates</code></pre>
+        </section>
+
+        <section>
+            <h2>Arithmetic Methods</h2>
+
+            <h3>Basic Arithmetic</h3>
+<pre><code>s.add(other)           # Addition (+)
+s.sub(other)           # Subtraction (-)
+s.mul(other)           # Multiplication (*)
+s.div(other)           # Division (/)
+s.floordiv(other)      # Floor division (//)
+s.mod(other)           # Modulo (%)
+s.pow(other)           # Power (**)
+
+# With fill_value
+s.add(other, fill_value=0)</code></pre>
+
+            <h3>Rounding</h3>
+<pre><code>s.round(decimals=2)    # Round to 2 decimals
+s.floor()              # Floor to integer
+s.ceil()                # Ceiling to integer
+s.clip(lower, upper)   # Clip values</code></pre>
+        </section>
+
+        <section>
+            <h2>Boolean Methods</h2>
+
+<pre><code>s.all()                # All values are truthy
+s.any()                # Any value is truthy
+s.eq(other)            # Equal
+s.ne(other)            # Not equal
+s.gt(other)            # Greater than
+s.lt(other)            # Less than
+s.ge(other)            # Greater or equal
+s.le(other)            # Less or equal</code></pre>
+        </section>
+
+        <section>
+            <h2>Reindexing Methods</h2>
+
+<pre><code>s.reindex(new_index)           # Reindex with new labels
+s.reindex_like(other)          # Reindex like another Series
+s.set_axis(labels, axis=0)     # Set axis labels</code></pre>
+        </section>
+
+        <section>
+            <h2>Conversion Methods</h2>
+
+<pre><code>s.to_dict()              # Convert to dict
+s.to_frame()             # Convert to DataFrame
+s.to_list()              # Convert to list
+s.to_numpy()             # Convert to numpy array
+s.to_string()            # Convert to string representation
+s.to_excel()             # Write to Excel
+s.to_csv()               # Write to CSV
+s.to_json()              # Write to JSON
+s.to_pickle()            # Write to pickle</code></pre>
+        </section>
+
+        <section>
+            <h2>Copy Methods</h2>
+
+<pre><code>s.copy()                # Create a copy
+s.copy(deep=False)       # Shallow copy</code></pre>
+        </section>
+
+        <section>
+            <h2>Memory Methods</h2>
+
+<pre><code>s.memory_usage(deep=True)   # Memory in bytes
+s.nbytes                      # Bytes in underlying array</code></pre>
+        </section>
+
+        <section>
+            <h2>Hashing</h2>
+
+<pre><code>s.hash_equal(other)     # Check if equal via hashing
+s.hash_key                # Hash key (if set)</code></pre>
+        </section>
+    </main>
+</body>
+</html>

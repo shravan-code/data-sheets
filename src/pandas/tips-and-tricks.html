@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tips and Tricks - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Tips and Tricks</h1>
+        <p>Productivity tips, best practices, and useful tricks for working efficiently with Pandas.</p>
+
+        <section>
+            <h2>Method Chaining</h2>
+            <p>Method chaining creates cleaner, more readable code by chaining multiple operations together.</p>
+
+            <h3>Using assign()</h3>
+<pre><code># Traditional approach
+df = pd.read_csv('file.csv')
+df['bonus'] = df['salary'] * 0.1
+df['total'] = df['salary'] + df['bonus']
+df = df[df['total'] > 50000]
+df = df.sort_values('total')
+
+# Method chaining (cleaner)
+df = (pd.read_csv('file.csv')
+      .assign(
+          bonus=lambda x: x['salary'] * 0.1,
+          total=lambda x: x['salary'] + x['bonus']
+      )
+      .query('total > 50000')
+      .sort_values('total'))</code></pre>
+
+            <h3>Using pipe()</h3>
+<pre><code>def add_features(df):
+    return df.assign(
+        bonus=df['salary'] * 0.1,
+        total=df['salary'] * 1.1
+    )
+
+def filter_high(df, threshold=50000):
+    return df[df['total'] > threshold]
+
+df = (pd.read_csv('file.csv')
+      .pipe(add_features)
+      .pipe(filter_high, threshold=60000)
+      .sort_values('total'))</code></pre>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> Method chaining is especially useful in Jupyter notebooks where you can see the full pipeline on one screen. It also makes it easier to comment out steps during debugging.
+            </div>
+        </section>
+
+        <section>
+            <h2>Efficient Data Loading</h2>
+
+            <h3>Load Only Needed Columns</h3>
+<pre><code># Load specific columns only
+df = pd.read_csv('file.csv', usecols=['name', 'salary', 'dept'])
+
+# Load columns by condition
+cols = pd.read_csv('file.csv', nrows=0).columns
+wanted_cols = [c for c in cols if 'salary' in c.lower()]
+df = pd.read_csv('file.csv', usecols=wanted_cols)</code></pre>
+
+            <h3>Optimize Data Types on Read</h3>
+<pre><code># Specify dtypes when reading
+df = pd.read_csv('file.csv', dtype={
+    'age': 'int8',
+    'salary': 'float32',
+    'dept': 'category',
+    'active': bool
+})
+
+# Parse dates on read
+df = pd.read_csv('file.csv', parse_dates=['date', 'start_date'])
+
+# Use date_parser for custom formats
+df = pd.read_csv('file.csv', 
+    parse_dates=['date'],
+    date_parser=lambda x: pd.to_datetime(x, format='%d/%m/%Y'))</code></pre>
+
+            <h3>Read Large Files in Chunks</h3>
+<pre><code># Process large files row by row
+for chunk in pd.read_csv('large_file.csv', chunksize=10000):
+    # Process chunk
+    result = chunk.groupby('dept')['salary'].mean()
+    # Store or aggregate results
+
+# Or accumulate in list
+chunks = []
+for chunk in pd.read_csv('large_file.csv', chunksize=10000):
+    filtered = chunk[chunk['salary'] > 50000]
+    chunks.append(filtered)
+df = pd.concat(chunks, ignore_index=True)</code></pre>
+
+            <h3>Use Efficient File Formats</h3>
+<pre><code># Parquet is much faster and smaller than CSV
+df = pd.read_parquet('file.parquet')
+
+# Feather is even faster for reading
+df = pd.read_feather('file.feather')
+
+# Pickle preserves dtypes
+df = pd.read_pickle('file.pkl')</code></pre>
+        </section>
+
+        <section>
+            <h2>Data Inspection Tips</h2>
+
+            <h3>Quick Overview</h3>
+<pre><code># One-liner overview
+df.info()  # Types, memory, nulls
+
+# Statistical summary
+df.describe()  # Numeric columns
+df.describe(include='all')  # All columns
+
+# First/last rows
+df.head(3)   # First 3 rows
+df.tail(3)   # Last 3 rows
+
+# Sample
+df.sample(5)  # 5 random rows</code></pre>
+
+            <h3>Memory Usage</h3>
+<pre><code># Quick memory check
+df.memory_usage(deep=True).sum() / (1024**2)  # MB
+
+# Memory by column
+df.memory_usage(deep=True).sort_values(ascending=False)
+
+# Compare before/after optimization
+before = df.memory_usage(deep=True).sum()
+df['col'] = df['col'].astype('category')
+after = df.memory_usage(deep=True).sum()
+print(f"Saved: {(before - after) / before * 100:.1f}%")</code></pre>
+
+            <h3>Check for Problems</h3>
+<pre><code># Find columns with most nulls
+df.isna().sum().sort_values(ascending=False).head(10)
+
+# Find duplicate rows
+df.duplicated().sum()
+
+# Find high cardinality columns
+df.nunique().sort_values(ascending=False)
+
+# Check for mixed types in object columns
+for col in df.select_dtypes('object'):
+    types = df[col].apply(type).unique()
+    if len(types) > 1:
+        print(f"{col}: {types}")</code></pre>
+        </section>
+
+        <section>
+            <h2>Column Operations</h2>
+
+            <h3>Rename Multiple Columns</h3>
+<pre><code># Rename with function
+df.rename(columns=str.lower)
+df.rename(columns=str.title)
+df.rename(columns=lambda x: x.replace(' ', '_'))
+
+# Rename specific columns
+df.rename(columns={'old_name': 'new_name', 'old2': 'new2'})
+
+# Direct assignment
+df.columns = ['a', 'b', 'c', 'd']</code></pre>
+
+            <h3>Create Multiple Columns at Once</h3>
+<pre><code># Using assign
+df = df.assign(
+    bonus=lambda x: x['salary'] * 0.1,
+    tax=lambda x: x['salary'] * 0.2,
+    net=lambda x: x['salary'] - x['bonus'] - x['tax']
+)
+
+# Using eval
+df.eval('bonus = salary * 0.1', inplace=True)</code></pre>
+
+            <h3>Reorder Columns</h3>
+<pre><code># Get column order
+cols = df.columns.tolist()
+
+# Move column to front
+cols = ['target'] + [c for c in cols if c != 'target']
+df = df[cols]
+
+# Move column to position
+cols = df.columns.tolist()
+cols.insert(0, cols.pop(cols.index('target')))
+df = df[cols]</code></pre>
+        </section>
+
+        <section>
+            <h2>Row Operations</h2>
+
+            <h3>Filter Rows Efficiently</h3>
+<pre><code># Multiple conditions - create mask first
+mask = (df['salary'] > 50000) & (df['dept'] == 'Engineering')
+df[mask]
+
+# Using query (often more readable)
+df.query('salary > 50000 and dept == "Engineering"')
+
+# Using variables in query
+threshold = 50000
+df.query('salary > @threshold')
+
+# Using isin for multiple values
+depts = ['Engineering', 'HR', 'Finance']
+df[df['dept'].isin(depts)]
+df.query('dept in @depts')</code></pre>
+
+            <h3>Select Rows by Position</h3>
+<pre><code># First/Last N rows
+df.head(10)   # First 10
+df.tail(10)   # Last 10
+
+# Every Nth row
+df.iloc[::10]  # Every 10th row
+
+# Random sample
+df.sample(frac=0.1)  # 10% random sample
+df.sample(n=100)      # 100 random rows</code></pre>
+        </section>
+
+        <section>
+            <h2>Aggregation Tricks</h2>
+
+            <h3>Named Aggregation</h3>
+<pre><code># Best practice for groupby
+df.groupby('dept').agg(
+    headcount=('name', 'count'),
+    avg_salary=('salary', 'mean'),
+    max_salary=('salary', 'max'),
+    total_bonus=('bonus', 'sum')
+)</code></pre>
+
+            <h3>Multiple Aggregations per Column</h3>
+<pre><code>df.groupby('dept').agg({
+    'salary': ['mean', 'max', 'min', 'std'],
+    'bonus': ['sum', 'mean']
+})</code></pre>
+
+            <h3>Conditional Aggregation</h3>
+<pre><code># Count where condition is true
+df.groupby('dept')['active'].agg(['sum', 'count'])
+
+# Or use named aggregation
+df.groupby('dept').agg(
+    active_count=('active', 'sum'),
+    total_count=('active', 'count'),
+    active_pct=lambda x: x.sum() / len(x) * 100
+)</code></pre>
+
+            <h3>Top N per Group</h3>
+<pre><code># Top 3 earners per department
+(df.groupby('dept', as_index=False)
+   .apply(lambda x: x.nlargest(3, 'salary'))
+   .reset_index(drop=True))</code></pre>
+        </section>
+
+        <section>
+            <h2>String Operations</h2>
+
+            <h3>Common String Transformations</h3>
+<pre><code># Clean whitespace
+df['name'] = df['name'].str.strip()
+df['name'] = df['name'].str.replace(r'\s+', ' ', regex=True)
+
+# Change case
+df['name'] = df['name'].str.lower()
+df['name'] = df['name'].str.title()
+
+# Extract parts
+df['first_name'] = df['name'].str.split().str[0]
+df['last_name'] = df['name'].str.split().str[-1]
+
+# Extract with regex
+df[['user', 'domain']] = df['email'].str.extract(r'(\w+)@(\w+)')
+
+# Replace patterns
+df['code'] = df['code'].str.replace(r'[^\w]', '', regex=True)</code></pre>
+
+            <h3>String Containment Check</h3>
+<pre><code># Check if contains (case-insensitive)
+df[df['text'].str.contains('pattern', case=False)]
+
+# Check if matches pattern
+df[df['code'].str.match(r'^[A-Z]{3}\d{4}')]
+
+# Multiple patterns
+patterns = ['Engineering', 'HR', 'Finance']
+df[df['dept'].str.contains('|'.join(patterns))]</code></pre>
+        </section>
+
+        <section>
+            <h2>DateTime Tips</h2>
+
+            <h3>Quick Date Operations</h3>
+<pre><code># Convert to datetime
+df['date'] = pd.to_datetime(df['date'])
+
+# Extract components
+df['year'] = df['date'].dt.year
+df['month'] = df['date'].dt.month
+df['day'] = df['date'].dt.day
+df['weekday'] = df['date'].dt.day_name()
+
+# Date differences
+df['days_since'] = (pd.Timestamp('today') - df['date']).dt.days</code></pre>
+
+            <h3>Date Filtering</h3>
+<pre><code># Filter by date
+df[df['date'].dt.year == 2024]
+df[df['date'].between('2024-01-01', '2024-12-31')]
+
+# Filter by month
+df[df['date'].dt.month == 1]
+df[df['date'].dt.strftime('%B') == 'January']
+
+# Filter by weekday (0=Monday)
+df[df['date'].dt.dayofweek < 5]  # Weekdays only</code></pre>
+
+            <h3>Date Generation</h3>
+<pre><code># Date range
+dates = pd.date_range('2024-01-01', periods=365, freq='D')
+
+# Business days only
+bdates = pd.bdate_range('2024-01-01', '2024-12-31')
+
+# Monthly dates
+months = pd.date_range('2024-01-01', periods=12, freq='ME')</code></pre>
+        </section>
+
+        <section>
+            <h2>Missing Data Handling</h2>
+
+            <h3>Smart Fill Strategies</h3>
+<pre><code># Fill with forward/backward fill
+df['value'] = df['value'].ffill()  # Forward fill
+df['value'] = df['value'].bfill()  # Backward fill
+
+# Fill with interpolation
+df['value'] = df['value'].interpolate(method='linear')
+
+# Fill with group mean
+df['value'] = df.groupby('category')['value'].transform(
+    lambda x: x.fillna(x.mean())
+)
+
+# Fill with previous value + offset
+df['value'] = df['value'].ffill() + 100</code></pre>
+
+            <h3>Identify Patterns in Missing Data</h3>
+<pre><code># Which columns have missing values
+df.isna().sum()[df.isna().sum() > 0]
+
+# Percentage missing per column
+(df.isna().mean() * 100).round(2).sort_values(ascending=False)
+
+# Rows with many missing
+df[df.isna().sum(axis=1) > 2]</code></pre>
+        </section>
+
+        <section>
+            <h2>Merge and Join Tips</h2>
+
+            <h3>Map Values Instead of Merge</h3>
+<pre><code># For single column lookup, map is faster than merge
+lookup = other_df.set_index('key')['value'].to_dict()
+df['value'] = df['key'].map(lookup)
+
+# With default for missing
+df['value'] = df['key'].map(lookup).fillna('Unknown')</code></pre>
+
+            <h3>Merge with Validation</h3>
+<pre><code># Always validate your merge
+result = pd.merge(df1, df2, on='key', how='left', validate='many_to_one')
+
+# Check merge results
+result['_merge'] = result.merge(df2, on='key', how='left', indicator=True)['_merge']
+print(result['_merge'].value_counts())</code></pre>
+
+            <h3>Concatenate Efficiently</h3>
+<pre><code># Append single row efficiently
+new_row = pd.DataFrame({'col1': [value1], 'col2': [value2]})
+df = pd.concat([df, new_row], ignore_index=True)
+
+# Or use .loc
+df.loc[len(df)] = [value1, value2]</code></pre>
+        </section>
+
+        <section>
+            <h2> pivoting and Unpivoting</h2>
+
+            <h3>Quick Pivot</h3>
+<pre><code># Basic pivot
+df.pivot(index='name', columns='year', values='salary')
+
+# Pivot with aggregation
+df.pivot_table(index='name', columns='year', values='salary', aggfunc='mean')</code></pre>
+
+            <h3>Wide to Long</h3>
+<pre><code># Convert columns with similar names
+pd.wide_to_long(df, stubnames='Q', i='name', j='quarter')
+
+# Manual melt
+pd.melt(df, id_vars=['name'], var_name='year', value_name='salary')</code></pre>
+
+            <h3>Long to Wide</h3>
+<pre><code># Using pivot
+df.pivot(index='name', columns='year', values='salary')
+
+# Using unstack
+df.set_index(['name', 'year'])['salary'].unstack()</code></pre>
+        </section>
+
+        <section>
+            <h2>Conditional Logic</h2>
+
+            <h3>np.where for Simple Conditions</h3>
+<pre><code># Simple if-else
+df['category'] = np.where(df['salary'] > 100000, 'High', 'Low')
+
+# Multiple conditions
+df['category'] = np.where(
+    df['salary'] > 100000, 'High',
+    np.where(df['salary'] > 50000, 'Medium', 'Low')
+)</code></pre>
+
+            <h3>pd.cut for Binning</h3>
+<pre><code># Create bins
+df['salary_bin'] = pd.cut(
+    df['salary'],
+    bins=[0, 50000, 100000, 200000],
+    labels=['Low', 'Medium', 'High']
+)
+
+# With include_lowest
+df['score_bin'] = pd.cut(
+    df['score'],
+    bins=[0, 50, 70, 90, 100],
+    labels=['F', 'C', 'B', 'A'],
+    include_lowest=True
+)</code></pre>
+
+            <h3>pd.cut vs pd.qcut</h3>
+<pre><code># pd.cut: Equal-width bins
+pd.cut(df['salary'], bins=4)  # 4 equal-width bins
+
+# pd.qcut: Equal-frequency bins
+pd.qcut(df['salary'], q=4)  # 4 quartiles</code></pre>
+        </section>
+
+        <section>
+            <h2>Ranking and Sorting</h2>
+
+            <h3>Rank with Tiebreakers</h3>
+<pre><code># Different tie methods
+df['rank_avg'] = df['salary'].rank(method='average')   # Default
+df['rank_min'] = df['salary'].rank(method='min')       # Min rank for ties
+df['rank_max'] = df['salary'].rank(method='max')       # Max rank for ties
+df['rank_first'] = df['salary'].rank(method='first')    # By order of appearance</code></pre>
+
+            <h3>Sort with Custom Key</h3>
+<pre><code># Sort by length
+df.sort_values('name', key=lambda x: x.str.len())
+
+# Sort by month name
+month_order = ['January', 'February', 'March', 'April']
+df['month'] = pd.Categorical(df['month'], categories=month_order, ordered=True)
+df.sort_values('month')</code></pre>
+        </section>
+
+        <section>
+            <h2>Data Cleaning</h2>
+
+            <h3>Clean Column Names</h3>
+<pre><code># Remove special characters
+df.columns = df.columns.str.replace(r'[^\w]', '', regex=True)
+
+# Replace spaces with underscores
+df.columns = df.columns.str.replace(' ', '_')
+
+# Lowercase
+df.columns = df.columns.str.lower()
+
+# Strip whitespace
+df.columns = df.columns.str.strip()</code></pre>
+
+            <h3>Remove Duplicates</h3>
+<pre><code># Remove duplicate rows
+df.drop_duplicates()
+
+# Keep last occurrence
+df.drop_duplicates(keep='last')
+
+# Remove duplicates based on column
+df.drop_duplicates(subset=['name', 'email'])</code></pre>
+
+            <h3>Standardize Values</h3>
+<pre><code># Standardize case
+df['name'] = df['name'].str.title()
+
+# Trim whitespace
+df = df.apply(lambda x: x.str.strip() if x.dtype == 'object' else x)
+
+# Remove non-numeric from column
+df['phone'] = df['phone'].str.replace(r'[^\d]', '', regex=True)</code></pre>
+        </section>
+
+        <section>
+            <h2>Jupyter Notebook Tips</h2>
+
+            <h3>Display Options</h3>
+<pre><code># Show all columns
+pd.set_option('display.max_columns', None)
+
+# Show all rows
+pd.set_option('display.max_rows', None)
+
+# Show full column content
+pd.set_option('display.max_colwidth', None)
+
+# Reset to defaults
+pd.reset_option('all')</code></pre>
+
+            <h3>Useful Magic Commands</h3>
+<pre><code># %timeit - time execution
+%timeit df.groupby('col')['val'].mean()
+
+# %%writefile - save cell to file
+%%writefile script.py
+
+# %load - load file into cell
+%load script.py</code></pre>
+        </section>
+
+        <section>
+            <h2>Quick Reference</h2>
+            <table>
+                <tr><th>Task</th><th>Code</th></tr>
+                <tr><td>Load CSV</td><td>pd.read_csv('file.csv')</td></tr>
+                <tr><td>Load with dtypes</td><td>pd.read_csv('f.csv', dtype={'c': 'int8'})</td></tr>
+                <tr><td>Load in chunks</td><td>pd.read_csv('f.csv', chunksize=10000)</td></tr>
+                <tr><td>Save to CSV</td><td>df.to_csv('f.csv', index=False)</td></tr>
+                <tr><td>Select columns</td><td>df[['a', 'b']]</td></tr>
+                <tr><td>Filter rows</td><td>df[df['col'] > 5]</td></tr>
+                <tr><td>Filter with query</td><td>df.query('col > 5')</td></tr>
+                <tr><td>Group by</td><td>df.groupby('col')['val'].mean()</td></tr>
+                <tr><td>Merge</td><td>pd.merge(df1, df2, on='key')</td></tr>
+                <tr><td>Join</td><td>df1.join(df2)</td></tr>
+                <tr><td>Concat</td><td>pd.concat([df1, df2])</td></tr>
+                <tr><td>Pivot</td><td>df.pivot(index='i', columns='c', values='v')</td></tr>
+                <tr><td>Melt</td><td>pd.melt(df, id_vars=['i'])</td></tr>
+                <tr><td>Fill NaN</td><td>df.fillna(0)</td></tr>
+                <tr><td>Drop NaN</td><td>df.dropna()</td></tr>
+                <tr><td>Sort</td><td>df.sort_values('col')</td></tr>
+                <tr><td>Drop duplicates</td><td>df.drop_duplicates()</td></tr>
+                <tr><td>Describe</td><td>df.describe()</td></tr>
+                <tr><td>Info</td><td>df.info()</td></tr>
+                <tr><td>Memory usage</td><td>df.memory_usage(deep=True)</td></tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

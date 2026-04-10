@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Performance - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="../../index.html">Data Sheets</a></h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="index.html" class="active">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+        <footer>Python performance</footer>
+    </aside>
+
+    <main class="main-content">
+        <h1>Performance</h1>
+        <p>Memory optimization, threading, multiprocessing, and async programming.</p>
+
+        <section>
+            <h2>Memory: __slots__</h2>
+            <pre><code># Without __slots__ - each instance has __dict__
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+# With __slots__ - 60% less memory
+class Point:
+    __slots__ = ['x', 'y']
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y</code></pre>
+            <div class="tip-box">
+                <strong>Tip:</strong> Use <code>__slots__</code> for data classes to save 40-60% memory.
+            </div>
+        </section>
+
+        <section>
+            <h2>Memory: Generators</h2>
+            <pre><code># List - loads everything in memory (~80 MB for 10M)
+squares = [x**2 for x in range(10_000_000)]
+
+# Generator - O(1) memory (~112 bytes)
+squares = (x**2 for x in range(10_000_000))
+
+# Generator function
+def count_up_to(n):
+    count = 1
+    while count <= n:
+        yield count
+        count += 1</code></pre>
+        </section>
+
+        <section>
+            <h2>Threading (I/O-bound)</h2>
+            <div class="warning-box">
+                <strong>GIL:</strong> Threading helps with I/O tasks, NOT CPU tasks.
+            </div>
+            <pre><code>import threading
+
+def download(url):
+    # Simulated I/O
+    import time
+    time.sleep(2)
+    return f"Downloaded: {url}"
+
+threads = [
+    threading.Thread(target=download, args=(url,))
+    for url in urls
+]
+for t in threads: t.start()
+for t in threads: t.join()</code></pre>
+        </section>
+
+        <section>
+            <h2>Multiprocessing (CPU-bound)</h2>
+            <pre><code>from multiprocessing import Pool
+
+def cpu_task(n):
+    return sum(i * i for i in range(n))
+
+if __name__ == "__main__":
+    with Pool(4) as pool:
+        results = pool.map(cpu_task, [10_000_000] * 8)</code></pre>
+        </section>
+
+        <section>
+            <h2>Async/Await</h2>
+            <pre><code>import asyncio
+
+async def fetch_data(id):
+    await asyncio.sleep(1)  # Non-blocking
+    return f"Data {id}"
+
+async def main():
+    # Run all concurrently
+    results = await asyncio.gather(
+        fetch_data(1),
+        fetch_data(2),
+        fetch_data(3)
+    )
+    print(results)
+
+asyncio.run(main())  # ~1 second, not 3</code></pre>
+        </section>
+
+        <section>
+            <h2>When to Use</h2>
+            <table>
+                <tr><th>Use</th><th>For</th></tr>
+                <tr><td>async/await</td><td>HTTP, files, databases</td></tr>
+                <tr><td>Threading</td><td>I/O-bound with waiting</td></tr>
+                <tr><td>Multiprocessing</td><td>CPU-intensive (math, data)</td></tr>
+            </table>
+        </section>
+
+        <div class="section-nav">
+            <a href="oop.html">← OOP</a>
+            <a href="index.html">Python</a>
+            <a href="dsa.html">DSA →</a>
+        </div>
+    </main>
+</body>
+</html>

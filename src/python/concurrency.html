@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Concurrency - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="../../index.html">Data Sheets</a></h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="index.html" class="active">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+        <footer>Python concurrency</footer>
+    </aside>
+
+    <main class="main-content">
+        <h1>Concurrency</h1>
+        <p>async/await, threading, and multiprocessing for parallel execution.</p>
+
+        <section>
+            <h2>async/await</h2>
+            <pre><code>import asyncio
+
+async def fetch_data(id):
+    await asyncio.sleep(1)  # Non-blocking pause
+    return f"Data {id}"
+
+async def main():
+    # Run all concurrently - ~1 second total
+    results = await asyncio.gather(
+        fetch_data(1),
+        fetch_data(2),
+        fetch_data(3)
+    )
+    print(results)
+
+asyncio.run(main())</code></pre>
+        </section>
+
+        <section>
+            <h2>Tasks</h2>
+            <pre><code>async def main():
+    # Create and schedule tasks
+    task1 = asyncio.create_task(fetch_data(1))
+    task2 = asyncio.create_task(fetch_data(2))
+    
+    # Wait for all
+    results = await asyncio.gather(task1, task2)
+    
+    # Wait for first completion
+    done, pending = await asyncio.wait([task1, task2])
+    for task in done:
+        print(task.result())</code></pre>
+        </section>
+
+        <section>
+            <h2>Threading (I/O-bound)</h2>
+            <div class="warning-box">
+                <strong>GIL:</strong> Threading helps with I/O, NOT CPU tasks.
+            </div>
+            <pre><code>import threading
+
+def download(url):
+    # I/O task - GIL released during I/O
+    import time
+    time.sleep(2)
+    return f"Downloaded: {url}"
+
+threads = [
+    threading.Thread(target=download, args=(url,))
+    for url in urls
+]
+for t in threads: t.start()
+for t in threads: t.join()</code></pre>
+        </section>
+
+        <section>
+            <h2>ProcessPoolExecutor (CPU-bound)</h2>
+            <pre><code>from concurrent.futures import ProcessPoolExecutor
+
+def cpu_task(n):
+    return sum(i * i for i in range(n))
+
+with ProcessPoolExecutor(max_workers=4) as executor:
+    results = list(executor.map(cpu_task, data))</code></pre>
+        </section>
+
+        <section>
+            <h2>When to Use What</h2>
+            <table>
+                <tr><th>Type</th><th>Best For</th><th>GIL Issue?</th></tr>
+                <tr><td>async/await</td><td>HTTP, files, DB</td><td>No</td></tr>
+                <tr><td>Threading</td><td>I/O with waiting</td><td>Releases on I/O</td></tr>
+                <tr><td>Multiprocessing</td><td>CPU-intensive math</td><td>No</td></tr>
+            </table>
+        </section>
+
+        <div class="section-nav">
+            <a href="decorators.html">← Decorators</a>
+            <a href="index.html">Python</a>
+            <a href="modules.html">Modules →</a>
+        </div>
+    </main>
+</body>
+</html>

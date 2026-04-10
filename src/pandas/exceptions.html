@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exceptions - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Exceptions</h1>
+        <p>Common Pandas errors, their causes, and how to fix them.</p>
+
+        <section>
+            <h2>SettingWithCopyWarning</h2>
+            <p>One of the most common warnings in Pandas. It occurs when you try to modify a view instead of a copy.</p>
+
+            <h3>Common Causes</h3>
+<pre><code># Cause 1: Chained indexing
+df[df['col'] > 0]['other_col'] = value  # Warning!
+
+# Cause 2: Creating a view accidentally
+subset = df[df['col'] > 0]
+subset['other_col'] = value  # Warning affects 'subset' and potentially 'df'!</code></pre>
+
+            <h3>Solutions</h3>
+<pre><code># Solution 1: Use .loc for conditional assignment
+df.loc[df['col'] > 0, 'other_col'] = value  # Correct!
+
+# Solution 2: Make explicit copy
+subset = df[df['col'] > 0].copy()
+subset['other_col'] = value  # No warning
+
+# Solution 3: Create DataFrame first, then assign
+mask = df['col'] > 0
+df.loc[mask, 'other_col'] = value</code></pre>
+
+            <div class="warning-box">
+                <strong>Warning:</strong> In Pandas 2.0+, Copy-on-Write is enabled by default, making this behavior more predictable. However, understanding the issue is still important for working with older code.
+            </div>
+        </section>
+
+        <section>
+            <h2>KeyError</h2>
+            <p>Occurs when trying to access a column or index label that doesn't exist.</p>
+
+            <h3>Common Causes</h3>
+<pre><code># Cause 1: Typo in column name
+df['ColmnName']  # KeyError if column is 'ColumnName'
+
+# Cause 2: Column doesn't exist
+df['nonexistent']  # KeyError
+
+# Cause 3: Wrong index access
+df.loc['nonexistent_row']  # KeyError
+
+# Cause 4: Case sensitivity
+df['Name'] vs df['name']</code></pre>
+
+            <h3>Solutions</h3>
+<pre><code># Solution 1: Check if column exists first
+if 'column' in df.columns:
+    df['column']
+
+# Solution 2: Use get method (returns None or default)
+df.get('column', default_value)
+df.get('column', 'default')
+
+# Solution 3: Use safe access
+df[['col1', 'col2']]  # Returns empty if none exist
+
+# Solution 4: Rename column
+df.rename(columns={'old': 'new'}, inplace=True)</code></pre>
+        </section>
+
+        <section>
+            <h2>ValueError</h2>
+            <p>General error when an operation receives an argument with the right type but inappropriate value.</p>
+
+            <h3>Shape Mismatch</h3>
+<pre><code># Cause: Assigning wrong shape
+df = pd.DataFrame({'a': [1, 2, 3]})
+df['b'] = [1, 2]  # ValueError: Length mismatch
+
+# Solution: Match lengths
+df['b'] = [1, 2, 3]  # Correct
+
+# Or use compatible length
+df['b'] = [1]  # Broadcasts to all rows</code></pre>
+
+            <h3>Cannot Merge Incompatible Keys</h3>
+<pre><code># Cause: Duplicate column names without suffix
+df1 = pd.DataFrame({'key': [1, 2], 'val': [10, 20]})
+df2 = pd.DataFrame({'key': [1, 2], 'val': [30, 40]})
+pd.merge(df1, df2, on='key')  # ValueError
+
+# Solution: Specify suffixes
+pd.merge(df1, df2, on='key', suffixes=('_left', '_right'))</code></pre>
+
+            <h3>Cannot Convert Data</h3>
+<pre><code># Cause: Cannot convert string to numeric
+pd.to_numeric(['1', '2', 'abc'])  # ValueError
+
+# Solution: Use errors='coerce'
+pd.to_numeric(['1', '2', 'abc'], errors='coerce')  # Returns [1, 2, NaN]
+
+# Or filter first
+pd.to_numeric(df['col'].dropna())</code></pre>
+
+            <h3>Invalid dtype Conversion</h3>
+<pre><code># Cause: Cannot convert
+df['date'].astype('int64')  # ValueError if dates can't convert
+
+# Solution: Convert to datetime first
+df['date'] = pd.to_datetime(df['date'])
+df['date'].astype('int64')  # Now works</code></pre>
+        </section>
+
+        <section>
+            <h2>TypeError</h2>
+            <p>Occurs when an operation is applied to incompatible types.</p>
+
+            <h3>String and Numeric Operations</h3>
+<pre><code># Cause: Cannot add string and number
+df['col'] = 'text'
+df['col'] + 5  # TypeError
+
+# Solution: Convert first
+df['col'].astype(int) + 5  # If numeric
+pd.to_numeric(df['col'], errors='coerce') + 5  # Handle non-numeric</code></pre>
+
+            <h3>Boolean Indexing with Series</h3>
+<pre><code># Cause: Wrong boolean type
+df[df['col']]  # TypeError if 'col' is not boolean
+
+# Solution: Convert to boolean
+df[df['col'].astype(bool)]</code></pre>
+
+            <h3>Operation on Non-numeric Data</h3>
+<pre><code># Cause: Sum on string column
+df['name'].sum()  # TypeError
+
+# Solution: Use appropriate string method
+df['name'].str.join('')  # For concatenation</code></pre>
+        </section>
+
+        <section>
+            <h2>IndexError</h2>
+            <p>Occurs when trying to access an index position that doesn't exist.</p>
+
+            <h3>iloc Out of Bounds</h3>
+<pre><code># Cause: Index out of range
+df = pd.DataFrame({'a': [1, 2, 3]})
+df.iloc[10]  # IndexError
+
+# Solution: Check bounds first
+if len(df) > 10:
+    df.iloc[10]
+
+# Or use safe access
+df.iloc[len(df) - 1]  # Last element</code></pre>
+
+            <h3>Empty Series Access</h3>
+<pre><code># Cause: Accessing empty series
+s = pd.Series([])
+s[0]  # IndexError
+
+# Solution: Check if empty first
+if len(s) > 0:
+    s[0]</code></pre>
+        </section>
+
+        <section>
+            <h2>MergeError</h2>
+            <p>Occurs during merge operations.</p>
+
+            <h3>Duplicate Key Error</h3>
+<pre><code># Cause: Duplicate values on key column
+pd.merge(df1, df2, on='key', validate='one_to_one')  # MergeError if duplicates
+
+# Solution: Check for duplicates first
+print(df1['key'].duplicated().sum())  # Count duplicates
+print(df2['key'].duplicated().sum())
+
+# Or use appropriate validation
+pd.merge(df1, df2, on='key', validate='many_to_one')</code></pre>
+
+            <h3>No Common Columns</h3>
+<pre><code># Cause: No overlapping columns
+df1 = pd.DataFrame({'a': [1, 2]})
+df2 = pd.DataFrame({'b': [1, 2]})
+pd.merge(df1, df2, on=['a', 'b'])  # MergeError
+
+# Solution: Specify columns
+pd.merge(df1, df2, left_on='a', right_on='b', how='cross')</code></pre>
+        </section>
+
+        <section>
+            <h2>ParserError</h2>
+            <p>Occurs when reading files with malformed data.</p>
+
+            <h3>CSV Parsing Issues</h3>
+<pre><code># Cause: Malformed CSV
+pd.read_csv('file.csv')  # ParserError if file is malformed
+
+# Solutions:
+pd.read_csv('file.csv', on_bad_lines='skip')  # Skip bad lines
+pd.read_csv('file.csv', error_bad_lines=False)  # Old syntax
+pd.read_csv('file.csv', encoding='latin-1')  # Wrong encoding
+
+# Check file first
+with open('file.csv', 'r') as f:
+    for i, line in enumerate(f):
+        if i > 10:
+            break
+        print(line)</code></pre>
+
+            <h3>Date Parsing Issues</h3>
+<pre><code># Cause: Cannot parse dates
+pd.to_datetime(['2024-01-01', 'invalid', '2024-01-03'])  # ParserError
+
+# Solution: Use errors='coerce'
+pd.to_datetime(['2024-01-01', 'invalid', '2024-01-03'], errors='coerce')</code></pre>
+        </section>
+
+        <section>
+            <h2>PermissionError / FileNotFoundError</h2>
+            <p>File-related errors.</p>
+
+            <h3>File Not Found</h3>
+<pre><code># Cause: Wrong path
+pd.read_csv('wrong_path/file.csv')  # FileNotFoundError
+
+# Solution: Use absolute path or check existence
+import os
+if os.path.exists('path/file.csv'):
+    df = pd.read_csv('path/file.csv')
+else:
+    print("File not found")</code></pre>
+
+            <h3>Permission Denied</h3>
+<pre><code># Cause: File is open or no write permission
+df.to_csv('file.csv')  # PermissionError
+
+# Solution: Close file or use different path
+df.to_csv('new_file.csv')
+df.to_csv('file.xlsx', mode='a')  # Append if supported</code></pre>
+        </section>
+
+        <section>
+            <h2>Dtype Mismatch Errors</h2>
+
+            <h3>Object vs Numeric Comparison</h3>
+<pre><code># Cause: Comparing string to number
+df[df['col'] > 5]  # UserWarning if 'col' is object type
+
+# Solution: Convert column first
+df['col'] = pd.to_numeric(df['col'], errors='coerce')
+df[df['col'] > 5]</code></pre>
+
+            <h3>Merge Key Type Mismatch</h3>
+<pre><code># Cause: Different types in merge keys
+df1['key'] = df1['key'].astype(str)
+df2['key'] = df2['key'].astype(int)
+pd.merge(df1, df2, on='key')  # May not match properly
+
+# Solution: Convert to same type
+df1['key'] = df1['key'].astype(int)</code></pre>
+        </section>
+
+        <section>
+            <h2>Performance and Memory Warnings</h2>
+
+            <h3>Memory Error</h3>
+<pre><code># Cause: Data too large for memory
+
+# Solutions:
+# 1. Read in chunks
+chunks = pd.read_csv('large_file.csv', chunksize=100000)
+df = pd.concat([chunk for chunk in chunks])
+
+# 2. Reduce dtypes
+df = pd.read_csv('file.csv', dtype={'col': 'int8'})
+
+# 3. Use efficient formats
+df = pd.read_parquet('file.parquet')
+
+# 4. Drop unnecessary columns
+df = pd.read_csv('file.csv', usecols=['needed', 'columns'])</code></pre>
+
+            <h3>Performance Warning</h3>
+<pre><code># Cause: Using slow operations on large data
+
+# Solutions:
+# 1. Use vectorized operations
+df['col'] = df['col'] * 2  # Fast
+
+# Instead of:
+for i in range(len(df)):  # Very slow
+    df.loc[i, 'col'] = df.loc[i, 'col'] * 2
+
+# 2. Use appropriate dtypes
+df['col'] = df['col'].astype('int8')  # Faster than int64</code></pre>
+        </section>
+
+        <section>
+            <h2>Common GroupBy Errors</h2>
+
+            <h3>KeyError in GroupBy</h3>
+<pre><code># Cause: Column doesn't exist
+df.groupby('wrong_column')  # KeyError
+
+# Solution: Check available columns
+print(df.columns.tolist())</code></pre>
+
+            <h3>Specification Error</h3>
+<pre><code># Cause: Wrong named aggregation syntax
+df.groupby('col').agg(new_name='other_col')  # Old syntax, wrong
+
+# Solution: Use correct syntax
+df.groupby('col').agg(new_name=('other_col', 'sum'))</code></pre>
+        </section>
+
+        <section>
+            <h2>Datetime Errors</h2>
+
+            <h3>Cannot Parse Date</h3>
+<pre><code># Cause: Wrong date format
+pd.to_datetime('01/02/2024')  # Ambiguous (US vs EU)
+
+# Solution: Specify format
+pd.to_datetime('01/02/2024', format='%m/%d/%Y')  # US
+pd.to_datetime('01/02/2024', format='%d/%m/%Y')  # EU</code></pre>
+
+            <h3>Timezone Issues</h3>
+<pre><code># Cause: Timezone-naive vs timezone-aware
+df['time1'].dt.tz_localize('UTC')  # Add timezone
+df['time1'].dt.tz_convert('US/Eastern')  # Convert timezone</code></pre>
+        </section>
+
+        <section>
+            <h2>Debugging Tips</h2>
+
+            <h3>Inspect DataFrame Before Operations</h3>
+<pre><code># Always check your data first
+df.head()
+df.dtypes
+df.shape
+df.info()
+
+# Check for nulls
+df.isna().sum()
+df.isna().any()</code></pre>
+
+            <h3>Use try-except</h3>
+<pre><code>try:
+    df['col'] = pd.to_numeric(df['col'])
+except ValueError as e:
+    print(f"Cannot convert: {e}")
+    # Handle error</code></pre>
+
+            <h3>Check dtypes Before Comparison</h3>
+<pre><code># Always check dtypes before comparisons
+print(df['col'].dtype)
+print(df['col'].dtype in ['int64', 'float64'])
+
+# Convert if needed
+df['col'] = pd.to_numeric(df['col'], errors='coerce')</code></pre>
+
+            <h3>Validate Merge Operations</h3>
+<pre><code># Always validate merges
+pd.merge(df1, df2, on='key', validate='one_to_one')  # Raises error if not</code></pre>
+        </section>
+
+        <section>
+            <h2>Error Prevention Checklist</h2>
+            <ul>
+                <li>Always check <code>df.dtypes</code> before operations</li>
+                <li>Use <code>df.info()</code> to understand your data</li>
+                <li>Convert dtypes explicitly with <code>pd.to_numeric()</code> or <code>astype()</code></li>
+                <li>Use <code>.loc[]</code> for conditional assignments</li>
+                <li>Check for nulls with <code>df.isna().sum()</code></li>
+                <li>Validate merge operations with <code>validate</code> parameter</li>
+                <li>Handle file encoding explicitly with <code>encoding</code> parameter</li>
+                <li>Use <code>errors='coerce'</code> for problematic conversions</li>
+                <li>Check index types with <code>df.index.dtype</code></li>
+                <li>Verify column existence with <code>'col' in df.columns</code></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

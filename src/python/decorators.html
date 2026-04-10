@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Decorators - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="../../index.html">Data Sheets</a></h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="index.html" class="active">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+        <footer>Python decorators</footer>
+    </aside>
+
+    <main class="main-content">
+        <h1>Decorators</h1>
+        <p>Modify functions without changing their code. Add functionality wrap-around.</p>
+
+        <section>
+            <h2>Basic Decorator</h2>
+            <pre><code>def my_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("Before")
+        result = func(*args, **kwargs)
+        print("After")
+        return result
+    return wrapper
+
+@my_decorator
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")
+# Before
+# Hello, Alice!
+# After</code></pre>
+        </section>
+
+        <section>
+            <h2>Preserve Metadata</h2>
+            <pre><code>import functools
+
+def my_decorator(func):
+    @functools.wraps(func)  # Preserves __name__, __doc__
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def greet(name):
+    """Greets the user."""
+    return f"Hello, {name}!"
+
+print(greet.__name__)  # greet (not wrapper)
+print(greet.__doc__)   # Greets the user.</code></pre>
+        </section>
+
+        <section>
+            <h2>Decorator with Arguments</h2>
+            <pre><code>def repeat(times):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(times=3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Prints 3 times</code></pre>
+        </section>
+
+        <section>
+            <h2>Common Decorators</h2>
+            <pre><code>import functools
+import time
+
+# Timer
+def timer(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        print(f"Took {time.perf_counter() - start:.4f}s")
+        return result
+    return wrapper
+
+# Cache (memoize)
+@functools.lru_cache(maxsize=128)
+def fib(n):
+    return n if n < 2 else fib(n-1) + fib(n-2)</code></pre>
+        </section>
+
+        <section>
+            <h2>Stacking Decorators</h2>
+            <pre><code>@timer
+@logger
+@validate(positive=lambda x: x > 0)
+def compute(x):
+    return x ** 2
+
+# Order: bottom to top
+# compute = timer(logger(validate(...)(compute)))</code></pre>
+        </section>
+
+        <div class="section-nav">
+            <a href="generators.html">← Generators</a>
+            <a href="index.html">Python</a>
+            <a href="concurrency.html">Concurrency →</a>
+        </div>
+    </main>
+</body>
+</html>

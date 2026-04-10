@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark ETL - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="index.html" class="active">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Spark</a>
+        <h1>PySpark ETL Pipelines</h1>
+        
+        <h2>What is ETL?</h2>
+        <p>ETL stands for Extract, Transform, Load - a data engineering pattern that:</p>
+        <ul>
+            <li><strong>Extract:</strong> Read data from sources (databases, files, APIs)</li>
+            <li><strong>Transform:</strong> Clean, validate, enrich, aggregate data</li>
+            <li><strong>Load:</strong> Write processed data to destination</li>
+        </ul>
+
+        <h2>Batch vs Streaming</h2>
+        <table>
+            <tr><th>Aspect</th><th>Batch ETL</th><th>Streaming</th></tr>
+            <tr><td>Latency</td><td>Minutes to hours</td><td>Seconds to milliseconds</td></tr>
+            <tr><td>Trigger</td><td>Schedule (cron)</td><td>Event arrival</td></tr>
+            <tr><td>Volume</td><td>Large historical</td><td>Continuous</td></tr>
+            <tr><td>Use Case</td><td>Reporting, BI</td><td>Real-time dashboards</td></tr>
+        </table>
+
+        <h2>Basic ETL Pattern</h2>
+        <pre><code>from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from delta.tables import DeltaTable
+
+spark = SparkSession.builder \
+    .appName('etl_pipeline') \
+    .config('spark.sql.adaptive.enabled', 'true') \
+    .getOrCreate()
+
+RAW_PATH = 's3://bucket/raw/'
+OUTPUT_PATH = 's3://bucket/curated/'
+
+# EXTRACT
+df = spark.read.parquet(f'{RAW_PATH}/dt=2024-01-15/')
+
+# TRANSFORM
+result = df \
+    .filter(F.col('status') == 'COMPLETED') \
+    .withColumn('revenue', F.col('quantity') * F.col('unit_price')) \
+    .withColumn('year', F.year('order_date')) \
+    .withColumn('month', F.month('order_date'))
+
+# LOAD
+result.write \
+    .mode('overwrite') \
+    .partitionBy('year', 'month') \
+    .parquet(OUTPUT_PATH)</code></pre>
+
+        <h2>Incremental Load with Delta</h2>
+        <pre><code>def incremental_load(new_data):
+    if DeltaTable.isDeltaTable(spark, OUTPUT_PATH):
+        delta = DeltaTable.forPath(spark, OUTPUT_PATH)
+        
+        # Merge (upsert)
+        delta.alias('t').merge(
+            new_data.alias('s'),
+            't.order_id = s.order_id'
+        ).whenMatchedUpdateAll() \
+         .whenNotMatchedInsertAll() \
+         .execute()
+    else:
+        # First run - create table
+        new_data.write.format('delta') \
+            .partitionBy('year', 'month') \
+            .save(OUTPUT_PATH)</code></pre>
+
+        <h2>SCD Type 2 Implementation</h2>
+        <p>SCD Type 2 tracks historical changes by creating new versions of records.</p>
+        
+        <pre><code>from delta.tables import DeltaTable
+
+def apply_scd2(source_df):
+    today = F.lit(F.current_date())
+    far_future = F.lit('9999-12-31').cast('date')
+    
+    # Add hash for change detection
+    source = source_df.withColumn('record_hash',
+        F.md5(F.concat_ws('|', 'name', 'email', 'address')))
+    
+    if not DeltaTable.isDeltaTable(spark, DIM_PATH):
+        # First load
+        source.withColumn('valid_from', today) \
+              .withColumn('valid_to', far_future) \
+              .withColumn('is_current', F.lit(True)) \
+              .write.format('delta').save(DIM_PATH)
+        return
+    
+    dim = DeltaTable.forPath(spark, DIM_PATH)
+    current = dim.toDF().filter('is_current = true')
+    
+    # Find changes
+    changes = source.alias('s').join(
+        current.alias('t'), on='customer_id', how='left'
+    ).filter(
+        F.col('t.customer_id').isNull() |
+        (F.col('s.record_hash') != F.col('t.record_hash'))
+    ).select('s.*')
+    
+    # Expire old, insert new
+    dim.alias('target').merge(
+        changes.alias('source'),
+        'target.customer_id = source.customer_id AND target.is_current = true'
+    ).whenMatchedUpdate(set={
+        'valid_to': F.current_date(),
+        'is_current': F.lit(False)
+    }).whenNotMatchedInsertAll().execute()</code></pre>
+
+        <h2>Schema Definition</h2>
+        <pre><code>from pyspark.sql.types import *
+
+# Define schema explicitly (recommended for production)
+SCHEMA = StructType([
+    StructField('order_id', StringType(), False),
+    StructField('customer_id', StringType(), True),
+    StructField('product_id', StringType(), True),
+    StructField('quantity', IntegerType(), True),
+    StructField('unit_price', DoubleType(), True),
+    StructField('order_date', DateType(), True),
+    StructField('status', StringType(), True),
+])
+
+# Read with schema
+df = spark.read.schema(SCHEMA).parquet(path)</code></pre>
+
+        <h2>Data Quality Checks</h2>
+        <pre><code>def validate(df):
+    errors = []
+    
+    # Check required columns
+    required_cols = ['order_id', 'customer_id', 'quantity']
+    missing = set(required_cols) - set(df.columns)
+    if missing:
+        errors.append(f'Missing columns: {missing}')
+    
+    # Check nulls
+    null_counts = df.select([
+        F.count(F.when(F.col(c).isNull(), c)).alias(c)
+        for c in required_cols
+    ]).collect()[0].asDict()
+    
+    for col, count in null_counts.items():
+        if count > 0:
+            errors.append(f'{col}: {count} null values')
+    
+    # Check ranges
+    if df.filter(F.col('quantity') <= 0).count() > 0:
+        errors.append('quantity must be positive')
+    
+    if errors:
+        raise ValueError(f'Data quality errors: {errors}')
+    
+    return True
+
+validate(df)</code></pre>
+
+        <h2>Medallion Architecture</h2>
+        <div class="flowchart">
+            <pre><code>BRONZE (Raw)
+s3://raw/  (CSV, JSON, CDC)
+  |
+  v (Ingest)
+SILVER (Cleaned)
+s3://silver/  (Delta, cleaned)
+  |
+  v (Transform)
+GOLD (Aggregated)
+s3://gold/  (Business-ready tables)</code></pre>
+        </div>
+
+        <h2>Production Best Practices</h2>
+        <ul>
+            <li><strong>Idempotency:</strong> Same input produces same output - safe to rerun</li>
+            <li><strong>Partitioning:</strong> Partition output by date/key for efficient reads</li>
+            <li><strong>Schema enforcement:</strong> Use explicit schemas, not inference</li>
+            <li><strong>Checkpointing:</strong> Track progress for recovery</li>
+            <li><strong>Logging:</strong> Log record counts at each stage</li>
+            <li><strong>Error handling:</strong> Handle bad records gracefully</li>
+        </ul>
+
+        <h2>Performance Tips</h2>
+        <pre><code># Optimize shuffle partitions
+spark.conf.set('spark.sql.shuffle.partitions', '400')
+
+# Use AQE
+spark.conf.set('spark.sql.adaptive.enabled', 'true')
+
+# Filter early
+df = df.filter(F.col('status') == 'active')  # Before expensive operations
+
+# Broadcast small tables
+from pyspark.sql.functions import broadcast
+result = large_df.join(broadcast(small_df), 'key')
+
+# Repartition before expensive ops
+df = df.repartition(100, 'date')
+result = df.groupBy('category').agg(F.sum('amount'))</code></pre>
+    </main>
+</body>
+</html>
