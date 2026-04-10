@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipelines - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Pipelines</h1>
+        <p>This section covers building ETL (Extract, Transform, Load) pipelines using Python and Pandas, including patterns for batch processing, data validation, and workflow orchestration.</p>
+
+        <section>
+            <h2>What is an ETL Pipeline?</h2>
+            <p>ETL stands for Extract, Transform, Load. It is a data engineering pattern that processes data in discrete, scheduled chunks rather than continuously.</p>
+
+            <h3>The Three Phases</h3>
+            <ul>
+                <li><strong>Extract:</strong> Read raw data from sources (databases, files, APIs)</li>
+                <li><strong>Transform:</strong> Clean, validate, enrich, and reshape the data</li>
+                <li><strong>Load:</strong> Write processed data to destination</li>
+            </ul>
+
+            <h3>Batch vs Streaming</h3>
+            <table>
+                <tr><th>Aspect</th><th>Batch ETL</th><th>Streaming</th></tr>
+                <tr><td>Latency</td><td>Minutes to hours</td><td>Milliseconds</td></tr>
+                <tr><td>Data Volume</td><td>Very large</td><td>Continuous</td></tr>
+                <tr><td>Use Case</td><td>Reports, BI dashboards</td><td>Real-time analytics</td></tr>
+                <tr><td>Cost</td><td>Lower</td><td>Higher</td></tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Basic ETL Pipeline Structure</h2>
+            <p>A well-structured ETL pipeline follows consistent patterns for maintainability and reliability.</p>
+
+            <h3>Project Structure</h3>
+<pre><code>project/
+├── config.py          # Configuration settings
+├── extract.py         # Data extraction functions
+├── transform.py       # Data transformation functions
+├── load.py           # Data loading functions
+├── validate.py        # Data validation functions
+├── pipeline.py       # Main orchestrator
+└── requirements.txt  # Dependencies</code></pre>
+
+            <h3>config.py - Configuration</h3>
+<pre><code>import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_CONFIG = {
+    'host': os.getenv('PG_HOST', 'localhost'),
+    'port': int(os.getenv('PG_PORT', 5432)),
+    'dbname': os.getenv('PG_DB', 'warehouse'),
+    'user': os.getenv('PG_USER', 'etl_user'),
+    'password': os.getenv('PG_PASSWORD'),
+}
+
+RAW_PATH = os.getenv('RAW_PATH', '/data/raw')
+STAGE_PATH = os.getenv('STAGE_PATH', '/data/stage')
+OUTPUT_PATH = os.getenv('OUTPUT_PATH', '/data/output')
+
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', 10000))</code></pre>
+        </section>
+
+        <section>
+            <h2>Extraction Phase</h2>
+            <p>The extraction phase reads data from various sources.</p>
+
+            <h3>Extract from CSV</h3>
+<pre><code>import pandas as pd
+import os
+import logging
+
+logger = logging.getLogger(__name__)
+
+EXPECTED_COLUMNS = {'order_id', 'order_date', 'product_id', 'quantity', 'unit_price', 'customer_id'}
+
+def extract_from_csv(filepath: str) -> pd.DataFrame:
+    """Extract data from CSV file with validation."""
+    
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Source file not found: {filepath}")
+    
+    df = pd.read_csv(filepath)
+    
+    # Validate columns
+    missing_cols = EXPECTED_COLUMNS - set(df.columns)
+    if missing_cols:
+        raise ValueError(f"Missing columns: {missing_cols}")
+    
+    logger.info(f"Extracted {len(df)} rows from {filepath}")
+    return df
+
+def extract_from_csv_chunks(filepath: str, chunksize: int = 10000) -> pd.DataFrame:
+    """Extract large CSV files in chunks."""
+    chunks = []
+    for chunk in pd.read_csv(filepath, chunksize=chunksize):
+        chunks.append(chunk)
+    return pd.concat(chunks, ignore_index=True)</code></pre>
+
+            <h3>Extract from Database</h3>
+<pre><code>import pandas as pd
+from sqlalchemy import create_engine
+from config import DB_CONFIG
+
+def extract_from_sql(query: str) -> pd.DataFrame:
+    """Extract data from SQL database."""
+    
+    engine = create_engine(
+        f"postgresql://{DB_CONFIG['user']}:{DB_CONFIG['password']}"
+        f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['dbname']}"
+    )
+    
+    df = pd.read_sql(query, engine)
+    engine.dispose()
+    
+    return df
+
+def extract_table(table_name: str, chunksize: int = None) -> pd.DataFrame:
+    """Extract entire table from database."""
+    
+    engine = create_engine(
+        f"postgresql://{DB_CONFIG['user']}:{DB_CONFIG['password']}"
+        f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['dbname']}"
+    )
+    
+    if chunksize:
+        chunks = []
+        for chunk in pd.read_sql_table(table_name, engine, chunksize=chunksize):
+            chunks.append(chunk)
+        df = pd.concat(chunks, ignore_index=True)
+    else:
+        df = pd.read_sql_table(table_name, engine)
+    
+    engine.dispose()
+    return df</code></pre>
+
+            <h3>Extract from API</h3>
+<pre><code>import requests
+import pandas as pd
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+BASE_URL = 'https://api.example.com/v1'
+API_KEY = 'your_api_key'
+
+def extract_from_api(endpoint: str, params: dict = None) -> pd.DataFrame:
+    """Extract data from REST API with pagination."""
+    
+    headers = {'Authorization': f'Bearer {API_KEY}'}
+    all_records = []
+    page = 1
+    
+    while True:
+        params = params or {}
+        params['page'] = page
+        params['per_page'] = 100
+        
+        response = requests.get(
+            f"{BASE_URL}/{endpoint}",
+            headers=headers,
+            params=params,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        data = response.json()
+        records = data.get('data', [])
+        
+        if not records:
+            break
+        
+        all_records.extend(records)
+        logger.info(f"Page {page}: {len(records)} records")
+        
+        if not data.get('has_more', False):
+            break
+        
+        page += 1
+        time.sleep(0.2)  # Rate limiting
+    
+    logger.info(f"Total extracted: {len(all_records)} records")
+    return pd.DataFrame(all_records)</code></pre>
+
+            <h3>Extract from S3</h3>
+<pre><code>import pandas as pd
+import boto3
+from io import StringIO
+
+def extract_from_s3(bucket: str, key: str) -> pd.DataFrame:
+    """Extract data from S3."""
+    
+    s3 = boto3.client('s3')
+    
+    csv_obj = s3.get_object(Bucket=bucket, Key=key)
+    body = csv_obj['Body']
+    csv_string = body.read().decode('utf-8')
+    
+    df = pd.read_csv(StringIO(csv_string))
+    return df
+
+def extract_parquet_from_s3(bucket: str, prefix: str) -> pd.DataFrame:
+    """Extract partitioned Parquet files from S3."""
+    
+    s3 = boto3.resource('s3')
+    bucket_obj = s3.Bucket(bucket)
+    
+    dfs = []
+    for obj in bucket_obj.objects.filter(Prefix=prefix):
+        if obj.key.endswith('.parquet'):
+            df = pd.read_parquet(f's3://{bucket}/{obj.key}')
+            dfs.append(df)
+    
+    if dfs:
+        return pd.concat(dfs, ignore_index=True)
+    return pd.DataFrame()</code></pre>
+        </section>
+
+        <section>
+            <h2>Transformation Phase</h2>
+            <p>The transformation phase cleans, validates, and enriches the data.</p>
+
+            <h3>Basic Transformations</h3>
+<pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime
+
+def transform_sales_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Transform sales data with cleaning and enrichment."""
+    
+    # 1. Strip whitespace from string columns
+    for col in df.select_dtypes(include='object').columns:
+        df[col] = df[col].str.strip() if df[col].dtype == 'object' else df[col]
+    
+    # 2. Type casting
+    df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce')
+    df['unit_price'] = pd.to_numeric(df['unit_price'], errors='coerce')
+    df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
+    
+    # 3. Remove rows with null critical fields
+    df = df.dropna(subset=['order_id', 'quantity', 'unit_price'])
+    
+    # 4. Remove duplicates
+    df = df.drop_duplicates(subset=['order_id'])
+    
+    # 5. Add derived fields
+    df['revenue'] = df['quantity'] * df['unit_price']
+    df['etl_run_date'] = datetime.now().isoformat()
+    
+    # 6. Add time components
+    df['year'] = df['order_date'].dt.year
+    df['month'] = df['order_date'].dt.month
+    df['day'] = df['order_date'].dt.day
+    
+    return df
+
+def clean_nulls(df: pd.DataFrame, strategy: dict = None) -> pd.DataFrame:
+    """Handle missing values based on strategy."""
+    
+    strategy = strategy or {}
+    
+    for col, method in strategy.items():
+        if method == 'drop':
+            df = df.dropna(subset=[col])
+        elif method == 'mean':
+            df[col] = df[col].fillna(df[col].mean())
+        elif method == 'median':
+            df[col] = df[col].fillna(df[col].median())
+        elif method == 'mode':
+            df[col] = df[col].fillna(df[col].mode()[0])
+        elif method == 'forward':
+            df[col] = df[col].ffill()
+        elif method == 'backward':
+            df[col] = df[col].bfill()
+        elif method == 'zero':
+            df[col] = df[col].fillna(0)
+        elif method == 'empty':
+            df[col] = df[col].fillna('')
+    
+    return df</code></pre>
+
+            <h3>Data Validation</h3>
+<pre><code>def validate_data(df: pd.DataFrame, schema: dict) -> tuple[bool, list]:
+    """Validate data against schema rules.
+    
+    Args:
+        df: DataFrame to validate
+        schema: Dict with validation rules
+    
+    Returns:
+        (is_valid, errors): Tuple of validity and list of errors
+    """
+    
+    errors = []
+    
+    for col, rules in schema.items():
+        # Check column exists
+        if col not in df.columns:
+            errors.append(f"Missing column: {col}")
+            continue
+        
+        # Check for nulls
+        if rules.get('not_null', False):
+            null_count = df[col].isna().sum()
+            if null_count > 0:
+                errors.append(f"{col}: {null_count} null values found")
+        
+        # Check data type
+        if 'dtype' in rules:
+            expected_dtype = rules['dtype']
+            if df[col].dtype != expected_dtype:
+                errors.append(f"{col}: Expected {expected_dtype}, got {df[col].dtype}")
+        
+        # Check min/max
+        if 'min' in rules:
+            below_min = (df[col] < rules['min']).sum()
+            if below_min > 0:
+                errors.append(f"{col}: {below_min} values below minimum {rules['min']}")
+        
+        if 'max' in rules:
+            above_max = (df[col] > rules['max']).sum()
+            if above_max > 0:
+                errors.append(f"{col}: {above_max} values above maximum {rules['max']}")
+        
+        # Check allowed values
+        if 'allowed_values' in rules:
+            invalid = ~df[col].isin(rules['allowed_values'])
+            if invalid.sum() > 0:
+                errors.append(f"{col}: Invalid values found")
+    
+    is_valid = len(errors) == 0
+    return is_valid, errors
+
+# Usage
+schema = {
+    'order_id': {'not_null': True, 'dtype': 'object'},
+    'quantity': {'not_null': True, 'dtype': 'int64', 'min': 0},
+    'unit_price': {'not_null': True, 'dtype': 'float64', 'min': 0},
+    'status': {'allowed_values': ['pending', 'completed', 'cancelled']}
+}
+
+is_valid, errors = validate_data(df, schema)
+if not is_valid:
+    print("Validation errors:", errors)</code></pre>
+
+            <h3>Enrichment</h3>
+<pre><code>def enrich_with_lookup(df: pd.DataFrame, lookup_df: pd.DataFrame, 
+                       key: str, columns: list) -> pd.DataFrame:
+    """Enrich data by joining with lookup table."""
+    
+    lookup = lookup_df[[key] + columns].drop_duplicates(subset=[key])
+    return df.merge(lookup, on=key, how='left')
+
+def add_business_logic(df: pd.DataFrame) -> pd.DataFrame:
+    """Add business logic calculations."""
+    
+    # Customer tier based on lifetime value
+    customer_value = df.groupby('customer_id')['revenue'].sum()
+    df['customer_tier'] = pd.cut(
+        df['customer_id'].map(customer_value),
+        bins=[0, 500, 2000, 10000, np.inf],
+        labels=['Bronze', 'Silver', 'Gold', 'Platinum']
+    )
+    
+    # Discount category
+    df['discount_category'] = pd.cut(
+        df['discount_pct'],
+        bins=[-np.inf, 0, 10, 20, np.inf],
+        labels=['None', 'Low', 'Medium', 'High']
+    )
+    
+    return df
+
+def aggregate_to_summary(df: pd.DataFrame) -> pd.DataFrame:
+    """Create summary aggregations."""
+    
+    summary = df.groupby(['customer_id', 'order_date']).agg(
+        order_count=('order_id', 'count'),
+        total_revenue=('revenue', 'sum'),
+        avg_discount=('discount_pct', 'mean'),
+        item_count=('quantity', 'sum')
+    ).reset_index()
+    
+    return summary</code></pre>
+        </section>
+
+        <section>
+            <h2>Load Phase</h2>
+            <p>The load phase writes processed data to destinations.</p>
+
+            <h3>Load to PostgreSQL</h3>
+<pre><code>import pandas as pd
+from sqlalchemy import create_engine, text
+import psycopg2.extras
+
+def load_to_sql(df: pd.DataFrame, table_name: str, if_exists: str = 'append') -> int:
+    """Load DataFrame to SQL table."""
+    
+    engine = create_engine(DB_CONFIG)
+    
+    df.to_sql(
+        table_name,
+        engine,
+        if_exists=if_exists,
+        index=False,
+        method='multi',
+        chunksize=1000
+    )
+    
+    engine.dispose()
+    return len(df)
+
+UPSERT_SQL = '''
+    INSERT INTO sales_fact 
+        (order_id, order_date, product_id, customer_id, 
+         quantity, unit_price, revenue, etl_run_date)
+    VALUES %s
+    ON CONFLICT (order_id) DO UPDATE SET
+        quantity = EXCLUDED.quantity,
+        unit_price = EXCLUDED.unit_price,
+        revenue = EXCLUDED.revenue,
+        etl_run_date = EXCLUDED.etl_run_date;
+'''
+
+def upsert_to_sql(df: pd.DataFrame, table_name: str) -> int:
+    """Upsert data to SQL table (insert or update on conflict)."""
+    
+    if df.empty:
+        return 0
+    
+    engine = create_engine(DB_CONFIG)
+    
+    columns = ['order_id', 'order_date', 'product_id', 'customer_id',
+               'quantity', 'unit_price', 'revenue', 'etl_run_date']
+    
+    values = [tuple(row[col] for col in columns) for _, row in df.iterrows()]
+    
+    with engine.begin() as conn:
+        psycopg2.extras.execute_values(
+            conn, 
+            UPSERT_SQL, 
+            values,
+            page_size=500
+        )
+    
+    engine.dispose()
+    return len(df)
+
+def load_to_staging_table(df: pd.DataFrame, table_name: str) -> int:
+    """Load to staging table, then merge to target table."""
+    
+    engine = create_engine(DB_CONFIG)
+    stage_table = f"{table_name}_stage"
+    
+    # Write to staging table
+    df.to_sql(stage_table, engine, if_exists='replace', index=False)
+    
+    # Merge from staging to target
+    merge_sql = f'''
+        DELETE FROM {table_name} 
+        WHERE order_date IN (SELECT order_date FROM {stage_table});
+        
+        INSERT INTO {table_name} 
+        SELECT * FROM {stage_table};
+        
+        DROP TABLE {stage_table};
+    '''
+    
+    with engine.begin() as conn:
+        conn.execute(text(merge_sql))
+    
+    engine.dispose()
+    return len(df)</code></pre>
+
+            <h3>Load to S3</h3>
+<pre><code>import pandas as pd
+import boto3
+from io import BytesIO
+
+def load_to_s3(df: pd.DataFrame, bucket: str, key: str, format: str = 'csv') -> None:
+    """Load DataFrame to S3."""
+    
+    s3 = boto3.client('s3')
+    
+    if format == 'csv':
+        buffer = BytesIO()
+        df.to_csv(buffer, index=False)
+        content_type = 'text/csv'
+    elif format == 'parquet':
+        buffer = BytesIO()
+        df.to_parquet(buffer, index=False, engine='pyarrow')
+        content_type = 'application/octet-stream'
+    elif format == 'json':
+        buffer = BytesIO()
+        df.to_json(buffer, orient='records', lines=True)
+        content_type = 'application/json'
+    
+    buffer.seek(0)
+    s3.put_object(Bucket=bucket, Key=key, Body=buffer.getvalue(),
+                    ContentType=content_type)
+
+def load_partitioned_parquet(df: pd.DataFrame, bucket: str, base_path: str) -> None:
+    """Load Parquet files partitioned by year/month."""
+    
+    df['year'] = df['order_date'].dt.year
+    df['month'] = df['order_date'].dt.month
+    
+    for (year, month), partition_df in df.groupby(['year', 'month']):
+        key = f"{base_path}/year={year}/month={month:02d}/data.parquet"
+        buffer = BytesIO()
+        partition_df.drop(columns=['year', 'month']).to_parquet(
+            buffer, index=False, engine='pyarrow', compression='snappy'
+        )
+        buffer.seek(0)
+        
+        s3 = boto3.client('s3')
+        s3.put_object(Bucket=bucket, Key=key, Body=buffer.getvalue())</code></pre>
+
+            <h3>Load to Excel</h3>
+<pre><code>def load_to_excel(df: pd.DataFrame, filepath: str, 
+                  sheet_name: str = 'Sheet1') -> None:
+    """Load DataFrame to Excel file."""
+    
+    with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
+        df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+def load_multi_sheet_excel(datasets: dict, filepath: str) -> None:
+    """Load multiple DataFrames to different Excel sheets."""
+    
+    with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
+        for sheet_name, df in datasets.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)</code></pre>
+        </section>
+
+        <section>
+            <h2>Pipeline Orchestration</h2>
+            <p>Combine all phases into a complete pipeline.</p>
+
+            <h3>Main Pipeline Script</h3>
+<pre><code>import logging
+import sys
+from datetime import date
+from config import DB_CONFIG, RAW_PATH, OUTPUT_PATH
+from extract import extract_from_csv, extract_from_sql
+from transform import transform_sales_data, validate_data
+from load import load_to_sql, load_to_s3
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s - %(message)s'
+)
+logger = logging.getLogger('pipeline')
+
+def run_pipeline(run_date: str = None):
+    """Execute the complete ETL pipeline."""
+    
+    run_date = run_date or date.today().isoformat()
+    logger.info(f"=== Pipeline START run_date={run_date} ===")
+    
+    try:
+        # EXTRACT
+        logger.info("Phase 1: Extraction")
+        raw_df = extract_from_csv(f"{RAW_PATH}/sales_{run_date}.csv")
+        logger.info(f"Extracted {len(raw_df)} rows")
+        
+        # TRANSFORM
+        logger.info("Phase 2: Transformation")
+        clean_df = transform_sales_data(raw_df)
+        logger.info(f"Transformed to {len(clean_df)} rows")
+        
+        # VALIDATE
+        logger.info("Phase 3: Validation")
+        is_valid, errors = validate_data(clean_df, SALES_SCHEMA)
+        if not is_valid:
+            logger.error(f"Validation failed: {errors}")
+            raise ValueError(f"Validation errors: {errors}")
+        
+        # LOAD
+        logger.info("Phase 4: Loading")
+        loaded_count = load_to_sql(clean_df, 'sales_fact')
+        logger.info(f"Loaded {loaded_count} rows")
+        
+        logger.info(f"=== Pipeline SUCCESS: {loaded_count} rows loaded ===")
+        
+    except Exception as e:
+        logger.exception(f"Pipeline FAILED: {e}")
+        sys.exit(1)
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--date', default=None)
+    args = parser.parse_args()
+    run_pipeline(args.date)</code></pre>
+
+            <h3>Batch Processing Pipeline</h3>
+<pre><code>import pandas as pd
+import os
+from datetime import datetime, timedelta
+
+def process_date_range(start_date: str, end_date: str) -> pd.DataFrame:
+    """Process data for a range of dates."""
+    
+    all_data = []
+    current_date = pd.to_datetime(start_date)
+    end = pd.to_datetime(end_date)
+    
+    while current_date <= end:
+        date_str = current_date.strftime('%Y%m%d')
+        
+        filepath = f"{RAW_PATH}/sales_{date_str}.csv"
+        
+        if os.path.exists(filepath):
+            df = pd.read_csv(filepath)
+            df['source_date'] = current_date
+            all_data.append(df)
+            print(f"Processed {date_str}: {len(df)} rows")
+        else:
+            print(f"File not found: {filepath}")
+        
+        current_date += timedelta(days=1)
+    
+    if all_data:
+        combined = pd.concat(all_data, ignore_index=True)
+        return combined
+    
+    return pd.DataFrame()
+
+def incremental_process(last_run_date: str, current_date: str) -> pd.DataFrame:
+    """Process only new data since last run (incremental load)."""
+    
+    all_records = []
+    
+    # Read all files in date range
+    current = pd.to_datetime(last_run_date)
+    end = pd.to_datetime(current_date)
+    
+    while current <= end:
+        date_str = current.strftime('%Y%m%d')
+        filepath = f"{RAW_PATH}/sales_{date_str}.csv"
+        
+        if os.path.exists(filepath):
+            df = pd.read_csv(filepath)
+            df['etl_run_date'] = datetime.now()
+            all_records.append(df)
+        
+        current += timedelta(days=1)
+    
+    return pd.concat(all_records, ignore_index=True) if all_records else pd.DataFrame()</code></pre>
+
+            <h3>Error Handling and Retry</h3>
+<pre><code>import time
+from functools import wraps
+
+def retry(max_attempts: int = 3, delay: int = 1):
+    """Decorator for retrying failed operations."""
+    
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            while attempts < max_attempts:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    attempts += 1
+                    if attempts >= max_attempts:
+                        raise
+                    logger.warning(f"Attempt {attempts} failed: {e}. Retrying...")
+                    time.sleep(delay * attempts)
+            return None
+        return wrapper
+    return decorator
+
+@retry(max_attempts=3, delay=2)
+def load_with_retry(df: pd.DataFrame, table_name: str) -> int:
+    """Load with automatic retry on failure."""
+    return load_to_sql(df, table_name)</code></pre>
+        </section>
+
+        <section>
+            <h2>Best Practices</h2>
+
+            <h3>Idempotency</h3>
+            <p>Running the same pipeline twice should produce the same result. This is essential for safe reruns.</p>
+<pre><code># Use upsert instead of insert
+# Always include etl_run_date for tracking
+# Use WHERE clauses to delete before insert
+# Include checksum/hash for deduplication
+
+def idempotent_load(df: pd.DataFrame, table_name: str) -> int:
+    """Load data idempotently."""
+    
+    # Add run identifier
+    run_id = datetime.now().strftime('%Y%m%d_%H%M%S')
+    df['etl_run_id'] = run_id
+    
+    # Delete existing records for the same date
+    load_date = df['order_date'].iloc[0]
+    
+    engine = create_engine(DB_CONFIG)
+    with engine.begin() as conn:
+        conn.execute(
+            text(f"DELETE FROM {table_name} WHERE order_date = '{load_date}'")
+        )
+        df.to_sql(table_name, conn, if_exists='append', index=False)
+    
+    engine.dispose()
+    return len(df)</code></pre>
+
+            <h3>Logging and Monitoring</h3>
+<pre><code>import logging
+import time
+from contextlib import contextmanager
+
+@contextmanager
+def timer(name: str):
+    """Context manager for timing operations."""
+    start = time.time()
+    logger.info(f"{name} started")
+    try:
+        yield
+    finally:
+        elapsed = time.time() - start
+        logger.info(f"{name} completed in {elapsed:.2f}s")
+
+def log_pipeline_metrics(func):
+    """Decorator for logging pipeline metrics."""
+    
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        start_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        
+        result = func(*args, **kwargs)
+        
+        elapsed = time.time() - start_time
+        end_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        memory_delta = end_memory - start_memory
+        
+        logger.info(f"""
+            Pipeline: {func.__name__}
+            Duration: {elapsed:.2f}s
+            Memory delta: {memory_delta:.2f} MB
+            Rows processed: {len(result) if hasattr(result, '__len__') else 'N/A'}
+        """)
+        
+        return result
+    
+    return wrapper</code></pre>
+
+            <h3>Configuration Management</h3>
+<pre><code># Use environment variables for sensitive data
+# Never hardcode credentials
+
+import os
+from dataclasses import dataclass
+
+@dataclass
+class PipelineConfig:
+    """Centralized pipeline configuration."""
+    
+    db_host: str
+    db_port: int
+    db_name: str
+    db_user: str
+    db_password: str
+    
+    raw_path: str
+    stage_path: str
+    output_path: str
+    
+    batch_size: int
+    chunk_size: int
+    
+    @classmethod
+    def from_env(cls):
+        return cls(
+            db_host=os.getenv('DB_HOST', 'localhost'),
+            db_port=int(os.getenv('DB_PORT', 5432)),
+            db_name=os.getenv('DB_NAME', 'warehouse'),
+            db_user=os.getenv('DB_USER'),
+            db_password=os.getenv('DB_PASSWORD'),
+            raw_path=os.getenv('RAW_PATH', '/data/raw'),
+            stage_path=os.getenv('STAGE_PATH', '/data/stage'),
+            output_path=os.getenv('OUTPUT_PATH', '/data/output'),
+            batch_size=int(os.getenv('BATCH_SIZE', 10000)),
+            chunk_size=int(os.getenv('CHUNK_SIZE', 1000))
+        )
+
+# Usage
+config = PipelineConfig.from_env()
+df = pd.read_csv(f"{config.raw_path}/file.csv", chunksize=config.chunk_size)</code></pre>
+        </section>
+
+        <section>
+            <h2>Pipeline Patterns</h2>
+
+            <h3>Extract-Load (EL)</h3>
+<pre><code>def el_pipeline(source: str, destination: str) -> int:
+    """Extract and load without transformation."""
+    
+    df = pd.read_csv(source)
+    df.to_parquet(destination)
+    
+    return len(df)</code></pre>
+
+            <h3>Extract-Transform-Load (ETL)</h3>
+<pre><code>def etl_pipeline(source: str, destination: str, 
+                  transform_fn) -> int:
+    """Full ETL pipeline."""
+    
+    # Extract
+    df = pd.read_csv(source)
+    
+    # Transform
+    df = transform_fn(df)
+    
+    # Load
+    df.to_parquet(destination)
+    
+    return len(df)</code></pre>
+
+            <h3>Pipeline with Staging</h3>
+<pre><code>def pipeline_with_staging(df: pd.DataFrame, table: str) -> int:
+    """Pipeline that uses staging table."""
+    
+    # 1. Write to staging
+    stage_table = f"{table}_stage"
+    df.to_sql(stage_table, engine, if_exists='replace', index=False)
+    
+    # 2. Validate staging data
+    stage_df = pd.read_sql(f"SELECT * FROM {stage_table}", engine)
+    
+    if stage_df.empty:
+        logger.warning("Staging table is empty")
+        return 0
+    
+    # 3. Upsert to target table
+    merge_sql = f"""
+        INSERT INTO {table} 
+        SELECT * FROM {stage_table}
+        ON CONFLICT (id) DO UPDATE SET
+            col1 = EXCLUDED.col1,
+            col2 = EXCLUDED.col2,
+            updated_at = NOW();
+    """
+    
+    with engine.begin() as conn:
+        conn.execute(text(merge_sql))
+        conn.execute(text(f"DROP TABLE {stage_table}"))
+    
+    return len(df)</code></pre>
+        </section>
+
+        <section>
+            <h2>Testing Pipelines</h2>
+
+            <h3>Unit Testing Transformations</h3>
+<pre><code>import pytest
+import pandas as pd
+from transform import transform_sales_data, clean_nulls
+
+def test_transform_sales_data():
+    """Test sales data transformation."""
+    
+    df = pd.DataFrame({
+        'order_id': ['1', ' 2 ', '3'],
+        'quantity': ['5', '10', '15'],
+        'unit_price': ['100.0', '200.0', '300.0'],
+        'order_date': ['2024-01-01', '2024-01-02', '2024-01-03']
+    })
+    
+    result = transform_sales_data(df)
+    
+    assert len(result) == 3
+    assert result['order_id'].str.strip().tolist() == ['1', '2', '3']
+    assert list(result['quantity']) == [5, 10, 15]
+    assert 'revenue' in result.columns
+    assert result['revenue'].iloc[0] == 500  # 5 * 100
+
+def test_clean_nulls():
+    """Test null handling."""
+    
+    df = pd.DataFrame({
+        'col1': [1, 2, None, 4],
+        'col2': ['a', None, 'c', 'd']
+    })
+    
+    result = clean_nulls(df, {
+        'col1': 'mean',
+        'col2': 'empty'
+    })
+    
+    assert result['col1'].isna().sum() == 0
+    assert (result['col1'] == 2.33).any()  # mean of 1, 2, 4
+    assert result['col2'].isna().sum() == 0
+
+if __name__ == '__main__':
+    pytest.main([__file__])</code></pre>
+
+            <h3>Integration Testing</h3>
+<pre><code>import pytest
+from sqlalchemy import create_engine
+
+@pytest.fixture
+def test_db():
+    """Create test database."""
+    engine = create_engine('sqlite:///:memory:')
+    
+    # Create test table
+    engine.execute('''
+        CREATE TABLE test_table (
+            id INTEGER PRIMARY KEY,
+            value INTEGER
+        )
+    ''')
+    
+    yield engine
+    engine.dispose()
+
+def test_load_integration(test_db):
+    """Integration test for load function."""
+    
+    df = pd.DataFrame({'id': [1, 2], 'value': [10, 20]})
+    
+    df.to_sql('test_table', test_db, if_exists='replace', index=False)
+    
+    result = pd.read_sql('test_table', test_db)
+    
+    assert len(result) == 2
+    assert result['value'].sum() == 30</code></pre>
+        </section>
+
+        <section>
+            <h2>Quick Reference</h2>
+            <table>
+                <tr><th>Task</th><th>Code</th></tr>
+                <tr><td>Read CSV</td><td>pd.read_csv('file.csv')</td></tr>
+                <tr><td>Read in chunks</td><td>pd.read_csv('f.csv', chunksize=10000)</td></tr>
+                <tr><td>Read from SQL</td><td>pd.read_sql(query, engine)</td></tr>
+                <tr><td>Write to CSV</td><td>df.to_csv('f.csv', index=False)</td></tr>
+                <tr><td>Write to SQL</td><td>df.to_sql('table', engine)</td></tr>
+                <tr><td>Write to Parquet</td><td>df.to_parquet('f.parquet')</td></tr>
+                <tr><td>Upsert</td><td>ON CONFLICT DO UPDATE</td></tr>
+                <tr><td>Drop duplicates</td><td>df.drop_duplicates(subset=['col'])</td></tr>
+                <tr><td>Add derived column</td><td>df['new'] = df['a'] * df['b']</td></tr>
+                <tr><td>Filter nulls</td><td>df.dropna(subset=['col'])</td></tr>
+                <tr><td>Type conversion</td><td>pd.to_numeric(df['col'])</td></tr>
+                <tr><td>Datetime parse</td><td>pd.to_datetime(df['date'])</td></tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

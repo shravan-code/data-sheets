@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Memory</h1>
+        <p>This section covers Pandas memory management, data types optimization, and techniques for handling large datasets efficiently.</p>
+
+        <section>
+            <h2>How DataFrame Stores Data Internally</h2>
+            <p>A DataFrame is not a 2D array. Internally, Pandas uses a BlockManager that groups columns by dtype into contiguous NumPy arrays called "blocks". All int64 columns share one NumPy block, all float64 columns share another.</p>
+
+            <h3>BlockManager Architecture</h3>
+<pre><code>import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    'name':   ['Alice', 'Bob', 'Carol', 'Dave', 'Eve'],
+    'age':    [34, 28, 45, 31, 29],
+    'salary': [95000.0, 72000.0, 110000.0, 68000.0, 88000.0],
+    'active': [True, False, True, False, True],
+    'dept':   ['Engineering', 'Marketing', 'Engineering', 'Marketing', 'HR'],
+    'score':  pd.Categorical(['A', 'C', 'A', 'B', 'A'])
+})
+
+# View internal block structure
+df._data                       # BlockManager object
+df._data.blocks               # List of internal blocks</code></pre>
+
+            <h3>Understanding Block Structure</h3>
+<pre><code># Each block contains columns of the same dtype
+# Block 1: int64 columns (age)
+# Block 2: float64 columns (salary)
+# Block 3: object columns (name, dept)
+# Block 4: bool columns (active)
+# Block 5: category columns (score)</code></pre>
+
+            <div class="info-box">
+                <strong>Why BlockManager Matters:</strong> Vectorized operations on same-dtype columns are fast because they operate on contiguous memory. Mixed-type operations require copying data between blocks, which is slower.
+            </div>
+        </section>
+
+        <section>
+            <h2>Checking Memory Usage</h2>
+            <p>Before optimizing, you need to understand how much memory your DataFrame uses.</p>
+
+            <h3>Basic Memory Information</h3>
+<pre><code># Get memory info
+df.info(memory_usage='deep')           # Detailed memory info
+
+# Memory usage per column
+df.memory_usage(deep=True)             # Bytes per column
+
+# Total memory usage
+df.memory_usage(deep=True).sum()        # Total bytes
+df.memory_usage(deep=True).sum() / 1024  # KB
+df.memory_usage(deep=True).sum() / (1024**2)  # MB
+
+# Memory usage of Series
+df['salary'].memory_usage(deep=True)
+
+# Memory usage with index
+df.index.memory_usage(deep=True)</code></pre>
+
+            <h3>Memory Report</h3>
+<pre><code># Create memory report
+memory_report = pd.DataFrame({
+    'memory_mb': df.memory_usage(deep=True) / (1024**2),
+    'dtype': df.dtypes
+}).sort_values('memory_mb', ascending=False)
+
+print(memory_report)
+print(f"\nTotal: {memory_report['memory_mb'].sum():.2f} MB")</code></pre>
+
+            <h3>Memory by dtype</h3>
+<pre><code># Memory per dtype category
+for dtype in ['object', 'int64', 'float64', 'bool', 'category']:
+    cols = df.select_dtypes(include=[dtype]).columns
+    if len(cols) > 0:
+        mem = df[cols].memory_usage(deep=True).sum() / (1024**2)
+        print(f"{dtype}: {mem:.2f} MB")</code></pre>
+        </section>
+
+        <section>
+            <h2>Data Types and Memory</h2>
+            <p>Understanding data types is crucial for memory optimization. Different dtypes use different amounts of memory.</p>
+
+            <h3>Integer Types</h3>
+<table>
+    <tr><th>dtype</th><th>Bytes</th><th>Range</th></tr>
+    <tr><td>int8</td><td>1</td><td>-128 to 127</td></tr>
+    <tr><td>int16</td><td>2</td><td>-32,768 to 32,767</td></tr>
+    <tr><td>int32</td><td>4</td><td>-2.1B to 2.1B</td></tr>
+    <tr><td>int64</td><td>8</td><td>-9.2Q to 9.2Q</td></tr>
+</table>
+
+            <h3>Floating Point Types</h3>
+<table>
+    <tr><th>dtype</th><th>Bytes</th><th>Description</th></tr>
+    <tr><td>float16</td><td>2</td><td>Half precision</td></tr>
+    <tr><td>float32</td><td>4</td><td>Single precision</td></tr>
+    <tr><td>float64</td><td>8</td><td>Double precision (default)</td></tr>
+</table>
+
+            <h3>Other Types</h3>
+<table>
+    <tr><th>dtype</th><th>Bytes</th><th>Description</th></tr>
+    <tr><td>bool</td><td>1</td><td>True/False</td></tr>
+    <tr><td>object</td><td>Variable</td><td>Python objects (strings)</td></tr>
+    <tr><td>category</td><td>Variable</td><td>Low cardinality values</td></tr>
+    <tr><td>string</td><td>Variable</td><td>String type (Pandas 2.0+)</td></tr>
+    <tr><td>string[pyarrow]</td><td>Variable</td><td>PyArrow strings (very efficient)</td></tr>
+</table>
+        </section>
+
+        <section>
+            <h2>Memory Optimization Techniques</h2>
+
+            <h3>1. Downcast Integers</h3>
+<pre><code># Before: int64 uses 8 bytes per value
+df['age'].dtype                # int64
+
+# After: int8 uses 1 byte per value (if values fit)
+df['age'] = pd.to_numeric(df['age'], downcast='integer')
+
+# Specific integer types
+df['age'] = df['age'].astype('int8')     # 1 byte
+df['age'] = df['age'].astype('int16')    # 2 bytes
+df['age'] = df['age'].astype('int32')    # 4 bytes</code></pre>
+
+            <h3>2. Downcast Floats</h3>
+<pre><code># Before: float64 uses 8 bytes
+df['salary'].dtype             # float64
+
+# After: float32 uses 4 bytes
+df['salary'] = pd.to_numeric(df['salary'], downcast='float')
+df['salary'] = df['salary'].astype('float32')
+
+# Be careful: float32 has less precision
+# For most salary data, float32 is sufficient</code></pre>
+
+            <h3>3. Convert Strings to Category</h3>
+<pre><code># Before: object dtype uses lots of memory
+df['dept'].dtype               # object
+
+# After: category uses much less memory
+df['dept'] = df['dept'].astype('category')
+
+# When to use category:
+# - Low cardinality (few unique values)
+# - Values repeat frequently
+# - Useful for groupby operations</code></pre>
+
+            <h3>4. Use Nullable Integer Types</h3>
+<pre><code># Standard int64 cannot hold NaN
+# Nullable types (Int8, Int16, Int32, Int64) can
+
+df['age'] = df['age'].astype('Int8')      # Note: capital I
+df['age'] = df['age'].astype('Int16')
+df['age'] = df['age'].astype('Int32')
+df['age'] = df['age'].astype('Int64')
+
+# Check if nullable
+df['age'].dtype              # Int8Dtype()</code></pre>
+
+            <h3>5. Use Boolean Efficiently</h3>
+<pre><code># Convert 'yes'/'no' strings to boolean
+df['active'] = df['active'].map({'yes': True, 'no': False})
+df['active'] = df['active'].astype(bool)</code></pre>
+
+            <h3>6. Use String Type (Pandas 2.0+)</h3>
+<pre><code># Better than object for strings
+df['name'] = df['name'].astype('string')
+
+# Even better with PyArrow backend
+df['name'] = df['name'].astype('string[pyarrow]')
+
+# Check pandas version
+pd.__version__</code></pre>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> The string[pyarrow] dtype is the most memory-efficient string type in Pandas 2.0+ and provides better performance for string operations.
+            </div>
+        </section>
+
+        <section>
+            <h2>Complete Optimization Example</h2>
+<pre><code>import pandas as pd
+import numpy as np
+
+def optimize_dataframe(df):
+    """Optimize DataFrame memory usage"""
+    
+    # Start memory check
+    start_mem = df.memory_usage(deep=True).sum() / (1024**2)
+    print(f"Starting memory: {start_mem:.2f} MB")
+    
+    # Iterate through each column
+    for col in df.columns:
+        col_type = df[col].dtype
+        
+        # Skip if already optimized
+        if col_type != 'object' and col_type.name != 'object':
+            continue
+        
+        # Get unique values
+        num_unique = df[col].nunique()
+        num_total = len(df[col])
+        
+        # If low cardinality, convert to category
+        if num_unique < num_total * 0.5:  # Less than 50% unique
+            df[col] = df[col].astype('category')
+        else:
+            # Try to convert to string type
+            try:
+                df[col] = df[col].astype('string')
+            except:
+                pass
+    
+    # Optimize numeric columns
+    for col in df.select_dtypes(include=['int', 'float']).columns:
+        cmin = df[col].min()
+        cmax = df[col].max()
+        
+        # Downcast integers
+        if df[col].dtype == 'int64':
+            if cmin >= np.iinfo('int8').min and cmax <= np.iinfo('int8').max:
+                df[col] = df[col].astype('int8')
+            elif cmin >= np.iinfo('int16').min and cmax <= np.iinfo('int16').max:
+                df[col] = df[col].astype('int16')
+            elif cmin >= np.iinfo('int32').min and cmax <= np.iinfo('int32').max:
+                df[col] = df[col].astype('int32')
+        
+        # Downcast floats
+        elif df[col].dtype == 'float64':
+            df[col] = df[col].astype('float32')
+    
+    end_mem = df.memory_usage(deep=True).sum() / (1024**2)
+    print(f"Ending memory: {end_mem:.2f} MB")
+    print(f"Memory reduced by: {(1 - end_mem/start_mem)*100:.1f}%")
+    
+    return df
+
+# Apply optimization
+df = optimize_dataframe(df)</code></pre>
+        </section>
+
+        <section>
+            <h2>Specify dtypes on Read</h2>
+            <p>The best optimization is to specify dtypes when reading data, avoiding inference overhead.</p>
+
+<pre><code># Read CSV with dtypes specified
+df = pd.read_csv('file.csv', dtype={
+    'age': 'int8',
+    'salary': 'float32',
+    'dept': 'category',
+    'active': bool
+})
+
+# Parse dates on read
+df = pd.read_csv('file.csv', 
+    parse_dates=['date', 'start_date'],
+    dtype={'age': 'int8'})
+
+# Use when working with large files
+# This avoids the need to convert after reading</code></pre>
+
+            <div class="info-box">
+                <strong>Best Practice:</strong> Always specify dtypes when reading data from files. This avoids the overhead of dtype inference and ensures consistent memory usage from the start.
+            </div>
+        </section>
+
+        <section>
+            <h2>Copy vs View</h2>
+            <p>Understanding the difference between copies and views is crucial for memory management and avoiding bugs.</p>
+
+            <h3>What are Views and Copies?</h3>
+<pre><code>import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({'a': [1, 2, 3, 4, 5], 'b': [10, 20, 30, 40, 50]})
+
+# VIEW: Shares underlying memory with original
+view_col = df['a']              # Single column selection = view
+view_rows = df[df['a'] > 2]     # Boolean selection MAY return view
+view_iloc = df.iloc[0:3]        # Slice CAN be view
+
+# COPY: Owns its own memory
+copy_col = df['a'].copy()       # Explicit copy
+copy_df = df.copy()             # Deep copy
+copy_df2 = df.copy(deep=False)  # Shallow copy (shares data blocks)</code></pre>
+
+            <h3>Checking if Objects Share Memory</h3>
+<pre><code># Check if two objects share memory
+np.shares_memory(df['a'].values, view_col.values)  # True = view
+
+# Check if array is writable
+df['a'].values.flags['WRITEABLE']</code></pre>
+
+            <h3>SettingWithCopy Warning</h3>
+<pre><code># WRONG: May trigger SettingWithCopyWarning
+df[df['a'] > 2]['b'] = 99
+
+# CORRECT: Use .loc for conditional assignment
+df.loc[df['a'] > 2, 'b'] = 99
+
+# Alternative: Make explicit copy first
+df2 = df[df['a'] > 2].copy()
+df2['b'] = 99</code></pre>
+
+            <h3>Copy-on-Write (Pandas 2.0+)</h3>
+<pre><code># Enable Copy-on-Write for predictable behavior
+pd.options.mode.copy_on_write = True
+
+# Now every modification creates a new object
+# No more confusing view vs copy behavior
+
+# Disable if needed
+pd.options.mode.copy_on_write = False</code></pre>
+
+            <div class="warning-box">
+                <strong>Warning:</strong> In Pandas 2.0+, Copy-on-Write is enabled by default. This means operations that previously returned views now return copies, making behavior more predictable but potentially using more memory.
+            </div>
+        </section>
+
+        <section>
+            <h2>Chunked Processing</h2>
+            <p>For very large files that don't fit in memory, process data in chunks.</p>
+
+            <h3>Reading in Chunks</h3>
+<pre><code># Read large CSV in chunks
+chunks = pd.read_csv('large_file.csv', chunksize=100000)
+
+# Process each chunk
+results = []
+for chunk in chunks:
+    # Process chunk
+    filtered = chunk[chunk['salary'] > 80000]
+    results.append(filtered)
+
+# Combine results
+df_filtered = pd.concat(results, ignore_index=True)</code></pre>
+
+            <h3>Processing Chunks with Aggregation</h3>
+<pre><code># Calculate sum across chunks
+total_sum = 0
+for chunk in pd.read_csv('large_file.csv', chunksize=100000):
+    total_sum += chunk['salary'].sum()
+
+# Calculate mean by re-reading with aggregation
+sum_salary = 0
+count = 0
+for chunk in pd.read_csv('large_file.csv', chunksize=100000):
+    sum_salary += chunk['salary'].sum()
+    count += len(chunk)
+    
+mean_salary = sum_salary / count</code></pre>
+
+            <h3>Using iterator instead of chunks</h3>
+<pre><code># Read as iterator
+df_iterator = pd.read_csv('large_file.csv', iterator=True)
+
+# Get chunks one at a time
+chunk = df_iterator.get_chunk(100000)</code></pre>
+        </section>
+
+        <section>
+            <h2>Working with Column Subsets</h2>
+<pre><code># Select only needed columns
+df = pd.read_csv('file.csv', usecols=['name', 'salary', 'dept'])
+
+# Select columns by dtype
+numeric_cols = df.select_dtypes(include='number').columns.tolist()
+cat_cols = df.select_dtypes(include='category').columns.tolist()
+string_cols = df.select_dtypes(include='object').columns.tolist()
+
+# Process only numeric columns
+numeric_df = df[numeric_cols]
+result = numeric_df.mean()</code></pre>
+        </section>
+
+        <section>
+            <h2>Memory Optimization Decision Tree</h2>
+<pre><code># Decision tree for dtype optimization:
+
+# 1. Is the column an integer?
+#    - Check min/max values
+#    - Use smallest int type that fits
+#    - Consider Int8, Int16, Int32
+
+# 2. Is the column a float?
+#    - Can you tolerate less precision?
+#    - Use float32 instead of float64
+
+# 3. Is the column a string with low cardinality?
+#    - Convert to category dtype
+#    - Use string[pyarrow] for high cardinality
+
+# 4. Is the column boolean stored as object?
+#    - Convert to bool dtype
+
+# 5. Are there many duplicate strings?
+#    - String interning with category
+#    - Use hash-based categorical</code></pre>
+        </section>
+
+        <section>
+            <h2>Quick Reference</h2>
+            <table>
+                <tr><th>Optimization</th><th>Code</th><th>Savings</th></tr>
+                <tr><td>Downcast int64 to int8</td><td>df['col'].astype('int8')</td><td>~87.5%</td></tr>
+                <tr><td>Downcast float64 to float32</td><td>df['col'].astype('float32')</td><td>50%</td></tr>
+                <tr><td>Object to category</td><td>df['col'].astype('category')</td><td>Varies</td></tr>
+                <tr><td>Object to string</td><td>df['col'].astype('string')</td><td>Varies</td></tr>
+                <tr><td>Object to string[pyarrow]</td><td>df['col'].astype('string[pyarrow]')</td><td>Varies</td></tr>
+                <tr><td>Check memory</td><td>df.memory_usage(deep=True)</td><td>-</td></tr>
+                <tr><td>Read with dtypes</td><td>pd.read_csv(dtype={'col': 'int8'})</td><td>-</td></tr>
+                <tr><td>Read in chunks</td><td>pd.read_csv(chunksize=100000)</td><td>-</td></tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

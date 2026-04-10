@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Basics - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="../../index.html">Data Sheets</a></h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="index.html" class="active">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+        <footer>Python basics</footer>
+    </aside>
+
+    <main class="main-content">
+        <h1>Python Basics</h1>
+        <p>Everything you need to start with Python. Variables, types, and control flow.</p>
+
+        <section>
+            <h2>Variables & Types</h2>
+            <pre><code># Numbers
+x = 42          # int
+y = 3.14        # float
+is_valid = True # bool
+
+# Strings
+name = "Alice"
+greeting = 'Hello'
+
+# Collections
+numbers = [1, 2, 3]      # list
+point = (1, 2)           # tuple
+person = {"name": "Bob"} # dict
+unique = {1, 2, 3}       # set
+
+# Check type
+type(x)  # &lt;class 'int'&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Operators</h2>
+            <table>
+                <tr><th>Operator</th><th>Example</th><th>Result</th></tr>
+                <tr><td>+</td><td>10 + 3</td><td>13</td></tr>
+                <tr><td>-</td><td>10 - 3</td><td>7</td></tr>
+                <tr><td>*</td><td>10 * 3</td><td>30</td></tr>
+                <tr><td>/</td><td>10 / 3</td><td>3.33</td></tr>
+                <tr><td>//</td><td>10 // 3</td><td>3</td></tr>
+                <tr><td>%</td><td>10 % 3</td><td>1</td></tr>
+                <tr><td>**</td><td>2 ** 4</td><td>16</td></tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Control Flow</h2>
+            <pre><code># if/elif/else
+age = 18
+if age < 18:
+    print("Minor")
+elif age == 18:
+    print("Just turned 18")
+else:
+    print("Adult")
+
+# for loop
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4
+
+# while loop
+count = 0
+while count < 3:
+    count += 1
+
+# List comprehension
+squares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]
+evens = [x for x in range(10) if x % 2 == 0]</code></pre>
+        </section>
+
+        <section>
+            <h2>Functions</h2>
+            <pre><code># Basic function
+def greet(name):
+    return f"Hello, {name}!"
+
+# Default arguments
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+# Return multiple values
+def min_max(numbers):
+    return min(numbers), max(numbers)
+
+# *args and **kwargs
+def func(*args, **kwargs):
+    print(f"Args: {args}")
+    print(f"Kwargs: {kwargs}")
+
+# Lambda
+square = lambda x: x ** 2</code></pre>
+        </section>
+
+        <section>
+            <h2>Strings</h2>
+            <pre><code>text = "Hello, World!"
+
+# Slicing
+text[0:5]     # "Hello"
+text[7:]      # "World!"
+text[::-1]    # "!dlroW ,olleH"
+
+# Methods
+text.upper()           # "HELLO, WORLD!"
+text.lower()           # "hello, world!"
+text.split(",")        # ["Hello", " World!"]
+"-".join(["a", "b"])   # "a-b"
+text.replace("World", "Python")
+text.strip()           # Remove whitespace
+
+# f-strings
+name = "Alice"
+f"Hello, {name}!"     # "Hello, Alice!"
+f"{2 ** 10}"           # "1024"</code></pre>
+        </section>
+
+        <section>
+            <h2>Lists</h2>
+            <pre><code>nums = [1, 2, 3, 4, 5]
+
+# Add/Remove
+nums.append(6)        # [1, 2, 3, 4, 5, 6]
+nums.insert(0, 0)      # [0, 1, 2, 3, 4, 5, 6]
+nums.pop()            # Remove last: 6
+nums.remove(3)        # Remove value 3
+
+# Slicing
+nums[1:4]             # [1, 2, 3]
+nums[::2]             # [0, 2, 4, 6]
+nums[::-1]            # Reverse
+
+# Sorting
+nums.sort()           # In-place
+sorted(nums)          # New list</code></pre>
+        </section>
+
+        <section>
+            <h2>Dictionaries</h2>
+            <pre><code>person = {"name": "Alice", "age": 30}
+
+# Access
+person["name"]              # "Alice"
+person.get("city", "NYC")   # "NYC" (default)
+
+# Add/Update
+person["city"] = "NYC"
+
+# Iterate
+for key in person:
+    print(key, person[key])
+for key, value in person.items():
+    print(key, value)
+
+# Dict comprehension
+squares = {x: x**2 for x in range(5)}</code></pre>
+        </section>
+
+        <div class="section-nav">
+            <a href="index.html">← Python Index</a>
+            <a href="methods.html">Methods →</a>
+        </div>
+    </main>
+</body>
+</html>

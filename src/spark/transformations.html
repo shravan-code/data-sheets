@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Transformations - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="index.html" class="active">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Spark</a>
+        <h1>PySpark Transformations</h1>
+        
+        <div class="info-box">
+            <strong>Narrow Transformation:</strong> Data stays in the same partition. No data moves between machines. Fast & cheap.
+        </div>
+        <div class="warning-box">
+            <strong>Wide (Shuffle) Transformation:</strong> Data moves between partitions/machines over the network. Slower but necessary.
+        </div>
+
+        <h2>Selection & Columns (Narrow)</h2>
+        <table>
+            <tr><th>Method</th><th>Description</th></tr>
+            <tr><td><code>.select()</code></td><td>Pick specific columns</td></tr>
+            <tr><td><code>.selectExpr()</code></td><td>Select using SQL expressions</td></tr>
+            <tr><td><code>.withColumn()</code></td><td>Add or replace a column</td></tr>
+            <tr><td><code>.withColumnRenamed()</code></td><td>Rename a column</td></tr>
+            <tr><td><code>.drop()</code></td><td>Remove columns</td></tr>
+            <tr><td><code>.cast()</code></td><td>Change data type</td></tr>
+        </table>
+
+        <h2>Filtering (Narrow)</h2>
+        <table>
+            <tr><th>Method</th><th>Description</th></tr>
+            <tr><td><code>.filter()</code></td><td>Keep rows matching condition</td></tr>
+            <tr><td><code>.where()</code></td><td>Alias for filter()</td></tr>
+            <tr><td><code>.limit()</code></td><td>Return first N rows</td></tr>
+            <tr><td><code>.sample()</code></td><td>Random sample of rows</td></tr>
+        </table>
+
+        <h2>Sorting</h2>
+        <table>
+            <tr><th>Method</th><th>Description</th></tr>
+            <tr><td><code>.orderBy()</code> <em>WIDE</em></td><td>Sort globally (shuffles data)</td></tr>
+            <tr><td><code>.sortWithinPartitions()</code></td><td>Sort within each partition (no shuffle)</td></tr>
+        </table>
+
+        <h2>Deduplication</h2>
+        <table>
+            <tr><th>Method</th><th>Description</th></tr>
+            <tr><td><code>.distinct()</code> <em>WIDE</em></td><td>Remove completely duplicate rows</td></tr>
+            <tr><td><code>.dropDuplicates()</code> <em>WIDE</em></td><td>Remove duplicates based on specific columns</td></tr>
+        </table>
+
+        <h2>Aggregations (Wide)</h2>
+        <pre><code># Basic groupBy + agg
+df.groupBy('dept').agg(
+    count('*').alias('count'),
+    sum('salary').alias('total'),
+    avg('salary').alias('avg')
+).show()
+
+# Multiple aggregations
+df.groupBy('dept').agg(
+    count('*').alias('headcount'),
+    avg('salary').alias('avg_salary')
+).show()
+
+# PIVOT
+df.groupBy('dept').pivot('city').count().show()</code></pre>
+
+        <h2>Joins (Wide)</h2>
+        <table>
+            <tr><th>Type</th><th>Result</th></tr>
+            <tr><td><code>"inner"</code></td><td>Only matching rows from both sides</td></tr>
+            <tr><td><code>"left"</code></td><td>All left rows + matching right (null if no match)</td></tr>
+            <tr><td><code>"right"</code></td><td>All right rows + matching left</td></tr>
+            <tr><td><code>"outer"</code></td><td>All rows from both sides</td></tr>
+            <tr><td><code>"semi"</code></td><td>Left rows where a match exists in right</td></tr>
+            <tr><td><code>"anti"</code></td><td>Left rows where NO match exists in right</td></tr>
+            <tr><td><code>.crossJoin()</code></td><td>Cartesian product (every x every)</td></tr>
+            <tr><td><code>broadcast()</code></td><td>No shuffle - copy small table to all nodes</td></tr>
+        </table>
+
+        <h2>Reshaping</h2>
+        <pre><code># Union (stack rows)
+df1.union(df2).show()
+
+# Explode array
+df.select('name', F.explode('skills').alias('skill')).show()
+
+# Split string to array
+df.withColumn('parts', F.split(col('city'), ' ')).show()
+
+# Array from columns
+df.withColumn('profile', F.array('name', 'dept', 'city')).show()
+
+# Struct (nested)
+df.withColumn('info', F.struct('name', 'age', 'salary')).show()</code></pre>
+
+        <h2>String Operations (Narrow)</h2>
+        <pre><code># Concatenate
+df.withColumn('combined', F.concat_ws('_', 'dept', 'city')).show()
+
+# Replace
+df.withColumn('clean', F.regexp_replace('city', ' ', '_')).show()
+
+# Conditional strings
+df.withColumn('band',
+    F.when(col('salary') > 90000, 'High')
+     .when(col('salary') > 70000, 'Medium')
+     .otherwise('Low')
+).show()</code></pre>
+
+        <h2>Window Functions</h2>
+        <pre><code>from pyspark.sql.window import Window
+from pyspark.sql.functions import row_number, rank, dense_rank, lag, lead
+
+# Define window
+w = Window.partitionBy('dept').orderBy(F.desc('salary'))
+
+# Ranking
+df.withColumn('rank', row_number().over(w)).show()
+df.withColumn('rank', rank().over(w)).show()
+df.withColumn('dense_rank', dense_rank().over(w)).show()
+
+# Lag/Lead
+w2 = Window.partitionBy('dept').orderBy('join_year')
+df.withColumn('prev_salary', lag('salary', 1).over(w2)).show()
+df.withColumn('next_salary', lead('salary', 1).over(w2)).show()
+
+# Cumulative sum
+w3 = Window.orderBy('salary').rowsBetween(Window.unboundedPreceding, Window.currentRow)
+df.withColumn('cumsum', F.sum('salary').over(w3)).show()
+
+# NTile (buckets)
+df.withColumn('quartile', F.ntile(4).over(w)).show()</code></pre>
+
+        <h2>Partitioning</h2>
+        <pre><code># Check partitions
+df.rdd.getNumPartitions()
+
+# Repartition (full shuffle, increases or decreases)
+df.repartition(20).show()
+df.repartition(10, 'dept').show()  # hash partition by column
+
+# Coalesce (reduces, NO shuffle - faster!)
+df.coalesce(4).show()
+
+# Repartition by range
+df.repartitionByRange(4, 'salary').show()</code></pre>
+
+        <h2>Array & Map Functions</h2>
+        <pre><code>from pyspark.sql.functions import (
+    array, array_contains, array_distinct,
+    array_max, array_min, array_sort,
+    explode, flatten, size
+)
+
+# Create array
+df.withColumn('arr', F.array('col1', 'col2')).show()
+
+# Array operations
+df.select(
+    size('skills').alias('num_skills'),
+    array_contains('skills', 'Python').alias('has_python'),
+    array_sort('skills').alias('sorted')
+).show()
+
+# Explode (one row per element)
+df.select('name', F.explode('skills').alias('skill')).show()</code></pre>
+
+        <h2>UDFs</h2>
+        <pre><code>from pyspark.sql.functions import udf
+from pyspark.sql.types import StringType
+
+# Regular UDF (slower - Python per row)
+@udf(returnType=StringType())
+def classify_salary(salary):
+    if salary >= 100000: return 'Senior'
+    if salary >= 80000: return 'Mid'
+    return 'Junior'
+
+df.withColumn('level', classify_salary(col('salary'))).show()
+
+# Pandas UDF (faster - vectorized)
+import pandas as pd
+from pyspark.sql.functions import pandas_udf
+
+@pandas_udf(DoubleType())
+def salary_with_tax(salary: pd.Series) -> pd.Series:
+    return salary * 0.7
+
+df.withColumn('net_salary', salary_with_tax(col('salary'))).show()</code></pre>
+    </main>
+</body>
+</html>

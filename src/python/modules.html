@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Modules - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="../../index.html">Data Sheets</a></h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="index.html" class="active">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+        <footer>Python modules</footer>
+    </aside>
+
+    <main class="main-content">
+        <h1>Standard Library</h1>
+        <p>Essential modules for data processing and general programming.</p>
+
+        <section>
+            <h2>collections</h2>
+            <pre><code>from collections import deque, Counter, defaultdict
+
+# deque - fast append/pop from both ends
+dq = deque([1, 2, 3])
+dq.appendleft(0)    # [0, 1, 2, 3]
+dq.popleft()       # [1, 2, 3]
+
+# Counter - frequency counting
+cnt = Counter(['a', 'b', 'a', 'c'])
+cnt.most_common(2)  # [('a', 2), ('b', 1)]
+
+# defaultdict - auto-initialize keys
+dd = defaultdict(list)
+dd['fruits'].append('apple')  # {'fruits': ['apple']}</code></pre>
+        </section>
+
+        <section>
+            <h2>itertools</h2>
+            <pre><code>import itertools
+
+# Infinite iterators
+count(10)     # 10, 11, 12, ...
+cycle([1,2])  # 1, 2, 1, 2, ...
+
+# Combinatorics
+list(itertools.permutations([1,2,3], 2))  # [(1,2), (1,3), ...]
+list(itertools.combinations([1,2,3], 2))  # [(1,2), (1,3), (2,3)]
+
+# Chain and accumulate
+list(itertools.chain([1,2], [3,4]))              # [1,2,3,4]
+list(itertools.accumulate([1,2,3,4]))          # [1, 3, 6, 10]</code></pre>
+        </section>
+
+        <section>
+            <h2>functools</h2>
+            <pre><code>import functools
+
+# lru_cache - memoization
+@functools.lru_cache(maxsize=128)
+def fib(n):
+    return n if n < 2 else fib(n-1) + fib(n-2)
+
+# partial - bind arguments
+from functools import partial
+square = partial(pow, exp=2)
+square(5)  # 25
+
+# reduce - fold
+functools.reduce(lambda a, b: a + b, [1, 2, 3, 4])  # 10</code></pre>
+        </section>
+
+        <section>
+            <h2>os / pathlib</h2>
+            <pre><code>import os
+from pathlib import Path
+
+# pathlib (preferred)
+p = Path("data/processed")
+p.mkdir(parents=True, exist_ok=True)
+list(p.glob("*.csv"))
+
+# os.path
+os.path.join("data", "file.csv")  # Cross-platform path
+os.path.exists("file.txt")
+
+# Walk directory
+for root, dirs, files in os.walk("."):
+    for f in files:
+        print(os.path.join(root, f))</code></pre>
+        </section>
+
+        <section>
+            <h2>json / csv</h2>
+            <pre><code>import json
+import csv
+
+# JSON
+data = {"name": "Alice", "age": 30}
+json_str = json.dumps(data, indent=2)
+parsed = json.loads(json_str)
+
+# CSV
+with open("data.csv") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row)
+
+# Write CSV
+with open("out.csv", "w", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=["name", "age"])
+    writer.writeheader()
+    writer.writerows(data_list)</code></pre>
+        </section>
+
+        <section>
+            <h2>datetime</h2>
+            <pre><code>from datetime import datetime, timedelta
+
+# Current time
+now = datetime.now()
+today = date.today()
+
+# Parse and format
+dt = datetime.strptime("2024-01-15", "%Y-%m-%d")
+dt.strftime("%Y-%m-%d")  # "2024-01-15"
+
+# Arithmetic
+later = now + timedelta(days=7)</code></pre>
+        </section>
+
+        <section>
+            <h2>re (Regular Expressions)</h2>
+            <pre><code>import re
+
+# Search and find
+re.search(r"\d+", "abc123")     # Match object
+re.findall(r"\w+", "hello world")  # ['hello', 'world']
+
+# Replace
+re.sub(r"\d+", "X", "abc123")   # "abcX"
+
+# Compile for reuse
+pattern = re.compile(r"\d+")
+pattern.findall("abc123")</code></pre>
+        </section>
+
+        <div class="section-nav">
+            <a href="concurrency.html">← Concurrency</a>
+            <a href="index.html">Python Index →</a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataFrame - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>DataFrame</h1>
+        <p>Complete reference of all DataFrame methods organized by category.</p>
+
+        <section>
+            <h2>Creation Methods</h2>
+
+            <h3>pd.DataFrame() - Main Constructor</h3>
+<pre><code># From dictionary of lists
+df = pd.DataFrame({
+    'name': ['Alice', 'Bob', 'Carol'],
+    'age': [34, 28, 45],
+    'salary': [95000, 72000, 110000]
+})
+
+# From list of dictionaries
+df = pd.DataFrame([
+    {'name': 'Alice', 'age': 34, 'salary': 95000},
+    {'name': 'Bob', 'age': 28, 'salary': 72000}
+])
+
+# From 2D array
+import numpy as np
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+df = pd.DataFrame(arr, columns=['A', 'B', 'C'])
+
+# With index
+df = pd.DataFrame(data, index=['row1', 'row2', 'row3'])
+
+# With dtypes
+df = pd.DataFrame(data, dtype='float32')</code></pre>
+
+            <h3>Other Creation Methods</h3>
+<pre><code># From dict of arrays
+pd.DataFrame.from_dict({'a': [1, 2], 'b': [3, 4]})
+
+# From records (structured array)
+pd.DataFrame.from_records([('Alice', 34), ('Bob', 28)])
+
+# From other DataFrame
+pd.DataFrame(df2)
+
+# Empty DataFrame
+df = pd.DataFrame()</code></pre>
+        </section>
+
+        <section>
+            <h2>Attributes</h2>
+            <p>Attributes provide information about the DataFrame structure.</p>
+
+<pre><code>df.shape               # (rows, cols) tuple
+df.columns             # Column labels (Index)
+df.index               # Row labels (Index)
+df.dtypes              # Series with dtype per column
+df.ndim                # Number of dimensions (always 2)
+df.size                # Total elements (rows * cols)
+df.empty               # True if DataFrame is empty
+df.axes                # [row_index, column_index]
+df.T                   # Transpose (swap rows and columns)
+df.name                # Name of DataFrame (None by default)
+df.memory_usage(deep=True)  # Memory usage in bytes</code></pre>
+
+            <h3>Accessing Attributes</h3>
+<pre><code># Get column names
+df.columns.tolist()    # List of column names
+
+# Get index as list
+df.index.tolist()      # List of row labels
+
+# Check if column exists
+'column_name' in df.columns
+
+# Get dtypes as dict
+df.dtypes.to_dict()</code></pre>
+        </section>
+
+        <section>
+            <h2>Indexing and Selection Methods</h2>
+
+            <h3>Selection Indexers</h3>
+<pre><code># Label-based selection
+df.loc[row_label, col_label]
+df.loc[row_slice, col_slice]
+df.loc[bool_mask]
+df.loc[condition]
+
+# Position-based selection
+df.iloc[row_pos, col_pos]
+df.iloc[row_slice, col_slice]
+df.iloc[bool_mask]
+
+# Single value (fastest)
+df.at[row_label, col_label]   # Label
+df.iat[row_pos, col_pos]       # Position
+
+# Column selection shorthand
+df['column']                   # Single column (Series)
+df[['col1', 'col2']]           # Multiple columns (DataFrame)
+df.column                      # Attribute-style (if valid identifier)</code></pre>
+
+            <h3>Boolean Selection</h3>
+<pre><code># Filter rows
+df[df['column'] > value]
+df[df['column'].isin(['a', 'b'])]
+df[df['column'].between(lower, upper)]
+
+# Query method
+df.query('column > value')
+df.query('column > @variable')  # Using local variable</code></pre>
+
+            <h3>Filter Methods</h3>
+<pre><code># Filter columns by name pattern
+df.filter(like='salary')       # Columns containing 'salary'
+df.filter(regex='^Q[1-4]_')     # Columns matching regex
+
+# Filter by items
+df.filter(items=['col1', 'col2'])
+
+# Select by dtype
+df.select_dtypes(include=['number'])
+df.select_dtypes(include='object')
+df.select_dtypes(exclude=['datetime'])</code></pre>
+
+            <h3>Head, Tail, Sample</h3>
+<pre><code>df.head()              # First 5 rows
+df.head(10)            # First 10 rows
+df.tail()              # Last 5 rows
+df.tail(3)             # Last 3 rows
+df.sample()            # 1 random row
+df.sample(n=5)         # 5 random rows
+df.sample(frac=0.1)    # 10% of rows
+df.sample(n=5, random_state=42)  # Reproducible</code></pre>
+        </section>
+
+        <section>
+            <h2>Data Manipulation Methods</h2>
+
+            <h3>Add/Modify Columns</h3>
+<pre><code># Add column
+df['new_col'] = values
+df['bonus'] = df['salary'] * 0.1
+
+# Assign (returns new DataFrame)
+df = df.assign(bonus=df['salary'] * 0.1)
+df = df.assign(
+    bonus=lambda x: x['salary'] * 0.1,
+    total=lambda x: x['salary'] + x['bonus']
+)
+
+# Insert at position
+df.insert(loc=2, column='emp_id', value=range(1, len(df)+1))
+
+# Pop (remove and return)
+col = df.pop('column_name')</code></pre>
+
+            <h3>Remove Columns/Rows</h3>
+<pre><code># Drop columns
+df.drop(columns=['col1', 'col2'])
+df.drop('column', axis=1)
+df.drop(['col1', 'col2'], axis=1)
+
+# Drop rows
+df.drop(index=['row1', 'row2'])
+df.drop([0, 1, 2])              # By position
+
+# Drop duplicates
+df.drop_duplicates()                       # Keep first
+df.drop_duplicates(subset=['col'])          # On column(s)
+df.drop_duplicates(keep='last')             # Keep last</code></pre>
+
+            <h3>Rename</h3>
+<pre><code># Rename columns
+df.rename(columns={'old': 'new', 'old2': 'new2'})
+df.rename(columns=str.upper)      # Function
+df.columns = ['a', 'b', 'c']      # Direct assignment
+
+# Rename index
+df.rename(index={'row1': 'new_row1'})
+df.rename(index=str.lower)
+
+# Rename axis
+df.rename_axis('rows').rename_axis('cols', axis=1)</code></pre>
+
+            <h3>Add Prefix/Suffix</h3>
+<pre><code>df.add_prefix('col_')      # Prefix to columns
+df.add_suffix('_data')     # Suffix to columns
+df.add_suffix('_data').add_prefix('row_')  # Both</code></pre>
+        </section>
+
+        <section>
+            <h2>Sorting Methods</h2>
+
+            <h3>Sort by Values</h3>
+<pre><code># Single column ascending
+df.sort_values('salary')
+
+# Single column descending
+df.sort_values('salary', ascending=False)
+
+# Multiple columns
+df.sort_values(['dept', 'salary'], ascending=[True, False])
+
+# With NaN position
+df.sort_values('salary', na_position='last')  # 'first' or 'last'
+
+# With custom key
+df.sort_values('name', key=lambda x: x.str.lower())
+df.sort_values('salary', key=lambda x: abs(x))</code></pre>
+
+            <h3>Sort by Index</h3>
+<pre><code># Sort by row index
+df.sort_index()
+
+# Sort by column index
+df.sort_index(axis=1)
+
+# Descending
+df.sort_index(ascending=False)</code></pre>
+
+            <h3>Rank and Top/Bottom</h3>
+<pre><code># Rank values
+df['rank'] = df['salary'].rank()
+df['rank'] = df['salary'].rank(method='dense')  # No gaps
+df['rank'] = df['salary'].rank(method='first')   # By order
+df['rank'] = df['salary'].rank(ascending=False)  # 1 = highest
+
+# Top/Bottom N
+df.nlargest(5, 'salary')       # Top 5 by salary
+df.nsmallest(3, 'age')         # Bottom 3 by age
+df.nlargest(5, ['salary', 'age'])  # Multi-column</code></pre>
+        </section>
+
+        <section>
+            <h2>Missing Data Methods</h2>
+
+            <h3>Detect Missing Values</h3>
+<pre><code>df.isna()            # Returns True for NaN/None
+df.isnull()          # Alias for isna()
+df.notna()           # Returns True for non-NaN
+df.notnull()         # Alias for notna()
+
+# Count missing per column
+df.isna().sum()
+
+# Count missing per row
+df.isna().sum(axis=1)
+
+# Check if any/all missing
+df.isna().any()       # Per column
+df.isna().all()       # Per column</code></pre>
+
+            <h3>Fill Missing Values</h3>
+<pre><code># Fill with value
+df.fillna(0)
+df.fillna({'col1': 0, 'col2': 'unknown'})
+
+# Forward fill (last valid value)
+df.fillna(method='ffill')
+df['col'].ffill()
+
+# Backward fill (next valid value)
+df.fillna(method='bfill')
+df['col'].bfill()
+
+# Fill with mean/median
+df['col'].fillna(df['col'].mean())
+df['col'].fillna(df['col'].median())
+
+# Fill with interpolation
+df.interpolate()
+df.interpolate(method='linear')
+df.interpolate(method='polynomial', order=2)</code></pre>
+
+            <h3>Drop Missing Values</h3>
+<pre><code># Drop rows with any missing
+df.dropna()
+
+# Drop rows with all missing
+df.dropna(how='all')
+
+# Drop rows missing in specific columns
+df.dropna(subset=['col1', 'col2'])
+
+# Drop columns with missing
+df.dropna(axis=1)
+
+# Keep rows with at least N non-null values
+df.dropna(thresh=5)</code></pre>
+
+            <h3>Replace Values</h3>
+<pre><code># Replace specific values
+df.replace(old_value, new_value)
+df.replace([old1, old2], new_value)
+
+# Replace with dict
+df.replace({'col1': old1, 'col2': old2}, new_value)
+
+# Dict-based replacement
+df.replace({'col': {old1: new1, old2: new2}})
+
+# Regex replacement
+df.replace(r'\s+', '', regex=True)</code></pre>
+
+            <h3>Where and Mask</h3>
+<pre><code># Where (replace where False)
+df.where(df > 0, other=0)
+
+# Mask (replace where True)
+df.mask(df > 100, other=100)</code></pre>
+        </section>
+
+        <section>
+            <h2>Aggregation Methods</h2>
+
+            <h3>Basic Aggregations</h3>
+<pre><code># Per column aggregations
+df.mean()             # Mean of each numeric column
+df.sum()              # Sum of each column
+df.std()              # Standard deviation
+df.var()              # Variance
+df.min()              # Minimum
+df.max()              # Maximum
+df.count()            # Count non-null values
+df.median()           # Median
+df.mode()             # Mode (most frequent)
+df.prod()             # Product of values
+df.abs()              # Absolute values
+
+# Along axis
+df.mean(axis=0)       # Per column (default)
+df.mean(axis=1)       # Per row</code></pre>
+
+            <h3>Describe</h3>
+<pre><code>df.describe()                   # Numeric columns only
+df.describe(include='all')       # All columns
+df.describe(include='object')    # Object columns only
+df.describe(percentiles=[.1, .5, .9])  # Custom percentiles</code></pre>
+
+            <h3>agg() - Multiple Aggregations</h3>
+<pre><code># Apply multiple functions
+df.agg(['mean', 'std', 'min', 'max'])
+
+# Different functions per column
+df.agg({
+    'col1': ['mean', 'sum'],
+    'col2': ['min', 'max']
+})
+
+# Named aggregation (recommended)
+df.agg(
+    mean_col1=('col1', 'mean'),
+    sum_col2=('col2', 'sum')
+)</code></pre>
+
+            <h3>aggregate()</h3>
+<pre><code># Same as agg
+df.aggregate(['mean', 'sum'])</code></pre>
+
+            <h3>apply() - Custom Functions</h3>
+<pre><code># Apply function to each row/column
+df.apply(np.sum)              # Sum per column
+df.apply(np.sum, axis=1)     # Sum per row
+
+# Custom function
+df.apply(lambda x: x.max() - x.min())
+
+# Element-wise (deprecated, use map)
+df.applymap(lambda x: x ** 2)</code></pre>
+
+            <h3>transform()</h3>
+<pre><code># Transform returns same shape
+df.transform(np.abs)                 # Absolute values
+df.transform([np.abs, np.sqrt])       # Multiple functions
+df.transform(lambda x: x / x.sum())   # Custom</code></pre>
+        </section>
+
+        <section>
+            <h2>GroupBy Methods</h2>
+
+            <h3>Creating GroupBy</h3>
+<pre><code># Group by column
+g = df.groupby('dept')
+
+# Group by multiple columns
+g = df.groupby(['dept', 'active'])
+
+# Group by index
+g = df.groupby(level=0)
+g = df.groupby(level=['dept', 'name'])</code></pre>
+
+            <h3>GroupBy Aggregation</h3>
+<pre><code># Aggregate single column
+df.groupby('dept')['salary'].mean()
+df.groupby('dept')['salary'].agg('mean')
+
+# Aggregate entire DataFrame
+df.groupby('dept').mean()
+df.groupby('dept').agg(['mean', 'max'])</code></pre>
+
+            <h3>GroupBy Transform</h3>
+<pre><code># Add group mean to each row
+df['dept_avg'] = df.groupby('dept')['salary'].transform('mean')
+
+# Z-score within group
+df['z_score'] = df.groupby('dept')['salary'].transform(
+    lambda x: (x - x.mean()) / x.std()
+)
+
+# Rank within group
+df['rank'] = df.groupby('dept')['salary'].transform('rank')</code></pre>
+
+            <h3>GroupBy Filter</h3>
+<pre><code># Keep groups with condition
+df.groupby('dept').filter(lambda x: len(x) > 2)
+df.groupby('dept').filter(lambda x: x['salary'].mean() > 80000)</code></pre>
+
+            <h3>GroupBy Apply</h3>
+<pre><code># Apply custom function to each group
+def normalize(group):
+    return (group - group.mean()) / group.std()
+
+df.groupby('dept')['salary'].apply(normalize)</code></pre>
+
+            <h3>Cumulative Methods</h3>
+<pre><code># Cumulative within group
+df.groupby('dept')['salary'].cumsum()
+df.groupby('dept')['salary'].cumprod()
+df.groupby('dept')['salary'].cummax()
+df.groupby('dept')['salary'].cummin()
+df.groupby('dept')['salary'].cumcount()  # 0, 1, 2, ...</code></pre>
+
+            <h3>Rolling/Expanding within Group</h3>
+<pre><code># Rolling within group
+df.groupby('dept')['salary'].rolling(3).mean()
+
+# Expanding within group
+df.groupby('dept')['salary'].expanding().mean()</code></pre>
+        </section>
+
+        <section>
+            <h2>Merge and Join Methods</h2>
+
+            <h3>pd.merge()</h3>
+<pre><code># Basic merge
+pd.merge(df1, df2, on='key')
+
+# Different column names
+pd.merge(df1, df2, left_on='key1', right_on='key2')
+
+# Join types
+pd.merge(df1, df2, on='key', how='inner')    # Only matching
+pd.merge(df1, df2, on='key', how='left')     # All left
+pd.merge(df1, df2, on='key', how='right')    # All right
+pd.merge(df1, df2, on='key', how='outer')    # All
+
+# Cross join
+pd.merge(df1, df2, how='cross')
+
+# With suffixes
+pd.merge(df1, df2, on='key', suffixes=('_df1', '_df2'))
+
+# Validation
+pd.merge(df1, df2, on='key', validate='one_to_one')
+
+# With indicator
+pd.merge(df1, df2, on='key', indicator=True)  # Shows merge source</code></pre>
+
+            <h3>df.join()</h3>
+<pre><code># Join on index
+df1.join(df2)                    # Left join by default
+df1.join(df2, how='inner')       # Inner
+df1.join(df2, how='outer')       # Outer
+df1.join(df2, how='right')      # Right
+
+# With suffixes
+df1.join(df2, lsuffix='_left', rsuffix='_right')
+
+# Join with column as index
+df1.join(df2.set_index('key'))</code></pre>
+
+            <h3>pd.concat()</h3>
+<pre><code># Concatenate rows
+pd.concat([df1, df2])
+
+# With ignore_index
+pd.concat([df1, df2], ignore_index=True)
+
+# With keys
+pd.concat([df1, df2], keys=['2023', '2024'])
+
+# Concatenate columns
+pd.concat([df1, df2], axis=1)
+
+# Inner join on columns
+pd.concat([df1, df2], axis=1, join='inner')</code></pre>
+
+            <h3>Combine Methods</h3>
+<pre><code># Fill from other DataFrame
+df1.combine_first(df2)          # Use df2 where df1 has NaN
+
+# Update in place
+df1.update(df2)                 # Update with non-NaN values from df2
+
+# Element-wise combine
+df1.combine(df2, func=np.maximum)
+
+# Compare
+df1.compare(df2)                # Show differences</code></pre>
+        </section>
+
+        <section>
+            <h2>Reshaping Methods</h2>
+
+            <h3>Pivot</h3>
+<pre><code># Pivot (requires unique index+column)
+df.pivot(index='name', columns='year', values='salary')
+
+# Pivot table with aggregation
+df.pivot_table(
+    values='salary',
+    index='dept',
+    columns='year',
+    aggfunc='mean'
+)
+
+# With fill value
+df.pivot_table(values='salary', index='dept', fill_value=0)
+
+# With margins
+df.pivot_table(values='salary', index='dept', margins=True)</code></pre>
+
+            <h3>Melt (Unpivot)</h3>
+<pre><code># Wide to long
+pd.melt(df, id_vars=['name'], var_name='year', value_name='salary')
+
+# Melt multiple columns
+pd.melt(df, id_vars=['name'], value_vars=['2023', '2024'])</code></pre>
+
+            <h3>Stack and Unstack</h3>
+<pre><code># Stack (columns to rows)
+df.stack()
+
+# Unstack (rows to columns)
+df.unstack()
+
+# Unstack specific level
+df.unstack(level=0)</code></pre>
+
+            <h3>Wide to Long</h3>
+<pre><code># Convert wide format with prefixes
+pd.wide_to_long(df, stubnames='Q', i='name', j='quarter')</code></pre>
+
+            <h3>Crosstab</h3>
+<pre><code># Cross-tabulation
+pd.crosstab(df['dept'], df['active'])
+
+# With normalize
+pd.crosstab(df['dept'], df['active'], normalize='index')  # Row %
+pd.crosstab(df['dept'], df['active'], normalize='columns')  # Col %
+
+# With aggregation
+pd.crosstab(df['dept'], df['active'], values=df['salary'], aggfunc='mean')</code></pre>
+
+            <h3>Explode</h3>
+<pre><code># Explode list into rows
+df.explode('column_with_lists')</code></pre>
+
+            <h3>Squeeze</h3>
+<pre><code># Remove dimensions of size 1
+df.squeeze()                     # If single column, returns Series
+df.squeeze(axis=None)          # Squeeze any dimension of size 1</code></pre>
+        </section>
+
+        <section>
+            <h2>Time Series Methods</h2>
+
+            <h3>Resample</h3>
+<pre><code># Resample by time period
+df.resample('M').mean()         # Monthly
+df.resample('D').sum()          # Daily
+df.resample('Y').max()          # Yearly
+
+# Custom aggregation
+df.resample('M').agg({
+    'col1': 'sum',
+    'col2': 'mean'
+})</code></pre>
+
+            <h3>Shift</h3>
+<pre><code># Shift values
+df.shift(1)                     # Shift forward (lag)
+df.shift(-1)                    # Shift backward (lead)
+
+# Shift within group
+df.groupby('id')['value'].shift(1)</code></pre>
+
+            <h3>Diff and Pct Change</h3>
+<pre><code># Difference
+df.diff()                       # 1-period difference
+df.diff(periods=7)              # 7-period difference
+
+# Percentage change
+df.pct_change()                 # (current - prev) / prev
+df.pct_change(periods=7)         # 7-period percentage change</code></pre>
+
+            <h3>Rolling/Expanding</h3>
+<pre><code># Rolling window
+df.rolling(window=7).mean()
+df.rolling(7, min_periods=3).std()
+
+# Expanding window
+df.expanding().mean()
+
+# EWM
+df.ewm(span=12).mean()</code></pre>
+
+            <h3>Asfreq</h3>
+<pre><code># Change frequency
+df.asfreq('D')                  # Convert to daily
+df.asfreq('B')                  # Convert to business days</code></pre>
+        </section>
+
+        <section>
+            <h2>String Methods (df.str)</h2>
+
+            <h3>Case Operations</h3>
+<pre><code>df['name'].str.upper()
+df['name'].str.lower()
+df['name'].str.title()
+df['name'].str.capitalize()
+df['name'].str.swapcase()</code></pre>
+
+            <h3>Contains and Match</h3>
+<pre><code>df['email'].str.contains('@')
+df['name'].str.startswith('A')
+df['name'].str.endswith('e')
+df['name'].str.match(r'^A.*')   # Regex from start
+df['name'].str.fullmatch('Alice')  # Full regex match</code></pre>
+
+            <h3>Find and Extract</h3>
+<pre><code>df['email'].str.find('@')       # Position or -1
+df['email'].str.count('@')       # Count occurrences
+df['email'].str.extract(r'(\w+)@(\w+)')  # Extract groups
+df['email'].str.findall(r'\w+')  # Find all matches</code></pre>
+
+            <h3>Replace and Split</h3>
+<pre><code>df['name'].str.replace('old', 'new')
+df['name'].str.replace(r'\s+', '_', regex=True)
+df['email'].str.split('@')      # Split to list
+df['email'].str.split('@', expand=True)  # Split to columns</code></pre>
+
+            <h3>Strip and Pad</h3>
+<pre><code>df['name'].str.strip()         # Remove whitespace
+df['code'].str.pad(5, '0', 'left')  # Pad with zeros
+df['name'].str.zfill(5)         # Zero-fill
+df['name'].str.center(10, '-')  # Center</code></pre>
+
+            <h3>Length and Check</h3>
+<pre><code>df['name'].str.len()           # Length
+df['code'].str.isalpha()        # All alphabetic
+df['code'].str.isdigit()        # All digits
+df['name'].str.islower()        # All lowercase</code></pre>
+        </section>
+
+        <section>
+            <h2>DateTime Methods (df.dt)</h2>
+
+            <h3>Component Accessors</h3>
+<pre><code>df['date'].dt.year             # Year
+df['date'].dt.month            # Month (1-12)
+df['date'].dt.day              # Day (1-31)
+df['date'].dt.hour             # Hour (0-23)
+df['date'].dt.minute           # Minute (0-59)
+df['date'].dt.second           # Second (0-59)
+df['date'].dt.microsecond      # Microsecond
+df['date'].dt.nanosecond       # Nanosecond</code></pre>
+
+            <h3>Date Properties</h3>
+<pre><code>df['date'].dt.quarter          # Quarter (1-4)
+df['date'].dt.dayofweek        # Day number (0=Mon, 6=Sun)
+df['date'].dt.day_name()       # Day name
+df['date'].dt.month_name()     # Month name
+df['date'].dt.dayofyear        # Day of year (1-366)
+df['date'].dt.week             # Week number
+df['date'].dt.weekday          # Weekday (0-6)
+df['date'].dt.days_in_month    # Days in month</code></pre>
+
+            <h3>Boolean Properties</h3>
+<pre><code>df['date'].dt.is_month_start   # Is first day of month
+df['date'].dt.is_month_end     # Is last day of month
+df['date'].dt.is_quarter_start # Is first day of quarter
+df['date'].dt.is_quarter_end   # Is last day of quarter
+df['date'].dt.is_year_start    # Is first day of year
+df['date'].dt.is_year_end      # Is last day of year
+df['date'].dt.is_leap_year     # Is leap year</code></pre>
+
+            <h3>Datetime Methods</h3>
+<pre><code>df['date'].dt.to_period('M')  # Convert to period
+df['date'].dt.to_timestamp()  # Convert to timestamp
+df['date'].dt.strftime('%Y-%m-%d')  # Format as string
+df['date'].dt.normalize()      # Normalize to midnight
+df['date'].dt.floor('D')       # Floor to day
+df['date'].dt.ceil('H')        # Ceil to hour</code></pre>
+        </section>
+
+        <section>
+            <h2>Input/Output Methods</h2>
+
+            <h3>Read Methods</h3>
+<pre><code>pd.read_csv('file.csv')
+pd.read_excel('file.xlsx')
+pd.read_json('file.json')
+pd.read_parquet('file.parquet')
+pd.read_sql(query, connection)
+pd.read_sql_table(table_name, connection)
+pd.read_html('url')
+pd.read_clipboard()
+pd.read_pickle('file.pkl')
+pd.read_feather('file.feather')
+pd.read_hdf('file.h5')
+pd.read_stata('file.dta')
+pd.read_sas('file.sas7bdat')
+pd.read_spss('file.sav')
+pd.read_xml('file.xml')</code></pre>
+
+            <h3>Write Methods</h3>
+<pre><code>df.to_csv('file.csv', index=False)
+df.to_excel('file.xlsx')
+df.to_json('file.json')
+df.to_parquet('file.parquet')
+df.to_sql('table', connection)
+df.to_html('file.html')
+df.to_clipboard()
+df.to_pickle('file.pkl')
+df.to_feather('file.feather')
+df.to_hdf('file.h5', key='data')
+df.to_stata('file.dta')
+df.to_latex('file.tex')
+df.to_markdown('file.md')
+df.to_xml('file.xml')</code></pre>
+
+            <h3>Convert Methods</h3>
+<pre><code>df.to_dict()              # Dict of lists
+df.to_dict('records')    # List of dicts
+df.to_dict('index')      # Dict of dicts
+df.to_numpy()            # 2D numpy array
+df.to_excel()
+df.to_string()           # Formatted string
+df.to_latex()
+df.to_markdown()</code></pre>
+        </section>
+
+        <section>
+            <h2>Copy and Memory Methods</h2>
+
+<pre><code>df.copy()                        # Deep copy
+df.copy(deep=False)              # Shallow copy
+df.memory_usage(deep=True)       # Memory per column
+df.memory_usage(deep=True).sum() # Total memory</code></pre>
+        </section>
+
+        <section>
+            <h2>Boolean Methods</h2>
+
+<pre><code>df.all()             # All values are True
+df.any()              # Any value is True
+df.eq(other)         # Equal
+df.ne(other)          # Not equal
+df.gt(other)          # Greater than
+df.lt(other)          # Less than
+df.ge(other)         # Greater or equal
+df.le(other)          # Less or equal
+df.between(left, right)  # Between range
+df.isin(values)      # Is in list</code></pre>
+        </section>
+
+        <section>
+            <h2>Math Methods</h2>
+
+<pre><code>df.round(decimals=2)     # Round values
+df.floor()              # Floor values
+df.ceil()               # Ceiling values
+df.clip(lower, upper)   # Clip values
+df.abs()                # Absolute values
+df.cumsum()             # Cumulative sum
+df.cumprod()            # Cumulative product
+df.cummax()             # Cumulative max
+.df.cummin()            # Cumulative min</code></pre>
+        </section>
+
+        <section>
+            <h2>Statistical Methods</h2>
+
+<pre><code>df.corr()               # Correlation matrix
+df.cov()                # Covariance matrix
+.df.corrwith(other)     # Correlation with another DataFrame
+df.skew()               # Skewness
+df.kurt()               # Kurtosis
+df.kurtosis()           # Kurtosis (alias)</code></pre>
+        </section>
+
+        <section>
+            <h2>Index Methods</h2>
+
+<pre><code>df.set_index(keys)              # Set index from column(s)
+df.reset_index(drop=True)       # Reset index to default
+df.reindex(columns)             # Reindex columns
+df.reindex(index)               # Reindex rows
+df.reindex_like(other)          # Reindex like another DataFrame
+df.rename_axis(mapper, axis)    # Rename axis</code></pre>
+        </section>
+
+        <section>
+            <h2>Pipe Method</h2>
+
+<pre><code># Method chaining with custom function
+(df.pipe(func1)
+     .pipe(func2)
+     .pipe(func3, arg1=value))</code></pre>
+        </section>
+    </main>
+</body>
+</html>

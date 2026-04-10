@@ -1,0 +1,3830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice - Pandas</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html" class="active">Pandas</a></li>
+                <li><a href="../spark/index.html">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Pandas</a>
+        <h1>Practice</h1>
+        <p>20 production-grade advanced ETL examples covering real-world scenarios. Each example is a complete, deployable pattern.</p>
+
+        <section>
+            <h2>Example 1: SCD Type 2 Slowly Changing Dimension</h2>
+            <p>Track historical changes in dimension tables. When customer data changes, the old record is closed with valid_to, and a new record is inserted with the new values.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime
+
+def apply_scd2(source_df: pd.DataFrame, dim_df: pd.DataFrame, 
+                primary_key: str, tracked_columns: list) -> pd.DataFrame:
+    """
+    Apply SCD Type 2 to a dimension table.
+    
+    Args:
+        source_df: New data from source system
+        dim_df: Current dimension table
+        primary_key: Column name of the business key
+        tracked_columns: Columns to track for changes
+    
+    Returns:
+        Updated dimension table with SCD Type 2 history
+    """
+    
+    if dim_df.empty:
+        # Initial load - insert all records with open-ended validity
+        result = source_df.copy()
+        result['valid_from'] = datetime.now()
+        result['valid_to'] = pd.Timestamp.max
+        result['is_current'] = True
+        return result
+    
+    today = datetime.now()
+    far_future = pd.Timestamp.max
+    
+    # Get current records
+    current = dim_df[dim_df['is_current'] == True].copy()
+    
+    # Create hash of tracked columns for change detection
+    def create_hash(row, columns):
+        values = [str(row[col]) for col in columns if col in row.index]
+        return hash(tuple(values))
+    
+    source_df['record_hash'] = source_df.apply(
+        lambda x: create_hash(x, tracked_columns), axis=1
+    )
+    
+    if not current.empty:
+        current['record_hash'] = current.apply(
+            lambda x: create_hash(x, tracked_columns), axis=1
+        )
+    
+    # Identify new records (not in dimension)
+    existing_keys = current[primary_key].unique() if not current.empty else []
+    new_records = source_df[~source_df[primary_key].isin(existing_keys)]
+    
+    # Identify changed records
+    if not current.empty:
+        merged = source_df.merge(
+            current[[primary_key, 'record_hash']], 
+            on=primary_key, 
+            how='left'
+        )
+        changed_records = merged[
+            merged['record_hash_x'] != merged['record_hash_y']
+        ].copy()
+    else:
+        changed_records = pd.DataFrame()
+    
+    result = dim_df.copy()
+    
+    # Expire old versions of changed records
+    for _, row in changed_records.iterrows():
+        mask = (result[primary_key] == row[primary_key]) & (result['is_current'] == True)
+        result.loc[mask, 'valid_to'] = today - pd.Timedelta(days=1)
+        result.loc[mask, 'is_current'] = False
+    
+    # Insert new versions of changed records
+    new_versions = source_df[source_df[primary_key].isin(
+        changed_records[primary_key].unique()
+    )].copy()
+    new_versions['valid_from'] = today
+    new_versions['valid_to'] = far_future
+    new_versions['is_current'] = True
+    new_versions = new_versions.drop(columns=['record_hash'], errors='ignore')
+    
+    # Insert new records
+    new_records = new_records.copy()
+    new_records['valid_from'] = today
+    new_records['valid_to'] = far_future
+    new_records['is_current'] = True
+    new_records = new_records.drop(columns=['record_hash'], errors='ignore')
+    
+    # Combine all
+    result = pd.concat([result, new_versions, new_records], ignore_index=True)
+    
+    return result.sort_values([primary_key, 'valid_from']).reset_index(drop=True)
+
+# Usage
+customers_source = pd.DataFrame({
+    'customer_id': [1, 2, 3],
+    'name': ['Alice Smith', 'Bob Jones', 'Carol White'],
+    'email': ['alice@email.com', 'bob@email.com', 'carol@email.com'],
+    'tier': ['Gold', 'Silver', 'Bronze']
+})
+
+customers_dimension = pd.DataFrame({
+    'customer_id': [1, 2],
+    'name': ['Alice Smith', 'Bob Jones'],
+    'email': ['alice@email.com', 'bob@email.com'],
+    'tier': ['Gold', 'Silver'],
+    'valid_from': [pd.Timestamp('2024-01-01'), pd.Timestamp('2024-01-01')],
+    'valid_to': [pd.Timestamp.max, pd.Timestamp.max],
+    'is_current': [True, True]
+})
+
+result = apply_scd2(
+    customers_source, 
+    customers_dimension,
+    primary_key='customer_id',
+    tracked_columns=['name', 'email', 'tier']
+)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 2: Change Data Capture (CDC) Processing</h2>
+            <p>Process change records from database CDC streams to apply incremental changes to target tables.</p>
+<pre><code>import pandas as pd
+from datetime import datetime
+
+def process_cdc_records(audit_df: pd.DataFrame, target_df: pd.DataFrame,
+                       primary_key: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Process CDC records and apply changes to target table.
+    
+    Args:
+        audit_df: CDC audit table with operation types
+        target_df: Current target table
+        primary_key: Primary key column
+    
+    Returns:
+        Tuple of (updated target, audit records not applied)
+    """
+    
+    # Operation type mapping
+    # I = Insert, U = Update, D = Delete
+    
+    inserts = audit_df[audit_df['__operation'] == 'I'].copy()
+    updates = audit_df[audit_df['__operation'] == 'U'].copy()
+    deletes = audit_df[audit_df['__operation'] == 'D'].copy()
+    
+    applied_audit = audit_df.copy()
+    result = target_df.copy()
+    
+    # Apply inserts
+    if not inserts.empty:
+        inserts_clean = inserts.drop(columns=['__operation', '__seq'], errors='ignore')
+        
+        # Check for existing records (skip duplicates)
+        existing_keys = result[primary_key].unique()
+        new_inserts = inserts_clean[~inserts_clean[primary_key].isin(existing_keys)]
+        
+        result = pd.concat([result, new_inserts], ignore_index=True)
+        applied_audit = applied_audit[applied_audit['__operation'] != 'I']
+    
+    # Apply updates
+    if not updates.empty:
+        updates_clean = updates.drop(columns=['__operation', '__seq'], errors='ignore')
+        
+        for _, update_row in updates_clean.iterrows():
+            key_val = update_row[primary_key]
+            mask = result[primary_key] == key_val
+            if mask.any():
+                for col in update_row.index:
+                    if col != primary_key:
+                        result.loc[mask, col] = update_row[col]
+        
+        applied_audit = applied_audit[applied_audit['__operation'] != 'U']
+    
+    # Apply deletes
+    if not deletes.empty:
+        delete_keys = deletes[primary_key].values
+        result = result[~result[primary_key].isin(delete_keys)]
+        applied_audit = applied_audit[applied_audit['__operation'] != 'D']
+    
+    return result, applied_audit
+
+def merge_cdc_incremental(source_df: pd.DataFrame, target_df: pd.DataFrame,
+                          primary_key: str, operation_col: str = '__operation') -> pd.DataFrame:
+    """
+    Merge CDC records using operation column for targeted updates.
+    """
+    
+    result = target_df.copy()
+    
+    # Separate by operation
+    inserts_mask = source_df[operation_col] == 'I'
+    updates_mask = source_df[operation_col] == 'U'
+    deletes_mask = source_df[operation_col] == 'D'
+    
+    # Handle inserts - add new records
+    new_records = source_df[inserts_mask].drop(columns=[operation_col])
+    existing_keys = set(result[primary_key])
+    truly_new = new_records[~new_records[primary_key].isin(existing_keys)]
+    result = pd.concat([result, truly_new], ignore_index=True)
+    
+    # Handle updates - merge using primary key
+    update_records = source_df[updates_mask].drop(columns=[operation_col])
+    if not update_records.empty:
+        result = result.merge(
+            update_records,
+            on=primary_key,
+            how='left',
+            suffixes=('', '_update')
+        )
+        # Update non-key columns
+        for col in update_records.columns:
+            if col != primary_key and f'{col}_update' in result.columns:
+                result[col] = result[f'{col}_update']
+                result = result.drop(columns=[f'{col}_update'])
+    
+    # Handle deletes - remove records
+    delete_keys = source_df[deletes_mask][primary_key]
+    result = result[~result[primary_key].isin(delete_keys)]
+    
+    return result</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 3: Complex Multi-Source Join with Data Quality</h2>
+            <p>Join data from multiple sources with comprehensive data quality checks and surrogate key generation.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime
+
+def generate_surrogate_key(df: pd.DataFrame, key_column: str, 
+                           start_value: int = 1) -> pd.DataFrame:
+    """Generate sequential surrogate keys for a DataFrame."""
+    df = df.copy()
+    df['_surrogate_key'] = range(start_value, start_value + len(df))
+    return df
+
+def multi_source_enrichment(orders_df: pd.DataFrame, 
+                            customers_df: pd.DataFrame,
+                            products_df: pd.DataFrame,
+                            pricing_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Enrich orders with data from multiple sources.
+    Performs quality checks and handles missing data gracefully.
+    """
+    
+    # Step 1: Clean and standardize keys
+    orders_df = orders_df.copy()
+    orders_df['customer_id'] = orders_df['customer_id'].astype(str).str.strip()
+    orders_df['product_id'] = orders_df['product_id'].astype(str).str.strip()
+    
+    customers_df = customers_df.copy()
+    customers_df['customer_id'] = customers_df['customer_id'].astype(str).str.strip()
+    
+    products_df = products_df.copy()
+    products_df['product_id'] = products_df['product_id'].astype(str).str.strip()
+    
+    pricing_df = pricing_df.copy()
+    pricing_df['product_id'] = pricing_df['product_id'].astype(str).str.strip()
+    pricing_df['effective_date'] = pd.to_datetime(pricing_df['effective_date'])
+    
+    # Step 2: Quality checks - identify orphan records
+    order_customers = set(orders_df['customer_id'].unique())
+    known_customers = set(customers_df['customer_id'].unique())
+    orphan_customers = order_customers - known_customers
+    
+    if orphan_customers:
+        print(f"Warning: {len(orphan_customers)} orphan customer IDs found")
+        # Create unknown customer record
+        unknown_customer = pd.DataFrame({
+            'customer_id': list(orphan_customers),
+            'customer_name': ['Unknown'] * len(orphan_customers),
+            'customer_segment': ['Unknown'] * len(orphan_customers),
+            'country': ['Unknown'] * len(orphan_customers)
+        })
+        customers_df = pd.concat([customers_df, unknown_customer], ignore_index=True)
+    
+    # Step 3: Join customers (left join - keep all orders)
+    result = orders_df.merge(
+        customers_df[['customer_id', 'customer_name', 'customer_segment', 'country']],
+        on='customer_id',
+        how='left'
+    )
+    
+    # Step 4: Join products (left join)
+    result = result.merge(
+        products_df[['product_id', 'product_name', 'category', 'base_cost']],
+        on='product_id',
+        how='left'
+    )
+    
+    # Step 5: Temporal pricing join - get applicable price for order date
+    orders_df['order_date'] = pd.to_datetime(orders_df['order_date'])
+    result = result.merge(
+        pricing_df.sort_values('effective_date'),
+        on='product_id',
+        how='left'
+    )
+    
+    # Filter to most recent applicable price
+    result = result[result['effective_date'] <= result['order_date']]
+    result = result.sort_values('effective_date').groupby(
+        result.columns.get_indexer(['order_id', 'product_id'])[0]
+    ).last().reset_index(drop=True)
+    
+    # Step 6: Calculate derived fields
+    result['line_revenue'] = result['quantity'] * result['unit_price']
+    result['line_cost'] = result['quantity'] * result['base_cost']
+    result['line_profit'] = result['line_revenue'] - result['line_cost']
+    result['profit_margin_pct'] = (result['line_profit'] / result['line_revenue'] * 100).round(2)
+    
+    # Step 7: Add metadata
+    result['etl_timestamp'] = datetime.now()
+    result['etl_version'] = '1.0'
+    
+    return result
+
+# Usage
+orders = pd.DataFrame({
+    'order_id': [1, 2, 3, 4],
+    'customer_id': ['C001', 'C002', 'C003', 'C004'],
+    'product_id': ['P001', 'P002', 'P003', 'P001'],
+    'quantity': [10, 5, 8, 12],
+    'order_date': ['2024-01-15', '2024-01-16', '2024-01-17', '2024-01-18'],
+    'unit_price': [100, 200, 150, 100]
+})
+
+customers = pd.DataFrame({
+    'customer_id': ['C001', 'C002'],
+    'customer_name': ['Alice', 'Bob'],
+    'customer_segment': ['Enterprise', 'SMB'],
+    'country': ['USA', 'UK']
+})
+
+products = pd.DataFrame({
+    'product_id': ['P001', 'P002', 'P003'],
+    'product_name': ['Widget A', 'Widget B', 'Gadget C'],
+    'category': ['Electronics', 'Electronics', 'Accessories'],
+    'base_cost': [50, 120, 80]
+})
+
+pricing = pd.DataFrame({
+    'product_id': ['P001', 'P001', 'P002'],
+    'effective_date': ['2024-01-01', '2024-01-15', '2024-01-01'],
+    'unit_price': [95, 100, 195]
+})
+
+result = multi_source_enrichment(orders, customers, products, pricing)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 4: Fuzzy Matching and Record Linkage</h2>
+            <p>Match records across datasets when exact keys are not available using string similarity.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from difflib import SequenceMatcher
+
+def similarity_ratio(s1: str, s2: str) -> float:
+    """Calculate similarity ratio between two strings."""
+    if pd.isna(s1) or pd.isna(s2):
+        return 0.0
+    return SequenceMatcher(None, str(s1).lower(), str(s2).lower()).ratio()
+
+def fuzzy_match_records(df1: pd.DataFrame, df2: pd.DataFrame,
+                       left_on: str, right_on: str,
+                       threshold: float = 0.8) -> pd.DataFrame:
+    """
+    Match records using fuzzy string matching.
+    
+    Args:
+        df1: Left DataFrame
+        df2: Right DataFrame
+        left_on: Column name in df1
+        right_on: Column name in df2
+        threshold: Minimum similarity score (0-1)
+    
+    Returns:
+        DataFrame with matched pairs and similarity scores
+    """
+    
+    matches = []
+    
+    for idx1, row1 in df1.iterrows():
+        best_match = None
+        best_score = 0
+        
+        for idx2, row2 in df2.iterrows():
+            score = similarity_ratio(row1[left_on], row2[right_on])
+            
+            if score > best_score:
+                best_score = score
+                best_match = idx2
+        
+        if best_score >= threshold:
+            matches.append({
+                'df1_index': idx1,
+                'df2_index': best_match,
+                'df1_value': row1[left_on],
+                'df2_value': df2.loc[best_match, right_on],
+                'similarity': best_score
+            })
+    
+    return pd.DataFrame(matches)
+
+def standardize_for_matching(df: pd.DataFrame, columns: list) -> pd.DataFrame:
+    """Standardize text columns for better matching."""
+    df = df.copy()
+    
+    for col in columns:
+        if col in df.columns:
+            # Lowercase
+            df[f'{col}_clean'] = df[col].astype(str).str.lower()
+            # Remove special characters
+            df[f'{col}_clean'] = df[f'{col}_clean'].str.replace(r'[^\w\s]', '', regex=True)
+            # Remove extra whitespace
+            df[f'{col}_clean'] = df[f'{col}_clean'].str.replace(r'\s+', ' ', regex=True)
+            df[f'{col}_clean'] = df[f'{col}_clean'].str.strip()
+    
+    return df
+
+def block_and_match(df1: pd.DataFrame, df2: pd.DataFrame,
+                    block_col: str, match_col: str,
+                    threshold: float = 0.8) -> pd.DataFrame:
+    """
+    Block-based fuzzy matching for large datasets.
+    Only compares records within the same block.
+    """
+    
+    # Standardize blocking column
+    df1 = standardize_for_matching(df1, [block_col])
+    df2 = standardize_for_matching(df2, [block_col])
+    
+    matches = []
+    block_col_clean = f'{block_col}_clean'
+    
+    # Group by block
+    for block_value in df1[block_col_clean].unique():
+        df1_block = df1[df1[block_col_clean] == block_value]
+        
+        # Get potential matches (same block)
+        df2_block = df2[df2[block_col_clean] == block_value]
+        
+        if df2_block.empty:
+            continue
+        
+        # Match within block
+        for idx1, row1 in df1_block.iterrows():
+            for idx2, row2 in df2_block.iterrows():
+                score = similarity_ratio(row1[f'{match_col}_clean'], 
+                                         row2[f'{match_col}_clean'])
+                
+                if score >= threshold:
+                    matches.append({
+                        'df1_index': idx1,
+                        'df2_index': idx2,
+                        'df1_value': row1[match_col],
+                        'df2_value': row2[match_col],
+                        'similarity': score
+                    })
+    
+    return pd.DataFrame(matches)
+
+# Usage
+customers_old = pd.DataFrame({
+    'name': ['John Smith', 'Jane Doe', 'Robert Johnson', 'Mary Williams'],
+    'address': ['123 Main St', '456 Oak Ave', '789 Pine Rd', '321 Elm St']
+})
+
+customers_new = pd.DataFrame({
+    'full_name': ['Johnny Smith', 'Jane M. Doe', 'Bob Johnson', 'Mary Ann Williams'],
+    'street_address': ['123 Main Street', '456 Oak Avenue', '789 Pine Road', '321 Elm']
+})
+
+matches = fuzzy_match_records(customers_old, customers_new, 'name', 'full_name', threshold=0.7)
+print(matches)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 5: Time Series Window Functions and Analytics</h2>
+            <p>Advanced time series calculations including running totals, moving averages, and cohort analysis.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+
+def calculate_time_series_features(df: pd.DataFrame, 
+                                   date_col: str,
+                                   value_col: str,
+                                   customer_col: str = None) -> pd.DataFrame:
+    """
+    Calculate comprehensive time series features.
+    """
+    
+    df = df.copy()
+    df[date_col] = pd.to_datetime(df[date_col])
+    df = df.sort_values([customer_col, date_col] if customer_col else date_col)
+    
+    # Basic time features
+    df['year'] = df[date_col].dt.year
+    df['month'] = df[date_col].dt.month
+    df['quarter'] = df[date_col].dt.quarter
+    df['day_of_week'] = df[date_col].dt.dayofweek
+    df['is_weekend'] = df[date_col].dt.dayofweek.isin([5, 6])
+    df['is_month_start'] = df[date_col].dt.is_month_start
+    df['is_month_end'] = df[date_col].dt.is_month_end
+    
+    # Lag features (previous values)
+    if customer_col:
+        grouped = df.groupby(customer_col)
+    else:
+        grouped = [df]
+    
+    for col in [value_col] if isinstance(value_col, str) else value_col:
+        for lag in [1, 7, 30]:
+            df[f'{col}_lag_{lag}'] = grouped[col].shift(lag) if customer_col else df[col].shift(lag)
+        
+        # Lead features (future values)
+        for lead in [1, 7]:
+            df[f'{col}_lead_{lead}'] = grouped[col].shift(-lead) if customer_col else df[col].shift(-lead)
+        
+        # Difference from previous
+        df[f'{col}_diff_1'] = grouped[col].diff(1) if customer_col else df[col].diff(1)
+        df[f'{col}_pct_change'] = grouped[col].pct_change() if customer_col else df[col].pct_change()
+        
+        # Rolling windows
+        for window in [7, 14, 30]:
+            df[f'{col}_rolling_mean_{window}'] = grouped[col].transform(
+                lambda x: x.rolling(window, min_periods=1).mean()
+            ) if customer_col else df[col].rolling(window, min_periods=1).mean()
+            
+            df[f'{col}_rolling_sum_{window}'] = grouped[col].transform(
+                lambda x: x.rolling(window, min_periods=1).sum()
+            ) if customer_col else df[col].rolling(window, min_periods=1).sum()
+            
+            df[f'{col}_rolling_std_{window}'] = grouped[col].transform(
+                lambda x: x.rolling(window, min_periods=1).std()
+            ) if customer_col else df[col].rolling(window, min_periods=1).std()
+        
+        # Expanding statistics
+        df[f'{col}_expanding_mean'] = grouped[col].transform(
+            lambda x: x.expanding().mean()
+        ) if customer_col else df[col].expanding().mean()
+        
+        # Cumulative max/min
+        df[f'{col}_cummax'] = grouped[col].cummax() if customer_col else df[col].cummax()
+        df[f'{col}_cummin'] = grouped[col].cummin() if customer_col else df[col].cummin()
+    
+    return df
+
+def cohort_analysis(df: pd.DataFrame, 
+                    customer_col: str,
+                    date_col: str,
+                    value_col: str) -> pd.DataFrame:
+    """
+    Perform cohort analysis to track customer behavior over time.
+    """
+    
+    df = df.copy()
+    df[date_col] = pd.to_datetime(df[date_col])
+    
+    # Determine cohort (first purchase month)
+    first_purchase = df.groupby(customer_col)[date_col].min().reset_index()
+    first_purchase.columns = [customer_col, 'cohort_date']
+    first_purchase['cohort'] = first_purchase['cohort_date'].dt.to_period('M')
+    
+    # Merge cohort info
+    df = df.merge(first_purchase[[customer_col, 'cohort']], on=customer_col)
+    
+    # Calculate cohort period (months since first purchase)
+    df['cohort_period'] = (
+        (df[date_col].dt.to_period('M').astype(int) - 
+         df['cohort'].astype(int))
+    )
+    
+    # Create cohort retention table
+    cohort_data = df.groupby(['cohort', 'cohort_period']).agg(
+        {customer_col: 'nunique', value_col: 'sum'}
+    ).reset_index()
+    
+    cohort_data.columns = ['cohort', 'period', 'unique_customers', 'total_value']
+    
+    # Pivot for retention matrix
+    retention = cohort_data.pivot_table(
+        index='cohort',
+        columns='period',
+        values='unique_customers'
+    )
+    
+    # Calculate retention rates
+    cohort_sizes = retention.iloc[:, 0]
+    retention_rate = retention.div(cohort_sizes, axis=0) * 100
+    
+    return {
+        'cohort_data': cohort_data,
+        'retention_table': retention,
+        'retention_rate': retention_rate.round(2)
+    }
+
+# Usage
+transactions = pd.DataFrame({
+    'customer_id': [1, 1, 1, 2, 2, 3, 3, 3, 3],
+    'date': pd.date_range('2024-01-01', periods=9),
+    'amount': [100, 150, 200, 80, 120, 50, 75, 100, 125]
+})
+
+result = calculate_time_series_features(
+    transactions, 
+    date_col='date', 
+    value_col='amount',
+    customer_col='customer_id'
+)
+
+cohort_result = cohort_analysis(transactions, 'customer_id', 'date', 'amount')
+print(cohort_result['retention_rate'])</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 6: Data Quality Framework with Great Expectations Style</h2>
+            <p>Implement comprehensive data quality checks and generate quality reports.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from dataclasses import dataclass, field
+from typing import Callable, Any
+from datetime import datetime
+
+@dataclass
+class ValidationResult:
+    """Result of a validation check."""
+    column: str
+    check_name: str
+    passed: bool
+    failed_count: int
+    total_count: int
+    sample_failures: list = field(default_factory=list)
+    error_message: str = ""
+
+class DataQualityValidator:
+    """Data quality validation framework."""
+    
+    def __init__(self, df: pd.DataFrame):
+        self.df = df
+        self.results: list[ValidationResult] = []
+    
+    def validate_not_null(self, column: str) -> 'DataQualityValidator':
+        """Check that column has no null values."""
+        null_count = self.df[column].isna().sum()
+        passed = null_count == 0
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='not_null',
+            passed=passed,
+            failed_count=null_count,
+            total_count=len(self.df),
+            sample_failures=self.df[self.df[column].isna()].head(5).index.tolist(),
+            error_message=f"Found {null_count} null values" if not passed else ""
+        ))
+        return self
+    
+    def validate_unique(self, column: str) -> 'DataQualityValidator':
+        """Check that column has only unique values."""
+        duplicate_count = self.df[column].duplicated().sum()
+        passed = duplicate_count == 0
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='unique',
+            passed=passed,
+            failed_count=duplicate_count,
+            total_count=len(self.df),
+            sample_failures=self.df[self.df[column].duplicated(keep=False)].head(5).index.tolist(),
+            error_message=f"Found {duplicate_count} duplicate values" if not passed else ""
+        ))
+        return self
+    
+    def validate_values_in_set(self, column: str, 
+                               valid_values: set) -> 'DataQualityValidator':
+        """Check that all values are in a valid set."""
+        invalid_mask = ~self.df[column].isin(valid_values)
+        invalid_count = invalid_mask.sum()
+        passed = invalid_count == 0
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='values_in_set',
+            passed=passed,
+            failed_count=invalid_count,
+            total_count=len(self.df),
+            sample_failures=self.df[invalid_mask].head(5)[column].tolist(),
+            error_message=f"Found {invalid_count} invalid values" if not passed else ""
+        ))
+        return self
+    
+    def validate_range(self, column: str, 
+                       min_val: float = None,
+                       max_val: float = None) -> 'DataQualityValidator':
+        """Check that numeric values are within range."""
+        mask = pd.Series([True] * len(self.df))
+        
+        if min_val is not None:
+            mask = mask & (self.df[column] >= min_val)
+        if max_val is not None:
+            mask = mask & (self.df[column] <= max_val)
+        
+        invalid_count = (~mask).sum()
+        passed = invalid_count == 0
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='range',
+            passed=passed,
+            failed_count=invalid_count,
+            total_count=len(self.df),
+            sample_failures=self.df[~mask].head(5)[column].tolist(),
+            error_message=f"Found {invalid_count} values outside range" if not passed else ""
+        ))
+        return self
+    
+    def validate_regex(self, column: str, 
+                       pattern: str) -> 'DataQualityValidator':
+        """Check that string values match a regex pattern."""
+        matches = self.df[column].astype(str).str.match(pattern)
+        invalid_count = (~matches).sum()
+        passed = invalid_count == 0
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='regex',
+            passed=passed,
+            failed_count=invalid_count,
+            total_count=len(self.df),
+            sample_failures=self.df[~matches].head(5)[column].tolist(),
+            error_message=f"Found {invalid_count} values not matching pattern" if not passed else ""
+        ))
+        return self
+    
+    def validate_completeness(self, column: str,
+                               threshold: float = 1.0) -> 'DataQualityValidator':
+        """Check that column meets completeness threshold."""
+        non_null_count = self.df[column].notna().sum()
+        completeness = non_null_count / len(self.df)
+        passed = completeness >= threshold
+        
+        self.results.append(ValidationResult(
+            column=column,
+            check_name='completeness',
+            passed=passed,
+            failed_count=len(self.df) - non_null_count,
+            total_count=len(self.df),
+            error_message=f"Completeness {completeness:.2%} below threshold {threshold:.2%}" if not passed else ""
+        ))
+        return self
+    
+    def validate_relationships(self, left_df: pd.DataFrame,
+                               right_df: pd.DataFrame,
+                               left_key: str,
+                               right_key: str) -> 'DataQualityValidator':
+        """Check referential integrity between tables."""
+        left_keys = set(left_df[left_key].unique())
+        right_keys = set(right_df[right_key].unique())
+        orphan_keys = left_keys - right_keys
+        
+        orphan_count = left_df[left_df[left_key].isin(orphan_keys)].shape[0]
+        passed = len(orphan_keys) == 0
+        
+        self.results.append(ValidationResult(
+            column=f"{left_key} -> {right_key}",
+            check_name='referential_integrity',
+            passed=passed,
+            failed_count=orphan_count,
+            total_count=len(left_df),
+            error_message=f"Found {len(orphan_keys)} orphan keys" if not passed else ""
+        ))
+        return self
+    
+    def get_report(self) -> dict:
+        """Generate a quality report."""
+        total_checks = len(self.results)
+        passed_checks = sum(1 for r in self.results if r.passed)
+        
+        return {
+            'timestamp': datetime.now().isoformat(),
+            'total_rows': len(self.df),
+            'total_columns': len(self.df.columns),
+            'total_checks': total_checks,
+            'passed_checks': passed_checks,
+            'failed_checks': total_checks - passed_checks,
+            'pass_rate': passed_checks / total_checks if total_checks > 0 else 0,
+            'results': [
+                {
+                    'column': r.column,
+                    'check': r.check_name,
+                    'passed': r.passed,
+                    'failed_count': r.failed_count,
+                    'total_count': r.total_count,
+                    'error_message': r.error_message
+                }
+                for r in self.results
+            ]
+        }
+    
+    def raise_if_failed(self):
+        """Raise exception if any validation failed."""
+        failed = [r for r in self.results if not r.passed]
+        if failed:
+            messages = [f"{r.column}.{r.check_name}: {r.error_message}" for r in failed]
+            raise ValueError(f"Data quality checks failed:\n" + "\n".join(messages))
+
+# Usage
+df = pd.DataFrame({
+    'order_id': [1, 2, 3, 4, 5],
+    'customer_id': [101, 102, 103, 102, 104],
+    'amount': [100, 200, -50, 150, 300],  # Negative is invalid
+    'status': ['pending', 'completed', 'complete', 'pending', 'shipped'],
+    'email': ['a@b.com', 'b@c.com', None, 'd@e.com', 'e@f.com']
+})
+
+validator = DataQualityValidator(df)
+validator.validate_not_null('order_id')
+validator.validate_unique('order_id')
+validator.validate_values_in_set('status', {'pending', 'completed', 'shipped'})
+validator.validate_range('amount', min_val=0)
+validator.validate_regex('email', r'^[\w\.-]+@[\w\.-]+\.\w+$')
+validator.validate_completeness('email', threshold=0.9)
+
+report = validator.get_report()
+print(f"Pass rate: {report['pass_rate']:.0%}")
+validator.raise_if_failed()</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 7: Handling Semi-Structured Data (JSON/Nested)</h2>
+            <p>Process nested JSON data and flatten it for relational storage.</p>
+<pre><code>import pandas as pd
+import numpy as np
+import json
+from typing import Any
+
+def flatten_json_column(df: pd.DataFrame, 
+                        json_column: str,
+                        separator: str = '_',
+                        prefix: str = None) -> pd.DataFrame:
+    """
+    Flatten a column containing JSON objects into multiple columns.
+    
+    Args:
+        df: Source DataFrame
+        json_column: Column containing JSON strings or dicts
+        separator: Separator for nested keys
+        prefix: Optional prefix for new columns
+    
+    Returns:
+        DataFrame with flattened columns added
+    """
+    
+    df = df.copy()
+    
+    def parse_json(val):
+        if isinstance(val, str):
+            try:
+                return json.loads(val)
+            except json.JSONDecodeError:
+                return {}
+        return val if isinstance(val, dict) else {}
+    
+    def flatten_dict(d: dict, parent_key: str = '', sep: str = separator) -> dict:
+        items = []
+        for k, v in d.items():
+            new_key = f"{parent_key}{sep}{k}" if parent_key else k
+            if isinstance(v, dict):
+                items.extend(flatten_dict(v, new_key, sep).items())
+            elif isinstance(v, list):
+                for i, item in enumerate(v):
+                    if isinstance(item, dict):
+                        items.extend(flatten_dict(item, f"{new_key}_{i}", sep).items())
+                    else:
+                        items.append((f"{new_key}_{i}", item))
+            else:
+                items.append((new_key, v))
+        return dict(items)
+    
+    # Parse and flatten each row
+    flattened_data = []
+    for idx, row in df.iterrows():
+        json_data = parse_json(row[json_column])
+        if json_data:
+            flat = flatten_dict(json_data)
+            flat['_original_index'] = idx
+            flattened_data.append(flat)
+        else:
+            flattened_data.append({'_original_index': idx})
+    
+    flat_df = pd.DataFrame(flattened_data)
+    flat_df = flat_df.drop(columns=['_original_index'], errors='ignore')
+    
+    # Add prefix if specified
+    if prefix:
+        flat_df = flat_df.add_prefix(f"{prefix}{separator}")
+    
+    # Reconstruct with original index
+    flat_df.index = df.index
+    
+    # Combine with original DataFrame
+    result = pd.concat([df, flat_df], axis=1)
+    
+    return result
+
+def extract_json_array(df: pd.DataFrame,
+                        json_column: str,
+                        array_key: str,
+                        index_cols: list) -> pd.DataFrame:
+    """
+    Extract an array from JSON and create one row per array element.
+    
+    Args:
+        df: Source DataFrame
+        json_column: Column containing JSON
+        array_key: Key of the array to extract
+        index_cols: Columns to keep from source
+    
+    Returns:
+        DataFrame with one row per array element
+    """
+    
+    def extract_array(json_str: str, key: str) -> list:
+        try:
+            data = json.loads(json_str) if isinstance(json_str, str) else json_str
+            return data.get(key, [])
+        except:
+            return []
+    
+    rows = []
+    for idx, row in df.iterrows():
+        items = extract_array(row[json_column], array_key)
+        for item in items:
+            new_row = {col: row[col] for col in index_cols}
+            if isinstance(item, dict):
+                new_row.update({f"{array_key}_{k}": v for k, v in item.items()})
+            else:
+                new_row[array_key] = item
+            rows.append(new_row)
+    
+    return pd.DataFrame(rows)
+
+def pivot_json_events(df: pd.DataFrame,
+                       event_column: str,
+                       timestamp_col: str,
+                       customer_id_col: str) -> pd.DataFrame:
+    """
+    Pivot JSON event data to create customer journey timeline.
+    
+    Each event type becomes a column with its latest timestamp.
+    """
+    
+    def extract_event_type(event: dict) -> str:
+        if isinstance(event, dict):
+            return event.get('type', event.get('event_type', 'unknown'))
+        return 'unknown'
+    
+    def extract_event_time(event: dict) -> Any:
+        if isinstance(event, dict):
+            return event.get('timestamp', event.get('time'))
+        return None
+    
+    # Extract events into rows
+    event_rows = []
+    for idx, row in df.iterrows():
+        customer_id = row[customer_id_col]
+        events = row[event_column]
+        
+        if isinstance(events, str):
+            try:
+                events = json.loads(events)
+            except:
+                events = []
+        
+        if isinstance(events, list):
+            for event in events:
+                event_rows.append({
+                    customer_id_col: customer_id,
+                    'event_type': extract_event_type(event),
+                    'event_time': extract_event_time(event),
+                    'event_data': event
+                })
+    
+    events_df = pd.DataFrame(event_rows)
+    
+    if events_df.empty:
+        return pd.DataFrame()
+    
+    # Pivot to get latest event time per type per customer
+    events_df['event_time'] = pd.to_datetime(events_df['event_time'], errors='coerce')
+    
+    pivot = events_df.pivot_table(
+        index=customer_id_col,
+        columns='event_type',
+        values='event_time',
+        aggfunc='max'
+    ).reset_index()
+    
+    return pivot
+
+# Usage
+data = pd.DataFrame({
+    'order_id': [1, 2],
+    'customer': ['Alice', 'Bob'],
+    'metadata': [
+        '{"product": {"name": "Widget", "sku": "W123"}, "tags": ["sale", "featured"]}',
+        '{"product": {"name": "Gadget", "sku": "G456"}, "tags": ["new"]}'
+    ],
+    'events': [
+        '[{"type": "view", "time": "2024-01-01"}, {"type": "purchase", "time": "2024-01-02"}]',
+        '[{"type": "view", "time": "2024-01-03"}]'
+    ]
+})
+
+flat_df = flatten_json_column(data, 'metadata', prefix='meta')
+print(flat_df.columns.tolist())
+
+extracted = extract_json_array(data, 'events', 'events', ['order_id', 'customer'])
+print(extracted)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 8: Incremental Load with Watermarking</h2>
+            <p>Implement incremental data processing using watermark tables to track processed data.</p>
+<pre><code>import pandas as pd
+from datetime import datetime, timedelta
+from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
+
+class WatermarkManager:
+    """Manages watermark state for incremental loads."""
+    
+    def __init__(self, watermark_file: str = 'watermarks.json'):
+        self.watermark_file = watermark_file
+        self.watermarks = self._load_watermarks()
+    
+    def _load_watermarks(self) -> dict:
+        """Load watermarks from file."""
+        try:
+            import json
+            with open(self.watermark_file, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {}
+    
+    def _save_watermarks(self):
+        """Save watermarks to file."""
+        import json
+        with open(self.watermark_file, 'w') as f:
+            json.dump(self.watermarks, f, indent=2, default=str)
+    
+    def get_watermark(self, pipeline_name: str) -> Optional[datetime]:
+        """Get last processed timestamp for a pipeline."""
+        if pipeline_name in self.watermarks:
+            ts = self.watermarks[pipeline_name]['last_run']
+            return pd.to_datetime(ts)
+        return None
+    
+    def update_watermark(self, pipeline_name: str, 
+                         watermark_value: datetime,
+                         additional_info: dict = None):
+        """Update watermark for a pipeline."""
+        self.watermarks[pipeline_name] = {
+            'last_run': watermark_value.isoformat(),
+            'updated_at': datetime.now().isoformat(),
+            'additional': additional_info or {}
+        }
+        self._save_watermarks()
+        logger.info(f"Updated watermark for {pipeline_name}: {watermark_value}")
+    
+    def reset_watermark(self, pipeline_name: str):
+        """Reset watermark for a pipeline (for full reload)."""
+        if pipeline_name in self.watermarks:
+            del self.watermarks[pipeline_name]
+            self._save_watermarks()
+
+def incremental_extract(filepath: str,
+                       watermark_col: str,
+                       watermark_value: datetime,
+                       chunksize: int = 10000) -> pd.DataFrame:
+    """
+    Incrementally extract records newer than watermark.
+    
+    Args:
+        filepath: Path to CSV file
+        watermark_col: Column to filter on
+        watermark_value: Only extract records after this timestamp
+        chunksize: Chunk size for reading
+    
+    Returns:
+        DataFrame with new records only
+    """
+    
+    all_new_records = []
+    
+    for chunk in pd.read_csv(filepath, chunksize=chunksize):
+        chunk[watermark_col] = pd.to_datetime(chunk[watermark_col])
+        new_records = chunk[chunk[watermark_col] > watermark_value]
+        all_new_records.append(new_records)
+    
+    if all_new_records:
+        return pd.concat(all_new_records, ignore_index=True)
+    return pd.DataFrame()
+
+def incremental_sql_extract(query: str,
+                            engine,
+                            watermark_col: str,
+                            watermark_value: datetime) -> pd.DataFrame:
+    """
+    Incrementally extract from SQL based on watermark.
+    """
+    incremental_query = f"""
+        SELECT * FROM ({query}) AS source
+        WHERE {watermark_col} > '{watermark_value.isoformat()}'
+    """
+    
+    return pd.read_sql(incremental_query, engine)
+
+def process_incremental_pipeline(pipeline_name: str,
+                                 source_func: callable,
+                                 transform_func: callable,
+                                 load_func: callable,
+                                 watermark_manager: WatermarkManager,
+                                 **kwargs) -> dict:
+    """
+    Execute an incremental pipeline with watermark tracking.
+    
+    Args:
+        pipeline_name: Unique name for this pipeline
+        source_func: Function to extract data
+        transform_func: Function to transform data
+        load_func: Function to load data
+        watermark_manager: Watermark manager instance
+        **kwargs: Additional arguments for source_func
+    
+    Returns:
+        Processing statistics
+    """
+    
+    start_time = datetime.now()
+    
+    # Get watermark
+    last_watermark = watermark_manager.get_watermark(pipeline_name)
+    logger.info(f"Starting incremental load. Last watermark: {last_watermark}")
+    
+    # Extract new records
+    new_data = source_func(watermark_value=last_watermark, **kwargs)
+    
+    if new_data.empty:
+        logger.info("No new records to process")
+        return {'records_processed': 0, 'status': 'no_data'}
+    
+    logger.info(f"Extracted {len(new_data)} new records")
+    
+    # Transform
+    transformed_data = transform_func(new_data)
+    logger.info(f"Transformed {len(transformed_data)} records")
+    
+    # Load
+    load_func(transformed_data)
+    logger.info(f"Loaded {len(transformed_data)} records")
+    
+    # Calculate new watermark (max of watermark column)
+    watermark_col = kwargs.get('watermark_col', 'updated_at')
+    new_watermark = new_data[watermark_col].max()
+    
+    # Update watermark
+    watermark_manager.update_watermark(pipeline_name, new_watermark)
+    
+    elapsed = (datetime.now() - start_time).total_seconds()
+    
+    return {
+        'records_processed': len(new_data),
+        'new_watermark': new_watermark.isoformat(),
+        'elapsed_seconds': elapsed,
+        'status': 'success'
+    }
+
+# Usage Example
+wm = WatermarkManager('pipeline_watermarks.json')
+
+def source(**kwargs):
+    return incremental_extract(
+        'sales_data.csv',
+        watermark_col='updated_at',
+        watermark_value=kwargs['watermark_value']
+    )
+
+def transform(df):
+    return df.dropna(subset=['order_id', 'amount'])
+
+def load(df):
+    df.to_sql('sales_fact', engine, if_exists='append', index=False)
+
+stats = process_incremental_pipeline(
+    'sales_etl',
+    source,
+    transform,
+    load,
+    wm,
+    watermark_col='updated_at'
+)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 9: Slowly Changing Dimension Type 1 (In-Place Update)</h2>
+            <p>Simple SCD Type 1 where only the current value matters - no history is kept.</p>
+<pre><code>import pandas as pd
+from datetime import datetime
+
+def scd_type1_update(target_df: pd.DataFrame,
+                      source_df: pd.DataFrame,
+                      primary_key: str,
+                      tracked_columns: list) -> pd.DataFrame:
+    """
+    Apply SCD Type 1 updates - overwrites existing records.
+    
+    Args:
+        target_df: Current dimension table
+        source_df: New data from source
+        primary_key: Business key column
+        tracked_columns: Columns to update
+    
+    Returns:
+        Updated dimension table
+    """
+    
+    if target_df.empty:
+        # Initial load
+        result = source_df.copy()
+        result['last_updated'] = datetime.now()
+        return result
+    
+    result = target_df.copy()
+    
+    # Merge to identify changes
+    merged = source_df.merge(
+        result[[primary_key] + tracked_columns],
+        on=primary_key,
+        how='left',
+        suffixes=('_new', '_old')
+    )
+    
+    # Find records that need updating
+    needs_update = False
+    for col in tracked_columns:
+        if f'{col}_new' in merged.columns and f'{col}_old' in merged.columns:
+            if not merged[f'{col}_new'].equals(merged[f'{col}_old']):
+                needs_update = True
+                break
+    
+    if needs_update:
+        # Update existing records
+        for _, row in merged.iterrows():
+            key_val = row[primary_key]
+            mask = result[primary_key] == key_val
+            
+            for col in tracked_columns:
+                new_col = f'{col}_new'
+                if new_col in row.index:
+                    result.loc[mask, col] = row[new_col]
+            
+            result.loc[mask, 'last_updated'] = datetime.now()
+        
+        # Add new records
+        existing_keys = set(target_df[primary_key])
+        new_records = source_df[~source_df[primary_key].isin(existing_keys)].copy()
+        new_records['last_updated'] = datetime.now()
+        
+        result = pd.concat([result, new_records], ignore_index=True)
+    else:
+        # Just add new records
+        existing_keys = set(target_df[primary_key])
+        new_records = source_df[~source_df[primary_key].isin(existing_keys)].copy()
+        new_records['last_updated'] = datetime.now()
+        
+        if not new_records.empty:
+            result = pd.concat([result, new_records], ignore_index=True)
+    
+    return result
+
+# Usage
+existing_customers = pd.DataFrame({
+    'customer_id': [1, 2, 3],
+    'name': ['Alice', 'Bob', 'Carol'],
+    'email': ['alice@test.com', 'bob@test.com', 'carol@test.com'],
+    'status': ['active', 'active', 'inactive'],
+    'last_updated': pd.to_datetime(['2024-01-01', '2024-01-01', '2024-01-01'])
+})
+
+new_data = pd.DataFrame({
+    'customer_id': [1, 2, 4],
+    'name': ['Alice Smith', 'Bob Jones', 'David'],
+    'email': ['alice@test.com', 'bob.new@test.com', 'david@test.com'],
+    'status': ['active', 'active', 'active']
+})
+
+result = scd_type1_update(
+    existing_customers,
+    new_data,
+    primary_key='customer_id',
+    tracked_columns=['name', 'email', 'status']
+)
+print(result)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 10: Data Lake Writing with Partitioning</h2>
+            <p>Write data to a partitioned data lake format with proper partitioning strategy.</p>
+<pre><code>import pandas as pd
+import boto3
+from io import BytesIO
+from datetime import datetime
+
+def write_partitioned_parquet(df: pd.DataFrame,
+                              partition_cols: list,
+                              bucket: str,
+                              base_path: str,
+                              sort_cols: list = None,
+                              compression: str = 'snappy') -> list:
+    """
+    Write DataFrame to S3 as partitioned Parquet files.
+    
+    Args:
+        df: DataFrame to write
+        partition_cols: Columns to partition by
+        bucket: S3 bucket name
+        base_path: Base path in bucket
+        sort_cols: Columns to sort data by within partitions
+        compression: Compression codec ('snappy', 'gzip', 'none')
+    
+    Returns:
+        List of written file paths
+    """
+    
+    s3 = boto3.client('s3')
+    written_files = []
+    
+    # Sort if specified
+    if sort_cols:
+        df = df.sort_values(sort_cols)
+    
+    # Get unique partition combinations
+    partition_values = df.groupby(partition_cols)
+    
+    for partition_key, partition_df in partition_values:
+        if not isinstance(partition_key, tuple):
+            partition_key = (partition_key,)
+        
+        # Build partition path
+        partition_path = '/'.join([
+            f'{col}={val}' 
+            for col, val in zip(partition_cols, partition_key)
+        ])
+        full_path = f"{base_path}/{partition_path}/data.parquet"
+        
+        # Drop partition columns from data
+        data_to_write = partition_df.drop(columns=partition_cols)
+        
+        # Write to buffer
+        buffer = BytesIO()
+        data_to_write.to_parquet(
+            buffer,
+            engine='pyarrow',
+            compression=compression,
+            index=False
+        )
+        buffer.seek(0)
+        
+        # Upload to S3
+        s3.put_object(
+            Bucket=bucket,
+            Key=full_path,
+            Body=buffer.getvalue()
+        )
+        
+        written_files.append(full_path)
+        print(f"Written: {full_path} ({len(data_to_write)} rows)")
+    
+    return written_files
+
+def read_partitioned_parquet(bucket: str,
+                             base_path: str,
+                             partition_filter: dict = None) -> pd.DataFrame:
+    """
+    Read partitioned Parquet files with partition pruning.
+    
+    Args:
+        bucket: S3 bucket name
+        base_path: Base path to read from
+        partition_filter: Dict of partition_col: values to filter
+    
+    Returns:
+        Combined DataFrame
+    """
+    
+    s3 = boto3.resource('s3')
+    bucket_obj = s3.Bucket(bucket)
+    
+    all_dataframes = []
+    
+    # Build prefix filter
+    prefix = base_path
+    if partition_filter:
+        filters = [f"{k}={v}" for k, v in partition_filter.items()]
+        prefix = f"{base_path}/" + '/'.join(filters)
+    
+    # List and read parquet files
+    for obj in bucket_obj.objects.filter(Prefix=prefix):
+        if obj.key.endswith('.parquet'):
+            buffer = BytesIO()
+            bucket_obj.Object(obj.key).download_fileobj(buffer)
+            buffer.seek(0)
+            
+            df = pd.read_parquet(buffer)
+            
+            # Add partition columns back
+            parts = obj.key.replace(base_path, '').strip('/').split('/')
+            for part in parts[:-1]:  # Exclude filename
+                col, val = part.split('=')
+                df[col] = val
+            
+            all_dataframes.append(df)
+    
+    if all_dataframes:
+        return pd.concat(all_dataframes, ignore_index=True)
+    return pd.DataFrame()
+
+def write_with_vacuum_strategy(df: pd.DataFrame,
+                                partition_cols: list,
+                                bucket: str,
+                                base_path: str,
+                                write_mode: str = 'overwrite') -> dict:
+    """
+    Write with a VACUUM strategy - clean up old partitions after write.
+    
+    Modes:
+        'overwrite': Remove existing partition files before writing
+        'append': Add new partition files
+        'upsert': Replace affected partitions only
+    """
+    
+    if write_mode == 'overwrite':
+        # Delete all existing files in base path
+        s3 = boto3.client('s3')
+        paginator = s3.get_paginator('list_objects_v2')
+        
+        for partition_combo in df.groupby(partition_cols):
+            partition_values = partition_combo[0]
+            if not isinstance(partition_values, tuple):
+                partition_values = (partition_values,)
+            
+            partition_path = '/'.join([
+                f'{col}={val}' 
+                for col, val in zip(partition_cols, partition_values)
+            ])
+            full_prefix = f"{base_path}/{partition_path}"
+            
+            # List and delete existing files
+            try:
+                response = s3.list_objects_v2(Bucket=bucket, Prefix=full_prefix)
+                if 'Contents' in response:
+                    keys = [{'Key': obj['Key']} for obj in response['Contents']]
+                    s3.delete_objects(Bucket=bucket, Delete={'Objects': keys})
+            except Exception as e:
+                print(f"Warning: Could not delete {full_prefix}: {e}")
+    
+    # Write new data
+    written = write_partitioned_parquet(df, partition_cols, bucket, base_path)
+    
+    return {
+        'files_written': len(written),
+        'paths': written,
+        'write_mode': write_mode
+    }
+
+# Usage
+sales_data = pd.DataFrame({
+    'order_id': range(1, 101),
+    'customer_id': [f'C{i%20:03d}' for i in range(1, 101)],
+    'amount': [100 + i * 5 for i in range(100)],
+    'order_date': pd.date_range('2024-01-01', periods=100, freq='D'),
+    'category': ['Electronics', 'Clothing', 'Home'] * 33 + ['Electronics']
+})
+
+sales_data['year'] = sales_data['order_date'].dt.year
+sales_data['month'] = sales_data['order_date'].dt.month
+sales_data['category'] = sales_data['category'].str.lower()
+
+written = write_partitioned_parquet(
+    sales_data,
+    partition_cols=['year', 'month', 'category'],
+    bucket='my-data-lake',
+    base_path='curated/sales',
+    sort_cols=['order_date', 'order_id'],
+    compression='snappy'
+)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 11: Deduplication with Multiple Strategies</h2>
+            <p>Handle complex deduplication scenarios with business key derivation and scoring.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from datetime import datetime
+from difflib import SequenceMatcher
+
+def calculate_dedup_score(row1: dict, row2: dict, 
+                         match_columns: list, 
+                         score_weights: dict = None) -> float:
+    """
+    Calculate similarity score between two records.
+    
+    Args:
+        row1: First record as dict
+        row2: Second record as dict
+        match_columns: Columns to compare
+        score_weights: Optional weights per column
+    
+    Returns:
+        Weighted similarity score (0-1)
+    """
+    
+    if score_weights is None:
+        score_weights = {col: 1.0 for col in match_columns}
+    
+    total_weight = 0
+    weighted_score = 0
+    
+    for col in match_columns:
+        val1 = str(row1.get(col, '')).lower().strip()
+        val2 = str(row2.get(col, '')).lower().strip()
+        
+        if val1 == val2:
+            score = 1.0
+        elif not val1 or not val2:
+            score = 0.0
+        else:
+            score = SequenceMatcher(None, val1, val2).ratio()
+        
+        weight = score_weights.get(col, 1.0)
+        weighted_score += score * weight
+        total_weight += weight
+    
+    return weighted_score / total_weight if total_weight > 0 else 0.0
+
+def derive_business_key(df: pd.DataFrame, 
+                       key_columns: list,
+                       key_prefix: str = '') -> pd.DataFrame:
+    """
+    Derive a business key from multiple columns.
+    
+    Args:
+        df: Source DataFrame
+        key_columns: Columns to combine
+        key_prefix: Optional prefix for the key
+    
+    Returns:
+        DataFrame with added business_key column
+    """
+    
+    df = df.copy()
+    
+    # Create key from columns
+    def make_key(row):
+        parts = []
+        for col in key_columns:
+            val = row.get(col, '')
+            if pd.notna(val):
+                # Clean and standardize
+                clean_val = str(val).lower().strip().replace(' ', '')
+                parts.append(clean_val[:10])  # First 10 chars
+        return f"{key_prefix}{'_'.join(parts)}" if parts else None
+    
+    df['_business_key_temp'] = df.apply(make_key, axis=1)
+    
+    # Handle duplicates by appending sequence
+    df['_key_count'] = df.groupby('_business_key_temp').cumcount()
+    df['_business_key_temp'] = df.apply(
+        lambda x: f"{x['_business_key_temp']}_{x['_key_count']}" 
+        if x['_key_count'] > 0 else x['_business_key_temp'],
+        axis=1
+    )
+    
+    df = df.rename(columns={'_business_key_temp': 'business_key'})
+    df = df.drop(columns=['_key_count'])
+    
+    return df
+
+def deduplicate_comprehensive(df: pd.DataFrame,
+                              match_columns: list,
+                              score_threshold: float = 0.85,
+                              prefer_columns: list = None,
+                              score_weights: dict = None) -> pd.DataFrame:
+    """
+    Comprehensive deduplication with multiple strategies.
+    
+    Args:
+        df: Source DataFrame
+        match_columns: Columns to use for matching
+        score_threshold: Minimum similarity score to consider duplicate
+        prefer_columns: Columns to prefer when resolving duplicates
+        score_weights: Weights for scoring
+    
+    Returns:
+        Deduplicated DataFrame
+    """
+    
+    df = df.copy()
+    df['_row_num'] = range(len(df))
+    df['_is_duplicate'] = False
+    df['_duplicate_group'] = None
+    df['_duplicate_master'] = None
+    
+    duplicate_groups = []
+    processed = set()
+    
+    # Find duplicate groups using similarity scoring
+    records = df.to_dict('records')
+    
+    for i in range(len(records)):
+        if i in processed:
+            continue
+        
+        group = [i]
+        processed.add(i)
+        
+        row1 = records[i]
+        
+        for j in range(i + 1, len(records)):
+            if j in processed:
+                continue
+            
+            row2 = records[j]
+            score = calculate_dedup_score(row1, row2, match_columns, score_weights)
+            
+            if score >= score_threshold:
+                group.append(j)
+                processed.add(j)
+        
+        if len(group) > 1:
+            duplicate_groups.append(group)
+    
+    # Assign duplicate groups
+    for group_idx, group in enumerate(duplicate_groups):
+        for row_idx in group:
+            df.loc[df['_row_num'] == row_idx, '_is_duplicate'] = True
+            df.loc[df['_row_num'] == row_idx, '_duplicate_group'] = group_idx
+    
+    # Resolve duplicates - keep master record
+    if prefer_columns:
+        # Find master record (best values across prefer_columns)
+        for group_idx, group in enumerate(duplicate_groups):
+            group_df = df[df['_duplicate_group'] == group_idx]
+            
+            # Calculate preference score
+            score = 0
+            for col in prefer_columns:
+                non_null = group_df[col].notna().sum()
+                score += non_null
+            
+            # Keep first with highest score
+            master_idx = group_df.index[0]
+            df.loc[df['_row_num'] == master_idx, '_duplicate_master'] = True
+    
+    # Create deduplicated result
+    result = df[df['_is_duplicate'] == False].copy()
+    
+    # Mark which record was kept from each duplicate group
+    if prefer_columns:
+        for group_idx, group in enumerate(duplicate_groups):
+            master_row = df[(df['_duplicate_group'] == group_idx) & 
+                          (df['_duplicate_master'] == True)].index
+            if len(master_row) > 0:
+                master_idx = master_row[0]
+                df.loc[df.index == master_idx, '_kept_record'] = True
+    
+    # Log deduplication stats
+    total_dupes = sum(len(g) - 1 for g in duplicate_groups)
+    print(f"Deduplication: Found {len(duplicate_groups)} duplicate groups, "
+          f"removed {total_dupes} records")
+    
+    # Clean up helper columns
+    result = result.drop(columns=['_row_num', '_is_duplicate', 
+                                 '_duplicate_group', '_duplicate_master'], 
+                        errors='ignore')
+    
+    return result
+
+# Usage
+customers = pd.DataFrame({
+    'first_name': ['John', 'Jon', 'Jonathan', 'Jane', 'Jane'],
+    'last_name': ['Smith', 'Smith', 'Smyth', 'Doe', 'Doe'],
+    'email': ['john.smith@email.com', 'john.smith@email.com', 
+             'jsmith@gmail.com', 'jane@email.com', 'jane.doe@email.com'],
+    'phone': ['555-1234', '5551234', None, '555-5678', '555-5678'],
+    'address': ['123 Main St', '123 Main Street', '456 Oak Ave', 
+               '789 Elm St', '789 Elm St']
+})
+
+# First derive business key
+customers = derive_business_key(
+    customers, 
+    key_columns=['first_name', 'last_name'],
+    key_prefix='CUST_'
+)
+
+# Then deduplicate
+result = deduplicate_comprehensive(
+    customers,
+    match_columns=['first_name', 'last_name', 'email'],
+    score_threshold=0.8,
+    prefer_columns=['email', 'phone', 'address'],
+    score_weights={'email': 1.5, 'first_name': 0.5, 'last_name': 1.0}
+)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 12: Handling Late-Arriving Data</h2>
+            <p>Process records that arrive after their expected window with late-arrival handling.</p>
+<pre><code>import pandas as pd
+from datetime import datetime, timedelta
+from typing import Optional, Tuple
+
+class LateArrivalProcessor:
+    """
+    Handle late-arriving records in a time-windowed pipeline.
+    
+    Late-arriving data is data that arrives after its expected time window
+    has closed. Common scenarios:
+    - Bank transactions from the previous day arriving today
+    - IoT sensor data with transmission delays
+    - E-commerce orders with delayed payment confirmation
+    """
+    
+    def __init__(self, 
+                 window_size: str = '1D',
+                 grace_period: str = '6H',
+                 reprocess_closed_windows: bool = True):
+        """
+        Args:
+            window_size: Size of each processing window
+            grace_period: How long to keep windows open for late arrivals
+            reprocess_closed_windows: Whether to reprocess closed windows
+        """
+        self.window_size = pd.Timedelta(window_size)
+        self.grace_period = pd.Timedelta(grace_period)
+        self.reprocess_closed_windows = reprocess_closed_windows
+        
+        self.closed_windows = {}  # Store closed window data
+    
+    def get_window_id(self, timestamp: datetime) -> datetime:
+        """Get the window ID for a timestamp."""
+        return timestamp.floor(self.window_size)
+    
+    def is_window_closed(self, window_id: datetime) -> bool:
+        """Check if a window has closed (past grace period)."""
+        now = datetime.now()
+        window_end = window_id + self.window_size + self.grace_period
+        return now > window_end
+    
+    def process_record(self, record: dict, 
+                       data_by_window: dict) -> Tuple[dict, bool]:
+        """
+        Process a single record, routing to appropriate window.
+        
+        Returns:
+            (updated data_by_window, was_reprocessed)
+        """
+        
+        event_time = pd.to_datetime(record.get('event_timestamp'))
+        if event_time is None:
+            return data_by_window, False
+        
+        window_id = self.get_window_id(event_time)
+        is_closed = self.is_window_closed(window_id)
+        
+        if is_closed and self.reprocess_closed_windows:
+            # Late arrival - add to closed windows for reprocessing
+            if window_id not in self.closed_windows:
+                self.closed_windows[window_id] = []
+            self.closed_windows[window_id].append(record)
+            
+            # Also add to current data for immediate use
+            if window_id not in data_by_window:
+                data_by_window[window_id] = []
+            data_by_window[window_id].append(record)
+            
+            return data_by_window, True
+        
+        elif is_closed and not self.reprocess_closed_windows:
+            # Route to overflow/late-arrivals bucket
+            late_window_id = 'LATE ARRIVALS'
+            if late_window_id not in data_by_window:
+                data_by_window[late_window_id] = []
+            data_by_window[late_window_id].append({
+                **record,
+                '_original_window': window_id,
+                '_arrival_time': datetime.now()
+            })
+            
+            return data_by_window, False
+        
+        else:
+            # Normal case - add to current window
+            if window_id not in data_by_window:
+                data_by_window[window_id] = []
+            data_by_window[window_id].append(record)
+            
+            return data_by_window, False
+    
+    def reprocess_closed_windows_data(self, 
+                                     current_data: dict,
+                                     aggregation_func: callable) -> dict:
+        """
+        Reprocess closed windows with updated aggregation.
+        
+        This would be called when you want to recalculate
+        aggregates for windows that received late data.
+        """
+        
+        reprocessed = {}
+        
+        for window_id, records in self.closed_windows.items():
+            if records:
+                # Convert to DataFrame and recalculate
+                df = pd.DataFrame(records)
+                agg_result = aggregation_func(df)
+                reprocessed[window_id] = agg_result
+        
+        return reprocessed
+    
+    def get_late_arrivals_report(self) -> pd.DataFrame:
+        """Generate report of late arrivals by window."""
+        
+        records = []
+        for window_id, window_records in self.closed_windows.items():
+            for record in window_records:
+                records.append({
+                    'original_window': window_id,
+                    'event_time': record.get('event_timestamp'),
+                    'arrival_time': datetime.now(),
+                    'latency_minutes': (
+                        datetime.now() - pd.to_datetime(record.get('event_timestamp'))
+                    ).total_seconds() / 60
+                })
+        
+        if records:
+            return pd.DataFrame(records).sort_values('latency_minutes', ascending=False)
+        return pd.DataFrame()
+
+def process_with_late_arrivals(df: pd.DataFrame,
+                               event_time_col: str,
+                               window_col: str = 'date',
+                               grace_hours: int = 6) -> dict:
+    """
+    Process DataFrame handling late arrivals.
+    
+    Args:
+        df: Source DataFrame
+        event_time_col: Column containing event timestamp
+        window_col: Column name for window (will be added)
+        grace_hours: Hours to wait before closing window
+    
+    Returns:
+        Dict with 'on_time', 'late', and 'summary' DataFrames
+    """
+    
+    df = df.copy()
+    df[event_time_col] = pd.to_datetime(df[event_time_col])
+    
+    # Assign windows
+    df[window_col] = df[event_time_col].dt.date
+    
+    now = datetime.now()
+    grace_delta = timedelta(hours=grace_hours)
+    
+    # Categorize records
+    df['_is_late'] = False
+    df['_latency_hours'] = 0.0
+    
+    for idx, row in df.iterrows():
+        event_time = row[event_time_col]
+        window_end = pd.Timestamp(row[window_col]) + pd.Timedelta(days=1) + grace_delta
+        
+        if now > window_end:
+            df.loc[idx, '_is_late'] = True
+            df.loc[idx, '_latency_hours'] = (now - event_time).total_seconds() / 3600
+    
+    # Split into on-time and late
+    on_time = df[df['_is_late'] == False].copy()
+    late = df[df['_is_late'] == True].copy()
+    
+    # Clean up helper columns
+    on_time = on_time.drop(columns=['_is_late', '_latency_hours'], errors='ignore')
+    late = late.drop(columns=['_is_late', '_latency_hours'], errors='ignore')
+    
+    return {
+        'on_time': on_time,
+        'late': late,
+        'summary': {
+            'total_records': len(df),
+            'on_time_records': len(on_time),
+            'late_records': len(late),
+            'late_percentage': len(late) / len(df) * 100 if len(df) > 0 else 0
+        }
+    }
+
+# Usage
+transactions = pd.DataFrame({
+    'transaction_id': range(1, 11),
+    'transaction_time': pd.to_datetime([
+        '2024-01-15 10:00',  # Normal
+        '2024-01-15 10:30',  # Normal
+        '2024-01-14 23:55',  # Late (next day processing)
+        '2024-01-15 08:00',  # Late (past grace period)
+        '2024-01-15 09:00',  # Normal
+        '2024-01-14 22:00',  # Late
+        '2024-01-15 11:00',  # Normal
+        '2024-01-15 11:30',  # Normal
+        '2024-01-14 21:00',  # Late
+        '2024-01-15 12:00',  # Normal
+    ]),
+    'amount': [100, 200, 150, 300, 250, 175, 125, 175, 225, 150]
+})
+
+result = process_with_late_arrivals(
+    transactions,
+    event_time_col='transaction_time',
+    grace_hours=12
+)
+
+print(f"Late arrivals: {result['summary']['late_percentage']:.1f}%")
+print(result['late'][['transaction_id', 'transaction_time']])</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 13: Schema Evolution and Enforcement</h2>
+            <p>Handle schema changes gracefully while maintaining data quality.</p>
+<pre><code>import pandas as pd
+from dataclasses import dataclass, field
+from typing import Any, Optional
+from datetime import datetime
+
+@dataclass
+class ColumnSchema:
+    """Schema definition for a column."""
+    name: str
+    dtype: str
+    nullable: bool = True
+    default_value: Any = None
+    allowed_values: list = None
+    min_value: float = None
+    max_value: float = None
+
+@dataclass
+class TableSchema:
+    """Schema definition for a table."""
+    name: str
+    columns: list[ColumnSchema] = field(default_factory=list)
+    primary_key: list[str] = None
+    version: str = "1.0"
+
+class SchemaEnforcer:
+    """Enforce schema compliance on DataFrames."""
+    
+    def __init__(self, schema: TableSchema):
+        self.schema = schema
+    
+    def validate(self, df: pd.DataFrame) -> tuple[bool, list]:
+        """
+        Validate DataFrame against schema.
+        
+        Returns:
+            (is_valid, list of validation errors)
+        """
+        errors = []
+        
+        for col_schema in self.schema.columns:
+            col_name = col_schema.name
+            
+            # Check column exists
+            if col_name not in df.columns:
+                errors.append(f"Missing required column: {col_name}")
+                continue
+            
+            # Check dtype
+            actual_dtype = str(df[col_name].dtype)
+            if not self._is_dtype_compatible(actual_dtype, col_schema.dtype):
+                errors.append(
+                    f"Column {col_name}: expected {col_schema.dtype}, "
+                    f"got {actual_dtype}"
+                )
+            
+            # Check nullable
+            if not col_schema.nullable:
+                null_count = df[col_name].isna().sum()
+                if null_count > 0:
+                    errors.append(
+                        f"Column {col_name}: {null_count} null values "
+                        f"but column is not nullable"
+                    )
+            
+            # Check allowed values
+            if col_schema.allowed_values:
+                invalid = ~df[col_name].isin(col_schema.allowed_values + [None])
+                invalid_count = invalid.sum()
+                if invalid_count > 0:
+                    errors.append(
+                        f"Column {col_name}: {invalid_count} values not "
+                        f"in allowed set: {col_schema.allowed_values}"
+                    )
+            
+            # Check min/max for numeric
+            if col_schema.min_value is not None:
+                below_min = (df[col_name] < col_schema.min_value).sum()
+                if below_min > 0:
+                    errors.append(
+                        f"Column {col_name}: {below_min} values below "
+                        f"minimum {col_schema.min_value}"
+                    )
+            
+            if col_schema.max_value is not None:
+                above_max = (df[col_name] > col_schema.max_value).sum()
+                if above_max > 0:
+                    errors.append(
+                        f"Column {col_name}: {above_max} values above "
+                        f"maximum {col_schema.max_value}"
+                    )
+        
+        return len(errors) == 0, errors
+    
+    def _is_dtype_compatible(self, actual: str, expected: str) -> bool:
+        """Check if actual dtype is compatible with expected."""
+        actual_lower = actual.lower()
+        expected_lower = expected.lower()
+        
+        # Exact match
+        if actual_lower == expected_lower:
+            return True
+        
+        # Nullable types
+        if 'int' in expected_lower and 'int' in actual_lower:
+            return True
+        if 'float' in expected_lower and 'float' in actual_lower:
+            return True
+        if 'object' in actual_lower and 'str' in expected_lower:
+            return True
+        
+        return False
+    
+    def enforce_schema(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Enforce schema by applying conversions and defaults.
+        
+        Returns:
+            DataFrame with schema enforced
+        """
+        result = df.copy()
+        
+        # Add missing columns with defaults
+        for col_schema in self.schema.columns:
+            if col_schema.name not in result.columns:
+                result[col_schema.name] = col_schema.default_value
+        
+        # Apply dtype conversions
+        for col_schema in self.schema.columns:
+            if col_schema.name in result.columns:
+                try:
+                    result[col_schema.name] = result[col_schema.name].astype(
+                        col_schema.dtype
+                    )
+                except:
+                    # If conversion fails, use nullable type
+                    result[col_schema.name] = pd.to_numeric(
+                        result[col_schema.name], errors='coerce'
+                    )
+        
+        # Fill nulls with defaults where allowed
+        for col_schema in self.schema.columns:
+            if col_schema.name in result.columns:
+                if col_schema.default_value is not None:
+                    result[col_schema.name] = result[col_schema.name].fillna(
+                        col_schema.default_value
+                    )
+        
+        return result
+
+class SchemaEvolution:
+    """Handle schema changes between versions."""
+    
+    @staticmethod
+    def merge_schemas(old_schema: TableSchema,
+                     new_schema: TableSchema) -> TableSchema:
+        """
+        Merge schemas, adding new columns with defaults.
+        
+        Returns:
+            Merged schema
+        """
+        old_columns = {c.name: c for c in old_schema.columns}
+        new_columns = {c.name: c for c in new_schema.columns}
+        
+        merged_columns = []
+        
+        # Keep old columns
+        for col_name, col in old_columns.items():
+            if col_name in new_columns:
+                # Column exists in both - use new definition
+                merged_columns.append(new_columns[col_name])
+            else:
+                # Column removed
+                pass
+        
+        # Add new columns from new schema
+        for col_name, col in new_columns.items():
+            if col_name not in old_columns:
+                # Add new column with default
+                merged_columns.append(col)
+        
+        return TableSchema(
+            name=new_schema.name,
+            columns=merged_columns,
+            primary_key=new_schema.primary_key,
+            version=new_schema.version
+        )
+    
+    @staticmethod
+    def evolve_data(df: pd.DataFrame,
+                    old_schema: TableSchema,
+                    new_schema: TableSchema) -> pd.DataFrame:
+        """
+        Evolve DataFrame to new schema.
+        
+        Adds new columns with defaults, removes deprecated columns.
+        """
+        result = df.copy()
+        
+        old_column_names = {c.name for c in old_schema.columns}
+        new_column_names = {c.name for c in new_schema.columns}
+        
+        # Add new columns with defaults
+        for col_schema in new_schema.columns:
+            if col_schema.name not in result.columns:
+                result[col_schema.name] = col_schema.default_value
+        
+        # Note: We don't automatically remove deprecated columns
+        # to preserve historical data
+        
+        # Apply type changes
+        for col_schema in new_schema.columns:
+            if col_schema.name in result.columns:
+                try:
+                    if col_schema.dtype != 'object':
+                        result[col_schema.name] = result[col_schema.name].astype(
+                            col_schema.dtype
+                        )
+                except:
+                    pass
+        
+        return result
+
+# Usage
+order_schema = TableSchema(
+    name='orders',
+    columns=[
+        ColumnSchema('order_id', 'int64', nullable=False),
+        ColumnSchema('customer_id', 'int64', nullable=False),
+        ColumnSchema('amount', 'float64', nullable=False, min_value=0),
+        ColumnSchema('status', 'str', allowed_values=['pending', 'completed', 'cancelled']),
+        ColumnSchema('created_at', 'datetime64[ns]'),
+        ColumnSchema('notes', 'str', default_value='')
+    ],
+    primary_key=['order_id']
+)
+
+enforcer = SchemaEnforcer(order_schema)
+
+# Validate
+df = pd.DataFrame({
+    'order_id': [1, 2, 3],
+    'customer_id': [101, 102, 103],
+    'amount': [100.0, 200.0, -50.0],  # Negative is invalid!
+    'status': ['pending', 'completed', 'unknown'],  # Unknown status!
+})
+
+is_valid, errors = enforcer.validate(df)
+print(f"Valid: {is_valid}")
+print("Errors:", errors)
+
+# Enforce schema
+df_fixed = enforcer.enforce_schema(df)
+print(df_fixed)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 14: Automated Data Lineage Tracking</h2>
+            <p>Track data lineage through transformations for audit and debugging.</p>
+<pre><code>import pandas as pd
+from datetime import datetime
+from dataclasses import dataclass, field
+from typing import List, Optional
+import uuid
+
+@dataclass
+class DataAsset:
+    """Represents a data asset (table, file, etc.)."""
+    asset_id: str
+    name: str
+    asset_type: str  # 'source', 'stage', 'target'
+    schema: dict = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+
+@dataclass
+class Transformation:
+    """Represents a data transformation step."""
+    transform_id: str
+    name: str
+    input_assets: List[str]  # Asset IDs
+    output_asset: str  # Asset ID
+    transform_type: str  # 'filter', 'join', 'aggregate', 'derive', etc.
+    transform_details: dict = field(default_factory=dict)
+    executed_at: datetime = field(default_factory=datetime.now)
+    records_in: int = 0
+    records_out: int = 0
+
+class DataLineageTracker:
+    """Track data lineage through transformations."""
+    
+    def __init__(self):
+        self.assets: dict[str, DataAsset] = {}
+        self.transformations: List[Transformation] = []
+        self._lineage_graph: dict = {}  # For graph traversal
+    
+    def register_asset(self, name: str, asset_type: str,
+                       schema: dict = None) -> str:
+        """Register a new data asset."""
+        asset_id = str(uuid.uuid4())
+        
+        self.assets[asset_id] = DataAsset(
+            asset_id=asset_id,
+            name=name,
+            asset_type=asset_type,
+            schema=schema or {}
+        )
+        
+        return asset_id
+    
+    def record_transformation(self,
+                              name: str,
+                              input_asset_ids: List[str],
+                              output_asset_id: str,
+                              transform_type: str,
+                              transform_details: dict = None,
+                              records_in: int = 0,
+                              records_out: int = 0) -> str:
+        """Record a transformation step."""
+        
+        transform_id = str(uuid.uuid4())
+        
+        transformation = Transformation(
+            transform_id=transform_id,
+            name=name,
+            input_assets=input_asset_ids,
+            output_asset=output_asset_id,
+            transform_type=transform_type,
+            transform_details=transform_details or {},
+            records_in=records_in,
+            records_out=records_out
+        )
+        
+        self.transformations.append(transformation)
+        
+        # Update lineage graph
+        for input_id in input_asset_ids:
+            if input_id not in self._lineage_graph:
+                self._lineage_graph[input_id] = {'inputs': [], 'outputs': []}
+            self._lineage_graph[input_id]['outputs'].append(output_asset_id)
+        
+        if output_asset_id not in self._lineage_graph:
+            self._lineage_graph[output_asset_id] = {'inputs': [], 'outputs': []}
+        self._lineage_graph[output_asset_id]['inputs'].extend(input_asset_ids)
+        
+        return transform_id
+    
+    def get_lineage(self, asset_id: str,
+                    direction: str = 'both') -> dict:
+        """
+        Get lineage for an asset.
+        
+        Args:
+            asset_id: Asset to trace
+            direction: 'upstream', 'downstream', or 'both'
+        """
+        lineage = {'upstream': [], 'downstream': []}
+        
+        if direction in ['upstream', 'both']:
+            lineage['upstream'] = self._trace_upstream(asset_id)
+        
+        if direction in ['downstream', 'both']:
+            lineage['downstream'] = self._trace_downstream(asset_id)
+        
+        return lineage
+    
+    def _trace_upstream(self, asset_id: str) -> List[dict]:
+        """Trace all upstream sources."""
+        visited = set()
+        path = []
+        
+        def traverse(current_id):
+            if current_id in visited:
+                return
+            visited.add(current_id)
+            
+            if current_id in self._lineage_graph:
+                for upstream_id in self._lineage_graph[current_id]['inputs']:
+                    asset = self.assets.get(upstream_id)
+                    transforms = [
+                        t for t in self.transformations
+                        if current_id in t.input_assets and upstream_id in t.input_assets
+                    ]
+                    
+                    path.append({
+                        'asset': asset,
+                        'transforms': transforms
+                    })
+                    
+                    traverse(upstream_id)
+        
+        traverse(asset_id)
+        return path
+    
+    def _trace_downstream(self, asset_id: str) -> List[dict]:
+        """Trace all downstream targets."""
+        visited = set()
+        path = []
+        
+        def traverse(current_id):
+            if current_id in visited:
+                return
+            visited.add(current_id)
+            
+            if current_id in self._lineage_graph:
+                for downstream_id in self._lineage_graph[current_id]['outputs']:
+                    asset = self.assets.get(downstream_id)
+                    transforms = [
+                        t for t in self.transformations
+                        if current_id in t.input_assets and downstream_id == t.output_asset
+                    ]
+                    
+                    path.append({
+                        'asset': asset,
+                        'transforms': transforms
+                    })
+                    
+                    traverse(downstream_id)
+        
+        traverse(asset_id)
+        return path
+    
+    def generate_lineage_report(self, asset_id: str) -> str:
+        """Generate a human-readable lineage report."""
+        
+        asset = self.assets.get(asset_id)
+        if not asset:
+            return f"Asset {asset_id} not found"
+        
+        lineage = self.get_lineage(asset_id)
+        
+        report = [f"Lineage Report for: {asset.name}"]
+        report.append(f"Asset ID: {asset_id}")
+        report.append(f"Asset Type: {asset.asset_type}")
+        report.append("")
+        
+        report.append("UPSTREAM LINEAGE:")
+        for upstream in lineage['upstream']:
+            if upstream['asset']:
+                report.append(f"  - {upstream['asset'].name}")
+            for t in upstream['transforms']:
+                report.append(f"    [{t.transform_type}] {t.name}")
+        
+        report.append("")
+        report.append("DOWNSTREAM LINEAGE:")
+        for downstream in lineage['downstream']:
+            if downstream['asset']:
+                report.append(f"  - {downstream['asset'].name}")
+            for t in downstream['transforms']:
+                report.append(f"    [{t.transform_type}] {t.name}")
+        
+        return "\n".join(report)
+
+# Usage
+tracker = DataLineageTracker()
+
+# Register assets
+source_id = tracker.register_asset('raw_sales', 'source')
+stage_id = tracker.register_asset('staged_sales', 'stage')
+enriched_id = tracker.register_asset('enriched_sales', 'stage')
+target_id = tracker.register_asset('sales_fact', 'target')
+
+# Record transformations
+tracker.record_transformation(
+    name='Filter completed sales',
+    input_asset_ids=[source_id],
+    output_asset=stage_id,
+    transform_type='filter',
+    transform_details={'column': 'status', 'value': 'completed'},
+    records_in=1000,
+    records_out=850
+)
+
+tracker.record_transformation(
+    name='Join with customers',
+    input_asset_ids=[stage_id, 'customer_asset_id'],
+    output_asset=enriched_id,
+    transform_type='join',
+    transform_details={'how': 'left', 'on': 'customer_id'},
+    records_in=850,
+    records_out=850
+)
+
+# Get lineage
+lineage = tracker.get_lineage(target_id)
+print(f"Upstream steps: {len(lineage['upstream'])}")
+print(f"Downstream steps: {len(lineage['downstream'])}")
+
+# Generate report
+report = tracker.generate_lineage_report(target_id)
+print(report)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 15: Parallel Chunk Processing</h2>
+            <p>Process large datasets in parallel using chunked operations.</p>
+<pre><code>import pandas as pd
+import numpy as np
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from functools import partial
+from typing import Callable, Iterator
+import multiprocessing
+from datetime import datetime
+
+def process_chunk(chunk: pd.DataFrame, 
+                 transform_func: Callable,
+                 **kwargs) -> pd.DataFrame:
+    """
+    Process a single chunk of data.
+    
+    Args:
+        chunk: Data chunk to process
+        transform_func: Function to apply to chunk
+        **kwargs: Additional arguments for transform_func
+    
+    Returns:
+        Processed chunk
+    """
+    return transform_func(chunk, **kwargs)
+
+def parallel_chunk_processor(filepath: str,
+                             transform_func: Callable,
+                             chunksize: int = 100000,
+                             max_workers: int = None,
+                             **kwargs) -> pd.DataFrame:
+    """
+    Process large file in parallel using multiple workers.
+    
+    Args:
+        filepath: Path to CSV file
+        transform_func: Function to apply to each chunk
+        chunksize: Size of each chunk
+        max_workers: Number of parallel workers
+    
+    Returns:
+        Combined processed DataFrame
+    """
+    
+    if max_workers is None:
+        max_workers = max(1, multiprocessing.cpu_count() - 1)
+    
+    # Use ProcessPoolExecutor for CPU-bound operations
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        
+        # Create partial function with kwargs
+        process_func = partial(process_chunk, 
+                             transform_func=transform_func, 
+                             **kwargs)
+        
+        # Create iterator of chunks
+        chunk_iterator = pd.read_csv(filepath, chunksize=chunksize)
+        
+        # Process chunks in parallel
+        results = list(executor.map(process_func, chunk_iterator))
+    
+    # Combine results
+    if results:
+        return pd.concat(results, ignore_index=True)
+    return pd.DataFrame()
+
+def parallel_apply(df: pd.DataFrame,
+                   func: Callable,
+                   axis: int = 0,
+                   max_workers: int = None) -> pd.DataFrame:
+    """
+    Apply function in parallel across DataFrame partitions.
+    
+    Args:
+        df: DataFrame to process
+        func: Function to apply
+        axis: 0 for row-wise, 1 for column-wise
+        max_workers: Number of parallel workers
+    
+    Returns:
+        Result DataFrame
+    """
+    
+    if max_workers is None:
+        max_workers = max(1, multiprocessing.cpu_count() - 1)
+    
+    if axis == 0:
+        # Row-wise: split by rows
+        n_partitions = max_workers
+        partition_size = len(df) // n_partitions + 1
+        partitions = [
+            df.iloc[i:i+partition_size] 
+            for i in range(0, len(df), partition_size)
+        ]
+    else:
+        # Column-wise: split by columns
+        n_partitions = max_workers
+        col_size = len(df.columns) // n_partitions + 1
+        partitions = [
+            df.iloc[:, i:i+col_size] 
+            for i in range(0, len(df.columns), col_size)
+        ]
+    
+    # Process in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        results = list(executor.map(func, partitions))
+    
+    # Combine results
+    if axis == 0:
+        return pd.concat(results, ignore_index=True)
+    else:
+        return pd.concat(results, axis=1)
+
+def chunked_aggregation(chunks_iterator: Iterator[pd.DataFrame],
+                       group_cols: list,
+                       agg_funcs: dict) -> pd.DataFrame:
+    """
+    Perform aggregation across chunks without loading all data.
+    
+    Accumulates partial aggregates and combines at the end.
+    
+    Args:
+        chunks_iterator: Iterator of DataFrame chunks
+        group_cols: Columns to group by
+        agg_funcs: Dict of column -> aggregation functions
+    
+    Returns:
+        Aggregated DataFrame
+    """
+    
+    partial_results = []
+    
+    for chunk in chunks_iterator:
+        partial = chunk.groupby(group_cols).agg(agg_funcs).reset_index()
+        partial_results.append(partial)
+    
+    # Combine partial results
+    combined = pd.concat(partial_results, ignore_index=True)
+    
+    # Final aggregation
+    final = combined.groupby(group_cols).agg(agg_funcs).reset_index()
+    
+    return final
+
+# Example aggregation functions for parallel processing
+def calculate_summary_stats(df: pd.DataFrame) -> pd.DataFrame:
+    """Calculate summary statistics for a chunk."""
+    return pd.DataFrame({
+        'count': [len(df)],
+        'sum': df['amount'].sum() if 'amount' in df.columns else 0,
+        'mean': df['amount'].mean() if 'amount' in df.columns else 0,
+        'min': df['amount'].min() if 'amount' in df.columns else 0,
+        'max': df['amount'].max() if 'amount' in df.columns else 0,
+        'std': df['amount'].std() if 'amount' in df.columns else 0,
+        'chunk_id': str(datetime.now().timestamp())
+    }, index=[0])
+
+def transform_sales_chunk(chunk: pd.DataFrame,
+                          discount_rate: float = 0.1,
+                          tax_rate: float = 0.08) -> pd.DataFrame:
+    """Transform sales data chunk."""
+    
+    result = chunk.copy()
+    
+    # Clean data
+    result = result.dropna(subset=['order_id', 'amount'])
+    result = result[result['amount'] > 0]
+    
+    # Add derived columns
+    result['discount'] = result['amount'] * discount_rate
+    result['tax'] = (result['amount'] - result['discount']) * tax_rate
+    result['net_amount'] = result['amount'] - result['discount'] + result['tax']
+    
+    # Add metadata
+    result['processed_at'] = datetime.now()
+    result['chunk_processed'] = True
+    
+    return result
+
+# Usage
+result = parallel_chunk_processor(
+    'large_sales_file.csv',
+    transform_sales_chunk,
+    chunksize=50000,
+    discount_rate=0.1,
+    tax_rate=0.08
+)
+
+# Calculate stats across chunks
+chunks = pd.read_csv('large_sales_file.csv', chunksize=50000)
+stats = chunked_aggregation(
+    chunks,
+    group_cols=['category', 'region'],
+    agg_funcs={'amount': ['sum', 'mean', 'count']}
+)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 16: Data Masking and PII Handling</h2>
+            <p>Handle Personally Identifiable Information (PII) with masking and anonymization.</p>
+<pre><code>import pandas as pd
+import numpy as np
+import hashlib
+import re
+from datetime import datetime
+from typing import Callable, Dict
+
+class PIIMasker:
+    """Handle PII data masking and anonymization."""
+    
+    def __init__(self, salt: str = None):
+        self.salt = salt or str(datetime.now().timestamp())
+        self.mask_patterns = {
+            'email': self._mask_email,
+            'phone': self._mask_phone,
+            'ssn': self._mask_ssn,
+            'credit_card': self._mask_credit_card,
+            'address': self._mask_address,
+            'name': self._mask_name
+        }
+    
+    def _hash_value(self, value: str) -> str:
+        """Create consistent hash of a value."""
+        combined = f"{self.salt}{value}"
+        return hashlib.sha256(combined.encode()).hexdigest()[:16]
+    
+    def _mask_email(self, email: str) -> str:
+        """Mask email address."""
+        if pd.isna(email):
+            return email
+        
+        parts = str(email).split('@')
+        if len(parts) != 2:
+            return '***@***.***'
+        
+        username, domain = parts
+        masked_username = username[0] + '*' * (len(username) - 1) if len(username) > 1 else '*'
+        
+        domain_parts = domain.split('.')
+        if len(domain_parts[-1]) <= 3:
+            masked_domain = domain
+        else:
+            masked_domain = domain_parts[0][0] + '*' * 3 + '.' + '.'.join(domain_parts[1:])
+        
+        return f"{masked_username}@{masked_domain}"
+    
+    def _mask_phone(self, phone: str) -> str:
+        """Mask phone number, keeping last 4 digits."""
+        if pd.isna(phone):
+            return phone
+        
+        digits = re.sub(r'\D', '', str(phone))
+        if len(digits) < 4:
+            return '****'
+        
+        return '*' * (len(digits) - 4) + digits[-4:]
+    
+    def _mask_ssn(self, ssn: str) -> str:
+        """Mask SSN, showing only last 4 digits."""
+        if pd.isna(ssn):
+            return ssn
+        
+        digits = re.sub(r'\D', '', str(ssn))
+        if len(digits) < 4:
+            return '***-**-****'
+        
+        return f"***-**-{digits[-4:]}"
+    
+    def _mask_credit_card(self, card: str) -> str:
+        """Mask credit card, showing only last 4 digits."""
+        if pd.isna(card):
+            return card
+        
+        digits = re.sub(r'\D', '', str(card))
+        if len(digits) < 4:
+            return '****'
+        
+        return f"****-****-****-{digits[-4:]}"
+    
+    def _mask_address(self, address: str) -> str:
+        """Mask street address."""
+        if pd.isna(address):
+            return address
+        
+        return '[REDACTED ADDRESS]'
+    
+    def _mask_name(self, name: str) -> str:
+        """Mask name, keeping first letter."""
+        if pd.isna(name):
+            return name
+        
+        parts = str(name).split()
+        masked_parts = []
+        
+        for part in parts:
+            if len(part) <= 1:
+                masked_parts.append('*')
+            else:
+                masked_parts.append(part[0] + '*' * (len(part) - 1))
+        
+        return ' '.join(masked_parts)
+    
+    def anonymize(self, df: pd.DataFrame,
+                  column_mapping: Dict[str, str]) -> pd.DataFrame:
+        """
+        Anonymize columns consistently.
+        
+        Args:
+            df: Source DataFrame
+            column_mapping: Dict of column -> anonymization type
+        
+        Returns:
+            DataFrame with anonymized columns
+        """
+        result = df.copy()
+        
+        for column, mask_type in column_mapping.items():
+            if column not in result.columns:
+                continue
+            
+            if mask_type == 'hash':
+                # Consistent hashing for join keys
+                result[f'{column}_hashed'] = result[column].apply(
+                    lambda x: self._hash_value(str(x)) if pd.notna(x) else None
+                )
+            elif mask_type in self.mask_patterns:
+                result[f'{column}_masked'] = result[column].apply(
+                    self.mask_patterns[mask_type]
+                )
+            elif mask_type == 'redact':
+                result[f'{column}_redacted'] = '[REDACTED]'
+            elif mask_type == 'null':
+                result[f'{column}_redacted'] = None
+        
+        return result
+    
+    def mask_pii_columns(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Automatically detect and mask common PII columns.
+        
+        Looks for column names containing PII indicators.
+        """
+        
+        result = df.copy()
+        pii_indicators = {
+            'email': ['email', 'e-mail', 'mail'],
+            'phone': ['phone', 'tel', 'mobile', 'cell'],
+            'ssn': ['ssn', 'social_security', 'social security'],
+            'credit_card': ['card', 'cc_', 'credit', 'payment'],
+            'address': ['address', 'street', 'addr'],
+            'name': ['name', 'first_name', 'last_name', 'full_name']
+        }
+        
+        masks_applied = {}
+        
+        for col in result.columns:
+            col_lower = col.lower()
+            
+            for pii_type, indicators in pii_indicators.items():
+                if any(ind in col_lower for ind in indicators):
+                    if pii_type not in masks_applied:
+                        result[f'{col}_masked'] = result[col].apply(
+                            self.mask_patterns.get(pii_type, lambda x: x)
+                        )
+                        masks_applied[pii_type] = col
+        
+        return result
+
+def pseudonymize_for_join(df1: pd.DataFrame,
+                          df2: pd.DataFrame,
+                          join_column: str,
+                          salt: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Pseudonymize join columns so datasets can be joined
+    without exposing original PII.
+    """
+    
+    def pseudonymize(values: pd.Series, salt: str) -> pd.Series:
+        return values.apply(
+            lambda x: hashlib.sha256(f"{salt}{x}".encode()).hexdigest()[:16]
+            if pd.notna(x) else None
+        )
+    
+    df1 = df1.copy()
+    df2 = df2.copy()
+    
+    pseudonym_col = f'{join_column}_pseudonym'
+    
+    df1[pseudonym_col] = pseudonymize(df1[join_column], salt)
+    df2[pseudonym_col] = pseudonymize(df2[join_column], salt)
+    
+    return df1, df2
+
+# Usage
+masker = PIIMasker(salt='production_salt_2024')
+
+customer_data = pd.DataFrame({
+    'customer_id': [1, 2, 3],
+    'name': ['John Smith', 'Jane Doe', 'Robert Johnson'],
+    'email': ['john.smith@company.com', 'jane.doe@test.org', 'bob@work.net'],
+    'phone': ['555-123-4567', '555-987-6543', '555-111-2222'],
+    'ssn': ['123-45-6789', '987-65-4321', '111-22-3333'],
+    'address': ['123 Main St, City', '456 Oak Ave, Town', '789 Pine Rd, Village']
+})
+
+# Mask specific columns
+result = masker.anonymize(customer_data, {
+    'email': 'email',
+    'phone': 'phone',
+    'ssn': 'ssn',
+    'name': 'name'
+})
+
+# Or auto-detect and mask
+result = masker.mask_pii_columns(customer_data)
+print(result)</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 17: Unit of Work Pattern with Transaction Support</h2>
+            <p>Implement transactional data processing with rollback capability.</p>
+<pre><code>import pandas as pd
+from datetime import datetime
+from typing import List, Callable, Any
+import copy
+
+class DataChange:
+    """Represents a change to be applied to data."""
+    
+    def __init__(self, table_name: str, operation: str,
+                 data: pd.DataFrame = None, filter_cond: str = None):
+        self.table_name = table_name
+        self.operation = operation  # 'insert', 'update', 'delete'
+        self.data = data
+        self.filter_cond = filter_cond
+        self.timestamp = datetime.now()
+
+class UnitOfWork:
+    """
+    Unit of Work pattern for managing data changes.
+    
+    Allows batching multiple changes and applying them atomically.
+    """
+    
+    def __init__(self):
+        self._changes: List[DataChange] = []
+        self._snapshots: dict = {}  # table_name -> snapshot
+    
+    def register_new(self, table_name: str, data: pd.DataFrame):
+        """Register new rows to insert."""
+        self._changes.append(DataChange(table_name, 'insert', data.copy()))
+    
+    def register_dirty(self, table_name: str, data: pd.DataFrame,
+                       filter_condition: str = None):
+        """Register rows to update."""
+        self._changes.append(DataChange(
+            table_name, 'update', data.copy(), filter_condition
+        ))
+    
+    def register_deleted(self, table_name: str, filter_condition: str):
+        """Register rows to delete."""
+        self._changes.append(DataChange(
+            table_name, 'delete', filter_cond=filter_condition
+        ))
+    
+    def snapshot(self, tables: dict):
+        """Take snapshot of current state for rollback."""
+        self._snapshots = {
+            name: df.copy() for name, df in tables.items()
+        }
+    
+    def rollback(self, tables: dict):
+        """Rollback to snapshot state."""
+        for name, snapshot in self._snapshots.items():
+            tables[name] = snapshot.copy()
+        self._changes.clear()
+    
+    def commit(self, tables: dict) -> dict:
+        """
+        Apply all changes atomically.
+        
+        Returns:
+            Dict of affected tables with their new states
+        """
+        
+        applied_changes = []
+        
+        try:
+            for change in self._changes:
+                if change.operation == 'insert':
+                    if change.table_name in tables:
+                        tables[change.table_name] = pd.concat(
+                            [tables[change.table_name], change.data],
+                            ignore_index=True
+                        )
+                    else:
+                        tables[change.table_name] = change.data.copy()
+                    applied_changes.append(change)
+                
+                elif change.operation == 'update':
+                    if change.table_name in tables:
+                        mask = tables[change.table_name].eval(change.filter_cond)
+                        tables[change.table_name].loc[mask] = change.data.loc[mask]
+                    applied_changes.append(change)
+                
+                elif change.operation == 'delete':
+                    if change.table_name in tables:
+                        mask = ~tables[change.table_name].eval(change.filter_cond)
+                        tables[change.table_name] = tables[change.table_name][mask]
+                    applied_changes.append(change)
+            
+            self._changes.clear()
+            self._snapshots.clear()
+            
+            return tables
+        
+        except Exception as e:
+            # Rollback on error
+            self.rollback(tables)
+            raise e
+
+class DataRepository:
+    """Repository pattern for data access."""
+    
+    def __init__(self):
+        self._storage: dict = {}
+        self._uow = UnitOfWork()
+    
+    def get_table(self, name: str) -> pd.DataFrame:
+        """Get a table by name."""
+        if name not in self._storage:
+            self._storage[name] = pd.DataFrame()
+        return self._storage[name]
+    
+    def begin(self):
+        """Begin a new unit of work."""
+        self._uow.snapshot(self._storage)
+        return self._uow
+    
+    def commit(self):
+        """Commit current unit of work."""
+        self._storage = self._uow.commit(self._storage)
+    
+    def rollback(self):
+        """Rollback current unit of work."""
+        self._uow.rollback(self._storage)
+
+class OrderService:
+    """Service layer for order operations."""
+    
+    def __init__(self, repository: DataRepository):
+        self.repo = repository
+    
+    def create_order_with_customer(self, customer_data: dict,
+                                    order_items: list) -> str:
+        """
+        Create order and customer atomically.
+        
+        Returns:
+            Order ID
+        """
+        
+        uow = self.repo.begin()
+        
+        try:
+            # Generate IDs
+            customer_id = f"C{len(self.repo.get_table('customers')) + 1:05d}"
+            order_id = f"O{len(self.repo.get_table('orders')) + 1:05d}"
+            
+            # Add customer
+            customer_df = pd.DataFrame([{
+                'customer_id': customer_id,
+                'name': customer_data['name'],
+                'email': customer_data['email'],
+                'created_at': datetime.now()
+            }])
+            uow.register_new('customers', customer_df)
+            
+            # Add order
+            order_df = pd.DataFrame([{
+                'order_id': order_id,
+                'customer_id': customer_id,
+                'status': 'pending',
+                'created_at': datetime.now()
+            }])
+            uow.register_new('orders', order_df)
+            
+            # Add order items
+            for item in order_items:
+                item_df = pd.DataFrame([{
+                    'item_id': f"I{len(self.repo.get_table('order_items'])) + 1:05d}",
+                    'order_id': order_id,
+                    'product_id': item['product_id'],
+                    'quantity': item['quantity'],
+                    'price': item['price']
+                }])
+                uow.register_new('order_items', item_df)
+            
+            # Calculate totals and update order
+            total = sum(item['quantity'] * item['price'] for item in order_items)
+            order_update = pd.DataFrame([{
+                'order_id': order_id,
+                'total': total
+            }])
+            uow.register_dirty('orders', order_update, 'order_id == @order_id')
+            
+            self.repo.commit()
+            return order_id
+        
+        except Exception as e:
+            self.repo.rollback()
+            raise e
+
+# Usage
+repo = DataRepository()
+service = OrderService(repo)
+
+# Initialize with some data
+repo._storage['customers'] = pd.DataFrame([
+    {'customer_id': 'C00001', 'name': 'Alice', 'email': 'alice@email.com'}
+])
+repo._storage['orders'] = pd.DataFrame()
+repo._storage['order_items'] = pd.DataFrame()
+
+try:
+    order_id = service.create_order_with_customer(
+        customer_data={'name': 'Bob', 'email': 'bob@email.com'},
+        order_items=[
+            {'product_id': 'P001', 'quantity': 2, 'price': 49.99},
+            {'product_id': 'P002', 'quantity': 1, 'price': 99.99}
+        ]
+    )
+    print(f"Created order: {order_id}")
+    
+except Exception as e:
+    print(f"Error: {e}")
+    print("Changes rolled back")</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 18: Backfill and Historical Reprocessing</h2>
+            <p>Handle backfilling historical data and reprocessing with state management.</p>
+<pre><code>import pandas as pd
+from datetime import datetime, timedelta
+from typing import List, Optional, Callable, Iterator
+import logging
+
+logger = logging.getLogger(__name__)
+
+class BackfillManager:
+    """Manage backfill operations for historical data."""
+    
+    def __init__(self, 
+                 start_date: datetime,
+                 end_date: datetime,
+                 batch_size: int = 1000,
+                 parallel_workers: int = 1):
+        self.start_date = pd.to_datetime(start_date)
+        self.end_date = pd.to_datetime(end_date)
+        self.batch_size = batch_size
+        self.parallel_workers = parallel_workers
+        
+        self.progress_file = 'backfill_progress.json'
+        self.state = self._load_state()
+    
+    def _load_state(self) -> dict:
+        """Load backfill state from file."""
+        import json
+        try:
+            with open(self.progress_file, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {
+                'last_processed_date': None,
+                'completed_batches': [],
+                'failed_batches': [],
+                'started_at': datetime.now().isoformat(),
+                'last_updated': datetime.now().isoformat()
+            }
+    
+    def _save_state(self):
+        """Save backfill state to file."""
+        import json
+        self.state['last_updated'] = datetime.now().isoformat()
+        with open(self.progress_file, 'w') as f:
+            json.dump(self.state, f, indent=2, default=str)
+    
+    def get_date_ranges(self) -> List[tuple]:
+        """Get date ranges for backfill batches."""
+        current = self.start_date
+        ranges = []
+        
+        while current < self.end_date:
+            batch_end = min(current + timedelta(days=self.batch_size), self.end_date)
+            ranges.append((current, batch_end))
+            current = batch_end
+        
+        return ranges
+    
+    def get_remaining_ranges(self) -> List[tuple]:
+        """Get date ranges that haven't been processed yet."""
+        all_ranges = self.get_date_ranges()
+        
+        if not self.state['completed_batches']:
+            return all_ranges
+        
+        completed = set(self.state['completed_batches'])
+        return [
+            r for r in all_ranges 
+            if f"{r[0].date()}_{r[1].date()}" not in completed
+        ]
+    
+    def mark_batch_complete(self, start: datetime, end: datetime):
+        """Mark a batch as completed."""
+        batch_key = f"{start.date()}_{end.date()}"
+        if batch_key not in self.state['completed_batches']:
+            self.state['completed_batches'].append(batch_key)
+            self.state['last_processed_date'] = end.date().isoformat()
+            self._save_state()
+    
+    def mark_batch_failed(self, start: datetime, end: datetime, error: str):
+        """Mark a batch as failed."""
+        batch_key = f"{start.date()}_{end.date()}"
+        if batch_key not in self.state['failed_batches']:
+            self.state['failed_batches'].append({
+                'batch': batch_key,
+                'error': error,
+                'failed_at': datetime.now().isoformat()
+            })
+            self._save_state()
+    
+    def run_backfill(self, 
+                      extract_func: Callable,
+                      transform_func: Callable,
+                      load_func: Callable,
+                      restart_from_failed: bool = True) -> dict:
+        """
+        Run the backfill process.
+        
+        Args:
+            extract_func: Function to extract data for a date range
+            transform_func: Function to transform data
+            load_func: Function to load processed data
+            restart_from_failed: Whether to retry failed batches
+        
+        Returns:
+            Backfill statistics
+        """
+        
+        stats = {
+            'total_batches': 0,
+            'completed': 0,
+            'failed': 0,
+            'records_processed': 0
+        }
+        
+        # Get ranges to process
+        if restart_from_failed:
+            ranges = self.get_date_ranges()
+        else:
+            ranges = self.get_remaining_ranges()
+        
+        stats['total_batches'] = len(ranges)
+        
+        for start, end in ranges:
+            batch_key = f"{start.date()}_{end.date()}"
+            logger.info(f"Processing batch: {batch_key}")
+            
+            try:
+                # Extract
+                raw_data = extract_func(start, end)
+                
+                if raw_data.empty:
+                    logger.info(f"No data for batch {batch_key}")
+                    self.mark_batch_complete(start, end)
+                    continue
+                
+                # Transform
+                processed_data = transform_func(raw_data)
+                
+                # Load
+                records = load_func(processed_data)
+                
+                # Mark complete
+                self.mark_batch_complete(start, end)
+                stats['completed'] += 1
+                stats['records_processed'] += records
+                
+                logger.info(f"Completed batch {batch_key}: {records} records")
+            
+            except Exception as e:
+                logger.error(f"Failed batch {batch_key}: {e}")
+                self.mark_batch_failed(start, end, str(e))
+                stats['failed'] += 1
+                
+                if not restart_from_failed:
+                    # Stop on first failure if not restarting
+                    break
+        
+        return stats
+
+def historical_date_range(start_date: str, 
+                          end_date: str,
+                          frequency: str = 'D') -> Iterator[datetime]:
+    """Generate historical date range."""
+    current = pd.to_datetime(start_date)
+    end = pd.to_datetime(end_date)
+    
+    while current <= end:
+        yield current
+        current += pd.Timedelta(frequency)
+
+# Usage
+def extract_orders(start: datetime, end: datetime) -> pd.DataFrame:
+    """Extract orders from source for date range."""
+    # Simulate extraction
+    return pd.DataFrame({
+        'order_id': range(1, 101),
+        'order_date': pd.date_range(start, periods=100, freq='H'),
+        'amount': [100 + i for i in range(100)],
+        'customer_id': [f'C{i%20:03d}' for i in range(100)]
+    })
+
+def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
+    """Transform orders with business logic."""
+    result = df.copy()
+    
+    # Add derived columns
+    result['year'] = result['order_date'].dt.year
+    result['month'] = result['order_date'].dt.month
+    result['day'] = result['order_date'].dt.day
+    result['revenue'] = result['amount'] * 1.1  # Add markup
+    
+    return result
+
+def load_to_dwh(df: pd.DataFrame) -> int:
+    """Load to data warehouse and return record count."""
+    # Simulate loading
+    print(f"Loading {len(df)} records to DWH")
+    return len(df)
+
+# Run backfill for last 30 days
+manager = BackfillManager(
+    start_date=datetime.now() - timedelta(days=30),
+    end_date=datetime.now(),
+    batch_size=7  # 7-day batches
+)
+
+stats = manager.run_backfill(
+    extract_func=extract_orders,
+    transform_func=transform_orders,
+    load_func=load_to_dwh,
+    restart_from_failed=True
+)
+
+print(f"Backfill complete: {stats['completed']}/{stats['total_batches']} batches")</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 19: Data Validation with Rejection Handling</h2>
+            <p>Implement a validation framework that routes valid and invalid records separately.</p>
+<pre><code>import pandas as pd
+from dataclasses import dataclass
+from typing import List, Tuple, Callable
+from datetime import datetime
+
+@dataclass
+class ValidationRule:
+    """A validation rule to apply to records."""
+    name: str
+    column: str
+    validate: Callable  # Function that returns True if valid
+    error_message: str
+    severity: str = 'error'  # 'error', 'warning', 'info'
+
+@dataclass
+class ValidationResult:
+    """Result of validating a record."""
+    is_valid: bool
+    errors: List[str]
+    warnings: List[str]
+    record_index: int
+
+class DataValidator:
+    """Validate data with rule-based approach."""
+    
+    def __init__(self, rules: List[ValidationRule]):
+        self.rules = rules
+    
+    def validate_record(self, row: pd.Series, idx: int) -> ValidationResult:
+        """Validate a single record."""
+        errors = []
+        warnings = []
+        
+        for rule in self.rules:
+            try:
+                is_valid = rule.validate(row[rule.column])
+                
+                if not is_valid:
+                    if rule.severity == 'error':
+                        errors.append(f"{rule.column}: {rule.error_message}")
+                    elif rule.severity == 'warning':
+                        warnings.append(f"{rule.column}: {rule.error_message}")
+            
+            except Exception as e:
+                errors.append(f"{rule.column}: Validation error - {str(e)}")
+        
+        return ValidationResult(
+            is_valid=len(errors) == 0,
+            errors=errors,
+            warnings=warnings,
+            record_index=idx
+        )
+    
+    def validate_dataframe(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+        """
+        Validate entire DataFrame.
+        
+        Returns:
+            (valid_records, invalid_records, validation_summary)
+        """
+        results = []
+        
+        for idx, row in df.iterrows():
+            result = self.validate_record(row, idx)
+            results.append(result)
+        
+        # Create results DataFrame
+        results_df = pd.DataFrame([
+            {
+                'index': r.record_index,
+                'is_valid': r.is_valid,
+                'error_count': len(r.errors),
+                'warning_count': len(r.warnings),
+                'errors': '; '.join(r.errors),
+                'warnings': '; '.join(r.warnings)
+            }
+            for r in results
+        ])
+        
+        # Split valid and invalid
+        valid_mask = results_df['is_valid']
+        valid_records = df.loc[valid_mask].copy()
+        invalid_records = df.loc[~valid_mask].copy()
+        
+        # Add validation columns to invalid records
+        invalid_with_errors = invalid_records.merge(
+            results_df[~valid_mask][['index', 'errors', 'warnings']],
+            left_index=True,
+            right_on='index'
+        )
+        
+        # Create summary
+        summary = self._create_summary(results)
+        
+        return valid_records, invalid_with_errors, summary
+    
+    def _create_summary(self, results: List[ValidationResult]) -> pd.DataFrame:
+        """Create validation summary report."""
+        
+        rule_failures = {rule.name: 0 for rule in self.rules}
+        
+        for result in results:
+            for error in result.errors:
+                # Parse which rule failed
+                for rule in self.rules:
+                    if rule.name in error or rule.column in error:
+                        rule_failures[rule.name] += 1
+        
+        summary_data = []
+        
+        for rule in self.rules:
+            failure_count = rule_failures[rule.name]
+            failure_rate = (failure_count / len(results) * 100) if results else 0
+            
+            summary_data.append({
+                'rule_name': rule.name,
+                'column': rule.column,
+                'severity': rule.severity,
+                'failures': failure_count,
+                'failure_rate_pct': round(failure_rate, 2),
+                'error_message': rule.error_message
+            })
+        
+        return pd.DataFrame(summary_data)
+
+class ValidationPipeline:
+    """Pipeline with validation and rejection handling."""
+    
+    def __init__(self, validator: DataValidator):
+        self.validator = validator
+        self.rejection_reasons = []
+    
+    def process_with_validation(self, 
+                                  df: pd.DataFrame,
+                                  valid_target: str,
+                                  invalid_target: str,
+                                  rejection_table: str) -> dict:
+        """
+        Process data with validation.
+        
+        Routes valid records to one target, invalid to another,
+        and tracks all rejections.
+        """
+        
+        # Validate
+        valid, invalid, summary = self.validator.validate_dataframe(df)
+        
+        # Load valid records
+        if not valid.empty:
+            valid.to_parquet(f'{valid_target}.parquet', index=False)
+        
+        # Load invalid records with error details
+        if not invalid.empty:
+            invalid.to_parquet(f'{invalid_target}.parquet', index=False)
+        
+        # Record rejections
+        for _, row in invalid.iterrows():
+            self.rejection_reasons.append({
+                'record_id': row.get('id', 'unknown'),
+                'rejected_at': datetime.now(),
+                'rejection_reason': row.get('errors', 'Unknown error')
+            })
+        
+        # Save rejection log
+        if self.rejection_reasons:
+            rejection_log = pd.DataFrame(self.rejection_reasons)
+            rejection_log.to_csv(f'{rejection_table}.csv', index=False)
+        
+        return {
+            'total_records': len(df),
+            'valid_records': len(valid),
+            'invalid_records': len(invalid),
+            'validation_summary': summary
+        }
+
+# Usage
+rules = [
+    ValidationRule(
+        name='amount_not_null',
+        column='amount',
+        validate=lambda x: pd.notna(x),
+        error_message='Amount is required',
+        severity='error'
+    ),
+    ValidationRule(
+        name='amount_positive',
+        column='amount',
+        validate=lambda x: x > 0,
+        error_message='Amount must be positive',
+        severity='error'
+    ),
+    ValidationRule(
+        name='valid_status',
+        column='status',
+        validate=lambda x: x in ['pending', 'completed', 'cancelled'],
+        error_message='Invalid status value',
+        severity='error'
+    ),
+    ValidationRule(
+        name='customer_email_format',
+        column='email',
+        validate=lambda x: pd.isna(x) or '@' in str(x),
+        error_message='Invalid email format',
+        severity='warning'
+    )
+]
+
+validator = DataValidator(rules)
+pipeline = ValidationPipeline(validator)
+
+orders = pd.DataFrame({
+    'id': [1, 2, 3, 4, 5],
+    'amount': [100, -50, 200, None, 150],
+    'status': ['pending', 'completed', 'invalid', 'cancelled', 'pending'],
+    'email': ['a@b.com', 'c@d.com', 'e@f.com', None, 'g@h.com']
+})
+
+result = pipeline.process_with_validation(
+    orders,
+    valid_target='valid_orders',
+    invalid_target='rejected_orders',
+    rejection_table='order_rejections'
+)
+
+print(f"Valid: {result['valid_records']}, Invalid: {result['invalid_records']}")
+print(result['validation_summary'])</code></pre>
+        </section>
+
+        <section>
+            <h2>Example 20: Audit Trail and Change Data Capture</h2>
+            <p>Implement complete audit trail with before/after snapshots.</p>
+<pre><code>import pandas as pd
+from datetime import datetime
+from dataclasses import dataclass, field
+from typing import List, Optional, Dict, Any
+import uuid
+
+@dataclass
+class AuditEntry:
+    """An audit log entry."""
+    entry_id: str
+    entity_type: str
+    entity_id: str
+    operation: str  # 'INSERT', 'UPDATE', 'DELETE'
+    timestamp: datetime
+    user: str
+    changes: dict = field(default_factory=dict)
+    before_state: dict = field(default_factory=dict)
+    after_state: dict = field(default_factory=dict)
+
+class AuditTrail:
+    """Track all changes to data for compliance and debugging."""
+    
+    def __init__(self):
+        self.entries: List[AuditEntry] = []
+        self.current_transaction: Optional[str] = None
+    
+    def begin_transaction(self, transaction_id: str = None) -> str:
+        """Begin a new audit transaction."""
+        self.current_transaction = transaction_id or str(uuid.uuid4())
+        return self.current_transaction
+    
+    def commit_transaction(self):
+        """Commit the current transaction."""
+        self.current_transaction = None
+    
+    def rollback_transaction(self):
+        """Rollback and clear transaction entries."""
+        if self.current_transaction:
+            self.entries = [
+                e for e in self.entries 
+                if e.entry_id != self.current_transaction
+            ]
+        self.current_transaction = None
+    
+    def log_insert(self, entity_type: str, entity_id: str,
+                   new_record: dict, user: str = 'system'):
+        """Log an insert operation."""
+        entry = AuditEntry(
+            entry_id=self.current_transaction or str(uuid.uuid4()),
+            entity_type=entity_type,
+            entity_id=str(entity_id),
+            operation='INSERT',
+            timestamp=datetime.now(),
+            user=user,
+            after_state=new_record
+        )
+        self.entries.append(entry)
+    
+    def log_update(self, entity_type: str, entity_id: str,
+                  old_record: dict, new_record: dict,
+                  user: str = 'system',
+                  change_columns: List[str] = None):
+        """Log an update operation with before/after state."""
+        
+        # Calculate changes
+        if change_columns:
+            changes = {
+                col: {'old': old_record.get(col), 'new': new_record.get(col)}
+                for col in change_columns
+                if old_record.get(col) != new_record.get(col)
+            }
+        else:
+            changes = {
+                col: {'old': old_record.get(col), 'new': new_record.get(col)}
+                for col in set(old_record.keys()) | set(new_record.keys())
+                if old_record.get(col) != new_record.get(col)
+            }
+        
+        if changes:  # Only log if there are actual changes
+            entry = AuditEntry(
+                entry_id=self.current_transaction or str(uuid.uuid4()),
+                entity_type=entity_type,
+                entity_id=str(entity_id),
+                operation='UPDATE',
+                timestamp=datetime.now(),
+                user=user,
+                changes=changes,
+                before_state=old_record,
+                after_state=new_record
+            )
+            self.entries.append(entry)
+    
+    def log_delete(self, entity_type: str, entity_id: str,
+                  old_record: dict, user: str = 'system'):
+        """Log a delete operation."""
+        entry = AuditEntry(
+            entry_id=self.current_transaction or str(uuid.uuid4()),
+            entity_type=entity_type,
+            entity_id=str(entity_id),
+            operation='DELETE',
+            timestamp=datetime.now(),
+            user=user,
+            before_state=old_record
+        )
+        self.entries.append(entry)
+    
+    def get_entity_history(self, entity_type: str, 
+                           entity_id: str) -> List[AuditEntry]:
+        """Get complete history of an entity."""
+        return [
+            e for e in self.entries
+            if e.entity_type == entity_type and e.entity_id == str(entity_id)
+        ]
+    
+    def get_changes_by_date(self, start_date: datetime,
+                           end_date: datetime) -> List[AuditEntry]:
+        """Get all changes within a date range."""
+        return [
+            e for e in self.entries
+            if start_date <= e.timestamp <= end_date
+        ]
+    
+    def to_dataframe(self) -> pd.DataFrame:
+        """Export audit trail to DataFrame."""
+        records = []
+        for entry in self.entries:
+            records.append({
+                'entry_id': entry.entry_id,
+                'entity_type': entry.entity_type,
+                'entity_id': entry.entity_id,
+                'operation': entry.operation,
+                'timestamp': entry.timestamp,
+                'user': entry.user,
+                'changes': str(entry.changes),
+                'before_state': str(entry.before_state),
+                'after_state': str(entry.after_state)
+            })
+        return pd.DataFrame(records)
+
+class AuditedDataStore:
+    """Data store with built-in audit trail."""
+    
+    def __init__(self, entity_type: str):
+        self.entity_type = entity_type
+        self.data: Dict[str, dict] = {}
+        self.audit = AuditTrail()
+    
+    def insert(self, record_id: str, record: dict, user: str = 'system'):
+        """Insert a record with audit logging."""
+        self.data[record_id] = record.copy()
+        self.audit.log_insert(self.entity_type, record_id, record, user)
+    
+    def update(self, record_id: str, updates: dict, 
+               user: str = 'system') -> bool:
+        """Update a record with audit logging."""
+        if record_id not in self.data:
+            return False
+        
+        old_record = self.data[record_id].copy()
+        new_record = {**old_record, **updates}
+        
+        self.data[record_id] = new_record
+        self.audit.log_update(
+            self.entity_type, record_id, old_record, new_record, user
+        )
+        return True
+    
+    def delete(self, record_id: str, user: str = 'system') -> bool:
+        """Delete a record with audit logging."""
+        if record_id not in self.data:
+            return False
+        
+        old_record = self.data[record_id].copy()
+        del self.data[record_id]
+        self.audit.log_delete(self.entity_type, record_id, old_record, user)
+        return True
+    
+    def bulk_insert_with_audit(self, records: List[dict],
+                                 id_column: str,
+                                 user: str = 'system'):
+        """Bulk insert with transaction."""
+        txn_id = self.audit.begin_transaction()
+        
+        try:
+            for record in records:
+                record_id = str(record.get(id_column))
+                self.insert(record_id, record, user)
+            
+            self.audit.commit_transaction()
+            return True
+        
+        except Exception as e:
+            self.audit.rollback_transaction()
+            raise e
+    
+    def get_snapshot_at(self, record_id: str, 
+                         as_of_timestamp: datetime) -> Optional[dict]:
+        """Get the state of a record at a specific point in time."""
+        
+        history = self.audit.get_entity_history(self.entity_type, record_id)
+        history = sorted(history, key=lambda x: x.timestamp)
+        
+        current_state = None
+        
+        for entry in history:
+            if entry.timestamp > as_of_timestamp:
+                break
+            
+            if entry.operation == 'INSERT':
+                current_state = entry.after_state.copy()
+            elif entry.operation == 'UPDATE':
+                current_state = entry.after_state.copy()
+            elif entry.operation == 'DELETE':
+                current_state = None
+        
+        return current_state
+
+# Usage
+store = AuditedDataStore('customer')
+
+# Insert
+store.insert('C001', {
+    'name': 'Alice',
+    'email': 'alice@email.com',
+    'tier': 'Gold'
+}, user='admin')
+
+# Update
+store.update('C001', {
+    'email': 'alice.new@email.com',
+    'tier': 'Platinum'
+}, user='admin')
+
+# Get history
+history = store.audit.get_entity_history('customer', 'C001')
+print(f"Total changes: {len(history)}")
+
+# Export audit trail
+audit_df = store.audit.to_dataframe()
+print(audit_df)
+
+# Get historical state
+snapshot = store.get_snapshot_at('C001', datetime.now() - pd.Timedelta(hours=1))
+print(f"State 1 hour ago: {snapshot}")</code></pre>
+        </section>
+
+        <section>
+            <h2>Quick Reference</h2>
+            <table>
+                <tr><th>Example</th><th>Use Case</th></tr>
+                <tr><td>1. SCD Type 2</td><td>Track customer history changes</td></tr>
+                <tr><td>2. CDC Processing</td><td>Process incremental database changes</td></tr>
+                <tr><td>3. Multi-Source Join</td><td>Enrich data from multiple sources</td></tr>
+                <tr><td>4. Fuzzy Matching</td><td>Match records without exact keys</td></tr>
+                <tr><td>5. Time Series Analytics</td><td>Calculate rolling metrics, cohort analysis</td></tr>
+                <tr><td>6. Data Quality Framework</td><td>Validate data against business rules</td></tr>
+                <tr><td>7. JSON Processing</td><td>Handle nested and semi-structured data</td></tr>
+                <tr><td>8. Incremental Load</td><td>Process only new data with watermarks</td></tr>
+                <tr><td>9. SCD Type 1</td><td>Overwrite dimension values</td></tr>
+                <tr><td>10. Partitioned Write</td><td>Write to partitioned data lake</td></tr>
+                <tr><td>11. Deduplication</td><td>Remove duplicate records</td></tr>
+                <tr><td>12. Late Arrivals</td><td>Handle data arriving after window closes</td></tr>
+                <tr><td>13. Schema Evolution</td><td>Handle schema changes gracefully</td></tr>
+                <tr><td>14. Data Lineage</td><td>Track data flow through transformations</td></tr>
+                <tr><td>15. Parallel Processing</td><td>Process large files in parallel</td></tr>
+                <tr><td>16. PII Masking</td><td>Handle sensitive data securely</td></tr>
+                <tr><td>17. Unit of Work</td><td>Transactional batch operations</td></tr>
+                <tr><td>18. Backfill</td><td>Reprocess historical data</td></tr>
+                <tr><td>19. Validation Pipeline</td><td>Route valid/invalid records separately</td></tr>
+                <tr><td>20. Audit Trail</td><td>Track all changes for compliance</td></tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

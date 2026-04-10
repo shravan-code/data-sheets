@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark SQL - Data Sheets</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Data Sheets</h1>
+        <nav>
+            <ul>
+                <li><a href="../python/index.html">Python</a></li>
+                <li><a href="../pandas/index.html">Pandas</a></li>
+                <li><a href="index.html" class="active">Spark</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <a href="index.html" class="back-link">← Back to Spark</a>
+        <h1>Spark SQL</h1>
+        
+        <h2>SQL Interface</h2>
+        <p>Spark provides a full SQL interface. You can register DataFrames as views and query them with SQL.</p>
+        
+        <pre><code># Register DataFrame as temp view
+df.createOrReplaceTempView('employees')
+
+# Run SQL queries
+result = spark.sql('''
+    SELECT 
+        dept,
+        COUNT(*) AS headcount,
+        ROUND(AVG(salary), 2) AS avg_salary,
+        MAX(salary) AS top_salary
+    FROM employees
+    WHERE active = true
+    GROUP BY dept
+    ORDER BY avg_salary DESC
+''')
+result.show()
+
+# Global temp view (cross-session)
+df.createOrReplaceGlobalTempView('global_employees')
+spark.sql('SELECT * FROM global_temp.global_employees').show()</code></pre>
+
+        <h2>Database Operations</h2>
+        <pre><code># Create database
+spark.sql('CREATE DATABASE IF NOT EXISTS hr_db')
+
+# Use database
+spark.sql('USE hr_db')
+
+# Show databases
+spark.sql('SHOW DATABASES').show()
+
+# Show tables
+spark.sql('SHOW TABLES IN hr_db').show()
+
+# Describe table
+spark.sql('DESCRIBE TABLE hr_db.employees').show()
+spark.sql('DESCRIBE EXTENDED hr_db.employees').show()</code></pre>
+
+        <h2>Creating Tables</h2>
+        <pre><code># Create managed table
+spark.sql('''
+    CREATE TABLE IF NOT EXISTS hr_db.employees (
+        name    STRING,
+        age     INT,
+        dept    STRING,
+        salary  DOUBLE
+    ) 
+    USING PARQUET
+    COMMENT 'Employee table'
+''')
+
+# Create external table
+spark.sql('''
+    CREATE EXTERNAL TABLE IF NOT EXISTS hr_db.emp_ext
+    USING PARQUET
+    LOCATION 's3://bucket/employees/'
+''')
+
+# CTAS (Create Table As Select)
+spark.sql('''
+    CREATE TABLE hr_db.high_earners AS
+    SELECT * FROM employees WHERE salary > 90000
+''')</code></pre>
+
+        <h2>Window Functions in SQL</h2>
+        <pre><code>spark.sql('''
+    SELECT 
+        name,
+        dept,
+        salary,
+        ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) as rn,
+        RANK() OVER (PARTITION BY dept ORDER BY salary DESC) as rank,
+        DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) as dense_rank,
+        LAG(salary, 1) OVER (PARTITION BY dept ORDER BY hire_date) as prev_salary,
+        LEAD(salary, 1) OVER (PARTITION BY dept ORDER BY hire_date) as next_salary,
+        SUM(salary) OVER (PARTITION BY dept) as dept_total,
+        AVG(salary) OVER (PARTITION BY dept) as dept_avg
+    FROM employees
+''').show()</code></pre>
+
+        <h2>Complex SQL Operations</h2>
+        <pre><code># Common Table Expression (CTE)
+spark.sql('''
+    WITH dept_stats AS (
+        SELECT dept, AVG(salary) as avg_sal
+        FROM employees
+        GROUP BY dept
+    )
+    SELECT e.name, e.salary, d.avg_sal,
+           e.salary - d.avg_sal as diff_from_avg
+    FROM employees e
+    JOIN dept_stats d ON e.dept = d.dept
+''').show()
+
+# Subquery
+spark.sql('''
+    SELECT name, salary
+    FROM employees
+    WHERE salary > (SELECT AVG(salary) FROM employees)
+''').show()
+
+# UNION / INTERSECT / EXCEPT
+spark.sql('SELECT * FROM t1 UNION SELECT * FROM t2')
+spark.sql('SELECT * FROM t1 INTERSECT SELECT * FROM t2')
+spark.sql('SELECT * FROM t1 EXCEPT SELECT * FROM t2')</code></pre>
+
+        <h2>Catalyst Optimizer</h2>
+        <p>The Catalyst Optimizer automatically optimizes your queries. Every query passes through multiple stages before execution.</p>
+        
+        <div class="flowchart">
+            <pre><code>SQL Text / DataFrame Operations
+         |
+         v
++------------------+
+|  PARSED PLAN     |  (SQL parsed to logical plan)
++------------------+
+         |
+         v
++------------------+
+|  ANALYZED PLAN   |  (Resolves column references)
++------------------+
+         |
+         v
++------------------+
+|  OPTIMIZED PLAN  |  (Catalyst applies optimizations)
++------------------+
+         |
+         v
++------------------+
+|  PHYSICAL PLAN   |  (How to execute)
++------------------+
+         |
+         v
++------------------+
+|  RDD OPERATIONS  |  (Generated Java bytecode)
++------------------+</code></pre>
+        </div>
+
+        <h2>Catalyst Optimizations</h2>
+        <table>
+            <tr><th>Optimization</th><th>What It Does</th></tr>
+            <tr><td>Predicate Pushdown</td><td>Moves filters close to data source</td></tr>
+            <tr><td>Column Pruning</td><td>Only scans needed columns</td></tr>
+            <tr><td>Partition Pruning</td><td>Skips irrelevant partitions</td></tr>
+            <tr><td>Broadcast Join</td><td>Small table sent to all nodes</td></tr>
+            <tr><td>Constant Folding</td><td>Pre-computes constants</td></tr>
+            <tr><td>AQE Skew Handling</td><td>Handles uneven data distribution</td></tr>
+        </table>
+
+        <h2>Catalog API</h2>
+        <pre><code># List databases
+spark.catalog.listDatabases()
+
+# List tables in database
+spark.catalog.listTables('hr_db')
+
+# List columns
+spark.catalog.listColumns('hr_db', 'employees')
+
+# Check if cached
+spark.catalog.isCached('employees')
+
+# Cache table
+spark.catalog.cacheTable('employees')
+
+# Uncache
+spark.catalog.uncacheTable('employees')
+
+# Drop temp view
+spark.catalog.dropTempView('employees')
+spark.catalog.dropGlobalTempView('global_employees')
+
+# Refresh table metadata
+spark.catalog.refreshTable('employees')</code></pre>
+
+        <h2>Query Plans</h2>
+        <pre><code># Explain query plan
+df.explain()                      # Physical plan
+df.explain(True)                  # Extended (all plans)
+df.explain('cost')                # With cost estimates
+
+# Analyze DataFrame
+df.filter(col('salary') > 50000) \
+  .groupBy('dept') \
+  .agg(avg('salary')) \
+  .explain()</code></pre>
+
+        <div class="tip-box">
+            <strong>Tip:</strong> Always check the query plan for large queries to ensure joins are properly broadcast and partitions are reasonable.
+        </div>
+    </main>
+</body>
+</html>
