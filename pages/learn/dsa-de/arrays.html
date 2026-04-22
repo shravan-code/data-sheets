@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. Arrays — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- PrismJS for Python Code Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom Prism overrides to fit the theme */
+        pre[class*="language-"] {
+            border-radius: 0.75rem;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            background: #0f172a; /* slate-900 */
+        }
+        html:not(.dark) pre[class*="language-"] {
+            background: #1e293b; /* slate-800 for contrast in light mode */
+        }
+    </style>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100);
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to DSA
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">2. Arrays</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Traversal, Two Pointers, Sliding Window, Prefix Sum.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>Understanding Arrays</h2>
+<p>An Array is the most fundamental data structure. It stores elements in <strong>contiguous memory locations</strong>, meaning they sit right next to each other in your computer's RAM.</p>
+
+<div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
+<div class="mermaid text-center">
+graph LR
+    subgraph Array
+        direction LR
+        A["10 (Index 0)"] --- B["20 (Index 1)"] --- C["30 (Index 2)"] --- D["40 (Index 3)"] --- E["50 (Index 4)"]
+    end
+</div>
+</div>
+
+<h3>Core Operations</h3>
+<ul>
+    <li><strong>Access:</strong> <code>O(1)</code>. Since items are contiguous, we can jump directly to any index.</li>
+    <li><strong>Search:</strong> <code>O(N)</code>. In an unsorted array, we must check every element one by one.</li>
+    <li><strong>Insertion/Deletion:</strong> <code>O(N)</code>. When you add or remove an item in the middle, you have to shift all subsequent items to make room or close the gap.</li>
+</ul>
+
+<h3>Advanced Techniques</h3>
+<ul>
+    <li><strong>Two Pointers:</strong> Using a <code>left</code> and <code>right</code> pointer that move towards each other. Great for reversing arrays.</li>
+    <li><strong>Sliding Window:</strong> Maintaining a "window" of the array and sliding it forward. Perfect for subarray problems.</li>
+    <li><strong>Prefix Sum:</strong> Pre-calculating the cumulative sum up to each index.</li>
+</ul>
+
+<h3>Python Example: Sliding Window</h3>
+<pre><code class="language-python"># Problem: Find the maximum sum of a contiguous subarray of size K
+def max_sum_subarray(arr, k):
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+    
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]
+        max_sum = max(max_sum, window_sum)
+        
+    return max_sum
+
+print(max_sum_subarray([2, 1, 5, 1, 3, 2], 3)) # Output: 9
+</code></pre>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

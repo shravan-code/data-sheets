@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn — Data Sheets</title>
+    <meta name="description" content="Learn Data Engineering, Cloud, Tools, and more with structured guides and cheat sheets.">
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']},colors:{brand:{500:'#3b82f6',600:'#2563eb'}}}}}
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
+        .topic-card{transition:all 0.25s cubic-bezier(.4,0,.2,1);}
+        .topic-card:hover{transform:translateY(-4px);}
+        .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
+        .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
+        .badge-pill{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .7rem;border-radius:9999px;font-size:.75rem;font-weight:500;}
+        .cat-icon{transition:transform .25s ease;}
+        .topic-card:hover .cat-icon{transform:scale(1.1) translateY(-2px);}
+        /* Subtle grid bg */
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        /* Nav active */
+        .nav-active{color:#0f172a!important;background:rgba(0,0,0,.05);}
+        .dark .nav-active{color:#fff!important;background:rgba(255,255,255,.08);}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+
+<!-- Background -->
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+<div class="fixed top-0 left-0 w-[600px] h-[600px] bg-blue-600/8 rounded-full blur-[140px] pointer-events-none z-0"></div>
+<div class="fixed bottom-0 right-0 w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline">
+            <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span>
+        </a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="nav-active px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 no-underline text-slate-900 dark:text-white">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-7xl mx-auto">
+
+    <!-- Hero -->
+    <div class="mb-14 text-center">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 transition-colors duration-300">
+            Learn <span style="background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">Data Engineering</span>
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 text-lg max-w-xl mx-auto transition-colors duration-300">Structured guides, cheat sheets and references across every domain.</p>
+    </div>
+
+    <!-- SECTION: Programming -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-colors">
+                <i data-lucide="code" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">Programming</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/python.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-blue-500 dark:text-blue-400 mb-4">
+                    <i data-lucide="file-code" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Python</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Core syntax, OOP, data structures and patterns for DE</p>
+                <div class="mt-4"><span class="badge-pill bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-transparent transition-colors">Programming</span></div>
+            </a>
+            <a href="/pages/learn/sql.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-blue-500 dark:text-blue-400 mb-4">
+                    <i data-lucide="database" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">SQL</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Queries, joins, window functions and query optimization</p>
+                <div class="mt-4"><span class="badge-pill bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-transparent transition-colors">Programming</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION: Concepts -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center transition-colors">
+                <i data-lucide="lightbulb" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">Concepts</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/de-fundamentals.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-violet-500 dark:text-violet-400 mb-4">
+                    <i data-lucide="book-open" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Data Engineering Fundamentals</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Pipelines, batch vs streaming, data modelling basics</p>
+                <div class="mt-4"><span class="badge-pill bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-100 dark:border-transparent transition-colors">Concepts</span></div>
+            </a>
+            <a href="/pages/learn/dsa-de.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-violet-500 dark:text-violet-400 mb-4">
+                    <i data-lucide="braces" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">DSA for DE</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Algorithms and data structures applied to data engineering</p>
+                <div class="mt-4"><span class="badge-pill bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-100 dark:border-transparent transition-colors">Concepts</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION: Tools -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center transition-colors">
+                <i data-lucide="wrench" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">Tools</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/spark.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="zap" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Apache Spark (PySpark)</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Distributed processing, DataFrames, Spark SQL</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/flink.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="waves" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Apache Flink</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Stateful stream processing and event-time semantics</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/kafka.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="message-square" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Apache Kafka</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Event streaming, topics, consumers, producers</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/dbt.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="refresh-cw" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">dbt</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Transform data in the warehouse with SQL and Jinja</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/pandas.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="table" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Pandas</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">DataFrames, data wrangling, aggregation and I/O</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/numpy.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="hash" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">NumPy</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Arrays, vectorized ops, linear algebra essentials</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+            <a href="/pages/learn/airflow.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-orange-500 dark:text-orange-400 mb-4">
+                    <i data-lucide="wind" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Apache Airflow</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">DAGs, operators, scheduling and pipeline orchestration</p>
+                <div class="mt-4"><span class="badge-pill bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-100 dark:border-transparent transition-colors">Tools</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION: Cloud -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center transition-colors">
+                <i data-lucide="cloud" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">Cloud</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/aws.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-cyan-500 dark:text-cyan-400 mb-4">
+                    <i data-lucide="server" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">AWS</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">S3, Glue, Redshift, Lambda, EMR and DE services</p>
+                <div class="mt-4"><span class="badge-pill bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-transparent transition-colors">Cloud</span></div>
+            </a>
+            <a href="/pages/learn/gcp.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-cyan-500 dark:text-cyan-400 mb-4">
+                    <i data-lucide="server" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">GCP</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">BigQuery, Dataflow, Pub/Sub, Cloud Composer</p>
+                <div class="mt-4"><span class="badge-pill bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-transparent transition-colors">Cloud</span></div>
+            </a>
+            <a href="/pages/learn/azure.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-cyan-500 dark:text-cyan-400 mb-4">
+                    <i data-lucide="server" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Azure</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Synapse, Data Factory, ADLS, Databricks on Azure</p>
+                <div class="mt-4"><span class="badge-pill bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-transparent transition-colors">Cloud</span></div>
+            </a>
+            <a href="/pages/learn/snowflake.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-cyan-500 dark:text-cyan-400 mb-4">
+                    <i data-lucide="snowflake" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Snowflake</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Virtual warehouses, time travel, streams and tasks</p>
+                <div class="mt-4"><span class="badge-pill bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-transparent transition-colors">Cloud</span></div>
+            </a>
+            <a href="/pages/learn/databricks.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-cyan-500 dark:text-cyan-400 mb-4">
+                    <i data-lucide="box" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Databricks</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Delta Lake, Unity Catalog, notebooks and workflows</p>
+                <div class="mt-4"><span class="badge-pill bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-transparent transition-colors">Cloud</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION: CI/CD -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 flex items-center justify-center transition-colors">
+                <i data-lucide="rocket" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">CI/CD</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/docker.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-green-500 dark:text-green-400 mb-4">
+                    <i data-lucide="container" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Docker</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Containers, Dockerfiles, images, volumes and compose</p>
+                <div class="mt-4"><span class="badge-pill bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-100 dark:border-transparent transition-colors">CI/CD</span></div>
+            </a>
+            <a href="/pages/learn/kubernetes.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-green-500 dark:text-green-400 mb-4">
+                    <i data-lucide="network" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Kubernetes</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Pods, deployments, services, Helm and cluster management</p>
+                <div class="mt-4"><span class="badge-pill bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-100 dark:border-transparent transition-colors">CI/CD</span></div>
+            </a>
+            <a href="/pages/learn/terraform.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-green-500 dark:text-green-400 mb-4">
+                    <i data-lucide="blocks" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Terraform</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">IaC, providers, modules, state management</p>
+                <div class="mt-4"><span class="badge-pill bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-100 dark:border-transparent transition-colors">CI/CD</span></div>
+            </a>
+            <a href="/pages/learn/github.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-green-500 dark:text-green-400 mb-4">
+                    <i data-lucide="github" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">GitHub</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Actions, workflows, branching strategies and Git flow</p>
+                <div class="mt-4"><span class="badge-pill bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-100 dark:border-transparent transition-colors">CI/CD</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECTION: Design -->
+    <section class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center transition-colors">
+                <i data-lucide="pen-tool" class="w-5 h-5"></i>
+            </div>
+            <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white transition-colors duration-300">Design</h2>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-800 transition-colors duration-300"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/pages/learn/system-design.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-rose-500 dark:text-rose-400 mb-4">
+                    <i data-lucide="server-cog" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">System Design</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Scalability, reliability, caching, load balancing</p>
+                <div class="mt-4"><span class="badge-pill bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-transparent transition-colors">Design</span></div>
+            </a>
+            <a href="/pages/learn/pipeline-design.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-rose-500 dark:text-rose-400 mb-4">
+                    <i data-lucide="git-pull-request" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">Data Pipeline Design</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Ingestion, transformation, orchestration patterns</p>
+                <div class="mt-4"><span class="badge-pill bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-transparent transition-colors">Design</span></div>
+            </a>
+            <a href="/pages/learn/de-architectures.html" class="topic-card no-underline block bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <div class="cat-icon text-rose-500 dark:text-rose-400 mb-4">
+                    <i data-lucide="map" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-display font-semibold text-base text-slate-900 dark:text-white mb-1 transition-colors">DE Architectures</h3>
+                <p class="text-slate-500 dark:text-slate-500 text-sm transition-colors">Lambda, Kappa, Data Mesh, Lakehouse patterns</p>
+                <div class="mt-4"><span class="badge-pill bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-transparent transition-colors">Design</span></div>
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<script>
+lucide.createIcons();
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+});
+</script>
+</body>
+</html>

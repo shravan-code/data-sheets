@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. Data Processing Concepts — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100); // Reload to re-render mermaid with correct theme
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        /* Typography overrides to make it look premium */
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Fundamentals
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">6. Data Processing Concepts</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Distributed computing, shuffling, skew, and evaluation strategies.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>Distributed Computing Basics</h2>
+<p>When data is too large to fit in the RAM or hard drive of a single machine, we use distributed computing (like Spark). Data is split into chunks, and a cluster of computers (workers) processes the chunks in parallel, coordinated by a central master node.</p>
+
+<h2>MapReduce Paradigm</h2>
+<p>The foundational concept of big data processing, popularized by Hadoop.</p>
+<ul>
+    <li><strong>Map phase:</strong> Apply a function to every row independently in parallel across nodes. (e.g., convert text to uppercase).</li>
+    <li><strong>Reduce phase:</strong> Bring related data together across the network to aggregate it. (e.g., SUM or COUNT).</li>
+</ul>
+
+<h2>Partitioning & Bucketing</h2>
+<p>These are physical data organization techniques to speed up reads.</p>
+<ul>
+    <li><strong>Partitioning:</strong> Creating separate folders for unique values of a column (e.g., `/date=2023-01-01/`).</li>
+    <li><strong>Bucketing:</strong> Dividing data into a fixed number of files based on a hash of a column (e.g., `hash(user_id) % 10`). Perfect for speeding up JOINs because the engine knows exactly which bucket contains which `user_id`.</li>
+</ul>
+
+<h2>Shuffling & Data Skew</h2>
+<p><strong>Shuffling:</strong> When data must be moved between different nodes over the network (e.g., during a `GROUP BY` or `JOIN`). Shuffling is the most expensive, slowest operation in big data. Try to avoid it!</p>
+<p><strong>Data Skew:</strong> When one node gets significantly more data to process than others because the data isn't distributed evenly (e.g., grouping by `country` where 90% of users are from the US). The whole job is bottlenecked by that single slow node. Solutions include salting (adding random numbers to keys).</p>
+
+<h2>Lazy vs Eager Evaluation</h2>
+<p><strong>Eager Evaluation (Pandas):</strong> As soon as you write a line of code, the data is processed immediately.</p>
+<p><strong>Lazy Evaluation (Spark):</strong> Spark doesn't process anything when you define transformations. It waits until you call an "Action" (like `.show()` or `.write()`), looks at your entire pipeline, optimizes the query execution plan, and then executes it efficiently in one go.</p>
+
+<h2>In-memory vs Disk-based Processing</h2>
+<p>Hadoop MapReduce wrote intermediate results to disk after every step, making it extremely slow. Spark keeps intermediate results in RAM (in-memory), making it up to 100x faster, though it requires more expensive hardware.</p>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. Data Storage — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100); // Reload to re-render mermaid with correct theme
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        /* Typography overrides to make it look premium */
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Fundamentals
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">3. Data Storage</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Warehouses, Lakes, OLTP vs OLAP, and file formats.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>Databases vs Data Warehouses vs Data Lakes vs Lakehouse</h2>
+<div class="overflow-x-auto my-6 not-prose">
+    <table class="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
+        <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <tr>
+                <th class="px-6 py-3">System</th>
+                <th class="px-6 py-3">Data Type</th>
+                <th class="px-6 py-3">Use Case</th>
+                <th class="px-6 py-3">Examples</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Database (OLTP)</td>
+                <td class="px-6 py-4">Highly structured, normalized</td>
+                <td class="px-6 py-4">Application backends, fast transactions</td>
+                <td class="px-6 py-4">PostgreSQL, MySQL, MongoDB</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Data Warehouse (OLAP)</td>
+                <td class="px-6 py-4">Structured, denormalized (Star Schema)</td>
+                <td class="px-6 py-4">Analytics, BI reporting, aggregations</td>
+                <td class="px-6 py-4">Snowflake, Redshift, BigQuery</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Data Lake</td>
+                <td class="px-6 py-4">Structured, semi-structured, unstructured (images, text)</td>
+                <td class="px-6 py-4">Cheap storage, Machine Learning, staging area</td>
+                <td class="px-6 py-4">Amazon S3, Azure ADLS Gen2</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Lakehouse</td>
+                <td class="px-6 py-4">Structured & unstructured with ACID transactions</td>
+                <td class="px-6 py-4">Combines Warehouse reliability with Lake cheap storage</td>
+                <td class="px-6 py-4">Databricks (Delta Lake), Apache Iceberg</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2>Row-based vs Columnar Storage</h2>
+<p><strong>Row-based (e.g., PostgreSQL, CSV):</strong> Data is stored sequentially row by row. Great for writing new records quickly (OLTP).</p>
+<p><strong>Columnar (e.g., Redshift, Parquet):</strong> Data is stored column by column. Great for analytics (OLAP) because reading only the specific columns you need is lightning fast, and identical data types compress beautifully.</p>
+
+<h2>File Formats</h2>
+<ul>
+    <li><strong>Parquet:</strong> The king of data engineering. Columnar, highly compressed, strongly typed.</li>
+    <li><strong>ORC:</strong> Similar to Parquet, heavily optimized for Hive environments.</li>
+    <li><strong>Avro:</strong> Row-based, excellent for schema evolution. Heavily used with Kafka.</li>
+    <li><strong>JSON:</strong> Semi-structured, human-readable, but slow to parse and uncompressed.</li>
+    <li><strong>CSV:</strong> Text format. Prone to parsing errors (delimiters inside strings). Avoid for big data!</li>
+</ul>
+
+<h2>Storage Partitioning</h2>
+<p>Partitioning means dividing your data into separate directories based on a column (usually a date). Instead of scanning a 10TB table, a query filtering `WHERE year=2023 AND month=10` will only scan the `/year=2023/month=10/` directory, drastically improving speed and reducing costs.</p>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+</body>
+</html>

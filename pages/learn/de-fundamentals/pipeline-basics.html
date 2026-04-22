@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. Data Pipeline Basics — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100); // Reload to re-render mermaid with correct theme
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        /* Typography overrides to make it look premium */
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Fundamentals
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">2. Data Pipeline Basics</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">ETL vs ELT, batch vs streaming, and pipeline design principles.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>What is a Data Pipeline?</h2>
+<p>A data pipeline is a set of automated processes that extract data from various sources, transform it into a usable format, and load it into a destination system for analysis.</p>
+
+<h2>ETL vs ELT</h2>
+<div class="flex flex-col gap-6 my-6">
+    <div class="flex gap-4 items-start">
+        <div class="w-16 h-16 shrink-0 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center font-bold text-xl text-slate-700 dark:text-slate-300">ETL</div>
+        <div>
+            <h3 class="font-bold mt-0 text-slate-900 dark:text-white">Extract, Transform, Load</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Data is transformed in a separate processing engine (like Spark) <em>before</em> being loaded into the warehouse. Ideal for on-premise systems where warehouse compute is expensive or when heavy transformations are required before loading (e.g., masking PII).</p>
+        </div>
+    </div>
+    <div class="flex gap-4 items-start">
+        <div class="w-16 h-16 shrink-0 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center font-bold text-xl text-blue-700 dark:text-blue-400">ELT</div>
+        <div>
+            <h3 class="font-bold mt-0 text-slate-900 dark:text-white">Extract, Load, Transform</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Data is loaded raw into the warehouse first, then transformed using the warehouse's own scalable compute (e.g., using dbt inside Snowflake or BigQuery). This is the modern standard for cloud data engineering.</p>
+        </div>
+    </div>
+</div>
+
+<h2>Batch vs Streaming vs Micro-batch</h2>
+<ul>
+    <li><strong>Batch Processing:</strong> Processing data in large, bounded chunks at scheduled intervals (e.g., every night at 2 AM). Tools: Airflow, Spark.</li>
+    <li><strong>Streaming Processing:</strong> Processing data continuously as it arrives with sub-second latency. Tools: Flink, Kafka Streams.</li>
+    <li><strong>Micro-batch:</strong> A hybrid approach where data is processed in very small, frequent batches (e.g., every 5 seconds). Tools: Spark Structured Streaming.</li>
+</ul>
+
+<h2>Pipeline Design Principles</h2>
+<p>Modern data pipelines must be resilient. These three concepts are critical:</p>
+
+<div class="grid grid-cols-1 gap-4 my-6 not-prose">
+    <div class="border-l-4 border-emerald-500 pl-4 py-2">
+        <h4 class="font-bold text-slate-900 dark:text-white">1. Idempotency</h4>
+        <p class="text-sm text-slate-600 dark:text-slate-400">An idempotent pipeline produces the exact same result whether it is run once or a hundred times for the same time window. It prevents duplicate data if a job crashes and restarts.</p>
+    </div>
+    <div class="border-l-4 border-blue-500 pl-4 py-2">
+        <h4 class="font-bold text-slate-900 dark:text-white">2. Replayability</h4>
+        <p class="text-sm text-slate-600 dark:text-slate-400">The ability to easily re-run past data. If a bug is discovered in a transformation logic, you should be able to "replay" the pipeline for the last 30 days to fix the historical data.</p>
+    </div>
+    <div class="border-l-4 border-violet-500 pl-4 py-2">
+        <h4 class="font-bold text-slate-900 dark:text-white">3. Backfilling</h4>
+        <p class="text-sm text-slate-600 dark:text-slate-400">The process of loading historical data into a new pipeline or table. A well-designed pipeline allows you to pass a custom date range to compute past data.</p>
+    </div>
+</div>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+</body>
+</html>
