@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14. DE-Specific Design — System Design</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: {
+                fontFamily: 'Inter',
+                fontSize: '13px'
+            }
+        });
+        window.mermaid = mermaid;
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .prose h2{margin-top:2.5rem;margin-bottom:1.25rem;font-weight:700;color:inherit;font-size:2.25rem;letter-spacing:-0.02em;}
+        .prose h3{margin-top:2rem;margin-bottom:1rem;font-weight:600;color:inherit;font-size:1.6rem;letter-spacing:-0.01em;}
+        .prose p{margin-bottom:1.25rem;line-height:1.8;opacity:0.9;}
+        .prose ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:1.25rem;}
+        .prose li{margin-bottom:0.6rem;}
+        .prose code{background:rgba(0,0,0,0.05);padding:0.2rem 0.4rem;border-radius:0.25rem;font-size:0.875em;font-weight:500;}
+        .dark .prose code{background:rgba(255,255,255,0.1);}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+    <a href="/pages/learn/system-design.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to System Design
+    </a>
+
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">14. DE-Specific Design</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Architectures for Big Data: Lambda, Kappa, and CDC.</p>
+    </header>
+
+    <article class="prose dark:prose-invert max-w-none pb-20">
+        
+<h2>Engineering the Data Lifecycle</h2>
+<p>Data engineering systems differ from standard apps in their focus on massive state, consistency across hops, and analytical performance.</p>
+
+<h3>The Lambda Architecture</h3>
+<p>Addresses the problem of high-latency batch processing by adding a real-time "speed layer".</p>
+<div class="my-8 p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl not-prose">
+<div class="mermaid text-center">
+graph TD
+    Data[Incoming Data] --> Batch[Batch Layer: High Accuracy]
+    Data --> Speed[Speed Layer: Low Latency]
+    Batch --> View[Serving Layer]
+    Speed --> View
+    View --> User[User Query]
+</div>
+</div>
+
+<h3>Kappa Architecture</h3>
+<p>A simplification of Lambda. It treats EVERYTHING as a stream. If you need to re-run historical data, you simply "replay" the log from the beginning. (Enabled by tools like Apache Kafka).</p>
+
+<h3>CDC: Change Data Capture</h3>
+<p>Capturing the changes made to a source database in real-time. Instead of querying a DB every hour (expensive), CDC listens to the DB's **Transaction Log** (WAL) and streams every Insert/Update to the warehouse.</p>
+
+<div class="p-5 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-xl my-8">
+    <h4 class="font-bold text-amber-700">The Medallion Architecture</h4>
+    <p class="text-sm opacity-90 mt-2">A data design pattern used to organize data into layers of increasing quality:</p>
+    <ul class="text-xs mt-3 space-y-2 list-none">
+        <li>🟫 <strong>Bronze:</strong> Raw, unprocessed data. The "Source of Truth".</li>
+        <li>⬜ <strong>Silver:</strong> Cleaned, filtered, and joined data. Validated schema.</li>
+        <li>🟨 <strong>Gold:</strong> Aggregated and highly optimized data for business users and BI tools.</li>
+    </ul>
+</div>
+        
+    </article>
+
+    <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        <a href="infra-deployment.html" class="flex flex-col no-underline group">
+            <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">13. Infra & Deployment</span>
+        </a>
+        <a href="classic-problems.html" class="flex flex-col items-end no-underline group text-right">
+            <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">15. Classic Problems</span>
+        </a>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme', d?'dark':'light');
+    location.reload();
+});
+</script>
+</body>
+</html>
