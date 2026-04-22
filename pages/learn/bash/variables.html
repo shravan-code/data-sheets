@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>2. Variables — Bash Scripting</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        .prose h2{margin-top:2.5rem;margin-bottom:1.25rem;font-weight:700;color:inherit;font-size:2.25rem;letter-spacing:-0.02em;}
+        .prose h3{margin-top:2rem;margin-bottom:1rem;font-weight:600;color:inherit;font-size:1.6rem;letter-spacing:-0.01em;}
+        .prose p{margin-bottom:1.25rem;line-height:1.8;opacity:0.9;}
+        .prose ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:1.25rem;}
+        .prose li{margin-bottom:0.6rem;}
+        .prose code{background:rgba(0,0,0,0.05);padding:0.2rem 0.4rem;border-radius:0.25rem;font-size:0.875em;font-weight:500;}
+        .dark .prose code{background:rgba(255,255,255,0.1);}
+        
+        pre[class*="language-"] {
+            border-radius: 0.75rem !important;
+            margin: 1.5rem 0 !important;
+            background: #0f172a !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <a href="../../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="../../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="../../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+    <a href="../bash.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Bash Scripting
+    </a>
+
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">2. Variables</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
+    </header>
+
+    <article class="prose dark:prose-invert max-w-none pb-20">
+        <h2>Declaring and Using Variables</h2>
+<br>
+<p>Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
+<br>
+<h3>Basic Variable Assignment</h3>
+<pre><code class="language-bash">
+name="Alice"
+age=30
+echo "Name: $name, Age: $age"
+</code></pre>
+<br>
+<h3>Curly Brace Syntax</h3>
+<pre><code class="language-bash">
+fruit="apple"
+echo "I have ${fruit}s"
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Variable Types</h2>
+<br>
+<p>Bash variables are untyped by default, but you can use declare to define types like integers or arrays.</p>
+<br>
+<h3>Integer Declaration</h3>
+<pre><code class="language-bash">
+declare -i count=10
+count+=5
+echo $count  # Output: 15
+</code></pre>
+<br>
+<h3>Readonly Variable</h3>
+<pre><code class="language-bash">
+readonly PI=3.14159
+echo $PI
+# PI=3 would cause an error
+</code></pre>
+<br>
+<h3>Lowercase Variable</h3>
+<pre><code class="language-bash">
+declare -l lowered="HELLO"
+echo $lowered  # Output: hello
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Environment Variables</h2>
+<br>
+<p>Environment variables are available to the script and child processes. Use export to pass them to subprocesses.</p>
+<br>
+<h3>Common Environment Variables</h3>
+<pre><code class="language-bash">
+echo $HOME      # /home/username
+echo $USER      # username
+echo $PATH      # /usr/bin:/bin:...
+echo $PWD       # Current directory
+echo $SHELL     # /bin/bash
+echo $HOSTNAME  # machine-name
+</code></pre>
+<br>
+<h3>Exporting Variables</h3>
+<pre><code class="language-bash">
+export MY_VAR="hello"
+bash -c 'echo $MY_VAR'  # Output: hello
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Special Variables</h2>
+<br>
+<p>Bash provides special variables for script arguments, process info, and status codes.</p>
+<br>
+<h3>Script Arguments</h3>
+<pre><code class="language-bash">
+#!/bin/bash
+echo "Script name: $0"
+echo "First arg: $1"
+echo "Second arg: $2"
+echo "All args: $@"
+echo "Number of args: $#"
+</code></pre>
+<br>
+<h3>Exit Status and PID</h3>
+<pre><code class="language-bash">
+ls /nonexistent 2&gt;/dev/null
+echo "Exit status: $?"  # 1 (error)
+echo "Current PID: $$"
+echo "Last background PID: $!"
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Variable Substitution & Defaults</h2>
+<br>
+<p>Bash provides powerful parameter expansion to set defaults, substrings, and transformations.</p>
+<br>
+<h3>Default Values</h3>
+<pre><code class="language-bash">
+name=""
+echo ${name:-"Default"}   # Default (if unset or empty)
+echo ${name:="Assigned"}  # Assigns and prints
+echo ${name:?"Error!"}    # Error if unset
+</code></pre>
+<br>
+<h3>Substring Extraction</h3>
+<pre><code class="language-bash">
+str="Hello, World!"
+echo ${str:7:5}   # World
+echo ${str:0:5}   # Hello
+echo ${#str}      # 13 (length)
+</code></pre>
+<br>
+<h3>Pattern Removal</h3>
+<pre><code class="language-bash">
+file="/home/user/docs/report.txt"
+echo ${file##*/}   # report.txt (basename)
+echo ${file%/*}    # /home/user/docs (dirname)
+echo ${file%.txt}  # /home/user/docs/report
+</code></pre>
+<br>
+<hr>
+<br>
+    </article>
+
+    <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        
+            <a href="introduction-to-bash.html" class="flex flex-col items-start no-underline group">
+                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-left">1. Introduction to Bash</span>
+            </a>
+        
+            <a href="data-types-strings.html" class="flex flex-col items-end no-underline group text-right">
+                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">3. Data Types & Strings</span>
+            </a>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script>
+    lucide.createIcons();
+    document.getElementById('theme-toggle').addEventListener('click',()=>{
+        const d=document.documentElement.classList.toggle('dark');
+        localStorage.setItem('ds-theme', d?'dark':'light');
+    });
+</script>
+</body>
+</html>
