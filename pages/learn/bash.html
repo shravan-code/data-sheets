@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Bash Scripting — Data Sheets</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        .topic-card{transition:all 0.2s;}
+        .topic-card:hover{transform:translateY(-2px);}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <a href="../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
+    <a href="learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Learn
+    </a>
+
+    <header class="mb-12">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
+                <i data-lucide="terminal" class="w-7 h-7"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight tracking-tight">Bash Scripting</h1>
+        </div>
+        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">Master the art of automation. From basic commands to complex system scripts and cross-platform comparisons.</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        
+    <a href="bash/introduction-to-bash.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="terminal" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">1. Introduction to Bash</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash (Bourne Again SHell) is a Unix shell and command-line interpreter. It is the default shell on most Linux distributi...</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/variables.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="variable" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">2. Variables</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/data-types-strings.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="type" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">3. Data Types & Strings</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash strings can be manipulated using parameter expansion for length, replacement, case conversion, and more.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/input-output.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="hard-drive" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">4. Input & Output</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">The read command reads input from stdin. It can read into single or multiple variables.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/operators-arithmetic.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="calculator" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">5. Operators & Arithmetic</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash supports integer arithmetic via (( )) or $(()), and floating-point via bc or awk.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/control-flow.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="git-branch" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">6. Control Flow</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Conditional branching using if/elif/else. The condition can be any command—its exit status determines the branch.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/functions.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="command" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">7. Functions</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Functions group reusable code. They can accept arguments and return values via exit codes or stdout.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/string-manipulation.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="scissors" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">8. String Manipulation</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">These are the three pillars of text processing in Bash. grep searches, sed transforms, awk processes structured text.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/file-directory-operations.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="folder" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">9. File & Directory Operations</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash provides robust file manipulation through built-in commands.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/process-management.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="cpu" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">10. Process Management</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Processes can run in the background using & and be managed with jobs, fg, bg.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/error-handling.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="alert-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">11. Error Handling</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Every command returns an exit code: 0 = success, non-zero = failure. $? holds the last exit code.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/regular-expressions.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="search" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">12. Regular Expressions</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Regular expressions are patterns used with grep, sed, and awk for text matching and extraction.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/debugging.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="bug" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">13. Debugging</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash offers several built-in debugging tools and strategies.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/advanced-topics.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="zap" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">14. Advanced Topics</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Capture command output into a variable using $() or backticks.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/script-best-practices.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="check-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">15. Script Best Practices</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Following consistent style and safety practices makes scripts robust, readable, and maintainable.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/projects.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="folder-kanban" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">16. Projects</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">A script that monitors CPU, memory, disk usage, and alerts when thresholds are exceeded.</p>
+            </div>
+        </div>
+    </a>
+    <a href="bash/bash-vs-powershell-cheatsheet.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <i data-lucide="layout" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">17. Bash vs PowerShell Cheatsheet</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Side-by-side comparison of Bash (Linux/macOS) and PowerShell (Windows/cross-platform) commands and syntax</p>
+            </div>
+        </div>
+    </a>
+    </div>
+</main>
+
+<script>
+    lucide.createIcons();
+    document.getElementById('theme-toggle').addEventListener('click',()=>{
+        const d=document.documentElement.classList.toggle('dark');
+        localStorage.setItem('ds-theme', d?'dark':'light');
+    });
+</script>
+</body>
+</html>
