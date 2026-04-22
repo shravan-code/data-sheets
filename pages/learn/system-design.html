@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Design — Data Sheets</title>
-    <meta name="description" content="Design large-scale distributed systems with scalability, reliability and performance in mind.">
     <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
@@ -15,71 +14,281 @@
         .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
         .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
         .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        .topic-card{transition:all 0.2s;}
+        .topic-card:hover{transform:translateY(-2px);}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-rose-600/8 rounded-full blur-3xl pointer-events-none z-0"></div>
+<div class="fixed top-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
 
 <!-- NAV -->
 <nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
         <a href="../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
         <div class="flex items-center gap-1">
-            <a href="../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Learn</a>
-            <a href="../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Practice</a>
+            <a href="../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
         </div>
-        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200">
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
         </button>
     </div>
 </nav>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
     <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Learn
     </a>
 
-    <div class="flex items-start gap-5 mb-6">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 transition-colors">
-            <i data-lucide="server-cog" class="w-6 h-6"></i>
+    <div class="flex items-start gap-5 mb-10">
+        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
+            <i data-lucide="layout" class="w-8 h-8"></i>
         </div>
         <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 transition-colors border border-rose-200 dark:border-transparent" style="background:rgba(244,63,94,.15);color:#fb7185">Design</span>
-            <h1 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white leading-tight transition-colors">System Design</h1>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">Architecture</span>
+            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">System Design</h1>
+            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Master the art of building scalable, reliable, and maintainable distributed systems.</p>
         </div>
     </div>
 
-    <p class="text-slate-600 dark:text-slate-400 text-lg mb-10 leading-relaxed max-w-2xl transition-colors">Design large-scale distributed systems with scalability, reliability and performance in mind.</p>
-
-    <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 mb-6 transition-colors shadow-sm dark:shadow-none">
-        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6 transition-colors">What you'll learn</h2>
-        <ul class="space-y-3">
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>Scalability: horizontal vs vertical scaling</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>CAP theorem and consistency models</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>Load balancing strategies</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>Caching: Redis, CDN, application-level</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>Database selection: SQL vs NoSQL</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>Message queues and async processing</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>API design: REST and gRPC</span></li>
-            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#fb7185"></i><span>High availability and fault tolerance patterns</span></li>
-        </ul>
-    </div>
-
-    <div class="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center transition-colors shadow-sm dark:shadow-none">
-        <div class="flex justify-center mb-3 text-slate-400 dark:text-slate-500 transition-colors">
-            <i data-lucide="hammer" class="w-8 h-8"></i>
-        </div>
-        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-2 transition-colors">Content Coming Soon</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors">Detailed notes, cheat sheets and examples are being prepared.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
+        <a href="system-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
+            </div>
+            <div class="relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
+                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </div>
+            </div>
+        </a>
     </div>
 </main>
-
 <script>
-    lucide.createIcons();
-    document.getElementById('theme-toggle').addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('ds-theme',d?'dark':'light');});
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme', d?'dark':'light');
+});
 </script>
 </body>
 </html>
