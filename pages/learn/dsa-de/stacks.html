@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. Stacks — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- PrismJS for Python Code Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom Prism overrides to fit the theme */
+        pre[class*="language-"] {
+            border-radius: 0.75rem;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            background: #0f172a; /* slate-900 */
+        }
+        html:not(.dark) pre[class*="language-"] {
+            background: #1e293b; /* slate-800 for contrast in light mode */
+        }
+    </style>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100);
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to DSA
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">5. Stacks</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">LIFO principle, push, pop, peek, and valid parentheses problems.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>Understanding Stacks</h2>
+<p>A Stack is a collection of elements that follows the <strong>LIFO</strong> (Last In, First Out) principle. Think of a stack of plates: you can only add a plate to the top and take a plate from the top.</p>
+
+<div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
+<div class="mermaid text-center">
+flowchart TD
+    subgraph Stack
+        Push["Push (Add)"] --> Top["Top Element"]
+        Top --> Pop["Pop (Remove)"]
+        Top -.-> Peek["Peek (View)"]
+    end
+</div>
+</div>
+
+<h3>The Three Core Operations</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 not-prose">
+    <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 rounded-lg">
+        <h4 class="font-bold text-emerald-800 dark:text-emerald-400 text-sm">PUSH</h4>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Adds an element to the <strong>Top</strong> of the stack.</p>
+    </div>
+    <div class="p-4 bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800 rounded-lg">
+        <h4 class="font-bold text-rose-800 dark:text-rose-400 text-sm">POP</h4>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Removes the <strong>Top</strong> element and returns it.</p>
+    </div>
+    <div class="p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800 rounded-lg">
+        <h4 class="font-bold text-sky-800 dark:text-sky-400 text-sm">PEEK</h4>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Looks at the <strong>Top</strong> element without removing it.</p>
+    </div>
+</div>
+
+<h3>What problem does it solve?</h3>
+<p>Stacks are perfect for tracking state that needs to be reversed or unwound. They are the core data structure behind the "Undo" button in text editors, browser history (back button), reversing strings, and verifying matching brackets in compilers.</p>
+
+<h3>Python Example: Valid Parentheses</h3>
+<p>In Python, you can just use a standard list <code>[]</code> as a stack using <code>append()</code> and <code>pop()</code>.</p>
+<pre><code class="language-python"># Problem: Check if a string of brackets is valid
+def is_valid_parentheses(s):
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+    
+    for char in s:
+        if char in mapping:
+            # If stack is not empty, pop top element. Else use dummy '#'
+            top_element = stack.pop() if stack else '#'
+            if mapping[char] != top_element:
+                return False
+        else:
+            # It's an opening bracket, push to stack
+            stack.append(char)
+            
+    return not stack # True if stack is empty
+
+print(is_valid_parentheses("{[()]}")) # Output: True
+print(is_valid_parentheses("{[(])}")) # Output: False
+</code></pre>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

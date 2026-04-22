@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12. DevOps for DE — Data Sheets</title>
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+        
+        // Listen to theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            setTimeout(() => location.reload(), 100); // Reload to re-render mermaid with correct theme
+        });
+    </script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        
+        /* Typography overrides to make it look premium */
+        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
+        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
+        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
+        <div class="flex items-center gap-1">
+            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
+            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+        </div>
+        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+    <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Fundamentals
+    </a>
+
+    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">12. DevOps for DE</h1>
+    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">CI/CD, testing, monitoring, and SLAs for pipelines.</p>
+    
+    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        
+<h2>Version Control for Pipelines</h2>
+<p>Data engineering has evolved. We no longer write stored procedures manually in a production database. All SQL queries, Spark scripts, and infrastructure configurations (Terraform) must be committed to Git. This provides an audit trail, rollback capabilities, and peer review via Pull Requests.</p>
+
+<h2>CI/CD for Data Pipelines</h2>
+<p><strong>Continuous Integration (CI):</strong> When code is pushed, automated servers (GitHub Actions) run tests to ensure SQL syntax is correct and Python code passes linting.</p>
+<p><strong>Continuous Deployment (CD):</strong> If tests pass, the code is automatically deployed to a staging environment, tested against dummy data, and then promoted to production orchestration tools.</p>
+
+<h2>Testing Data Pipelines</h2>
+<ul>
+    <li><strong>Unit Testing:</strong> Testing a single Python transformation function using `pytest` with a small, mocked DataFrame.</li>
+    <li><strong>Integration Testing:</strong> Running the full pipeline on a localized database or staging environment to ensure all components talk to each other correctly.</li>
+    <li><strong>Data Testing:</strong> Testing the actual data running through production (e.g., dbt tests asserting no nulls).</li>
+</ul>
+
+<h2>Monitoring & Alerting</h2>
+<p>Pipelines fail silently if not monitored. You must monitor:</p>
+<ul>
+    <li><strong>Infrastructure metrics:</strong> CPU, Memory, Disk space.</li>
+    <li><strong>Pipeline metrics:</strong> Job execution time, failure rates.</li>
+    <li><strong>Data metrics:</strong> Volume of rows ingested, percentage of nulls.</li>
+</ul>
+<p>Alerts should be routed to Slack or PagerDuty, but avoid <em>Alert Fatigue</em> by only alarming on critical issues.</p>
+
+<h2>SLA / SLO / SLI for Pipelines</h2>
+<p>Borrowed from Site Reliability Engineering (SRE):</p>
+<div class="my-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 not-prose">
+    <p><strong>Service Level Indicator (SLI):</strong> The actual metric you measure. (e.g., "The pipeline finishes by 8:00 AM on 95% of days").</p>
+    <p class="mt-2"><strong>Service Level Objective (SLO):</strong> The internal target you want to hit. (e.g., "We aim for 99% completion by 8:00 AM").</p>
+    <p class="mt-2"><strong>Service Level Agreement (SLA):</strong> The external, legally binding promise to stakeholders. (e.g., "If the dashboard is not updated by 9:00 AM, we owe a financial penalty").</p>
+</div>
+        
+    </div>
+    
+    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+        <a href="/pages/learn/de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+        </a>
+    </div>
+</main>
+<script>
+lucide.createIcons();
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+    const d=document.documentElement.classList.toggle('dark');
+    localStorage.setItem('ds-theme',d?'dark':'light');
+});
+</script>
+</body>
+</html>
