@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Engineering Fundamentals — Data Sheets</title>
+    <meta name="description" content="Core principles of data engineering: pipelines, storage, modelling, and the data lifecycle.">
     <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
@@ -14,188 +15,71 @@
         .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
         .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
         .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        .topic-card{transition:all 0.2s;}
-        .topic-card:hover{transform:translateY(-2px);}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/8 rounded-full blur-3xl pointer-events-none z-0"></div>
 
 <!-- NAV -->
 <nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <a href="../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
         <div class="flex items-center gap-1">
-            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
-            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+            <a href="../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Learn</a>
+            <a href="../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Practice</a>
         </div>
-        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200">
             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
         </button>
     </div>
 </nav>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="/pages/learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Learn
     </a>
 
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">
-            <i data-lucide="book-open" class="w-8 h-8"></i>
+    <div class="flex items-start gap-5 mb-6">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 transition-colors">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
         </div>
         <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300">Concepts</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">Data Engineering Fundamentals</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Core principles of data engineering: pipelines, storage, modelling, and the data lifecycle.</p>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 transition-colors border border-violet-200 dark:border-transparent" style="background:rgba(139,92,246,.15);color:#a78bfa">Concepts</span>
+            <h1 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white leading-tight transition-colors">Data Engineering Fundamentals</h1>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        
-    <a href="/pages/learn/de-fundamentals/core-concepts.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="book-open" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
+    <p class="text-slate-600 dark:text-slate-400 text-lg mb-10 leading-relaxed max-w-2xl transition-colors">Core principles of data engineering: pipelines, storage, modelling, and the data lifecycle.</p>
+
+    <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 mb-6 transition-colors shadow-sm dark:shadow-none">
+        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6 transition-colors">What you'll learn</h2>
+        <ul class="space-y-3">
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>What is Data Engineering?</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Batch vs streaming processing</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>ETL vs ELT patterns</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Data modelling: star schema, snowflake, OBT</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Data quality and validation</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Idempotency and fault tolerance</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Orchestration and scheduling concepts</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Monitoring and observability in data pipelines</span></li>
+        </ul>
+    </div>
+
+    <div class="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center transition-colors shadow-sm dark:shadow-none">
+        <div class="flex justify-center mb-3 text-slate-400 dark:text-slate-500 transition-colors">
+            <i data-lucide="hammer" class="w-8 h-8"></i>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">1. Core Concepts</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">What is Data Engineering, lifecycles, and team roles.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/pipeline-basics.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="git-branch" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">2. Data Pipeline Basics</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">ETL vs ELT, batch vs streaming, and pipeline design principles.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/data-storage.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="database" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">3. Data Storage</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Warehouses, Lakes, OLTP vs OLAP, and file formats.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/data-modelling.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layout-template" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">4. Data Modelling</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Star schemas, fact vs dimension tables, and SCDs.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/ingestion-patterns.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="download-cloud" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">5. Data Ingestion Patterns</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">CDC, Incremental vs Full Load, API and event-driven patterns.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/processing-concepts.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="cpu" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">6. Data Processing Concepts</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Distributed computing, shuffling, skew, and evaluation strategies.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/streaming-concepts.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="activity" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">7. Streaming Concepts</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Event time, windowing, watermarks, and exactly-once semantics.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/data-quality.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="check-circle" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">8. Data Quality</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Validation, profiling, schema evolution, and data contracts.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/governance.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="shield" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">9. Data Governance & Observability</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Lineage, cataloging, metadata, and access control.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/architecture-patterns.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layers" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">10. Pipeline Architecture Patterns</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Lambda, Kappa, Medallion, and Event-driven architectures.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/performance-scalability.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">11. Performance & Scalability</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Scaling strategies, CAP theorem, and optimization techniques.</p>
-    </a>
-    
-    <a href="/pages/learn/de-fundamentals/devops.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="settings" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">12. DevOps for DE</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">CI/CD, testing, monitoring, and SLAs for pipelines.</p>
-    </a>
-    
+        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-2 transition-colors">Content Coming Soon</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors">Detailed notes, cheat sheets and examples are being prepared.</p>
     </div>
 </main>
+
 <script>
-lucide.createIcons();
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-    const d=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ds-theme',d?'dark':'light');
-});
+    lucide.createIcons();
+    document.getElementById('theme-toggle').addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('ds-theme',d?'dark':'light');});
 </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSA for Data Engineering — Data Sheets</title>
+    <meta name="description" content="Algorithms and data structures commonly used in data engineering systems and interviews.">
     <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
@@ -14,199 +15,71 @@
         .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
         .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
         .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        .topic-card{transition:all 0.2s;}
-        .topic-card:hover{transform:translateY(-2px);}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/8 rounded-full blur-3xl pointer-events-none z-0"></div>
 
 <!-- NAV -->
 <nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <a href="../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
         <div class="flex items-center gap-1">
-            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
-            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+            <a href="../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Learn</a>
+            <a href="../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Practice</a>
         </div>
-        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200">
             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
         </button>
     </div>
 </nav>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="/pages/learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Learn
     </a>
 
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">
-            <i data-lucide="braces" class="w-8 h-8"></i>
+    <div class="flex items-start gap-5 mb-6">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 transition-colors">
+            <i data-lucide="braces" class="w-6 h-6"></i>
         </div>
         <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300">Concepts</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">DSA for Data Engineering</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Algorithms and data structures commonly used in data engineering systems and interviews.</p>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 transition-colors border border-violet-200 dark:border-transparent" style="background:rgba(139,92,246,.15);color:#a78bfa">Concepts</span>
+            <h1 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white leading-tight transition-colors">DSA for Data Engineering</h1>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        
-    <a href="/pages/learn/dsa-de/complexity-analysis.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="bar-chart" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
+    <p class="text-slate-600 dark:text-slate-400 text-lg mb-10 leading-relaxed max-w-2xl transition-colors">Algorithms and data structures commonly used in data engineering systems and interviews.</p>
+
+    <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 mb-6 transition-colors shadow-sm dark:shadow-none">
+        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6 transition-colors">What you'll learn</h2>
+        <ul class="space-y-3">
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Time and space complexity (Big O)</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Arrays, linked lists and hash maps</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Stacks, queues and heaps</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Trees, graphs and traversal algorithms</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Sorting algorithms and their trade-offs</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Bloom filters and probabilistic structures</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Consistent hashing in distributed systems</span></li>
+            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:#a78bfa"></i><span>Sliding window and two-pointer techniques</span></li>
+        </ul>
+    </div>
+
+    <div class="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center transition-colors shadow-sm dark:shadow-none">
+        <div class="flex justify-center mb-3 text-slate-400 dark:text-slate-500 transition-colors">
+            <i data-lucide="hammer" class="w-8 h-8"></i>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">1. Complexity Analysis</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Big O Notation (Time & Space), how to analyze loops & recursion.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/arrays.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">2. Arrays</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Traversal, Two Pointers, Sliding Window, Prefix Sum.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/strings.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="type" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">3. Strings</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">String Manipulation, Palindromes, Anagrams.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/hashing.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="hash" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">4. Hashing</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">HashMap, HashSet, Frequency Count, Two-Sum Pattern.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/stacks.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layers" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">5. Stacks</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">LIFO principle, push, pop, peek, and valid parentheses problems.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/queues.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="align-justify" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">6. Queues</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">FIFO principle, enqueue, dequeue, and Breadth-First Search.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/linked-list.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="link" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">7. Linked List</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/binary-search.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="search" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">8. Binary Search</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Search on sorted array, find first & last position.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/sorting.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">9. Sorting</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Bubble, Merge, Quick Sort basics and built-in sort usage.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/recursion.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="repeat" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">10. Recursion</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Base case, Recursive case, Divide & Conquer basics.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/trees.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="git-merge" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">11. Trees</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Binary Tree structure, Traversal, BFS and DFS.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/graphs.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="share-2" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">12. Graphs</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">What is a Graph, BFS, DFS, and Cycle Detection.</p>
-    </a>
-    
-    <a href="/pages/learn/dsa-de/heap.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="triangle" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">13. Heap</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Min Heap & Max Heap concept, Top-K Elements.</p>
-    </a>
-    
+        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-2 transition-colors">Content Coming Soon</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors">Detailed notes, cheat sheets and examples are being prepared.</p>
     </div>
 </main>
+
 <script>
-lucide.createIcons();
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-    const d=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ds-theme',d?'dark':'light');
-});
+    lucide.createIcons();
+    document.getElementById('theme-toggle').addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('ds-theme',d?'dark':'light');});
 </script>
 </body>
 </html>
