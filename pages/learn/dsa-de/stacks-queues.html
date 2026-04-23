@@ -4,146 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5. Stacks & Queues — Data Sheets</title>
-    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     
-    <!-- PrismJS for Python Code Highlighting -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    <style>
-        /* Custom Prism overrides to fit the theme */
-        pre[class*="language-"] {
-            border-radius: 0.75rem;
-            margin-top: 1.5em;
-            margin-bottom: 1.5em;
-            background: #0f172a; /* slate-900 */
-        }
-        html:not(.dark) pre[class*="language-"] {
-            background: #1e293b; /* slate-800 for contrast in light mode */
-        }
-    </style>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        const isDark = document.documentElement.classList.contains('dark');
-        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
-        
-        // Listen to theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            setTimeout(() => location.reload(), 100);
-        });
-    </script>
-    <style>
-        body{font-family:'Inter',sans-serif;}
-        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
-        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
-        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        
-        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
-        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
-        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<!-- NAV -->
-<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;" class="text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
-        <div class="flex items-center gap-1">
-            <a href="/pages/learn.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
-            <a href="/pages/practice.html" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
-        </div>
-        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-        </button>
-    </div>
-</nav>
 
-<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
-    <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to DSA
-    </a>
 
-    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">5. Stacks & Queues</h1>
-    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">LIFO vs FIFO, valid parentheses type problems.</p>
-    
-    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
-        
-<h2>Stacks & Queues</h2>
-<p>Both are data structures that hold collections of items, but they differ strictly in how items are added and removed.</p>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-6 not-prose">
-    <div class="p-6 border border-slate-200 dark:border-slate-700 rounded-xl">
-        <h3 class="font-bold text-slate-900 dark:text-white">Stack (LIFO)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400">Last In, First Out. Think of a stack of plates. You can only add a plate to the top (<strong>Push</strong>) and take a plate from the top (<strong>Pop</strong>).</p>
-    </div>
-    <div class="p-6 border border-slate-200 dark:border-slate-700 rounded-xl">
-        <h3 class="font-bold text-slate-900 dark:text-white">Queue (FIFO)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400">First In, First Out. Think of a line at a coffee shop. You join the back of the line (<strong>Enqueue</strong>) and get served from the front (<strong>Dequeue</strong>).</p>
-    </div>
-</div>
 
-<div class="my-8">
-<div class="mermaid">
-flowchart TD
-    subgraph Stack
-        Push --> Top
-        Top --> Pop
-    end
-    subgraph Queue
-        Enqueue --> Back
-        Front --> Dequeue
-    end
-</div>
-</div>
 
-<h3>What problem does it solve?</h3>
-<p><strong>Stacks</strong> are used for tracking state that needs to be reversed or unwound, like the "Undo" button in text editors, browser history, and verifying matching brackets/parentheses.</p>
-<p><strong>Queues</strong> are used for scheduling and ordering tasks fairly, like printer jobs, handling web server requests, and Breadth-First Search (BFS).</p>
 
-<h3>Python Example: Valid Parentheses (Stack)</h3>
-<pre><code class="language-python"># Problem: Check if a string of brackets is valid
-def is_valid_parentheses(s):
-    stack = []
-    mapping = {')': '(', '}': '{', ']': '['}
-    
-    for char in s:
-        if char in mapping:
-            # If stack is not empty, pop top element. Else use dummy '#'
-            top_element = stack.pop() if stack else '#'
-            if mapping[char] != top_element:
-                return False
-        else:
-            # It's an opening bracket, push to stack
-            stack.append(char)
-            
-    return not stack # True if stack is empty
 
-print(is_valid_parentheses("{[()]}")) # Output: True
-</code></pre>
-        
-    </div>
-    
-    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
-        <a href="/pages/learn/dsa-de.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
-            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
-        </a>
-    </div>
-</main>
+
 <script>
-lucide.createIcons();
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-    const d=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ds-theme',d?'dark':'light');
-});
+(function() {
+    const html  = document.documentElement;
+    const body  = document.body;
+
+    /* ── Theme ──────────────────────────────────── */
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+        });
+    }
+
+    /* ── Sidebar state ───────────────────────────── */
+    const sidebar  = document.getElementById('ds-sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    const togBtn   = document.getElementById('sidebar-toggle');
+    const iconOpen  = document.getElementById('sb-icon-open');
+    const iconClose = document.getElementById('sb-icon-close');
+
+    // Restore persisted state (default: open on desktop, closed on mobile)
+    const isDesktop = () => window.innerWidth >= 1024;
+    const stored = localStorage.getItem('ds-sidebar');
+    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+
+    /* ── Active Link Highlighting ────────────────── */
+    function highlightActive() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop() || 'index.html';
+        const links = document.querySelectorAll('.sb-link');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.includes(page)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    highlightActive();
+
+    function applyState(animate) {
+        if (!sidebar) return;
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-hidden');
+            sidebar.classList.add('sidebar-visible');
+            body.classList.add('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (!isDesktop() && overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '0'; iconOpen.style.transform  = 'scale(.7)'; }
+            if (iconClose) { iconClose.style.opacity = '1'; iconClose.style.transform = 'scale(1)'; }
+        } else {
+            sidebar.classList.add('sidebar-hidden');
+            sidebar.classList.remove('sidebar-visible');
+            body.classList.remove('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '1'; iconOpen.style.transform  = 'scale(1)'; }
+            if (iconClose) { iconClose.style.opacity = '0'; iconClose.style.transform = 'scale(.7)'; }
+        }
+    }
+
+    applyState(false);
+
+    if (togBtn) {
+        togBtn.addEventListener('click', () => {
+            sidebarOpen = !sidebarOpen;
+            localStorage.setItem('ds-sidebar', sidebarOpen ? 'open' : 'closed');
+            applyState(true);
+        });
+    }
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebarOpen = false;
+            localStorage.setItem('ds-sidebar', 'closed');
+            applyState(true);
+        });
+    }
+
+    // On resize: if going to desktop re-open by default if never set
+    window.addEventListener('resize', () => {
+        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
+            sidebarOpen = true;
+            applyState(false);
+        }
+    });
+
+    /* ── Scroll-to-top ───────────────────────────── */
+    const scrollBtn = document.getElementById('scroll-top');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    /* ── Lucide icons ────────────────────────────── */
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+})();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="../../../js/layout-fixes.js"></script>
 </body>
 </html>
+
+

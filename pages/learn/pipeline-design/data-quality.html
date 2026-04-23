@@ -4,112 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>10. Data Quality in Pipelines — Data Sheets</title>
-    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        const isDark = document.documentElement.classList.contains('dark');
-        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
-        
-        // Listen to theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            setTimeout(() => location.reload(), 100);
-        });
-    </script>
-    <style>
-        body{font-family:'Inter',sans-serif;}
-        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
-        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
-        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        
-        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
-        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
-        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
-        
-        pre { background-color: #1e293b !important; color: #e2e8f0 !important; border-radius: 12px !important; padding: 1.5rem !important; overflow-x: auto; }
-        code { color: #94a3b8 !important; font-family: 'Fira Code', monospace; }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-
-<!-- NAV -->
-<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-        <a href="../../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
-        <div class="flex items-center gap-1">
-            <a href="../../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
-            <a href="../../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
-        </div>
-        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-        </button>
-    </div>
-</nav>
-
-<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
-    <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Pipeline Design
-    </a>
-
-    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">10. Data Quality in Pipelines</h1>
-    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Validation, schema enforcement, and quarantine patterns.</p>
     
-    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-rose-600 dark:prose-a:text-rose-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
-        
-<h2>Data Quality Architecture</h2>
-<div class="my-10">
-<div class="mermaid">
-graph LR
-    I[Raw Ingest] --> V{Validation Engine}
-    V -- Fail --> Q[Quarantine Zone]
-    V -- Pass --> S[Silver Zone]
-    Q --> Alert[Slack Alert]
-    Q -- Fix --> I
-</div>
-</div>
 
-<h2>Anomaly Detection with Python</h2>
-<pre><code class="language-python"># Detecting outliers in record counts
-def check_volume_anomaly(current_count, historical_avg):
-    std_dev = historical_avg * 0.2
-    if abs(current_count - historical_avg) > 2 * std_dev:
-        send_warning("Data volume looks unusual!")</code></pre>
 
-<h2>The 6 Dimensions of Data Quality</h2>
-<ol>
-    <li><strong>Accuracy:</strong> Is it correct?</li>
-    <li><strong>Completeness:</strong> Is it missing?</li>
-    <li><strong>Consistency:</strong> Does it match other sources?</li>
-    <li><strong>Timeliness:</strong> Is it up to date?</li>
-    <li><strong>Validity:</strong> Does it match the format?</li>
-    <li><strong>Uniqueness:</strong> Are there duplicates?</li>
-</ol>
 
-<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl my-6">
-    <h4 class="font-bold text-blue-800 dark:text-blue-400">Pro-Tip: Data Observability</h4>
-    <p class="text-sm m-0">Integrate tools like <strong>Monte Carlo</strong> or <strong>Soda</strong> to automatically monitor data drift and quality failures without writing manual SQL checks.</p>
-</div>
-        
-    </div>
-    
-    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
-        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
-            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
-        </a>
-    </div>
-</main>
+
+
+
+
+
+
+
 <script>
-lucide.createIcons();
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-    const d=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ds-theme',d?'dark':'light');
-});
+(function() {
+    const html  = document.documentElement;
+    const body  = document.body;
+
+    /* ── Theme ──────────────────────────────────── */
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+        });
+    }
+
+    /* ── Sidebar state ───────────────────────────── */
+    const sidebar  = document.getElementById('ds-sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    const togBtn   = document.getElementById('sidebar-toggle');
+    const iconOpen  = document.getElementById('sb-icon-open');
+    const iconClose = document.getElementById('sb-icon-close');
+
+    // Restore persisted state (default: open on desktop, closed on mobile)
+    const isDesktop = () => window.innerWidth >= 1024;
+    const stored = localStorage.getItem('ds-sidebar');
+    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+
+    /* ── Active Link Highlighting ────────────────── */
+    function highlightActive() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop() || 'index.html';
+        const links = document.querySelectorAll('.sb-link');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.includes(page)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    highlightActive();
+
+    function applyState(animate) {
+        if (!sidebar) return;
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-hidden');
+            sidebar.classList.add('sidebar-visible');
+            body.classList.add('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (!isDesktop() && overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '0'; iconOpen.style.transform  = 'scale(.7)'; }
+            if (iconClose) { iconClose.style.opacity = '1'; iconClose.style.transform = 'scale(1)'; }
+        } else {
+            sidebar.classList.add('sidebar-hidden');
+            sidebar.classList.remove('sidebar-visible');
+            body.classList.remove('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '1'; iconOpen.style.transform  = 'scale(1)'; }
+            if (iconClose) { iconClose.style.opacity = '0'; iconClose.style.transform = 'scale(.7)'; }
+        }
+    }
+
+    applyState(false);
+
+    if (togBtn) {
+        togBtn.addEventListener('click', () => {
+            sidebarOpen = !sidebarOpen;
+            localStorage.setItem('ds-sidebar', sidebarOpen ? 'open' : 'closed');
+            applyState(true);
+        });
+    }
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebarOpen = false;
+            localStorage.setItem('ds-sidebar', 'closed');
+            applyState(true);
+        });
+    }
+
+    // On resize: if going to desktop re-open by default if never set
+    window.addEventListener('resize', () => {
+        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
+            sidebarOpen = true;
+            applyState(false);
+        }
+    });
+
+    /* ── Scroll-to-top ───────────────────────────── */
+    const scrollBtn = document.getElementById('scroll-top');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    /* ── Lucide icons ────────────────────────────── */
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+})();
 </script>
+    <script src="../../../js/layout-fixes.js"></script>
 </body>
 </html>
+
+

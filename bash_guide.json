@@ -1,0 +1,1001 @@
+{
+  "title": "Complete Bash Scripting Guide",
+  "version": "1.0",
+  "description": "A comprehensive guide to Bash scripting covering all major topics with examples and projects",
+  "topics": [
+    {
+      "id": 1,
+      "topic": "Introduction to Bash",
+      "subtopics": [
+        {
+          "name": "What is Bash?",
+          "explanation": "Bash (Bourne Again SHell) is a Unix shell and command-line interpreter. It is the default shell on most Linux distributions and macOS (before Catalina). Bash scripts are plain text files containing a sequence of commands executed by the shell.",
+          "examples": [
+            {
+              "title": "Check Bash Version",
+              "code": "bash --version\n# Output: GNU bash, version 5.x.x"
+            },
+            {
+              "title": "Find Bash Location",
+              "code": "which bash\n# Output: /bin/bash"
+            }
+          ]
+        },
+        {
+          "name": "Shebang Line",
+          "explanation": "The shebang (#!) at the top of a script tells the OS which interpreter to use. It must be the very first line.",
+          "examples": [
+            {
+              "title": "Basic Shebang",
+              "code": "#!/bin/bash\necho \"Hello, World!\""
+            },
+            {
+              "title": "Portable Shebang",
+              "code": "#!/usr/bin/env bash\necho \"This works across different systems\""
+            }
+          ]
+        },
+        {
+          "name": "Running a Script",
+          "explanation": "Scripts must be executable. Use chmod to grant permissions, then run with ./ or bash.",
+          "examples": [
+            {
+              "title": "Make Executable and Run",
+              "code": "chmod +x myscript.sh\n./myscript.sh"
+            },
+            {
+              "title": "Run Without Making Executable",
+              "code": "bash myscript.sh"
+            }
+          ]
+        },
+        {
+          "name": "Comments",
+          "explanation": "Single-line comments start with #. Bash has no native multi-line comment syntax, but a here-doc workaround exists.",
+          "examples": [
+            {
+              "title": "Single-Line Comment",
+              "code": "# This is a comment\necho \"Hello\" # Inline comment"
+            },
+            {
+              "title": "Multi-Line Comment Workaround",
+              "code": ": '\nThis is a\nmulti-line comment\nusing a here-doc\n'\necho \"Done\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "topic": "Variables",
+      "subtopics": [
+        {
+          "name": "Declaring and Using Variables",
+          "explanation": "Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.",
+          "examples": [
+            {
+              "title": "Basic Variable Assignment",
+              "code": "name=\"Alice\"\nage=30\necho \"Name: $name, Age: $age\""
+            },
+            {
+              "title": "Curly Brace Syntax",
+              "code": "fruit=\"apple\"\necho \"I have ${fruit}s\""
+            }
+          ]
+        },
+        {
+          "name": "Variable Types",
+          "explanation": "Bash variables are untyped by default, but you can use declare to define types like integers or arrays.",
+          "examples": [
+            {
+              "title": "Integer Declaration",
+              "code": "declare -i count=10\ncount+=5\necho $count  # Output: 15"
+            },
+            {
+              "title": "Readonly Variable",
+              "code": "readonly PI=3.14159\necho $PI\n# PI=3 would cause an error"
+            },
+            {
+              "title": "Lowercase Variable",
+              "code": "declare -l lowered=\"HELLO\"\necho $lowered  # Output: hello"
+            }
+          ]
+        },
+        {
+          "name": "Environment Variables",
+          "explanation": "Environment variables are available to the script and child processes. Use export to pass them to subprocesses.",
+          "examples": [
+            {
+              "title": "Common Environment Variables",
+              "code": "echo $HOME      # /home/username\necho $USER      # username\necho $PATH      # /usr/bin:/bin:...\necho $PWD       # Current directory\necho $SHELL     # /bin/bash\necho $HOSTNAME  # machine-name"
+            },
+            {
+              "title": "Exporting Variables",
+              "code": "export MY_VAR=\"hello\"\nbash -c 'echo $MY_VAR'  # Output: hello"
+            }
+          ]
+        },
+        {
+          "name": "Special Variables",
+          "explanation": "Bash provides special variables for script arguments, process info, and status codes.",
+          "examples": [
+            {
+              "title": "Script Arguments",
+              "code": "#!/bin/bash\necho \"Script name: $0\"\necho \"First arg: $1\"\necho \"Second arg: $2\"\necho \"All args: $@\"\necho \"Number of args: $#\""
+            },
+            {
+              "title": "Exit Status and PID",
+              "code": "ls /nonexistent 2>/dev/null\necho \"Exit status: $?\"  # 1 (error)\necho \"Current PID: $$\"\necho \"Last background PID: $!\""
+            }
+          ]
+        },
+        {
+          "name": "Variable Substitution & Defaults",
+          "explanation": "Bash provides powerful parameter expansion to set defaults, substrings, and transformations.",
+          "examples": [
+            {
+              "title": "Default Values",
+              "code": "name=\"\"\necho ${name:-\"Default\"}   # Default (if unset or empty)\necho ${name:=\"Assigned\"}  # Assigns and prints\necho ${name:?\"Error!\"}    # Error if unset"
+            },
+            {
+              "title": "Substring Extraction",
+              "code": "str=\"Hello, World!\"\necho ${str:7:5}   # World\necho ${str:0:5}   # Hello\necho ${#str}      # 13 (length)"
+            },
+            {
+              "title": "Pattern Removal",
+              "code": "file=\"/home/user/docs/report.txt\"\necho ${file##*/}   # report.txt (basename)\necho ${file%/*}    # /home/user/docs (dirname)\necho ${file%.txt}  # /home/user/docs/report"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "topic": "Data Types & Strings",
+      "subtopics": [
+        {
+          "name": "String Operations",
+          "explanation": "Bash strings can be manipulated using parameter expansion for length, replacement, case conversion, and more.",
+          "examples": [
+            {
+              "title": "String Length",
+              "code": "str=\"Hello World\"\necho ${#str}  # 11"
+            },
+            {
+              "title": "String Replace",
+              "code": "msg=\"I like cats and cats\"\necho ${msg/cats/dogs}   # Replace first: I like dogs and cats\necho ${msg//cats/dogs}  # Replace all:   I like dogs and dogs"
+            },
+            {
+              "title": "Case Conversion (Bash 4+)",
+              "code": "text=\"Hello World\"\necho ${text^^}   # HELLO WORLD (uppercase)\necho ${text,,}   # hello world (lowercase)\necho ${text^}    # Hello World (capitalize first)"
+            },
+            {
+              "title": "String Concatenation",
+              "code": "first=\"Hello\"\nsecond=\"World\"\ncombined=\"$first $second\"\necho $combined  # Hello World"
+            }
+          ]
+        },
+        {
+          "name": "Arrays",
+          "explanation": "Bash supports indexed and associative arrays. Indexed arrays use numeric indices; associative arrays use string keys.",
+          "examples": [
+            {
+              "title": "Indexed Array",
+              "code": "fruits=(\"apple\" \"banana\" \"cherry\")\necho ${fruits[0]}    # apple\necho ${fruits[@]}    # all elements\necho ${#fruits[@]}   # 3 (length)\nfruits+=(\"date\")     # append\nunset fruits[1]      # delete element"
+            },
+            {
+              "title": "Array Iteration",
+              "code": "colors=(\"red\" \"green\" \"blue\")\nfor color in \"${colors[@]}\"; do\n  echo \"Color: $color\"\ndone"
+            },
+            {
+              "title": "Associative Array (Bash 4+)",
+              "code": "declare -A person\nperson[name]=\"Alice\"\nperson[age]=30\nperson[city]=\"NYC\"\necho ${person[name]}        # Alice\necho ${!person[@]}          # keys: name age city\necho ${person[@]}           # values"
+            },
+            {
+              "title": "Array Slicing",
+              "code": "nums=(10 20 30 40 50)\necho ${nums[@]:1:3}   # 20 30 40 (offset 1, length 3)"
+            }
+          ]
+        },
+        {
+          "name": "Here Documents & Here Strings",
+          "explanation": "Here-docs allow multi-line strings. Here-strings pass a single string to stdin.",
+          "examples": [
+            {
+              "title": "Here Document",
+              "code": "cat << EOF\nLine 1\nLine 2\nLine 3\nEOF"
+            },
+            {
+              "title": "Here Document to File",
+              "code": "cat << EOF > output.txt\nName: Alice\nAge: 30\nEOF"
+            },
+            {
+              "title": "Here String",
+              "code": "grep \"hello\" <<< \"hello world\"\n# Output: hello world"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "topic": "Input & Output",
+      "subtopics": [
+        {
+          "name": "Reading User Input",
+          "explanation": "The read command reads input from stdin. It can read into single or multiple variables.",
+          "examples": [
+            {
+              "title": "Basic Input",
+              "code": "read -p \"Enter your name: \" name\necho \"Hello, $name!\""
+            },
+            {
+              "title": "Silent Input (Password)",
+              "code": "read -s -p \"Enter password: \" password\necho\necho \"Password entered (hidden)\""
+            },
+            {
+              "title": "Read with Timeout",
+              "code": "if read -t 5 -p \"Enter within 5 seconds: \" answer; then\n  echo \"You entered: $answer\"\nelse\n  echo \"Timed out!\"\nfi"
+            },
+            {
+              "title": "Read Array from Input",
+              "code": "read -a items -p \"Enter items separated by spaces: \"\nfor item in \"${items[@]}\"; do\n  echo \"Item: $item\"\ndone"
+            }
+          ]
+        },
+        {
+          "name": "Output with echo and printf",
+          "explanation": "echo is simple; printf provides C-style formatted output with more control.",
+          "examples": [
+            {
+              "title": "echo Options",
+              "code": "echo \"Simple output\"\necho -n \"No newline\"    # no newline\necho -e \"Tab:\\there\"    # interpret escapes\necho -e \"\\033[32mGreen Text\\033[0m\"  # colored"
+            },
+            {
+              "title": "printf Formatting",
+              "code": "printf \"Name: %s, Age: %d\\n\" \"Alice\" 30\nprintf \"Pi: %.4f\\n\" 3.14159\nprintf \"%-15s %5d\\n\" \"Item\" 100  # left-aligned"
+            }
+          ]
+        },
+        {
+          "name": "Redirection",
+          "explanation": "Redirect stdout, stderr, and stdin using >, >>, 2>, &>, and <.",
+          "examples": [
+            {
+              "title": "Output Redirection",
+              "code": "echo \"Hello\" > output.txt       # overwrite\necho \"World\" >> output.txt      # append\nls /nonexistent 2> error.txt    # stderr only\nls /nonexistent &> all.txt      # both stdout+stderr"
+            },
+            {
+              "title": "Input Redirection",
+              "code": "while read line; do\n  echo \"Line: $line\"\ndone < input.txt"
+            },
+            {
+              "title": "Discard Output",
+              "code": "command > /dev/null 2>&1  # discard all output"
+            }
+          ]
+        },
+        {
+          "name": "Pipes",
+          "explanation": "Pipes (|) connect stdout of one command to stdin of another, enabling powerful command chaining.",
+          "examples": [
+            {
+              "title": "Basic Pipe",
+              "code": "ls -la | grep \".sh\" | sort"
+            },
+            {
+              "title": "Count Lines with Pipe",
+              "code": "cat /etc/passwd | wc -l"
+            },
+            {
+              "title": "Process Substitution",
+              "code": "diff <(ls dir1/) <(ls dir2/)  # compare two command outputs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "topic": "Operators & Arithmetic",
+      "subtopics": [
+        {
+          "name": "Arithmetic Operations",
+          "explanation": "Bash supports integer arithmetic via (( )) or $(()), and floating-point via bc or awk.",
+          "examples": [
+            {
+              "title": "Integer Arithmetic",
+              "code": "a=10; b=3\necho $((a + b))   # 13\necho $((a - b))   # 7\necho $((a * b))   # 30\necho $((a / b))   # 3 (integer)\necho $((a % b))   # 1 (modulo)\necho $((a ** b))  # 1000 (power)"
+            },
+            {
+              "title": "Increment & Decrement",
+              "code": "x=5\n((x++))\necho $x   # 6\n((x+=10))\necho $x   # 16\n((x--))\necho $x   # 15"
+            },
+            {
+              "title": "Floating Point with bc",
+              "code": "result=$(echo \"scale=4; 10 / 3\" | bc)\necho $result   # 3.3333"
+            }
+          ]
+        },
+        {
+          "name": "Comparison Operators",
+          "explanation": "Integer comparisons use -eq, -ne, -lt, -le, -gt, -ge. String comparisons use =, !=, <, >.",
+          "examples": [
+            {
+              "title": "Integer Comparisons",
+              "code": "a=10; b=20\n[ $a -eq $b ] && echo \"equal\" || echo \"not equal\"\n[ $a -lt $b ] && echo \"a less than b\"\n[ $a -ge 10 ] && echo \"a >= 10\""
+            },
+            {
+              "title": "String Comparisons",
+              "code": "s1=\"hello\"; s2=\"world\"\n[ \"$s1\" = \"$s2\" ]  && echo \"same\"\n[ \"$s1\" != \"$s2\" ] && echo \"different\"\n[ -z \"$s1\" ]       && echo \"empty\"\n[ -n \"$s1\" ]       && echo \"not empty\""
+            },
+            {
+              "title": "Modern [[ Double Brackets ]]",
+              "code": "name=\"Alice\"\n[[ $name == A* ]] && echo \"Starts with A\"\n[[ $name =~ ^[A-Z] ]] && echo \"Starts with uppercase\""
+            }
+          ]
+        },
+        {
+          "name": "Logical Operators",
+          "explanation": "Combine conditions using && (AND), || (OR), and ! (NOT).",
+          "examples": [
+            {
+              "title": "AND and OR",
+              "code": "age=25\n[[ $age -ge 18 && $age -le 65 ]] && echo \"Working age\"\n[[ $age -lt 18 || $age -gt 65 ]] && echo \"Not working age\""
+            },
+            {
+              "title": "NOT Operator",
+              "code": "file=\"test.txt\"\n[[ ! -f \"$file\" ]] && echo \"File does not exist\""
+            }
+          ]
+        },
+        {
+          "name": "File Test Operators",
+          "explanation": "Test file existence, type, and permissions using various -x flags.",
+          "examples": [
+            {
+              "title": "File Tests",
+              "code": "file=\"test.txt\"\n[ -e \"$file\" ] && echo \"exists\"\n[ -f \"$file\" ] && echo \"is a regular file\"\n[ -d \"$file\" ] && echo \"is a directory\"\n[ -r \"$file\" ] && echo \"readable\"\n[ -w \"$file\" ] && echo \"writable\"\n[ -x \"$file\" ] && echo \"executable\"\n[ -s \"$file\" ] && echo \"non-empty\"\n[ -L \"$file\" ] && echo \"is a symlink\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "topic": "Control Flow",
+      "subtopics": [
+        {
+          "name": "if / elif / else",
+          "explanation": "Conditional branching using if/elif/else. The condition can be any command—its exit status determines the branch.",
+          "examples": [
+            {
+              "title": "Basic if-else",
+              "code": "#!/bin/bash\nread -p \"Enter age: \" age\nif [ $age -ge 18 ]; then\n  echo \"Adult\"\nelif [ $age -ge 13 ]; then\n  echo \"Teenager\"\nelse\n  echo \"Child\"\nfi"
+            },
+            {
+              "title": "if with Command",
+              "code": "if grep -q \"error\" logfile.txt; then\n  echo \"Errors found in log\"\nfi"
+            }
+          ]
+        },
+        {
+          "name": "case Statement",
+          "explanation": "case matches a variable against patterns, like a switch statement. Patterns support wildcards.",
+          "examples": [
+            {
+              "title": "Basic case",
+              "code": "read -p \"Enter day: \" day\ncase $day in\n  Monday|Tuesday|Wednesday|Thursday|Friday)\n    echo \"Weekday\"\n    ;;\n  Saturday|Sunday)\n    echo \"Weekend\"\n    ;;\n  *)\n    echo \"Unknown day\"\n    ;;\nesac"
+            },
+            {
+              "title": "case with Options",
+              "code": "option=\"$1\"\ncase \"$option\" in\n  -h|--help)   echo \"Show help\" ;;\n  -v|--version) echo \"Version 1.0\" ;;\n  -q|--quiet)  QUIET=true ;;\n  *)  echo \"Unknown option: $option\" ; exit 1 ;;\nesac"
+            }
+          ]
+        },
+        {
+          "name": "for Loop",
+          "explanation": "Iterate over lists, ranges, or command output using for loops.",
+          "examples": [
+            {
+              "title": "List Loop",
+              "code": "for animal in cat dog bird; do\n  echo \"Animal: $animal\"\ndone"
+            },
+            {
+              "title": "Range with seq / brace",
+              "code": "for i in {1..5}; do\n  echo \"Count: $i\"\ndone\n\nfor i in $(seq 0 2 10); do  # 0,2,4,6,8,10\n  echo $i\ndone"
+            },
+            {
+              "title": "C-Style for Loop",
+              "code": "for ((i=0; i<5; i++)); do\n  echo \"Index: $i\"\ndone"
+            },
+            {
+              "title": "Loop Over Files",
+              "code": "for file in *.txt; do\n  echo \"Processing: $file\"\ndone"
+            }
+          ]
+        },
+        {
+          "name": "while Loop",
+          "explanation": "while loops execute as long as the condition is true. Use break and continue to control flow.",
+          "examples": [
+            {
+              "title": "Basic while",
+              "code": "count=1\nwhile [ $count -le 5 ]; do\n  echo \"Count: $count\"\n  ((count++))\ndone"
+            },
+            {
+              "title": "Read File Line by Line",
+              "code": "while IFS= read -r line; do\n  echo \"Line: $line\"\ndone < file.txt"
+            },
+            {
+              "title": "Infinite Loop with Break",
+              "code": "while true; do\n  read -p \"Enter 'quit' to exit: \" input\n  [ \"$input\" = \"quit\" ] && break\n  echo \"You entered: $input\"\ndone"
+            }
+          ]
+        },
+        {
+          "name": "until Loop",
+          "explanation": "until is the inverse of while—it executes until the condition becomes true.",
+          "examples": [
+            {
+              "title": "Basic until",
+              "code": "num=1\nuntil [ $num -gt 5 ]; do\n  echo \"Num: $num\"\n  ((num++))\ndone"
+            }
+          ]
+        },
+        {
+          "name": "select Menu",
+          "explanation": "select creates interactive numbered menus from a list of options.",
+          "examples": [
+            {
+              "title": "Interactive Menu",
+              "code": "PS3=\"Choose an option: \"\nselect opt in \"Start\" \"Stop\" \"Restart\" \"Quit\"; do\n  case $opt in\n    \"Start\")   echo \"Starting...\" ;;\n    \"Stop\")    echo \"Stopping...\" ;;\n    \"Restart\") echo \"Restarting...\" ;;\n    \"Quit\")    break ;;\n    *) echo \"Invalid option\" ;;\n  esac\ndone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "topic": "Functions",
+      "subtopics": [
+        {
+          "name": "Defining and Calling Functions",
+          "explanation": "Functions group reusable code. They can accept arguments and return values via exit codes or stdout.",
+          "examples": [
+            {
+              "title": "Basic Function",
+              "code": "greet() {\n  echo \"Hello, $1!\"\n}\ngreet \"Alice\"   # Hello, Alice!\ngreet \"Bob\"     # Hello, Bob!"
+            },
+            {
+              "title": "Function with Return Value",
+              "code": "add() {\n  echo $(($1 + $2))\n}\nresult=$(add 5 10)\necho \"Sum: $result\"  # Sum: 15"
+            },
+            {
+              "title": "Function with Exit Code",
+              "code": "is_even() {\n  [ $(($1 % 2)) -eq 0 ]\n}\nif is_even 4; then\n  echo \"4 is even\"\nfi"
+            }
+          ]
+        },
+        {
+          "name": "Local Variables",
+          "explanation": "Use local to scope variables inside functions, preventing them from leaking into the global scope.",
+          "examples": [
+            {
+              "title": "Local Scope",
+              "code": "x=10\nmy_func() {\n  local x=99\n  echo \"Inside: $x\"  # 99\n}\nmy_func\necho \"Outside: $x\"  # 10 (unchanged)"
+            }
+          ]
+        },
+        {
+          "name": "Recursive Functions",
+          "explanation": "Bash supports recursion, but it is slow and can hit limits. Useful for tree traversal and mathematical problems.",
+          "examples": [
+            {
+              "title": "Factorial",
+              "code": "factorial() {\n  if [ $1 -le 1 ]; then\n    echo 1\n  else\n    local prev=$(factorial $(($1 - 1)))\n    echo $(($1 * $prev))\n  fi\n}\necho $(factorial 5)  # 120"
+            },
+            {
+              "title": "Fibonacci",
+              "code": "fibonacci() {\n  if [ $1 -le 1 ]; then\n    echo $1\n  else\n    local a=$(fibonacci $(($1 - 1)))\n    local b=$(fibonacci $(($1 - 2)))\n    echo $((a + b))\n  fi\n}\nfor i in {0..9}; do printf \"$(fibonacci $i) \"; done"
+            }
+          ]
+        },
+        {
+          "name": "Function Libraries",
+          "explanation": "Source external files to include reusable function libraries with the source or . command.",
+          "examples": [
+            {
+              "title": "Create and Source a Library",
+              "code": "# lib.sh\nlog_info()  { echo \"[INFO]  $(date) $1\"; }\nlog_error() { echo \"[ERROR] $(date) $1\" >&2; }\nlog_warn()  { echo \"[WARN]  $(date) $1\"; }\n\n# main.sh\nsource ./lib.sh\nlog_info \"Script started\"\nlog_warn \"Low disk space\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "topic": "String Manipulation",
+      "subtopics": [
+        {
+          "name": "grep, sed, awk",
+          "explanation": "These are the three pillars of text processing in Bash. grep searches, sed transforms, awk processes structured text.",
+          "examples": [
+            {
+              "title": "grep Patterns",
+              "code": "# Basic search\ngrep \"error\" logfile.txt\n\n# Case-insensitive\ngrep -i \"error\" logfile.txt\n\n# Count matches\ngrep -c \"error\" logfile.txt\n\n# Show line numbers\ngrep -n \"error\" logfile.txt\n\n# Invert match (exclude)\ngrep -v \"debug\" logfile.txt\n\n# Regex\ngrep -E \"^[0-9]{4}-[0-9]{2}\" dates.txt"
+            },
+            {
+              "title": "sed Transformations",
+              "code": "# Replace text\nsed 's/old/new/g' file.txt\n\n# Delete lines matching pattern\nsed '/error/d' file.txt\n\n# Print specific lines\nsed -n '5,10p' file.txt\n\n# Add prefix to each line\nsed 's/^/PREFIX: /' file.txt\n\n# In-place edit\nsed -i 's/foo/bar/g' file.txt"
+            },
+            {
+              "title": "awk Processing",
+              "code": "# Print columns\nawk '{print $1, $3}' data.txt\n\n# Field separator\nawk -F':' '{print $1}' /etc/passwd\n\n# Conditional\nawk '$3 > 1000 {print $1, $3}' data.txt\n\n# Sum a column\nawk '{sum += $2} END {print \"Total:\", sum}' data.txt\n\n# Print with formatting\nawk '{printf \"%-20s %5d\\n\", $1, $2}' data.txt"
+            }
+          ]
+        },
+        {
+          "name": "cut, tr, sort, uniq",
+          "explanation": "Utility commands for column extraction, character translation, sorting, and deduplication.",
+          "examples": [
+            {
+              "title": "cut & tr",
+              "code": "# Extract columns\ncut -d':' -f1,3 /etc/passwd\n\n# Extract characters\ncut -c1-5 file.txt\n\n# Translate characters\necho \"Hello World\" | tr '[:lower:]' '[:upper:]'\n\n# Delete characters\necho \"H-e-l-l-o\" | tr -d '-'"
+            },
+            {
+              "title": "sort & uniq",
+              "code": "# Sort alphabetically\nsort names.txt\n\n# Sort numerically\nsort -n numbers.txt\n\n# Sort in reverse\nsort -r file.txt\n\n# Sort by field\nsort -t',' -k2 data.csv\n\n# Remove duplicates\nsort names.txt | uniq\n\n# Count occurrences\nsort names.txt | uniq -c | sort -rn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "topic": "File & Directory Operations",
+      "subtopics": [
+        {
+          "name": "File Management",
+          "explanation": "Bash provides robust file manipulation through built-in commands.",
+          "examples": [
+            {
+              "title": "Create, Copy, Move, Delete",
+              "code": "touch newfile.txt              # create empty file\ncp source.txt dest.txt         # copy file\ncp -r src_dir/ dst_dir/        # copy directory\nmv oldname.txt newname.txt     # rename/move\nrm file.txt                    # delete file\nrm -rf directory/              # delete directory (CAREFUL!)\nln -s target link_name         # create symlink"
+            },
+            {
+              "title": "Find Files",
+              "code": "# Find by name\nfind /home -name \"*.txt\"\n\n# Find by size\nfind . -size +1M\n\n# Find by modification time\nfind . -mtime -7  # modified in last 7 days\n\n# Find and execute\nfind . -name \"*.log\" -exec rm {} \\;\n\n# Find and process\nfind . -type f -name \"*.sh\" | xargs chmod +x"
+            }
+          ]
+        },
+        {
+          "name": "Directory Operations",
+          "explanation": "Creating, navigating, and managing directories.",
+          "examples": [
+            {
+              "title": "Directory Commands",
+              "code": "mkdir mydir                  # create directory\nmkdir -p a/b/c               # create nested dirs\nrmdir emptydir               # remove empty dir\npushd /tmp                   # save & change dir\npopd                         # restore previous dir\nls -la                       # list with details\ntree -L 2                    # tree view (2 levels)"
+            }
+          ]
+        },
+        {
+          "name": "File Permissions",
+          "explanation": "Linux permissions follow owner/group/other model. Use chmod (symbolic or octal) and chown.",
+          "examples": [
+            {
+              "title": "chmod Permissions",
+              "code": "chmod 755 script.sh    # rwxr-xr-x\nchmod 644 file.txt     # rw-r--r--\nchmod +x script.sh     # add execute\nchmod -w file.txt      # remove write\nchmod u+x,g+x file.sh  # symbolic"
+            },
+            {
+              "title": "chown and chgrp",
+              "code": "chown user:group file.txt    # change owner & group\nchown -R user:group dir/     # recursive\nchgrp developers file.txt    # change group only"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "topic": "Process Management",
+      "subtopics": [
+        {
+          "name": "Background & Foreground Jobs",
+          "explanation": "Processes can run in the background using & and be managed with jobs, fg, bg.",
+          "examples": [
+            {
+              "title": "Job Control",
+              "code": "sleep 100 &         # run in background\njobs                # list background jobs\nfg %1               # bring job 1 to foreground\nbg %1               # resume job 1 in background\nkill %1             # kill job 1\nwait                # wait for all background jobs"
+            },
+            {
+              "title": "Running Multiple Tasks",
+              "code": "task1 &\ntask2 &\ntask3 &\nwait  # wait for all to finish\necho \"All tasks complete\""
+            }
+          ]
+        },
+        {
+          "name": "Process Monitoring",
+          "explanation": "Monitor running processes with ps, top, and pgrep.",
+          "examples": [
+            {
+              "title": "Process Commands",
+              "code": "ps aux                    # all processes\nps aux | grep nginx       # find specific process\npgrep nginx               # get PID of nginx\nkill PID                  # terminate process\nkill -9 PID               # force kill\npkill nginx               # kill by name\nnohup ./longscript.sh &   # run ignoring hangup"
+            }
+          ]
+        },
+        {
+          "name": "Signals",
+          "explanation": "Signals are notifications sent to processes. Use trap to catch signals in your scripts.",
+          "examples": [
+            {
+              "title": "Trap Signals",
+              "code": "cleanup() {\n  echo \"Cleaning up...\"\n  rm -f /tmp/tempfile.$$\n  exit 0\n}\n\ntrap cleanup INT TERM EXIT\n\necho \"Script PID: $$\"\nsleep 100  # will clean up on Ctrl+C"
+            },
+            {
+              "title": "Ignore SIGHUP",
+              "code": "trap '' HUP   # ignore hangup signal\nnohup ./script.sh &"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "topic": "Error Handling",
+      "subtopics": [
+        {
+          "name": "Exit Codes",
+          "explanation": "Every command returns an exit code: 0 = success, non-zero = failure. $? holds the last exit code.",
+          "examples": [
+            {
+              "title": "Checking Exit Codes",
+              "code": "cp source.txt dest.txt\nif [ $? -eq 0 ]; then\n  echo \"Copy successful\"\nelse\n  echo \"Copy failed\"\nfi"
+            },
+            {
+              "title": "Custom Exit Codes",
+              "code": "#!/bin/bash\nif [ $# -eq 0 ]; then\n  echo \"Error: no arguments\" >&2\n  exit 1\nfi\necho \"Argument: $1\"\nexit 0"
+            }
+          ]
+        },
+        {
+          "name": "set Options for Robustness",
+          "explanation": "Use set options at the top of scripts to make them fail fast and catch errors early.",
+          "examples": [
+            {
+              "title": "Strict Mode",
+              "code": "#!/bin/bash\nset -euo pipefail\n# -e: exit on error\n# -u: treat unset variables as errors\n# -o pipefail: catch errors in pipes\n\nIFS=$'\\n\\t'  # safer IFS\n\necho \"This is a safe script\""
+            }
+          ]
+        },
+        {
+          "name": "Error Handling Patterns",
+          "explanation": "Common patterns for graceful error handling and logging.",
+          "examples": [
+            {
+              "title": "die Function",
+              "code": "die() {\n  echo \"ERROR: $1\" >&2\n  exit ${2:-1}\n}\n\ncd /nonexistent || die \"Cannot change directory\" 2\n[ -f config.txt ] || die \"Config file missing\""
+            },
+            {
+              "title": "Trap ERR",
+              "code": "set -e\nerr_handler() {\n  echo \"Error on line $1\"\n  exit 1\n}\ntrap 'err_handler $LINENO' ERR\n\nfalse  # triggers err_handler"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "topic": "Regular Expressions",
+      "subtopics": [
+        {
+          "name": "Basic & Extended Regex",
+          "explanation": "Regular expressions are patterns used with grep, sed, and awk for text matching and extraction.",
+          "examples": [
+            {
+              "title": "Regex Patterns",
+              "code": "# Match start of line\ngrep '^root' /etc/passwd\n\n# Match end of line\ngrep 'bash$' /etc/passwd\n\n# Match any character\ngrep 'c.t' words.txt  # cat, cot, cut\n\n# Quantifiers\ngrep -E 'colou?r' text.txt    # color or colour\ngrep -E '[0-9]+' text.txt     # one or more digits\ngrep -E '[A-Za-z]{3,6}' text  # 3 to 6 letters\n\n# Character classes\ngrep -E '^[[:alpha:]]+$' words   # only letters\ngrep -E '^[[:digit:]]+$' nums    # only digits"
+            },
+            {
+              "title": "Regex in Bash [[ ]]",
+              "code": "email=\"user@example.com\"\nif [[ $email =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$ ]]; then\n  echo \"Valid email\"\nfi\n\n# Extract matched groups\nif [[ \"2024-01-15\" =~ ([0-9]{4})-([0-9]{2})-([0-9]{2}) ]]; then\n  echo \"Year: ${BASH_REMATCH[1]}\"\n  echo \"Month: ${BASH_REMATCH[2]}\"\n  echo \"Day: ${BASH_REMATCH[3]}\"\nfi"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "topic": "Debugging",
+      "subtopics": [
+        {
+          "name": "Debugging Techniques",
+          "explanation": "Bash offers several built-in debugging tools and strategies.",
+          "examples": [
+            {
+              "title": "set -x Trace Mode",
+              "code": "#!/bin/bash\nset -x  # enable debug tracing\nx=5\ny=10\necho $((x + y))\nset +x  # disable tracing"
+            },
+            {
+              "title": "Run Script in Debug Mode",
+              "code": "bash -x myscript.sh\nbash -v myscript.sh  # print each line before execution"
+            },
+            {
+              "title": "Debug Specific Block",
+              "code": "echo \"Before debug\"\nset -x\ncomplex_function\nset +x\necho \"After debug\""
+            },
+            {
+              "title": "Log to File",
+              "code": "LOG_FILE=\"/tmp/script_debug.log\"\nexec 2>\"$LOG_FILE\"  # redirect stderr to log file\nset -x\n# all trace output goes to log file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "topic": "Advanced Topics",
+      "subtopics": [
+        {
+          "name": "Command Substitution",
+          "explanation": "Capture command output into a variable using $() or backticks.",
+          "examples": [
+            {
+              "title": "Command Substitution",
+              "code": "current_date=$(date +%Y-%m-%d)\nfile_count=$(ls | wc -l)\nuptime_info=$(uptime)\necho \"Date: $current_date, Files: $file_count\""
+            }
+          ]
+        },
+        {
+          "name": "Subshells",
+          "explanation": "Code in ( ) runs in a subshell—a child process. Changes don't affect the parent.",
+          "examples": [
+            {
+              "title": "Subshell Example",
+              "code": "x=10\n(x=99; echo \"Inside subshell: $x\")  # 99\necho \"Outside subshell: $x\"           # 10"
+            },
+            {
+              "title": "Group Commands",
+              "code": "# Braces run in current shell\n{ date; ls; whoami; } > report.txt"
+            }
+          ]
+        },
+        {
+          "name": "eval and exec",
+          "explanation": "eval executes a string as a command. exec replaces the current process with a new one.",
+          "examples": [
+            {
+              "title": "eval Usage",
+              "code": "cmd=\"echo Hello World\"\neval \"$cmd\"  # Hello World\n\n# Dynamic variable names\nvar_name=\"color\"\neval \"${var_name}=blue\"\necho $color  # blue"
+            },
+            {
+              "title": "exec Usage",
+              "code": "# Replace shell with a command\nexec python3 myapp.py\n# Script stops here; python takes over PID\n\n# Redirect all script output\nexec > /tmp/output.log 2>&1\necho \"This goes to the log\""
+            }
+          ]
+        },
+        {
+          "name": "Named Pipes (FIFOs)",
+          "explanation": "Named pipes allow two-way communication between processes using a special file.",
+          "examples": [
+            {
+              "title": "FIFO Example",
+              "code": "mkfifo /tmp/mypipe\n\n# Producer\necho \"Hello from producer\" > /tmp/mypipe &\n\n# Consumer\ncat /tmp/mypipe\n\nrm /tmp/mypipe"
+            }
+          ]
+        },
+        {
+          "name": "coproc (Coprocesses)",
+          "explanation": "coproc runs a command in the background and connects its stdin/stdout to file descriptors.",
+          "examples": [
+            {
+              "title": "Coprocess",
+              "code": "coproc bc\necho \"3 + 4\" >&${COPROC[1]}\nread result <&${COPROC[0]}\necho \"3 + 4 = $result\"  # 7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "topic": "Script Best Practices",
+      "subtopics": [
+        {
+          "name": "Best Practices & Style Guide",
+          "explanation": "Following consistent style and safety practices makes scripts robust, readable, and maintainable.",
+          "examples": [
+            {
+              "title": "Script Template",
+              "code": "#!/usr/bin/env bash\n# ============================================\n# Script: backup.sh\n# Description: Daily backup script\n# Author: Your Name\n# Date: 2024-01-15\n# Usage: ./backup.sh [SOURCE] [DEST]\n# ============================================\nset -euo pipefail\nIFS=$'\\n\\t'\n\n# Constants (UPPER_CASE)\nreadonly SCRIPT_NAME=$(basename \"$0\")\nreadonly LOG_FILE=\"/var/log/${SCRIPT_NAME}.log\"\n\n# Functions\nlog() { echo \"[$(date +'%Y-%m-%dT%H:%M:%S')] $*\" | tee -a \"$LOG_FILE\"; }\ndie() { log \"FATAL: $1\"; exit ${2:-1}; }\n\nmain() {\n  local source=${1:-\"\"}\n  local dest=${2:-\"\"}\n  [ -z \"$source\" ] && die \"Source not specified\"\n  [ -d \"$source\" ] || die \"Source does not exist\"\n  log \"Backup started\"\n  cp -r \"$source\" \"$dest\"\n  log \"Backup complete\"\n}\n\nmain \"$@\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "topic": "Projects",
+      "projects": [
+        {
+          "name": "Project 1: System Health Monitor",
+          "description": "A script that monitors CPU, memory, disk usage, and alerts when thresholds are exceeded.",
+          "code": "#!/usr/bin/env bash\nset -euo pipefail\n\n# Thresholds\nCPU_THRESHOLD=80\nMEM_THRESHOLD=80\nDISK_THRESHOLD=90\n\nlog() { echo \"[$(date +'%Y-%m-%d %H:%M:%S')] $1\"; }\nalert() { echo \"[ALERT] $1\" >&2; }\n\ncheck_cpu() {\n  local cpu_usage\n  cpu_usage=$(top -bn1 | grep \"Cpu(s)\" | awk '{print $2}' | cut -d'%' -f1 | cut -d'.' -f1)\n  log \"CPU Usage: ${cpu_usage}%\"\n  if [ \"$cpu_usage\" -gt \"$CPU_THRESHOLD\" ]; then\n    alert \"CPU usage is ${cpu_usage}% (threshold: ${CPU_THRESHOLD}%)\"\n  fi\n}\n\ncheck_memory() {\n  local mem_usage\n  mem_usage=$(free | grep Mem | awk '{print int($3/$2 * 100)}')\n  log \"Memory Usage: ${mem_usage}%\"\n  if [ \"$mem_usage\" -gt \"$MEM_THRESHOLD\" ]; then\n    alert \"Memory usage is ${mem_usage}% (threshold: ${MEM_THRESHOLD}%)\"\n  fi\n}\n\ncheck_disk() {\n  while IFS= read -r line; do\n    local usage\n    local mount\n    usage=$(echo \"$line\" | awk '{print $5}' | tr -d '%')\n    mount=$(echo \"$line\" | awk '{print $6}')\n    log \"Disk $mount: ${usage}%\"\n    if [ \"$usage\" -gt \"$DISK_THRESHOLD\" ]; then\n      alert \"Disk $mount is ${usage}% full (threshold: ${DISK_THRESHOLD}%)\"\n    fi\n  done < <(df -h | grep -E '^/dev')\n}\n\nlog \"=== System Health Check ===\"\ncheck_cpu\ncheck_memory\ncheck_disk\nlog \"=== Check Complete ===\""
+        },
+        {
+          "name": "Project 2: Automated Backup Script",
+          "description": "Backs up files/directories to a timestamped archive with retention policy and logging.",
+          "code": "#!/usr/bin/env bash\nset -euo pipefail\n\nSOURCE_DIR=\"${1:-/home/$USER/Documents}\"\nBACKUP_DIR=\"${2:-/backup}\"\nRETENTION_DAYS=7\nTIMESTAMP=$(date +%Y%m%d_%H%M%S)\nBACKUP_NAME=\"backup_${TIMESTAMP}.tar.gz\"\nLOG_FILE=\"/var/log/backup.log\"\n\nlog()  { echo \"[INFO]  $(date +'%Y-%m-%d %H:%M:%S') $1\" | tee -a \"$LOG_FILE\"; }\nerror(){ echo \"[ERROR] $(date +'%Y-%m-%d %H:%M:%S') $1\" | tee -a \"$LOG_FILE\" >&2; }\n\ncreate_backup() {\n  log \"Starting backup of $SOURCE_DIR\"\n  mkdir -p \"$BACKUP_DIR\"\n  if tar -czf \"${BACKUP_DIR}/${BACKUP_NAME}\" -C \"$(dirname $SOURCE_DIR)\" \"$(basename $SOURCE_DIR)\" 2>>/tmp/tar_err.log; then\n    local size\n    size=$(du -sh \"${BACKUP_DIR}/${BACKUP_NAME}\" | cut -f1)\n    log \"Backup created: ${BACKUP_NAME} (${size})\"\n  else\n    error \"Backup failed!\"\n    exit 1\n  fi\n}\n\nrotate_backups() {\n  log \"Rotating backups older than $RETENTION_DAYS days\"\n  find \"$BACKUP_DIR\" -name \"backup_*.tar.gz\" -mtime +$RETENTION_DAYS -delete\n  local count\n  count=$(find \"$BACKUP_DIR\" -name \"backup_*.tar.gz\" | wc -l)\n  log \"Remaining backups: $count\"\n}\n\ncreate_backup\nrotate_backups\nlog \"Backup process completed successfully\""
+        },
+        {
+          "name": "Project 3: User Management Script",
+          "description": "Adds, removes, lists, and modifies system users with validation and logging.",
+          "code": "#!/usr/bin/env bash\nset -euo pipefail\n\n[ \"$EUID\" -ne 0 ] && { echo \"Run as root\"; exit 1; }\n\nLOG_FILE=\"/var/log/user_management.log\"\n\nlog() { echo \"[$(date +'%Y-%m-%d %H:%M:%S')] $1\" | tee -a \"$LOG_FILE\"; }\n\nusage() {\n  cat << EOF\nUsage: $0 <command> [options]\nCommands:\n  add    <username> [--group <group>] [--shell <shell>]\n  remove <username>\n  list\n  info   <username>\nEOF\n  exit 1\n}\n\nadd_user() {\n  local username=\"$1\"; shift\n  local group=\"users\"\n  local shell=\"/bin/bash\"\n  while [[ $# -gt 0 ]]; do\n    case \"$1\" in\n      --group) group=\"$2\"; shift 2 ;;\n      --shell) shell=\"$2\"; shift 2 ;;\n      *) echo \"Unknown option: $1\"; exit 1 ;;\n    esac\n  done\n  id \"$username\" &>/dev/null && { echo \"User $username already exists\"; exit 1; }\n  useradd -m -s \"$shell\" -G \"$group\" \"$username\"\n  log \"User $username created (group=$group, shell=$shell)\"\n  echo \"User $username created. Set password with: passwd $username\"\n}\n\nremove_user() {\n  local username=\"$1\"\n  id \"$username\" &>/dev/null || { echo \"User $username not found\"; exit 1; }\n  userdel -r \"$username\"\n  log \"User $username removed\"\n  echo \"User $username removed\"\n}\n\nlist_users() {\n  echo \"=== System Users ===\"\n  awk -F: '$3 >= 1000 && $1 != \"nobody\" {printf \"%-20s UID:%-8s Shell: %s\\n\", $1, $3, $7}' /etc/passwd\n}\n\ninfo_user() {\n  local username=\"$1\"\n  id \"$username\" &>/dev/null || { echo \"User $username not found\"; exit 1; }\n  id \"$username\"\n  echo \"Home: $(eval echo ~$username)\"\n  echo \"Shell: $(getent passwd $username | cut -d: -f7)\"\n  echo \"Groups: $(groups $username)\"\n}\n\n[ $# -lt 1 ] && usage\ncommand=\"$1\"; shift\ncase \"$command\" in\n  add)    add_user \"$@\" ;;\n  remove) remove_user \"$@\" ;;\n  list)   list_users ;;\n  info)   info_user \"$@\" ;;\n  *)      usage ;;\nesac"
+        },
+        {
+          "name": "Project 4: Log Analyzer",
+          "description": "Parses web server or system logs to generate summary reports of errors, IPs, and request counts.",
+          "code": "#!/usr/bin/env bash\nset -euo pipefail\n\nLOG_FILE=\"${1:-/var/log/nginx/access.log}\"\n[ -f \"$LOG_FILE\" ] || { echo \"Log file not found: $LOG_FILE\"; exit 1; }\n\necho \"====================================\"\necho \"  Log Analysis Report\"\necho \"  File: $LOG_FILE\"\necho \"  Date: $(date)\"\necho \"====================================\"\n\necho -e \"\\n--- Total Requests ---\"\ntotal=$(wc -l < \"$LOG_FILE\")\necho \"Total lines: $total\"\n\necho -e \"\\n--- Top 10 IP Addresses ---\"\nawk '{print $1}' \"$LOG_FILE\" | sort | uniq -c | sort -rn | head -10 | \\\n  awk '{printf \"  %-8s %s\\n\", $1, $2}'\n\necho -e \"\\n--- HTTP Status Code Distribution ---\"\nawk '{print $9}' \"$LOG_FILE\" | sort | uniq -c | sort -rn | \\\n  awk '{printf \"  Status %-6s Count: %s\\n\", $2, $1}'\n\necho -e \"\\n--- Top 10 Requested URLs ---\"\nawk '{print $7}' \"$LOG_FILE\" | sort | uniq -c | sort -rn | head -10 | \\\n  awk '{printf \"  %-8s %s\\n\", $1, $2}'\n\necho -e \"\\n--- Errors (4xx and 5xx) ---\"\ngrep -E '\" [45][0-9]{2} ' \"$LOG_FILE\" | wc -l | \\\n  awk '{print \"  Error requests: \" $1}'\n\necho -e \"\\n--- Requests per Hour ---\"\nawk '{print $4}' \"$LOG_FILE\" | cut -d: -f2 | sort | uniq -c | \\\n  awk '{printf \"  Hour %02d:00 - %s requests\\n\", $2, $1}'\n\necho -e \"\\n===================================\""
+        },
+        {
+          "name": "Project 5: Interactive Menu-Driven App",
+          "description": "A full interactive menu-driven script for common sysadmin tasks using select and functions.",
+          "code": "#!/usr/bin/env bash\nset -euo pipefail\n\n# Colors\nRED='\\033[0;31m'\nGREEN='\\033[0;32m'\nYELLOW='\\033[1;33m'\nBLUE='\\033[0;34m'\nNC='\\033[0m'  # No Color\n\nprint_header() {\n  clear\n  echo -e \"${BLUE}================================${NC}\"\n  echo -e \"${BLUE}  SysAdmin Toolkit v1.0${NC}\"\n  echo -e \"${BLUE}================================${NC}\\n\"\n}\n\nshow_system_info() {\n  echo -e \"${GREEN}=== System Information ===${NC}\"\n  echo \"OS:       $(uname -o)\"\n  echo \"Kernel:   $(uname -r)\"\n  echo \"Hostname: $(hostname)\"\n  echo \"Uptime:   $(uptime -p)\"\n  echo \"Users:    $(who | wc -l) logged in\"\n  echo \"Load:     $(uptime | awk -F'load average:' '{print $2}')\"\n}\n\nshow_disk_usage() {\n  echo -e \"${GREEN}=== Disk Usage ===${NC}\"\n  df -h | grep -E '^/dev' | awk '{\n    printf \"%-20s %6s used of %-6s (%s full)\\n\", $1, $3, $2, $5\n  }'\n}\n\nshow_memory() {\n  echo -e \"${GREEN}=== Memory Usage ===${NC}\"\n  free -h | awk '/^Mem/ {printf \"RAM:  %s used / %s total (%.1f%%)\\n\", $3, $2, $3/$2*100}'\n  free -h | awk '/^Swap/ {printf \"Swap: %s used / %s total\\n\", $3, $2}'\n}\n\nshow_top_processes() {\n  echo -e \"${GREEN}=== Top 5 Processes by CPU ===${NC}\"\n  ps aux --sort=-%cpu | head -6 | tail -5 | \\\n    awk '{printf \"%-20s CPU:%-6s MEM:%-6s\\n\", $11, $3, $4}'\n}\n\nnetwork_info() {\n  echo -e \"${GREEN}=== Network Information ===${NC}\"\n  ip addr show | grep 'inet ' | awk '{print \"IP:\", $2}'\n  echo \"Connections: $(ss -tn | grep ESTAB | wc -l) established\"\n}\n\nmain_menu() {\n  local options=(\"System Info\" \"Disk Usage\" \"Memory\" \"Top Processes\" \"Network\" \"Quit\")\n  while true; do\n    print_header\n    PS3=$'\\nSelect option: '\n    select opt in \"${options[@]}\"; do\n      case $opt in\n        \"System Info\")    show_system_info ;;\n        \"Disk Usage\")     show_disk_usage ;;\n        \"Memory\")         show_memory ;;\n        \"Top Processes\")  show_top_processes ;;\n        \"Network\")        network_info ;;\n        \"Quit\")           echo -e \"${YELLOW}Goodbye!${NC}\"; exit 0 ;;\n        *) echo -e \"${RED}Invalid option${NC}\" ;;\n      esac\n      echo -e \"\\nPress Enter to continue...\"\n      read -r\n      break\n    done\n  done\n}\n\nmain_menu"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "topic": "Bash vs PowerShell Cheatsheet",
+      "description": "Side-by-side comparison of Bash (Linux/macOS) and PowerShell (Windows/cross-platform) commands and syntax",
+      "categories": [
+        {
+          "category": "Basic Output",
+          "comparisons": [
+            { "task": "Print text", "bash": "echo \"Hello, World!\"", "powershell": "Write-Host \"Hello, World!\"" },
+            { "task": "Print without newline", "bash": "echo -n \"No newline\"", "powershell": "Write-Host -NoNewline \"No newline\"" },
+            { "task": "Print to stderr", "bash": "echo \"Error\" >&2", "powershell": "Write-Error \"Error\"" },
+            { "task": "Formatted output", "bash": "printf \"%-10s %5d\\n\" \"item\" 42", "powershell": "\"{0,-10} {1,5}\" -f \"item\", 42" }
+          ]
+        },
+        {
+          "category": "Variables",
+          "comparisons": [
+            { "task": "Assign variable", "bash": "name=\"Alice\"", "powershell": "$name = \"Alice\"" },
+            { "task": "Use variable", "bash": "echo $name", "powershell": "Write-Host $name" },
+            { "task": "Integer variable", "bash": "declare -i num=10", "powershell": "[int]$num = 10" },
+            { "task": "Read-only variable", "bash": "readonly PI=3.14", "powershell": "Set-Variable -Name PI -Value 3.14 -Option Constant" },
+            { "task": "Unset variable", "bash": "unset name", "powershell": "Remove-Variable name" },
+            { "task": "String length", "bash": "${#str}", "powershell": "$str.Length" }
+          ]
+        },
+        {
+          "category": "Conditionals",
+          "comparisons": [
+            { "task": "if-else", "bash": "if [ $x -gt 5 ]; then echo \"yes\"; fi", "powershell": "if ($x -gt 5) { Write-Host \"yes\" }" },
+            { "task": "Equal comparison (int)", "bash": "[ $a -eq $b ]", "powershell": "$a -eq $b" },
+            { "task": "Not equal (int)", "bash": "[ $a -ne $b ]", "powershell": "$a -ne $b" },
+            { "task": "Greater than", "bash": "[ $a -gt $b ]", "powershell": "$a -gt $b" },
+            { "task": "String equals", "bash": "[ \"$a\" = \"$b\" ]", "powershell": "$a -eq $b" },
+            { "task": "String contains", "bash": "[[ $str == *substring* ]]", "powershell": "$str -like \"*substring*\"" },
+            { "task": "Regex match", "bash": "[[ $str =~ pattern ]]", "powershell": "$str -match \"pattern\"" },
+            { "task": "Null/empty check", "bash": "[ -z \"$str\" ]", "powershell": "[string]::IsNullOrEmpty($str)" }
+          ]
+        },
+        {
+          "category": "Loops",
+          "comparisons": [
+            { "task": "For range loop", "bash": "for i in {1..10}; do echo $i; done", "powershell": "for ($i=1; $i -le 10; $i++) { Write-Host $i }" },
+            { "task": "For each item", "bash": "for item in a b c; do echo $item; done", "powershell": "foreach ($item in @('a','b','c')) { Write-Host $item }" },
+            { "task": "While loop", "bash": "while [ $x -lt 10 ]; do ((x++)); done", "powershell": "while ($x -lt 10) { $x++ }" },
+            { "task": "Loop with break", "bash": "while true; do break; done", "powershell": "while ($true) { break }" },
+            { "task": "Loop over files", "bash": "for f in *.txt; do echo $f; done", "powershell": "Get-ChildItem *.txt | ForEach-Object { Write-Host $_.Name }" }
+          ]
+        },
+        {
+          "category": "Functions",
+          "comparisons": [
+            { "task": "Define function", "bash": "greet() { echo \"Hello $1\"; }", "powershell": "function Greet($name) { Write-Host \"Hello $name\" }" },
+            { "task": "Call function", "bash": "greet \"Alice\"", "powershell": "Greet \"Alice\"" },
+            { "task": "Return value", "bash": "result=$(add 5 3)", "powershell": "$result = Add 5 3" },
+            { "task": "Local variable", "bash": "local x=10", "powershell": "$local:x = 10" }
+          ]
+        },
+        {
+          "category": "File & Directory",
+          "comparisons": [
+            { "task": "List files", "bash": "ls -la", "powershell": "Get-ChildItem -Force" },
+            { "task": "Change directory", "bash": "cd /path/to/dir", "powershell": "Set-Location /path/to/dir" },
+            { "task": "Current directory", "bash": "pwd", "powershell": "Get-Location" },
+            { "task": "Create directory", "bash": "mkdir -p dir/subdir", "powershell": "New-Item -ItemType Directory -Path dir/subdir" },
+            { "task": "Copy file", "bash": "cp source.txt dest.txt", "powershell": "Copy-Item source.txt dest.txt" },
+            { "task": "Move file", "bash": "mv old.txt new.txt", "powershell": "Move-Item old.txt new.txt" },
+            { "task": "Delete file", "bash": "rm file.txt", "powershell": "Remove-Item file.txt" },
+            { "task": "File exists?", "bash": "[ -f file.txt ]", "powershell": "Test-Path file.txt" },
+            { "task": "Read file", "bash": "cat file.txt", "powershell": "Get-Content file.txt" },
+            { "task": "Write to file", "bash": "echo \"text\" > file.txt", "powershell": "\"text\" | Out-File file.txt" },
+            { "task": "Append to file", "bash": "echo \"text\" >> file.txt", "powershell": "\"text\" | Add-Content file.txt" },
+            { "task": "Find files", "bash": "find . -name \"*.txt\"", "powershell": "Get-ChildItem -Recurse -Filter *.txt" }
+          ]
+        },
+        {
+          "category": "String Operations",
+          "comparisons": [
+            { "task": "Substring", "bash": "${str:2:5}", "powershell": "$str.Substring(2,5)" },
+            { "task": "Replace", "bash": "${str/old/new}", "powershell": "$str -replace 'old','new'" },
+            { "task": "Uppercase", "bash": "${str^^}", "powershell": "$str.ToUpper()" },
+            { "task": "Lowercase", "bash": "${str,,}", "powershell": "$str.ToLower()" },
+            { "task": "Split string", "bash": "IFS=',' read -ra arr <<< \"$str\"", "powershell": "$arr = $str -split ','" },
+            { "task": "Join array", "bash": "IFS=','; echo \"${arr[*]}\"", "powershell": "$arr -join ','" },
+            { "task": "Trim whitespace", "bash": "echo $str | xargs", "powershell": "$str.Trim()" }
+          ]
+        },
+        {
+          "category": "Arrays",
+          "comparisons": [
+            { "task": "Create array", "bash": "arr=(1 2 3)", "powershell": "$arr = @(1, 2, 3)" },
+            { "task": "Access element", "bash": "${arr[0]}", "powershell": "$arr[0]" },
+            { "task": "Array length", "bash": "${#arr[@]}", "powershell": "$arr.Count" },
+            { "task": "All elements", "bash": "${arr[@]}", "powershell": "$arr" },
+            { "task": "Append element", "bash": "arr+=(4)", "powershell": "$arr += 4" },
+            { "task": "Array slice", "bash": "${arr[@]:1:3}", "powershell": "$arr[1..3]" },
+            { "task": "Loop over array", "bash": "for x in \"${arr[@]}\"; do echo $x; done", "powershell": "foreach ($x in $arr) { Write-Host $x }" }
+          ]
+        },
+        {
+          "category": "Input / Output",
+          "comparisons": [
+            { "task": "Read user input", "bash": "read -p \"Name: \" name", "powershell": "$name = Read-Host \"Name\"" },
+            { "task": "Read password", "bash": "read -s -p \"Pass: \" pass", "powershell": "$pass = Read-Host -AsSecureString \"Pass\"" },
+            { "task": "Redirect stdout", "bash": "cmd > out.txt", "powershell": "cmd | Out-File out.txt" },
+            { "task": "Redirect stderr", "bash": "cmd 2> err.txt", "powershell": "cmd 2> err.txt" },
+            { "task": "Redirect both", "bash": "cmd &> all.txt", "powershell": "cmd *> all.txt" },
+            { "task": "Pipe", "bash": "cmd1 | cmd2", "powershell": "cmd1 | cmd2" },
+            { "task": "Discard output", "bash": "cmd > /dev/null 2>&1", "powershell": "cmd | Out-Null" }
+          ]
+        },
+        {
+          "category": "Process Management",
+          "comparisons": [
+            { "task": "List processes", "bash": "ps aux", "powershell": "Get-Process" },
+            { "task": "Kill process by PID", "bash": "kill 1234", "powershell": "Stop-Process -Id 1234" },
+            { "task": "Kill by name", "bash": "pkill nginx", "powershell": "Stop-Process -Name nginx" },
+            { "task": "Run in background", "bash": "cmd &", "powershell": "Start-Job { cmd }" },
+            { "task": "Wait for background", "bash": "wait", "powershell": "Get-Job | Wait-Job" },
+            { "task": "Get PID", "bash": "echo $$", "powershell": "$PID" }
+          ]
+        },
+        {
+          "category": "Environment & System",
+          "comparisons": [
+            { "task": "Set env variable", "bash": "export MY_VAR=value", "powershell": "$env:MY_VAR = 'value'" },
+            { "task": "Get env variable", "bash": "echo $HOME", "powershell": "$env:USERPROFILE" },
+            { "task": "List all env vars", "bash": "env", "powershell": "Get-ChildItem Env:" },
+            { "task": "Current user", "bash": "whoami", "powershell": "$env:USERNAME" },
+            { "task": "Hostname", "bash": "hostname", "powershell": "$env:COMPUTERNAME" },
+            { "task": "OS info", "bash": "uname -a", "powershell": "$PSVersionTable.OS" },
+            { "task": "Date/time", "bash": "date", "powershell": "Get-Date" },
+            { "task": "Formatted date", "bash": "date +%Y-%m-%d", "powershell": "Get-Date -Format 'yyyy-MM-dd'" }
+          ]
+        },
+        {
+          "category": "Error Handling",
+          "comparisons": [
+            { "task": "Exit on error", "bash": "set -e", "powershell": "$ErrorActionPreference = 'Stop'" },
+            { "task": "Get exit code", "bash": "echo $?", "powershell": "$LASTEXITCODE" },
+            { "task": "Custom exit code", "bash": "exit 1", "powershell": "exit 1" },
+            { "task": "Try-catch", "bash": "if ! cmd; then echo \"failed\"; fi", "powershell": "try { cmd } catch { Write-Error $_ }" },
+            { "task": "Trap signal", "bash": "trap 'cleanup' EXIT INT TERM", "powershell": "Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { cleanup }" }
+          ]
+        },
+        {
+          "category": "Network & Web",
+          "comparisons": [
+            { "task": "Download file", "bash": "curl -O https://example.com/file.zip", "powershell": "Invoke-WebRequest -Uri https://example.com/file.zip -OutFile file.zip" },
+            { "task": "HTTP GET request", "bash": "curl https://api.example.com/data", "powershell": "Invoke-RestMethod -Uri https://api.example.com/data" },
+            { "task": "HTTP POST (JSON)", "bash": "curl -X POST -H 'Content-Type: application/json' -d '{\"key\":\"val\"}' url", "powershell": "Invoke-RestMethod -Method Post -Uri url -Body (@{key='val'} | ConvertTo-Json) -ContentType 'application/json'" },
+            { "task": "Test connectivity", "bash": "ping -c 4 google.com", "powershell": "Test-NetConnection -ComputerName google.com" }
+          ]
+        }
+      ]
+    }
+  ]
+}
