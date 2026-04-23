@@ -135,6 +135,9 @@ body {
 
 #ds-main-content {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 main[data-sb-padded="1"] {
@@ -142,8 +145,16 @@ main[data-sb-padded="1"] {
 }
 
 @media (min-width: 1024px) {
-    #ds-main-content {
+    /* Prevent double padding on generated pages */
+    div.lg\:pl-64 {
+        padding-left: 0 !important;
+    }
+
+    html body #ds-main-content,
+    html body.sidebar-open #ds-main-content,
+    html body:not(.sidebar-open) #ds-main-content {
         padding-left: 15rem !important;
+        padding-right: 15rem !important;
         transition: none !important; /* constant no shifting */
     }
 
