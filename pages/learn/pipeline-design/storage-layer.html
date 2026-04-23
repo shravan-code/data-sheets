@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5. Storage Layer Design — Data Sheets</title>
     
+
+
+
+
+
+
+
+
+
+
 <script>
 (function() {
     const html  = document.documentElement;
@@ -30,6 +40,22 @@
     const isDesktop = () => window.innerWidth >= 1024;
     const stored = localStorage.getItem('ds-sidebar');
     let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+
+    /* ── Active Link Highlighting ────────────────── */
+    function highlightActive() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop() || 'index.html';
+        const links = document.querySelectorAll('.sb-link');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.includes(page)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    highlightActive();
 
     function applyState(animate) {
         if (!sidebar) return;
@@ -89,5 +115,8 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
 })();
 </script>
+    <script src="../../../js/layout-fixes.js"></script>
 </body>
 </html>
+
+
