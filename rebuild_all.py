@@ -1,21 +1,14 @@
 """
 rebuild_all.py
 ==============
-One-shot script that:
-1. Strips the old nav / sidebar fragments from every generated HTML file.
-2. Injects a brand-new, unified component (nav + sidebar + scroll-to-top).
-3. Fixes main-content padding so it doesn't hide behind the sidebar.
-4. Rewrites index.html & pages/learn.html & pages/practice.html in-place.
-5. Runs all build scripts to regenerate sub-pages and re-injects.
-
-Run:  python rebuild_all.py
+Injects unified nav + redesigned sidebar + scroll-to-top into every HTML file.
+Run: python rebuild_all.py
 """
 
 import os, re, glob, subprocess, sys
 
 # ---------------------------------------------------------------------------
-# SHARED COMPONENT  (call get_nav_sidebar(prefix) to render)
-# prefix = relative path from the file back to the project root, e.g. "../../../"
+# SHARED CSS
 # ---------------------------------------------------------------------------
 
 SHARED_CSS = """\
@@ -24,137 +17,222 @@ SHARED_CSS = """\
         h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
         .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
         .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        /* Sidebar scrollbar matches theme */
-        #ds-sidebar{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
-        #ds-sidebar::-webkit-scrollbar{width:4px;}
+
+        /* ── Sidebar ────────────────────────────────── */
+        #ds-sidebar{
+            scrollbar-width:thin;
+            scrollbar-color:#e2e8f0 transparent;
+            transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;
+        }
+        .dark #ds-sidebar{scrollbar-color:#1e293b transparent;}
+        #ds-sidebar::-webkit-scrollbar{width:3px;}
         #ds-sidebar::-webkit-scrollbar-track{background:transparent;}
-        #ds-sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px;}
-        .dark #ds-sidebar::-webkit-scrollbar-thumb{background:#334155;}
-        /* Scroll-to-top btn */
-        #scroll-top{opacity:0;pointer-events:none;transition:opacity .25s;}
-        #scroll-top.visible{opacity:1;pointer-events:auto;}
+        #ds-sidebar::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:999px;}
+        .dark #ds-sidebar::-webkit-scrollbar-thumb{background:#1e293b;}
+
+        /* sidebar hidden = translate-x-full; visible = translate-x-0 */
+        #ds-sidebar.sidebar-hidden{transform:translateX(-100%);}
+        #ds-sidebar.sidebar-visible{transform:translateX(0);}
+
+        /* shift main when sidebar is visible on desktop */
+        @media(min-width:1024px){
+            body.sidebar-open #ds-main-content{padding-left:16rem;}
+        }
+
+        /* sidebar nav links */
+        .sb-link{
+            display:flex;align-items:center;gap:8px;padding:6px 10px;
+            border-radius:8px;font-size:.8125rem;font-weight:500;
+            color:#475569;text-decoration:none;
+            transition:background 0.15s,color 0.15s;
+        }
+        .sb-link:hover{background:#f1f5f9;color:#0f172a;}
+        .dark .sb-link{color:#94a3b8;}
+        .dark .sb-link:hover{background:#1e293b;color:#f1f5f9;}
+
+        /* category labels */
+        .sb-cat{
+            display:flex;align-items:center;gap:6px;
+            font-size:.65rem;font-weight:700;letter-spacing:.1em;
+            text-transform:uppercase;padding:0 10px;margin:16px 0 4px;
+        }
+        .sb-cat::before{content:'';flex:1;height:1px;background:currentColor;opacity:.2;}
+        .sb-cat::after{content:'';flex:3;height:1px;background:currentColor;opacity:.2;}
+
+        /* section headers */
+        .sb-section{
+            display:flex;align-items:center;gap:8px;
+            padding:8px 10px;border-radius:10px;
+            font-size:.8125rem;font-weight:700;letter-spacing:.03em;
+            text-decoration:none;margin-bottom:4px;
+            transition:background 0.15s,color 0.15s;
+        }
+        .sb-section:hover{opacity:.85;}
+
+        /* Scroll-to-top */
+        #scroll-top{opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;}
+        #scroll-top.visible{opacity:1;pointer-events:auto;transform:scale(1);}
+
         /* card hover */
         .topic-card{transition:all 0.25s cubic-bezier(.4,0,.2,1);}
         .topic-card:hover{transform:translateY(-4px);}
         .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
         .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
+
+        /* prose */
+        .prose h2{margin-top:2.5rem;margin-bottom:1.25rem;font-weight:700;color:inherit;font-size:2.25rem;letter-spacing:-.02em;}
+        .prose h3{margin-top:2rem;margin-bottom:1rem;font-weight:600;color:inherit;font-size:1.6rem;letter-spacing:-.01em;}
+        .prose p{margin-bottom:1.25rem;line-height:1.8;opacity:.9;}
+        .prose ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:1.25rem;}
+        .prose li{margin-bottom:.6rem;}
+        .prose code{background:rgba(0,0,0,.05);padding:.2rem .4rem;border-radius:.25rem;font-size:.875em;font-weight:500;}
+        .dark .prose code{background:rgba(255,255,255,.1);}
     </style>"""
 
+# ---------------------------------------------------------------------------
+# NAV + SIDEBAR HTML  (prefix = relative path back to project root)
+# ---------------------------------------------------------------------------
+
 def get_nav_sidebar(prefix):
-    """Return the nav + sidebar HTML string for a given path prefix."""
     return f"""\
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
         <div class="flex items-center gap-3">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                <i data-lucide="panel-left" class="w-5 h-5"></i>
+            <!-- Toggle button: shows menu/x icon -->
+            <button id="sidebar-toggle" aria-label="Toggle sidebar"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all duration-200 relative">
+                <i id="sb-icon-open"  data-lucide="layout-sidebar" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
+                <i id="sb-icon-close" data-lucide="sidebar-close"  class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
             </button>
-            <a href="{prefix}index.html" class="no-underline">
-                <span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-lg md:text-xl text-slate-900 dark:text-white transition-colors">Data Sheets</span>
+            <a href="{prefix}index.html" class="no-underline flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                    <i data-lucide="database" class="w-3.5 h-3.5 text-white"></i>
+                </span>
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;"
+                    class="text-lg text-slate-900 dark:text-white">Data Sheets</span>
             </a>
         </div>
-        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        <button id="theme-toggle" title="Toggle theme"
+            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
         </button>
     </div>
 </nav>
 
 <!-- SIDEBAR OVERLAY (mobile) -->
-<div id="sidebar-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
-<!-- SIDEBAR -->
-<!-- SIDEBAR -->
-<aside id="ds-sidebar" class="fixed top-[57px] md:top-[65px] left-0 h-[calc(100vh-57px)] md:h-[calc(100vh-65px)] w-64 border-r border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-950 z-40 overflow-y-auto py-6 px-5 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<aside id="ds-sidebar"
+    class="sidebar-hidden fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white dark:bg-[#0c111d] border-r border-slate-200/80 dark:border-slate-800/60
+           shadow-xl shadow-slate-200/50 dark:shadow-slate-950/80">
 
-    <div class="mb-8">
-        <a href="{prefix}pages/learn.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
-            <i data-lucide="book-open" class="w-4 h-4"></i> Learn
+    <!-- Gradient accent bar at top -->
+    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+
+    <div class="py-5 px-3">
+
+        <!-- ── LEARN section ── -->
+        <a href="{prefix}pages/learn.html" class="sb-section bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/20">
+            <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="book-open" class="w-3 h-3 text-white"></i>
+            </span>
+            Learn
         </a>
 
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-widest">Programming</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/python.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Python</a></li>
-                <li><a href="{prefix}pages/learn/sql.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">SQL</a></li>
-                <li><a href="{prefix}pages/learn/bash.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Bash</a></li>
-                <li><a href="{prefix}pages/learn/powershell.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">PowerShell</a></li>
-            </ul>
+        <!-- Programming -->
+        <div class="sb-cat text-blue-500 dark:text-blue-400">Programming</div>
+        <nav>
+            <a href="{prefix}pages/learn/python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+            <a href="{prefix}pages/learn/sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+            <a href="{prefix}pages/learn/bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+            <a href="{prefix}pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+        </nav>
+
+        <!-- Concepts -->
+        <div class="sb-cat text-emerald-500 dark:text-emerald-400">Concepts</div>
+        <nav>
+            <a href="{prefix}pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+            <a href="{prefix}pages/learn/dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+        </nav>
+
+        <!-- Tools -->
+        <div class="sb-cat text-orange-500 dark:text-orange-400">Tools</div>
+        <nav>
+            <a href="{prefix}pages/learn/spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+            <a href="{prefix}pages/learn/flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+            <a href="{prefix}pages/learn/kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+            <a href="{prefix}pages/learn/dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+            <a href="{prefix}pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+            <a href="{prefix}pages/learn/numpy.html"   class="sb-link"><i data-lucide="sigma"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+            <a href="{prefix}pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+        </nav>
+
+        <!-- Cloud -->
+        <div class="sb-cat text-cyan-500 dark:text-cyan-400">Cloud</div>
+        <nav>
+            <a href="{prefix}pages/learn/aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+            <a href="{prefix}pages/learn/gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+            <a href="{prefix}pages/learn/azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+            <a href="{prefix}pages/learn/snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+            <a href="{prefix}pages/learn/databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+        </nav>
+
+        <!-- CI/CD -->
+        <div class="sb-cat text-violet-500 dark:text-violet-400">CI / CD</div>
+        <nav>
+            <a href="{prefix}pages/learn/docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+            <a href="{prefix}pages/learn/kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+            <a href="{prefix}pages/learn/terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+            <a href="{prefix}pages/learn/github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+        </nav>
+
+        <!-- Design -->
+        <div class="sb-cat text-rose-500 dark:text-rose-400">Design</div>
+        <nav>
+            <a href="{prefix}pages/learn/system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+            <a href="{prefix}pages/learn/pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+            <a href="{prefix}pages/learn/de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+        </nav>
+
+        <!-- ── PRACTICE section ── -->
+        <div class="mt-5 mb-1 border-t border-slate-200 dark:border-slate-800/60 pt-5">
+            <a href="{prefix}pages/practice.html" class="sb-section bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-500/20">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+                <span class="ml-auto text-[10px] bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
+            </a>
         </div>
 
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-widest">Concepts</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/de-fundamentals.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DE Fundamentals</a></li>
-                <li><a href="{prefix}pages/learn/dsa-de.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DSA for DE</a></li>
-            </ul>
-        </div>
-
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-orange-600 dark:text-orange-400 mb-2 uppercase tracking-widest">Tools</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/spark.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Spark</a></li>
-                <li><a href="{prefix}pages/learn/flink.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Flink</a></li>
-                <li><a href="{prefix}pages/learn/kafka.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Kafka</a></li>
-                <li><a href="{prefix}pages/learn/dbt.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">dbt</a></li>
-                <li><a href="{prefix}pages/learn/pandas.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Pandas</a></li>
-                <li><a href="{prefix}pages/learn/numpy.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">NumPy</a></li>
-                <li><a href="{prefix}pages/learn/airflow.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Airflow</a></li>
-            </ul>
-        </div>
-
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest">Cloud</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/aws.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">AWS</a></li>
-                <li><a href="{prefix}pages/learn/gcp.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">GCP</a></li>
-                <li><a href="{prefix}pages/learn/azure.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Azure</a></li>
-                <li><a href="{prefix}pages/learn/snowflake.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Snowflake</a></li>
-                <li><a href="{prefix}pages/learn/databricks.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Databricks</a></li>
-            </ul>
-        </div>
-
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-violet-600 dark:text-violet-400 mb-2 uppercase tracking-widest">CI/CD</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/docker.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Docker</a></li>
-                <li><a href="{prefix}pages/learn/kubernetes.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Kubernetes</a></li>
-                <li><a href="{prefix}pages/learn/terraform.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Terraform</a></li>
-                <li><a href="{prefix}pages/learn/github.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">GitHub</a></li>
-            </ul>
-        </div>
-
-        <div class="mb-5">
-            <h5 class="text-[10px] font-bold text-rose-600 dark:text-rose-400 mb-2 uppercase tracking-widest">Design</h5>
-            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}pages/learn/system-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">System Design</a></li>
-                <li><a href="{prefix}pages/learn/pipeline-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">Pipeline Design</a></li>
-                <li><a href="{prefix}pages/learn/de-architectures.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">DE Architectures</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="border-t border-slate-200 dark:border-slate-800 pt-5">
-        <a href="{prefix}pages/practice.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
-            <i data-lucide="hammer" class="w-4 h-4"></i> Practice
-        </a>
-        <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-            <li><a href="{prefix}pages/practice.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Coming Soon</a></li>
-        </ul>
     </div>
 </aside>
 
 <!-- SCROLL TO TOP -->
-<button id="scroll-top" title="Back to top" class="fixed bottom-6 right-6 z-50 w-11 h-11 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-110">
-    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
 </button>"""
+
+
+# ---------------------------------------------------------------------------
+# SHARED JS  — theme, sidebar toggle (all screens), scroll-to-top
+# ---------------------------------------------------------------------------
 
 SHARED_JS = """\
 <script>
 (function() {
-    // Theme
-    const html = document.documentElement;
+    const html  = document.documentElement;
+    const body  = document.body;
+
+    /* ── Theme ──────────────────────────────────── */
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
@@ -163,33 +241,64 @@ SHARED_JS = """\
         });
     }
 
-    // Sidebar toggle
-    const sidebarBtn = document.getElementById('sidebar-toggle');
-    const sidebar = document.getElementById('ds-sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
+    /* ── Sidebar state ───────────────────────────── */
+    const sidebar  = document.getElementById('ds-sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    const togBtn   = document.getElementById('sidebar-toggle');
+    const iconOpen  = document.getElementById('sb-icon-open');
+    const iconClose = document.getElementById('sb-icon-close');
 
-    function openSidebar() {
-        sidebar.classList.remove('-translate-x-full');
-        overlay.classList.remove('hidden');
-        requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
-    }
-    function closeSidebar() {
-        sidebar.classList.add('-translate-x-full');
-        overlay.classList.add('opacity-0');
-        setTimeout(() => overlay.classList.add('hidden'), 300);
+    // Restore persisted state (default: open on desktop, closed on mobile)
+    const isDesktop = () => window.innerWidth >= 1024;
+    const stored = localStorage.getItem('ds-sidebar');
+    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+
+    function applyState(animate) {
+        if (!sidebar) return;
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-hidden');
+            sidebar.classList.add('sidebar-visible');
+            body.classList.add('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (!isDesktop() && overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '0'; iconOpen.style.transform  = 'scale(.7)'; }
+            if (iconClose) { iconClose.style.opacity = '1'; iconClose.style.transform = 'scale(1)'; }
+        } else {
+            sidebar.classList.add('sidebar-hidden');
+            sidebar.classList.remove('sidebar-visible');
+            body.classList.remove('sidebar-open');
+            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+            if (iconOpen)  { iconOpen.style.opacity  = '1'; iconOpen.style.transform  = 'scale(1)'; }
+            if (iconClose) { iconClose.style.opacity = '0'; iconClose.style.transform = 'scale(.7)'; }
+        }
     }
 
-    if (sidebarBtn) {
-        sidebarBtn.addEventListener('click', () => {
-            if (sidebar.classList.contains('-translate-x-full')) openSidebar();
-            else closeSidebar();
+    applyState(false);
+
+    if (togBtn) {
+        togBtn.addEventListener('click', () => {
+            sidebarOpen = !sidebarOpen;
+            localStorage.setItem('ds-sidebar', sidebarOpen ? 'open' : 'closed');
+            applyState(true);
         });
     }
     if (overlay) {
-        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', () => {
+            sidebarOpen = false;
+            localStorage.setItem('ds-sidebar', 'closed');
+            applyState(true);
+        });
     }
 
-    // Scroll-to-top
+    // On resize: if going to desktop re-open by default if never set
+    window.addEventListener('resize', () => {
+        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
+            sidebarOpen = true;
+            applyState(false);
+        }
+    });
+
+    /* ── Scroll-to-top ───────────────────────────── */
     const scrollBtn = document.getElementById('scroll-top');
     if (scrollBtn) {
         window.addEventListener('scroll', () => {
@@ -198,28 +307,19 @@ SHARED_JS = """\
         scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 
-    // Lucide icons
+    /* ── Lucide icons ────────────────────────────── */
     if (typeof lucide !== 'undefined') lucide.createIcons();
 })();
 </script>"""
 
 
 # ---------------------------------------------------------------------------
-# Helper: strip old nav + sidebar + inject new ones
+# Helpers
 # ---------------------------------------------------------------------------
 
 def compute_prefix(html_path):
-    """
-    Compute prefix (relative path to project root) from an HTML file path.
-    e.g. pages/learn/bash/intro.html  -> ../../../
-         pages/learn/bash.html        -> ../../
-         pages/learn.html             -> ../
-         index.html                   -> ''
-    """
     norm = html_path.replace('\\', '/')
-    parts = norm.split('/')
-    # depth = number of directory separators
-    depth = len(parts) - 1
+    depth = len(norm.split('/')) - 1
     return '../' * depth
 
 
@@ -229,69 +329,58 @@ def patch_html(path):
 
     prefix = compute_prefix(os.path.relpath(path).replace('\\', '/'))
 
-    # 1. Remove existing <nav ...>...</nav> block (greedy-safe: non-greedy)
+    # 1. Remove old nav
     html = re.sub(r'<nav\b[^>]*>.*?</nav>', '', html, flags=re.DOTALL)
-
-    # 2. Remove existing sidebar <aside ...>...</aside>
+    # 2. Remove old sidebar (any aside)
     html = re.sub(r'<!-- SIDEBAR -->.*?</aside>', '', html, flags=re.DOTALL)
     html = re.sub(r'<aside\b[^>]*>.*?</aside>', '', html, flags=re.DOTALL)
-
-    # 3. Remove sidebar overlay divs
+    # 3. Remove overlay
     html = re.sub(r'<div id="sidebar-overlay"[^>]*>.*?</div>', '', html, flags=re.DOTALL)
-
-    # 4. Remove old scroll-to-top button
+    # 4. Remove old scroll-top button
     html = re.sub(r'<button id="scroll-top"[^>]*>.*?</button>', '', html, flags=re.DOTALL)
-
-    # 5. Remove old wrapper divs that were added by the old sidebar script
+    # 5. Remove old wrapper divs
     html = re.sub(r'<div class="lg:pl-\d+ w-full">', '', html)
-    html = re.sub(r'<!-- old sidebar wrapper -->', '', html)
-
-    # 6. Remove old theme toggle JS (standalone), old lucide.createIcons() calls
+    # 6. Remove old inline JS blocks
     html = re.sub(r'<script>\s*lucide\.createIcons\(\);[\s\S]*?</script>', '', html)
-    html = re.sub(r'document\.getElementById\(\'theme-toggle\'\)\.addEventListener[\s\S]*?;\s*\}[\s\)\;]*\n?', '', html)
+    html = re.sub(r'<script>\s*\(function\(\)\s*\{[\s\S]*?ds-sidebar[\s\S]*?\}\)\(\);\s*</script>', '', html)
 
-    # 7. Inject shared CSS into <head> (before </head>)
-    if SHARED_CSS not in html:
+    # 7. Inject shared CSS
+    if 'sidebar-hidden' not in html:
         html = html.replace('</head>', SHARED_CSS + '\n</head>', 1)
 
-    # 8. Inject nav+sidebar right after <body ...>
-    nav_sidebar = get_nav_sidebar(prefix)
-    body_match = re.search(r'<body\b[^>]*>', html)
-    if body_match:
-        insert_pos = body_match.end()
-        # Only inject if nav not already present
-        if 'id="ds-nav"' not in html:
-            html = html[:insert_pos] + '\n\n' + nav_sidebar + '\n\n' + html[insert_pos:]
+    # 8. Inject nav+sidebar after <body>
+    if 'id="ds-nav"' not in html:
+        body_match = re.search(r'<body\b[^>]*>', html)
+        if body_match:
+            pos = body_match.end()
+            html = html[:pos] + '\n\n' + get_nav_sidebar(prefix) + '\n\n' + html[pos:]
 
-    # 9. Fix main content: add left padding for sidebar on lg screens
-    #    - Add lg:pl-64 pt-[57px] if not present
+    # 9. Wrap main content so it gets padding-left when sidebar opens on desktop
+    #    Inject a wrapper div id="ds-main-content" around <main> if not already there
+    if 'id="ds-main-content"' not in html:
+        html = re.sub(r'(<main\b[^>]*>)', r'<div id="ds-main-content" class="transition-all duration-300">\1', html)
+        html = html.replace('</main>', '</main>\n</div>', 1)
+
+    # 10. Ensure top padding on main (nav height ~57px)
     def fix_main(m):
         tag = m.group(0)
-        if 'lg:pl-64' not in tag:
-            tag = tag.replace('<main ', '<main data-sb-padded="1" ')
-            tag = re.sub(r'class="', 'class="lg:pl-64 ', tag)
-        # Also fix top padding: ensure pt >= 16 (pt-16 = 64px)
         if 'pt-' not in tag:
             tag = re.sub(r'class="', 'class="pt-16 ', tag)
         return tag
     html = re.sub(r'<main\b[^>]*>', fix_main, html)
 
-    # 10. Inject SHARED_JS before </body>
-    if 'id="scroll-top"' not in html or SHARED_JS not in html:
+    # 11. Inject shared JS before </body>
+    if 'ds-sidebar-state' not in html:
         html = html.replace('</body>', SHARED_JS + '\n</body>', 1)
 
-    # 11. Ensure theme init script is present
+    # 12. Theme init
     theme_init = "<script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>"
-    if theme_init not in html and "ds-theme" not in html:
+    if 'ds-theme' not in html:
         html = html.replace('<head>', '<head>\n' + theme_init, 1)
 
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-
-# ---------------------------------------------------------------------------
-# Fix practice.html specifically (it was dark-only, needs dual-theme)
-# ---------------------------------------------------------------------------
 
 def fix_practice_theme():
     path = 'pages/practice.html'
@@ -299,45 +388,24 @@ def fix_practice_theme():
         return
     with open(path, 'r', encoding='utf-8') as f:
         html = f.read()
-
-    # Replace hardcoded dark body with dual-theme
     html = html.replace(
         'class="bg-slate-950 text-slate-200 min-h-screen"',
         'class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300"'
-    )
-    # Replace dark-only grid-bg style
-    html = html.replace(
-        '.grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;}',
-        '.grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}\n        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}'
     )
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
 
-# ---------------------------------------------------------------------------
-# Run all build scripts to regenerate sub-pages
-# ---------------------------------------------------------------------------
-
 def run_builders():
     builders = [
-        'generate_pages.py',
-        'build_bash_guide.py',
-        'build_powershell_guide.py',
-        'build_de_fundamentals.py',
-        'build_dsa.py',
-        'build_system_design.py',
-        'build_pipeline_design.py',
+        'generate_pages.py', 'build_bash_guide.py', 'build_powershell_guide.py',
+        'build_de_fundamentals.py', 'build_dsa.py', 'build_system_design.py', 'build_pipeline_design.py',
     ]
     for script in builders:
         if os.path.exists(script):
             print(f"  Running {script}...")
-            # Run but suppress the inject_sidebar_into_all_html that was appended
-            result = subprocess.run([sys.executable, script], capture_output=True, text=True)
-            if result.returncode != 0:
-                print(f"    WARNING: {script} returned {result.returncode}")
-                print(result.stderr[-500:] if result.stderr else '')
-            else:
-                print(f"    OK")
+            r = subprocess.run([sys.executable, script], capture_output=True, text=True)
+            print(f"    {'OK' if r.returncode == 0 else 'WARN: ' + r.stderr[-200:]}")
 
 
 # ---------------------------------------------------------------------------
@@ -348,22 +416,19 @@ if __name__ == '__main__':
     root = os.path.dirname(os.path.abspath(__file__))
     os.chdir(root)
 
-    print("Step 1: Fixing practice.html theme...")
+    print("Step 1: Fix practice.html theme...")
     fix_practice_theme()
 
-    print("Step 2: Running all build scripts...")
+    print("Step 2: Regenerate sub-pages...")
     run_builders()
 
-    print("Step 3: Patching all HTML files with new nav/sidebar/scroll-top...")
-    all_html = glob.glob('**/*.html', recursive=True)
-    # Exclude node_modules etc.
-    all_html = [p for p in all_html if 'node_modules' not in p]
+    print("Step 3: Patch all HTML files...")
+    all_html = [p for p in glob.glob('**/*.html', recursive=True) if 'node_modules' not in p]
     for path in sorted(all_html):
         try:
             patch_html(path)
-            print(f"  Patched: {path}")
+            print(f"  OK: {path}")
         except Exception as e:
-            print(f"  ERROR patching {path}: {e}")
+            print(f"  ERR: {path}: {e}")
 
-    print(f"\nDone. Patched {len(all_html)} HTML files.")
-    print("Sidebar links all use absolute paths from root so they're correct at any depth.")
+    print(f"\nDone — {len(all_html)} files patched.")
