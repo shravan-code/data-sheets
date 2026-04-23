@@ -1,0 +1,818 @@
+{
+  "title": "Complete PowerShell Scripting Guide",
+  "version": "1.0",
+  "description": "A comprehensive guide to PowerShell scripting covering all core topics with examples and real-world projects.",
+  "topics": [
+    {
+      "id": "intro",
+      "title": "Introduction to PowerShell",
+      "description": "PowerShell is a cross-platform task automation solution made up of a command-line shell, a scripting language, and a configuration management framework.",
+      "subtopics": [
+        {
+          "name": "What is PowerShell?",
+          "content": "PowerShell is built on .NET and works with objects rather than plain text, making it more powerful than traditional shells. It runs on Windows, macOS, and Linux.",
+          "examples": [
+            {
+              "title": "Check PowerShell Version",
+              "code": "$PSVersionTable\n$PSVersionTable.PSVersion"
+            },
+            {
+              "title": "Get Help on Any Command",
+              "code": "Get-Help Get-Process\nGet-Help Get-Process -Examples\nGet-Help Get-Process -Full"
+            },
+            {
+              "title": "Discover Commands",
+              "code": "Get-Command\nGet-Command -Verb Get\nGet-Command -Noun Process\nGet-Command *network*"
+            }
+          ]
+        },
+        {
+          "name": "Execution Policy",
+          "content": "PowerShell uses execution policies to control which scripts can run. Common policies: Restricted, AllSigned, RemoteSigned, Unrestricted, Bypass.",
+          "examples": [
+            {
+              "title": "Get and Set Execution Policy",
+              "code": "Get-ExecutionPolicy\nGet-ExecutionPolicy -List\nSet-ExecutionPolicy RemoteSigned -Scope CurrentUser\nSet-ExecutionPolicy Bypass -Scope Process"
+            }
+          ]
+        },
+        {
+          "name": "PowerShell ISE vs VS Code",
+          "content": "PowerShell ISE is the built-in editor for Windows. VS Code with the PowerShell extension is the modern recommended IDE for PowerShell scripting.",
+          "examples": [
+            {
+              "title": "Open PowerShell ISE",
+              "code": "# From Run dialog\npowershell_ise.exe\n\n# Or from PowerShell terminal\nise"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "basics",
+      "title": "Basic Syntax & Fundamentals",
+      "description": "Core syntax rules, cmdlet structure, and fundamental concepts every PowerShell scripter must know.",
+      "subtopics": [
+        {
+          "name": "Cmdlet Structure",
+          "content": "PowerShell commands (cmdlets) follow a Verb-Noun naming convention. They accept parameters and return .NET objects.",
+          "examples": [
+            {
+              "title": "Basic Cmdlet Usage",
+              "code": "# Verb-Noun structure\nGet-Process\nStop-Process -Name notepad\nStart-Service -Name wuauserv\n\n# Common Verbs: Get, Set, New, Remove, Start, Stop, Invoke, Test, Add"
+            },
+            {
+              "title": "Aliases",
+              "code": "# Many cmdlets have aliases\nls          # Alias for Get-ChildItem\ndir         # Alias for Get-ChildItem\ncd          # Alias for Set-Location\ncat         # Alias for Get-Content\nps          # Alias for Get-Process\n\n# List all aliases\nGet-Alias\nGet-Alias ls"
+            }
+          ]
+        },
+        {
+          "name": "Comments",
+          "content": "PowerShell supports single-line and multi-line (block) comments.",
+          "examples": [
+            {
+              "title": "Comment Syntax",
+              "code": "# This is a single-line comment\n\n<#\n  This is a\n  multi-line comment block\n#>\n\n# Inline comment\n$x = 5  # This sets x to 5"
+            }
+          ]
+        },
+        {
+          "name": "Semicolons & Line Continuation",
+          "content": "Multiple statements can be written on one line using semicolons. Long lines can be split using backtick.",
+          "examples": [
+            {
+              "title": "Multiple Statements & Line Continuation",
+              "code": "$a = 1; $b = 2; $c = $a + $b\n\n# Line continuation with backtick\nGet-Process |\n    Where-Object { $_.CPU -gt 100 } |\n    Sort-Object CPU -Descending\n\n# Backtick continuation\n$result = Get-Process `\n    -Name 'explorer' `\n    -ErrorAction SilentlyContinue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "variables",
+      "title": "Variables & Data Types",
+      "description": "How to declare, type, and use variables. Understanding PowerShell's rich type system.",
+      "subtopics": [
+        {
+          "name": "Variable Declaration",
+          "content": "Variables in PowerShell start with $. They are dynamically typed but can be explicitly typed. Special variables like $null, $true, $false are built-in.",
+          "examples": [
+            {
+              "title": "Declaring Variables",
+              "code": "$name = 'Alice'\n$age = 30\n$isAdmin = $true\n$nothing = $null\n\n# Strongly typed variables\n[int]$count = 10\n[string]$message = 'Hello'\n[bool]$flag = $false\n[double]$pi = 3.14159\n\n# Check variable type\n$name.GetType()\n$age.GetType().FullName"
+            },
+            {
+              "title": "Special Variables",
+              "code": "$_          # Current pipeline object\n$$          # Last token in previous command\n$?          # Status of last operation (True/False)\n$LASTEXITCODE  # Exit code of last native command\n$PSScriptRoot  # Directory of current script\n$PSCommandPath # Full path of current script\n$HOME       # User's home directory\n$env:PATH   # Environment variable PATH\n$args       # Arguments passed to a script\n$input      # Pipeline input object\n$MyInvocation  # Info about current command"
+            }
+          ]
+        },
+        {
+          "name": "Strings",
+          "content": "PowerShell has two types of strings: single-quoted (literal) and double-quoted (interpolated). Here-strings support multi-line text.",
+          "examples": [
+            {
+              "title": "String Types",
+              "code": "$user = 'Bob'\n\n# Single-quoted: literal, no interpolation\n$s1 = 'Hello $user'     # Output: Hello $user\n\n# Double-quoted: interpolation\n$s2 = \"Hello $user\"     # Output: Hello Bob\n$s3 = \"2 + 2 = $(2+2)\" # Subexpression: 2 + 2 = 4\n\n# Here-strings (multi-line)\n$text = @'\nThis is a\nmulti-line string\nwith $user not interpolated\n'@\n\n$html = @\"\n<html>\n  <body>Hello, $user</body>\n</html>\n\"@"
+            },
+            {
+              "title": "String Methods",
+              "code": "$str = 'Hello, PowerShell World!'\n\n$str.ToUpper()             # HELLO, POWERSHELL WORLD!\n$str.ToLower()             # hello, powershell world!\n$str.Length                # 21\n$str.Replace('World','PS') # Hello, PowerShell PS!\n$str.Split(',')\n$str.Trim()\n$str.TrimStart()\n$str.TrimEnd()\n$str.StartsWith('Hello')   # True\n$str.EndsWith('!')\n$str.Contains('PowerShell')\n$str.IndexOf('P')          # 7\n$str.Substring(7, 10)      # PowerShell\n\n# String formatting\n'{0} is {1} years old' -f 'Alice', 30\n[string]::Format('{0:N2}', 1234.5678)"
+            }
+          ]
+        },
+        {
+          "name": "Arrays",
+          "content": "Arrays store multiple values. PowerShell arrays are fixed-size by default; use ArrayList or generic List for dynamic sizing.",
+          "examples": [
+            {
+              "title": "Array Operations",
+              "code": "# Create arrays\n$arr = 1, 2, 3, 4, 5\n$arr = @(1, 2, 3)\n$empty = @()\n$single = @(42)\n\n# Access elements\n$arr[0]        # First element: 1\n$arr[-1]       # Last element: 5\n$arr[1..3]     # Slice: 2, 3, 4\n\n# Array properties\n$arr.Length\n$arr.Count\n\n# Add to array (creates new array)\n$arr += 6\n\n# ArrayList (dynamic)\n$list = [System.Collections.ArrayList]@()\n$list.Add('apple')\n$list.Add('banana')\n$list.Remove('apple')\n$list.Insert(0, 'cherry')\n\n# Array methods\n$arr -contains 3      # True\n$arr.IndexOf(3)\n[array]::Sort($arr)\n[array]::Reverse($arr)"
+            },
+            {
+              "title": "Multi-Dimensional Arrays",
+              "code": "# Jagged array\n$matrix = @(\n    @(1, 2, 3),\n    @(4, 5, 6),\n    @(7, 8, 9)\n)\n$matrix[0][1]  # 2\n\n# .NET 2D array\n$grid = New-Object 'int[,]' 3, 3\n$grid[0,0] = 1\n$grid[1,1] = 5\n$grid[2,2] = 9"
+            }
+          ]
+        },
+        {
+          "name": "Hash Tables",
+          "content": "Hash tables (dictionaries) store key-value pairs. They are widely used in PowerShell for structured data and splatting.",
+          "examples": [
+            {
+              "title": "Hash Table Operations",
+              "code": "# Create hashtable\n$person = @{\n    Name    = 'Alice'\n    Age     = 30\n    City    = 'New York'\n}\n\n# Access values\n$person['Name']\n$person.Name\n$person.Age\n\n# Add/Update/Remove\n$person['Email'] = 'alice@example.com'\n$person.Phone = '555-1234'\n$person.Remove('Phone')\n\n# Check existence\n$person.ContainsKey('Name')\n$person.ContainsValue('Alice')\n\n# Iterate\nforeach ($key in $person.Keys) {\n    Write-Host \"$key = $($person[$key])\"\n}\n\n# Ordered hashtable\n$ordered = [ordered]@{\n    First  = 1\n    Second = 2\n    Third  = 3\n}\n\n# Splatting parameters\n$params = @{\n    Path        = 'C:\\Logs'\n    Recurse     = $true\n    Filter      = '*.log'\n}\nGet-ChildItem @params"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "Operators",
+      "description": "PowerShell provides a rich set of operators for comparison, logical operations, string manipulation, and more.",
+      "subtopics": [
+        {
+          "name": "Comparison Operators",
+          "content": "PowerShell comparison operators are case-insensitive by default. Prefix with 'c' for case-sensitive and 'i' for explicit case-insensitive.",
+          "examples": [
+            {
+              "title": "All Comparison Operators",
+              "code": "# Equality\n5 -eq 5       # Equal: True\n5 -ne 3       # Not Equal: True\n\n# Relational\n10 -gt 5      # Greater Than: True\n3 -lt 8       # Less Than: True\n5 -ge 5       # Greater or Equal: True\n4 -le 4       # Less or Equal: True\n\n# String matching (case-insensitive by default)\n'Hello' -eq 'hello'    # True\n'Hello' -ceq 'hello'   # False (case-sensitive)\n\n# Pattern matching\n'PowerShell' -like 'Power*'     # Wildcard: True\n'PowerShell' -notlike 'Bash*'   # True\n'hello123' -match '^[a-z]+\\d+$' # Regex: True\n'hello123' -notmatch '^\\d+$'    # True\n\n# Containment\n3 -in 1,2,3,4        # True\n5 -notin 1,2,3       # True\n1,2,3 -contains 2    # True\n\n# Type check\n$x = 42\n$x -is [int]         # True\n$x -isnot [string]   # True\n$x -as [string]      # Converts to '42'"
+            }
+          ]
+        },
+        {
+          "name": "Logical Operators",
+          "content": "Logical operators combine boolean expressions.",
+          "examples": [
+            {
+              "title": "Logical Operators",
+              "code": "$a = $true\n$b = $false\n\n$a -and $b   # AND: False\n$a -or $b    # OR: True\n-not $a      # NOT: False\n!$a          # NOT shorthand: False\n$a -xor $b   # XOR: True\n\n# Short-circuit evaluation\n$x = $null\nif ($x -ne $null -and $x.Length -gt 0) {\n    Write-Host 'Not null and not empty'\n}"
+            }
+          ]
+        },
+        {
+          "name": "Arithmetic & Assignment Operators",
+          "content": "Standard math and assignment operators with some PowerShell-specific additions.",
+          "examples": [
+            {
+              "title": "Arithmetic Operators",
+              "code": "5 + 3    # 8\n10 - 4   # 6\n3 * 4    # 12\n15 / 4   # 3.75\n15 % 4   # Modulo: 3\n\n# Assignment operators\n$x = 10\n$x += 5   # 15\n$x -= 3   # 12\n$x *= 2   # 24\n$x /= 4   # 6\n$x %= 4   # 2\n\n# Increment / Decrement\n$x++\n$x--\n++$x\n--$x\n\n# String and array concatenation\n'Hello' + ' ' + 'World'\n@(1,2) + @(3,4)   # 1,2,3,4\n'Ha' * 3           # HaHaHa"
+            }
+          ]
+        },
+        {
+          "name": "Special Operators",
+          "content": "PowerShell has several unique operators for pipeline manipulation, range, and redirection.",
+          "examples": [
+            {
+              "title": "Special Operators",
+              "code": "# Range operator\n1..10           # 1 to 10\n10..1           # 10 to 1\n'a'..'z'        # a to z\n\n# Call operator\n$cmd = 'Get-Process'\n& $cmd          # Executes Get-Process\n\n# Dot sourcing\n. .\\myScript.ps1  # Runs script in current scope\n\n# Subexpression\n\"Files: $(Get-ChildItem | Measure-Object | Select-Object -Exp Count)\"\n\n# Array subexpression\n@(Get-Process | Where-Object CPU -gt 10)\n\n# Join operator\n-join ('a','b','c')        # abc\n'a','b','c' -join '-'      # a-b-c\n\n# Split operator\n'a,b,c' -split ','         # 'a', 'b', 'c'\n'hello world' -split ' '\n\n# Redirection\nGet-Process > processes.txt         # Overwrite\nGet-Process >> processes.txt        # Append\nGet-Process 2> errors.txt          # Stderr\nGet-Process *> all_output.txt      # All streams\n\n# Ternary (PowerShell 7+)\n$x = 10\n$result = $x -gt 5 ? 'big' : 'small'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "control_flow",
+      "title": "Control Flow",
+      "description": "Conditional statements and loops to control program execution.",
+      "subtopics": [
+        {
+          "name": "If / ElseIf / Else",
+          "content": "Standard conditional branching in PowerShell.",
+          "examples": [
+            {
+              "title": "If Statements",
+              "code": "$score = 85\n\nif ($score -ge 90) {\n    Write-Host 'Grade: A'\n} elseif ($score -ge 80) {\n    Write-Host 'Grade: B'\n} elseif ($score -ge 70) {\n    Write-Host 'Grade: C'\n} else {\n    Write-Host 'Grade: F'\n}\n\n# One-liner\nif ($score -ge 60) { Write-Host 'Passed' } else { Write-Host 'Failed' }"
+            }
+          ]
+        },
+        {
+          "name": "Switch Statement",
+          "content": "Switch is more powerful than in many languages — it supports wildcards, regex, and multiple conditions.",
+          "examples": [
+            {
+              "title": "Switch Examples",
+              "code": "$day = 'Monday'\n\nswitch ($day) {\n    'Monday'   { Write-Host 'Start of work week' }\n    'Friday'   { Write-Host 'End of work week' }\n    'Saturday' { Write-Host 'Weekend!' }\n    'Sunday'   { Write-Host 'Weekend!' }\n    default    { Write-Host 'Midweek' }\n}\n\n# Multiple matches allowed\n$num = 5\nswitch ($num) {\n    { $_ -lt 10 } { Write-Host 'Less than 10' }\n    { $_ -gt 3  } { Write-Host 'Greater than 3' }\n}\n\n# Wildcard switch\nswitch -Wildcard ('PowerShell') {\n    'Power*' { Write-Host 'Starts with Power' }\n    '*Shell' { Write-Host 'Ends with Shell' }\n}\n\n# Regex switch\nswitch -Regex ('user123@email.com') {\n    '^\\w+@'    { Write-Host 'Looks like email' }\n    '\\d+$'     { Write-Host 'Ends with numbers (not matched here)' }\n}\n\n# Switch over array\nswitch (1,2,3,4,5) {\n    { $_ % 2 -eq 0 } { Write-Host \"$_ is Even\" }\n    { $_ % 2 -ne 0 } { Write-Host \"$_ is Odd\" }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Loops",
+          "content": "PowerShell offers for, foreach, while, do-while, and do-until loops.",
+          "examples": [
+            {
+              "title": "For Loop",
+              "code": "for ($i = 0; $i -lt 5; $i++) {\n    Write-Host \"Iteration: $i\"\n}\n\n# Countdown\nfor ($i = 10; $i -ge 0; $i--) {\n    Write-Host $i\n    Start-Sleep -Milliseconds 100\n}"
+            },
+            {
+              "title": "Foreach Loop",
+              "code": "$fruits = @('Apple', 'Banana', 'Cherry')\n\nforeach ($fruit in $fruits) {\n    Write-Host \"Fruit: $fruit\"\n}\n\n# ForEach-Object in pipeline\n1..5 | ForEach-Object { $_ * $_ }   # 1 4 9 16 25\n\n# Foreach with index workaround\nfor ($i = 0; $i -lt $fruits.Count; $i++) {\n    Write-Host \"[$i] $($fruits[$i])\"\n}"
+            },
+            {
+              "title": "While & Do Loops",
+              "code": "# While loop\n$count = 0\nwhile ($count -lt 5) {\n    Write-Host \"Count: $count\"\n    $count++\n}\n\n# Do-While (executes at least once)\n$num = 0\ndo {\n    Write-Host \"Num: $num\"\n    $num++\n} while ($num -lt 3)\n\n# Do-Until\n$x = 10\ndo {\n    Write-Host $x\n    $x--\n} until ($x -eq 0)"
+            },
+            {
+              "title": "Loop Control: Break & Continue",
+              "code": "# Break exits the loop\nfor ($i = 0; $i -lt 10; $i++) {\n    if ($i -eq 5) { break }\n    Write-Host $i\n}\n\n# Continue skips to next iteration\nfor ($i = 0; $i -lt 10; $i++) {\n    if ($i % 2 -eq 0) { continue }\n    Write-Host \"Odd: $i\"\n}\n\n# Labeled break for nested loops\n:outer for ($i = 0; $i -lt 3; $i++) {\n    for ($j = 0; $j -lt 3; $j++) {\n        if ($j -eq 1) { break outer }\n        Write-Host \"$i,$j\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "functions",
+      "title": "Functions & Cmdlets",
+      "description": "Writing reusable, parameter-driven functions — the heart of PowerShell scripting.",
+      "subtopics": [
+        {
+          "name": "Basic Functions",
+          "content": "Functions encapsulate reusable code. Return values using Write-Output or simply outputting objects.",
+          "examples": [
+            {
+              "title": "Simple Functions",
+              "code": "function Say-Hello {\n    Write-Host 'Hello, World!'\n}\nSay-Hello\n\n# Function with parameters\nfunction Greet {\n    param($Name, $Greeting = 'Hello')\n    Write-Output \"$Greeting, $Name!\"\n}\nGreet -Name 'Alice'\nGreet -Name 'Bob' -Greeting 'Hi'\n\n# Return values\nfunction Add-Numbers {\n    param($a, $b)\n    return $a + $b\n}\n$result = Add-Numbers 5 3\nWrite-Host \"Sum: $result\""
+            }
+          ]
+        },
+        {
+          "name": "Advanced Functions",
+          "content": "Advanced functions behave like cmdlets with [CmdletBinding()] and full parameter attributes.",
+          "examples": [
+            {
+              "title": "Advanced Function with CmdletBinding",
+              "code": "function Get-UserInfo {\n    [CmdletBinding()]\n    param(\n        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]\n        [string]$Username,\n\n        [Parameter()]\n        [ValidateSet('Basic', 'Detailed', 'Full')]\n        [string]$Level = 'Basic',\n\n        [Parameter()]\n        [ValidateRange(1, 100)]\n        [int]$MaxResults = 10,\n\n        [switch]$IncludeGroups\n    )\n\n    begin {\n        Write-Verbose 'Starting user info retrieval...'\n        $results = @()\n    }\n\n    process {\n        Write-Verbose \"Processing: $Username\"\n        $user = [PSCustomObject]@{\n            Username = $Username\n            Level    = $Level\n            Groups   = if ($IncludeGroups) { @('Admins','Users') } else { @() }\n        }\n        $results += $user\n    }\n\n    end {\n        Write-Verbose 'Done.'\n        return $results | Select-Object -First $MaxResults\n    }\n}\n\n# Usage\nGet-UserInfo -Username 'alice' -Level Detailed -Verbose\n'alice','bob' | Get-UserInfo -IncludeGroups"
+            }
+          ]
+        },
+        {
+          "name": "Parameter Validation",
+          "content": "PowerShell offers built-in parameter validation attributes to protect functions from bad input.",
+          "examples": [
+            {
+              "title": "Validation Attributes",
+              "code": "function Set-Config {\n    param(\n        [ValidateNotNullOrEmpty()]\n        [string]$Name,\n\n        [ValidateRange(1, 65535)]\n        [int]$Port,\n\n        [ValidateSet('http','https','ftp')]\n        [string]$Protocol = 'https',\n\n        [ValidatePattern('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')]\n        [string]$IPAddress,\n\n        [ValidateLength(8, 128)]\n        [string]$Password,\n\n        [ValidateScript({\n            if (Test-Path $_) { $true }\n            else { throw \"Path '$_' does not exist\" }\n        })]\n        [string]$LogPath\n    )\n\n    Write-Host \"Config: $Name on $Protocol://$IPAddress:$Port\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Scope",
+          "content": "PowerShell uses scope to control variable visibility: Global, Script, Local, and Private.",
+          "examples": [
+            {
+              "title": "Variable Scope",
+              "code": "$global:AppName = 'MyApp'    # Accessible everywhere\n$script:Config  = @{}        # Accessible in script\n\nfunction Test-Scope {\n    $local:x = 10            # Only in this function\n    Write-Host $global:AppName\n    Write-Host $x\n}\n\nTest-Scope\n# $x not accessible here\n\n# Modify parent scope from function\nfunction Update-Global {\n    $global:Counter = 42\n}\nUpdate-Global\nWrite-Host $global:Counter   # 42"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pipeline",
+      "title": "Pipeline & Object Processing",
+      "description": "The pipeline is the most powerful feature of PowerShell, passing objects (not text) between commands.",
+      "subtopics": [
+        {
+          "name": "Pipeline Basics",
+          "content": "The | operator passes output from one command as input to the next. Objects retain all their properties.",
+          "examples": [
+            {
+              "title": "Basic Pipeline",
+              "code": "# Get processes and filter/sort\nGet-Process | Where-Object { $_.CPU -gt 10 } | Sort-Object CPU -Descending | Select-Object Name, CPU, ID\n\n# Get files, filter by size, sort\nGet-ChildItem C:\\ -Recurse -File |\n    Where-Object Length -gt 1MB |\n    Sort-Object Length -Descending |\n    Select-Object Name, @{N='SizeMB';E={[math]::Round($_.Length/1MB,2)}} |\n    Format-Table -AutoSize"
+            }
+          ]
+        },
+        {
+          "name": "Where-Object",
+          "content": "Filter pipeline objects based on conditions.",
+          "examples": [
+            {
+              "title": "Filtering with Where-Object",
+              "code": "# Traditional syntax\nGet-Process | Where-Object { $_.Name -like 'chrome*' }\n\n# Simplified syntax (PowerShell 3+)\nGet-Process | Where-Object Name -like 'chrome*'\nGet-Service | Where-Object Status -eq 'Running'\n\n# Multiple conditions\nGet-Process | Where-Object {\n    $_.WorkingSet64 -gt 100MB -and\n    $_.CPU -gt 1\n}\n\n# Alias: ?\nGet-Process | ? { $_.CPU -gt 100 }"
+            }
+          ]
+        },
+        {
+          "name": "Select-Object",
+          "content": "Choose specific properties, create calculated properties, or limit output.",
+          "examples": [
+            {
+              "title": "Select-Object Usage",
+              "code": "# Select specific properties\nGet-Process | Select-Object Name, Id, CPU, WorkingSet64\n\n# Calculated property\nGet-Process | Select-Object Name, @{\n    Name       = 'MemoryMB'\n    Expression = { [math]::Round($_.WorkingSet64 / 1MB, 2) }\n}\n\n# First/Last N objects\nGet-Process | Select-Object -First 5\nGet-Process | Select-Object -Last 5\nGet-Process | Select-Object -Skip 10\n\n# Unique values\nGet-Process | Select-Object -Property Name -Unique\n\n# Expand a property\nGet-Process | Select-Object -ExpandProperty Name"
+            }
+          ]
+        },
+        {
+          "name": "Sort-Object & Group-Object",
+          "content": "Sorting and grouping pipeline output.",
+          "examples": [
+            {
+              "title": "Sorting and Grouping",
+              "code": "# Sort ascending/descending\nGet-Process | Sort-Object CPU\nGet-Process | Sort-Object CPU -Descending\n\n# Sort by multiple properties\nGet-ChildItem | Sort-Object Extension, Name\n\n# Group by property\nGet-Process | Group-Object -Property PriorityClass\n\n# Group and count\nGet-ChildItem -Recurse | Group-Object Extension |\n    Sort-Object Count -Descending |\n    Select-Object Name, Count"
+            }
+          ]
+        },
+        {
+          "name": "ForEach-Object",
+          "content": "Perform an action on each object in the pipeline.",
+          "examples": [
+            {
+              "title": "ForEach-Object",
+              "code": "# Process each object\nGet-Process | ForEach-Object {\n    Write-Host \"PID: $($_.Id) - $($_.Name)\"\n}\n\n# Shorthand with %\n1..10 | % { $_ * 2 }\n\n# Begin/Process/End blocks\nGet-Process | ForEach-Object `\n    -Begin   { Write-Host 'Starting...'; $total = 0 } `\n    -Process { $total += $_.WorkingSet64 } `\n    -End     { Write-Host \"Total Memory: $([math]::Round($total/1MB,2)) MB\" }\n\n# Parallel execution (PowerShell 7+)\n1..10 | ForEach-Object -Parallel {\n    Start-Sleep -Seconds 1\n    \"Done: $_\"\n} -ThrottleLimit 5"
+            }
+          ]
+        },
+        {
+          "name": "Measure-Object & Tee-Object",
+          "content": "Compute statistics and duplicate pipeline output.",
+          "examples": [
+            {
+              "title": "Measure and Tee",
+              "code": "# Measure stats\nGet-Process | Measure-Object CPU -Sum -Average -Maximum -Minimum\nGet-Content file.txt | Measure-Object -Line -Word -Character\n\n# Tee-Object: output to variable AND continue pipeline\nGet-Process | Tee-Object -Variable procs | Select-Object Name\n$procs  # Still contains all process objects"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "error_handling",
+      "title": "Error Handling",
+      "description": "Managing errors gracefully using Try/Catch/Finally, error preferences, and custom errors.",
+      "subtopics": [
+        {
+          "name": "Try / Catch / Finally",
+          "content": "Structured exception handling for robust scripts.",
+          "examples": [
+            {
+              "title": "Try-Catch-Finally",
+              "code": "try {\n    $result = 10 / 0\n    Get-Item 'C:\\NonExistent\\file.txt' -ErrorAction Stop\n} catch [System.DivideByZeroException] {\n    Write-Host 'Divide by zero error!'\n} catch [System.IO.FileNotFoundException] {\n    Write-Host 'File not found!'\n} catch {\n    Write-Host \"Unexpected error: $($_.Exception.Message)\"\n    Write-Host \"Type: $($_.Exception.GetType().FullName)\"\n} finally {\n    Write-Host 'This always runs (cleanup here)'\n}\n\n# Error details\ntry {\n    Get-Item 'C:\\missing' -ErrorAction Stop\n} catch {\n    $_.Exception.Message\n    $_.InvocationInfo.Line\n    $_.ScriptStackTrace\n}"
+            }
+          ]
+        },
+        {
+          "name": "ErrorAction & ErrorVariable",
+          "content": "Control how cmdlets handle non-terminating errors.",
+          "examples": [
+            {
+              "title": "Error Preferences",
+              "code": "# ErrorAction values: Stop, Continue, SilentlyContinue, Ignore, Inquire\nGet-Item 'missing' -ErrorAction Stop            # Turns into terminating error\nGet-Item 'missing' -ErrorAction SilentlyContinue # Suppresses error\nGet-Item 'missing' -ErrorAction Ignore           # Ignores completely\n\n# Capture errors in variable\nGet-Item 'missing' -ErrorVariable myErrors -ErrorAction SilentlyContinue\nif ($myErrors) {\n    Write-Host \"Error occurred: $($myErrors[0].Exception.Message)\"\n}\n\n# Global preference\n$ErrorActionPreference = 'Stop'     # All cmdlets throw\n$ErrorActionPreference = 'Continue' # Default\n\n# $Error automatic variable\n$Error[0]   # Most recent error\n$Error.Clear()"
+            }
+          ]
+        },
+        {
+          "name": "Throw & Custom Errors",
+          "content": "Raise custom exceptions and write meaningful error records.",
+          "examples": [
+            {
+              "title": "Custom Error Handling",
+              "code": "# Throw a string\nfunction Validate-Age {\n    param([int]$Age)\n    if ($Age -lt 0 -or $Age -gt 150) {\n        throw \"Invalid age: $Age\"\n    }\n    return $Age\n}\n\n# Throw an exception object\nthrow [System.ArgumentException]::new('Value cannot be empty', 'Name')\n\n# Write non-terminating error\nfunction Get-Data {\n    param($Id)\n    if (-not $Id) {\n        $ex = [System.ArgumentNullException]::new('Id')\n        $err = [System.Management.Automation.ErrorRecord]::new(\n            $ex, 'InvalidId', 'InvalidArgument', $Id\n        )\n        $PSCmdlet.WriteError($err)\n        return\n    }\n    return \"Data for $Id\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "file_system",
+      "title": "File System & I/O",
+      "description": "Working with files, directories, and data reading/writing.",
+      "subtopics": [
+        {
+          "name": "Navigating the File System",
+          "content": "PowerShell uses a provider model. The filesystem is the default, but the same commands work for registry, certificates, etc.",
+          "examples": [
+            {
+              "title": "File System Navigation",
+              "code": "Get-Location            # pwd\nSet-Location C:\\Users   # cd\nSet-Location ..         # cd ..\nSet-Location ~          # Home directory\nPush-Location C:\\Temp   # Push & navigate\nPop-Location            # Return to previous\n\nGet-ChildItem           # ls / dir\nGet-ChildItem -Recurse -Filter '*.txt'\nGet-ChildItem -Hidden\nGet-ChildItem -Directory\nGet-ChildItem -File\n\n# Test if path exists\nTest-Path 'C:\\Windows'\nTest-Path 'C:\\file.txt' -PathType Leaf\nTest-Path 'C:\\folder'   -PathType Container"
+            }
+          ]
+        },
+        {
+          "name": "File Operations",
+          "content": "Creating, copying, moving, and deleting files and directories.",
+          "examples": [
+            {
+              "title": "CRUD Operations",
+              "code": "# Create\nNew-Item -Path 'C:\\Temp\\test.txt' -ItemType File\nNew-Item -Path 'C:\\Temp\\NewFolder' -ItemType Directory\nNew-Item -Path 'C:\\Temp\\test.txt' -ItemType File -Force  # Overwrite\n\n# Copy\nCopy-Item 'C:\\source.txt' 'C:\\dest.txt'\nCopy-Item 'C:\\Folder' 'D:\\Backup' -Recurse\n\n# Move / Rename\nMove-Item 'C:\\old.txt' 'C:\\new.txt'\nRename-Item 'C:\\file.txt' 'renamed.txt'\n\n# Delete\nRemove-Item 'C:\\Temp\\test.txt'\nRemove-Item 'C:\\TempFolder' -Recurse -Force\n\n# Get file info\n$file = Get-Item 'C:\\Windows\\explorer.exe'\n$file.Name\n$file.Length\n$file.LastWriteTime\n$file.CreationTime\n$file.Extension\n$file.FullName"
+            }
+          ]
+        },
+        {
+          "name": "Reading & Writing Files",
+          "content": "Reading text, CSV, XML, and JSON files, and writing output to files.",
+          "examples": [
+            {
+              "title": "Text File I/O",
+              "code": "# Read all content\n$content = Get-Content 'C:\\log.txt'\n\n# Read as single string\n$text = Get-Content 'C:\\log.txt' -Raw\n\n# Read first/last N lines\nGet-Content 'C:\\big.log' -TotalCount 10\nGet-Content 'C:\\big.log' -Tail 20\n\n# Write to file\nSet-Content 'output.txt' 'Hello, World!'\nAdd-Content 'output.txt' 'New line'\n\n# Redirect\n'Line 1' | Out-File 'out.txt'\n'Line 2' | Out-File 'out.txt' -Append\n\n# Encoding\nGet-Content 'file.txt' -Encoding UTF8\nSet-Content 'out.txt' 'text' -Encoding UTF8"
+            },
+            {
+              "title": "CSV Operations",
+              "code": "# Import CSV\n$users = Import-Csv 'users.csv'\n$users | ForEach-Object {\n    Write-Host \"$($_.Name): $($_.Email)\"\n}\n\n# Export CSV\nGet-Process | Select-Object Name, Id, CPU |\n    Export-Csv 'processes.csv' -NoTypeInformation\n\n# Create CSV from objects\n$data = @(\n    [PSCustomObject]@{Name='Alice'; Age=30; City='NY'}\n    [PSCustomObject]@{Name='Bob';   Age=25; City='LA'}\n)\n$data | Export-Csv 'people.csv' -NoTypeInformation"
+            },
+            {
+              "title": "JSON Operations",
+              "code": "# Read JSON\n$json = Get-Content 'config.json' -Raw | ConvertFrom-Json\nWrite-Host $json.setting1\n\n# Write JSON\n$config = @{\n    ServerUrl = 'https://api.example.com'\n    Timeout   = 30\n    Debug     = $false\n}\n$config | ConvertTo-Json | Set-Content 'config.json'\n\n# Pretty print\n$config | ConvertTo-Json -Depth 5\n\n# Nested JSON\n$nested = '{ \"name\": \"Alice\", \"address\": { \"city\": \"NY\" } }' | ConvertFrom-Json\n$nested.address.city   # NY"
+            },
+            {
+              "title": "XML Operations",
+              "code": "# Load XML\n[xml]$doc = Get-Content 'data.xml'\n$doc.root.item\n\n# XPath query\nSelect-Xml -Path 'data.xml' -XPath '//user[@active=\"true\"]'\n\n# Create XML\n$xml = [xml]'<root><item>value</item></root>'\n$newNode = $xml.CreateElement('item2')\n$newNode.InnerText = 'value2'\n$xml.root.AppendChild($newNode)\n$xml.Save('output.xml')"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regex",
+      "title": "Regular Expressions",
+      "description": "Pattern matching and text processing using regex in PowerShell.",
+      "subtopics": [
+        {
+          "name": "Regex Basics",
+          "content": "PowerShell integrates .NET regex throughout its operators and cmdlets.",
+          "examples": [
+            {
+              "title": "Regex Operations",
+              "code": "# Match operator\n'hello123' -match '\\d+'          # True; $Matches[0] = '123'\n'PowerShell 7.4' -match '(\\d+\\.\\d+)'\n$Matches[0]   # Full match: 7.4\n$Matches[1]   # Group 1: 7.4\n\n# Replace with regex\n'hello world' -replace '\\s+', '_'    # hello_world\n'2024-01-15' -replace '(\\d{4})-(\\d{2})-(\\d{2})', '$3/$2/$1'  # 15/01/2024\n\n# Select-String (like grep)\nGet-Content 'log.txt' | Select-String 'ERROR'\nSelect-String -Path '*.log' -Pattern 'CRITICAL|ERROR'\nSelect-String -Path 'access.log' -Pattern '\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b'\n\n# Using .NET Regex class\n$regex = [regex]'(?i)(error|warning)'\n$regex.IsMatch('Error found')   # True\n$regex.Matches('Error and Warning found') | ForEach-Object { $_.Value }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "modules",
+      "title": "Modules & Package Management",
+      "description": "Organizing code into modules and managing packages with PowerShellGet.",
+      "subtopics": [
+        {
+          "name": "Working with Modules",
+          "content": "Modules are packages of cmdlets, functions, variables, and providers.",
+          "examples": [
+            {
+              "title": "Module Management",
+              "code": "# List installed modules\nGet-Module\nGet-Module -ListAvailable\n\n# Import a module\nImport-Module ActiveDirectory\nImport-Module Az -Force\n\n# Remove a module\nRemove-Module ActiveDirectory\n\n# Find modules online\nFind-Module -Name PSReadLine\nFind-Module -Tag 'Azure'\n\n# Install/Update/Uninstall\nInstall-Module -Name Az -Scope CurrentUser\nUpdate-Module -Name Az\nUninstall-Module -Name Az\n\n# Get commands from a module\nGet-Command -Module Az.Accounts\n\n# Module info\nGet-Module Az | Select-Object Name, Version, Path"
+            }
+          ]
+        },
+        {
+          "name": "Creating a Module",
+          "content": "Build your own module with a .psm1 file and an optional manifest (.psd1).",
+          "examples": [
+            {
+              "title": "Custom Module",
+              "code": "# MyUtils.psm1\nfunction Get-Greeting {\n    param([string]$Name = 'World')\n    return \"Hello, $Name!\"\n}\n\nfunction ConvertTo-TitleCase {\n    param([string]$Text)\n    return (Get-Culture).TextInfo.ToTitleCase($Text.ToLower())\n}\n\n# Export only specific functions\nExport-ModuleMember -Function Get-Greeting, ConvertTo-TitleCase\n\n# Place in: $env:PSModulePath directory\n# E.g. ~\\Documents\\PowerShell\\Modules\\MyUtils\\MyUtils.psm1\n\n# Import and use\nImport-Module MyUtils\nGet-Greeting -Name 'Alice'\nConvertTo-TitleCase 'hello world'"
+            },
+            {
+              "title": "Module Manifest",
+              "code": "# Create manifest\nNew-ModuleManifest -Path 'MyUtils\\MyUtils.psd1' `\n    -RootModule 'MyUtils.psm1' `\n    -ModuleVersion '1.0.0' `\n    -Author 'Your Name' `\n    -Description 'Utility functions' `\n    -FunctionsToExport @('Get-Greeting', 'ConvertTo-TitleCase')"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "remoting",
+      "title": "Remoting & Jobs",
+      "description": "Execute commands on remote machines and run background jobs.",
+      "subtopics": [
+        {
+          "name": "PowerShell Remoting",
+          "content": "WS-Management (WinRM) based remoting allows running commands on remote computers.",
+          "examples": [
+            {
+              "title": "PSRemoting",
+              "code": "# Enable remoting (run as admin)\nEnable-PSRemoting -Force\n\n# One-time remote command\nInvoke-Command -ComputerName Server01 -ScriptBlock {\n    Get-Process | Where-Object CPU -gt 10\n}\n\n# Persistent session\n$session = New-PSSession -ComputerName Server01\nInvoke-Command -Session $session -ScriptBlock { Get-Service }\n\n# Interactive remote session\nEnter-PSSession -ComputerName Server01\n# ... work remotely ...\nExit-PSSession\n\n# Run script file remotely\nInvoke-Command -ComputerName Server01 -FilePath '.\\script.ps1'\n\n# Multiple computers\nInvoke-Command -ComputerName Server01, Server02, Server03 -ScriptBlock {\n    Get-WmiObject Win32_OperatingSystem | Select-Object PSComputerName, Caption, Version\n}\n\n# Copy files via remoting\nCopy-Item 'C:\\local.txt' -Destination 'C:\\remote.txt' -ToSession $session\n\n# Cleanup\nRemove-PSSession $session"
+            }
+          ]
+        },
+        {
+          "name": "Background Jobs",
+          "content": "Run tasks in the background without blocking the console.",
+          "examples": [
+            {
+              "title": "Jobs",
+              "code": "# Start a background job\n$job = Start-Job -ScriptBlock {\n    Start-Sleep -Seconds 5\n    Get-Process | Measure-Object | Select-Object -Exp Count\n}\n\n# Check job status\nGet-Job\nGet-Job -Id $job.Id\n\n# Wait for completion\nWait-Job -Job $job\n\n# Get results\nReceive-Job -Job $job\n\n# Remove completed jobs\nRemove-Job -Job $job\n\n# Named job\n$namedJob = Start-Job -Name 'MyTask' -ScriptBlock { 'Done' }\nReceive-Job -Name 'MyTask' -Wait -AutoRemoveJob\n\n# Thread jobs (faster, no new process)\n$threadJob = Start-ThreadJob -ScriptBlock { Get-Process }\nReceive-Job $threadJob -Wait"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "classes",
+      "title": "Classes & OOP",
+      "description": "PowerShell 5+ supports defining full classes with properties, methods, and inheritance.",
+      "subtopics": [
+        {
+          "name": "Defining Classes",
+          "content": "Classes allow object-oriented design patterns in PowerShell.",
+          "examples": [
+            {
+              "title": "Class Definition",
+              "code": "class Animal {\n    [string]$Name\n    [string]$Sound\n    [int]$Age\n\n    # Constructor\n    Animal([string]$name, [string]$sound) {\n        $this.Name  = $name\n        $this.Sound = $sound\n        $this.Age   = 0\n    }\n\n    # Method\n    [string] Speak() {\n        return \"$($this.Name) says: $($this.Sound)!\"\n    }\n\n    [void] Birthday() {\n        $this.Age++\n        Write-Host \"$($this.Name) is now $($this.Age)\"\n    }\n\n    # Static method\n    static [string] Kingdom() {\n        return 'Animalia'\n    }\n}\n\n# Inheritance\nclass Dog : Animal {\n    [string]$Breed\n\n    Dog([string]$name, [string]$breed) : base($name, 'Woof') {\n        $this.Breed = $breed\n    }\n\n    [string] Fetch([string]$item) {\n        return \"$($this.Name) fetches the $item!\"\n    }\n}\n\n# Usage\n$cat = [Animal]::new('Whiskers', 'Meow')\n$cat.Speak()\n$cat.Birthday()\n[Animal]::Kingdom()\n\n$dog = [Dog]::new('Rex', 'German Shepherd')\n$dog.Speak()\n$dog.Fetch('ball')"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wmi_cim",
+      "title": "WMI / CIM & System Management",
+      "description": "Querying and managing Windows systems using CIM (the modern replacement for WMI).",
+      "subtopics": [
+        {
+          "name": "CIM Cmdlets",
+          "content": "Get-CimInstance replaces Get-WmiObject and works over WS-Man.",
+          "examples": [
+            {
+              "title": "System Information",
+              "code": "# OS Info\nGet-CimInstance -ClassName Win32_OperatingSystem\nGet-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, OSArchitecture\n\n# CPU\nGet-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, MaxClockSpeed\n\n# Memory\nGet-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum\n\n# Disks\nGet-CimInstance Win32_LogicalDisk | Select-Object DeviceID,\n    @{N='SizeGB';E={[math]::Round($_.Size/1GB,2)}},\n    @{N='FreeGB';E={[math]::Round($_.FreeSpace/1GB,2)}}\n\n# Network Adapters\nGet-CimInstance Win32_NetworkAdapterConfiguration -Filter 'IPEnabled = True' |\n    Select-Object Description, IPAddress, MACAddress\n\n# Installed Software\nGet-CimInstance Win32_Product | Select-Object Name, Version, Vendor | Sort-Object Name\n\n# Running Services\nGet-CimInstance Win32_Service -Filter 'State = \"Running\"' | Select-Object Name, DisplayName\n\n# Remote CIM query\n$cimSession = New-CimSession -ComputerName Server01\nGet-CimInstance Win32_OperatingSystem -CimSession $cimSession"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security & Credentials",
+      "description": "Handling credentials securely and working with certificates and secure strings.",
+      "subtopics": [
+        {
+          "name": "Credentials",
+          "content": "Never store passwords in plain text. Use SecureString, credential objects, and Secret Management.",
+          "examples": [
+            {
+              "title": "Credential Handling",
+              "code": "# Prompt for credentials\n$cred = Get-Credential\n$cred = Get-Credential -UserName 'domain\\user' -Message 'Enter password'\n\n# Create credential without prompt (less secure)\n$password = ConvertTo-SecureString 'MyPassword' -AsPlainText -Force\n$cred = New-Object System.Management.Automation.PSCredential('user', $password)\n\n# Use credentials\nInvoke-Command -ComputerName Server01 -Credential $cred -ScriptBlock { Get-Process }\n\n# Secret Management (install module first)\nInstall-Module Microsoft.PowerShell.SecretManagement\nInstall-Module Microsoft.PowerShell.SecretStore\nRegister-SecretVault -Name MyVault -ModuleName Microsoft.PowerShell.SecretStore\nSet-Secret -Name 'ApiKey' -Secret 'myapikey123'\n$key = Get-Secret -Name 'ApiKey' -AsPlainText\n\n# Save encrypted credential to file\n$cred.Password | ConvertFrom-SecureString | Set-Content 'saved_pass.txt'\n$loadedPass = Get-Content 'saved_pass.txt' | ConvertTo-SecureString\n$loadedCred = New-Object PSCredential('user', $loadedPass)"
+            }
+          ]
+        },
+        {
+          "name": "Certificates",
+          "content": "Manage Windows certificates using the cert: PSDrive.",
+          "examples": [
+            {
+              "title": "Certificate Operations",
+              "code": "# Browse cert store\nGet-ChildItem Cert:\\LocalMachine\\My\nGet-ChildItem Cert:\\CurrentUser\\Root\n\n# Find expired certs\nGet-ChildItem Cert:\\LocalMachine\\My |\n    Where-Object { $_.NotAfter -lt (Get-Date).AddDays(30) } |\n    Select-Object Subject, NotAfter\n\n# Test certificate\nTest-Certificate -Cert (Get-ChildItem Cert:\\LocalMachine\\My)[0]\n\n# Sign a script\n$cert = Get-ChildItem Cert:\\CurrentUser\\My -CodeSigningCert | Select-Object -First 1\nSet-AuthenticodeSignature -FilePath '.\\script.ps1' -Certificate $cert"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "description": "Network diagnostics, REST API calls, and network configuration.",
+      "subtopics": [
+        {
+          "name": "Network Diagnostics",
+          "content": "Built-in tools for testing connectivity and resolving DNS.",
+          "examples": [
+            {
+              "title": "Network Testing",
+              "code": "# Ping test\nTest-Connection -ComputerName google.com\nTest-Connection -ComputerName google.com -Count 4 -Quiet  # Returns True/False\n\n# TCP port test\nTest-NetConnection -ComputerName google.com -Port 443\n(Test-NetConnection -ComputerName google.com -Port 80).TcpTestSucceeded\n\n# DNS resolution\nResolve-DnsName google.com\nResolve-DnsName google.com -Type MX\n\n# Network adapters\nGet-NetAdapter\nGet-NetIPAddress\nGet-NetRoute\n\n# Active connections\nGet-NetTCPConnection -State Established\n\n# Traceroute\nTest-NetConnection -ComputerName google.com -TraceRoute"
+            }
+          ]
+        },
+        {
+          "name": "REST API Calls",
+          "content": "Invoke-RestMethod and Invoke-WebRequest for HTTP calls.",
+          "examples": [
+            {
+              "title": "REST API Usage",
+              "code": "# Simple GET\n$response = Invoke-RestMethod -Uri 'https://jsonplaceholder.typicode.com/posts/1'\n$response.title\n\n# GET with headers\n$headers = @{\n    'Authorization' = 'Bearer mytoken'\n    'Accept'        = 'application/json'\n}\n$data = Invoke-RestMethod -Uri 'https://api.example.com/data' -Headers $headers\n\n# POST JSON\n$body = @{\n    name  = 'Alice'\n    email = 'alice@example.com'\n} | ConvertTo-Json\n\n$result = Invoke-RestMethod `\n    -Uri  'https://api.example.com/users' `\n    -Method POST `\n    -Body $body `\n    -ContentType 'application/json' `\n    -Headers $headers\n\n# Download file\nInvoke-WebRequest -Uri 'https://example.com/file.zip' -OutFile 'C:\\Temp\\file.zip'\n\n# Web scraping\n$page = Invoke-WebRequest -Uri 'https://example.com'\n$page.Links | Select-Object href\n$page.Content"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scheduled_tasks",
+      "title": "Scheduled Tasks & Automation",
+      "description": "Automate scripts with Windows Task Scheduler and run time-based automation.",
+      "subtopics": [
+        {
+          "name": "Scheduled Tasks",
+          "content": "Create and manage Windows scheduled tasks from PowerShell.",
+          "examples": [
+            {
+              "title": "Task Scheduler",
+              "code": "# Create a scheduled task\n$action  = New-ScheduledTaskAction -Execute 'powershell.exe' `\n    -Argument '-NonInteractive -File C:\\Scripts\\backup.ps1'\n\n$trigger = New-ScheduledTaskTrigger -Daily -At '02:00AM'\n\n$settings = New-ScheduledTaskSettingsSet `\n    -ExecutionTimeLimit (New-TimeSpan -Hours 1) `\n    -RestartCount 3\n\nRegister-ScheduledTask `\n    -TaskName  'DailyBackup' `\n    -Action    $action `\n    -Trigger   $trigger `\n    -Settings  $settings `\n    -RunLevel  Highest `\n    -Force\n\n# Manage tasks\nGet-ScheduledTask\nGet-ScheduledTask -TaskName 'DailyBackup'\nStart-ScheduledTask -TaskName 'DailyBackup'\nStop-ScheduledTask  -TaskName 'DailyBackup'\nDisable-ScheduledTask -TaskName 'DailyBackup'\nUnregister-ScheduledTask -TaskName 'DailyBackup' -Confirm:$false\n\n# View last run info\nGet-ScheduledTaskInfo -TaskName 'DailyBackup'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "formatting_output",
+      "title": "Output & Formatting",
+      "description": "Controlling how results are displayed and exported.",
+      "subtopics": [
+        {
+          "name": "Formatting Cmdlets",
+          "content": "Format-Table, Format-List, Format-Wide, and Out-* cmdlets.",
+          "examples": [
+            {
+              "title": "Output Formatting",
+              "code": "# Format as table\nGet-Process | Format-Table Name, Id, CPU, WorkingSet -AutoSize\nGet-Process | Format-Table Name, @{N='MemMB';E={[math]::Round($_.WS/1MB,1)}} -AutoSize\n\n# Format as list\nGet-Process | Select-Object -First 2 | Format-List *\n\n# Format wide\nGet-Process | Format-Wide -Property Name -Column 4\n\n# Output to various destinations\nGet-Process | Out-GridView                   # Interactive GUI grid\nGet-Process | Out-File 'procs.txt'\nGet-Process | Out-String\nGet-Process | Out-Null                       # Discard output\nGet-Process | ConvertTo-Html | Out-File 'procs.html'\nGet-Process | ConvertTo-Csv\nGet-Process | ConvertTo-Json\n\n# Write output methods\nWrite-Host 'Console only'              # Only to host, not pipeline\nWrite-Output 'To pipeline'            # Goes to pipeline\nWrite-Verbose 'Debug when -Verbose'   # Only with -Verbose\nWrite-Warning 'A warning message'     # Yellow warning\nWrite-Error 'An error message'        # Error stream\nWrite-Debug 'Debug message'           # Only with -Debug\nWrite-Progress -Activity 'Processing' -PercentComplete 50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "title": "Real-World Projects",
+      "description": "Practical scripts solving common real-world problems.",
+      "subtopics": [
+        {
+          "name": "Project 1: System Health Report",
+          "content": "Generate a comprehensive HTML system health report.",
+          "examples": [
+            {
+              "title": "System Health Report Script",
+              "code": "#Requires -Version 5.0\n<#\n.SYNOPSIS\n    Generate an HTML system health report.\n.DESCRIPTION\n    Collects CPU, memory, disk, and service data and exports as HTML.\n.PARAMETER OutputPath\n    Path to save the HTML report.\n#>\nparam(\n    [string]$OutputPath = \".\\SystemReport_$(Get-Date -Format 'yyyyMMdd_HHmmss').html\"\n)\n\nfunction Get-SystemHealth {\n    [CmdletBinding()]\n    param()\n\n    # OS Info\n    $os = Get-CimInstance Win32_OperatingSystem\n\n    # CPU\n    $cpu = Get-CimInstance Win32_Processor\n    $cpuLoad = (Get-CimInstance Win32_Processor | Measure-Object LoadPercentage -Average).Average\n\n    # Memory\n    $totalRAM = [math]::Round($os.TotalVisibleMemorySize / 1MB, 2)\n    $freeRAM  = [math]::Round($os.FreePhysicalMemory / 1MB, 2)\n    $usedRAM  = [math]::Round($totalRAM - $freeRAM, 2)\n    $ramPct   = [math]::Round(($usedRAM / $totalRAM) * 100, 1)\n\n    # Disks\n    $disks = Get-CimInstance Win32_LogicalDisk | Where-Object DriveType -eq 3 | ForEach-Object {\n        [PSCustomObject]@{\n            Drive  = $_.DeviceID\n            TotalGB = [math]::Round($_.Size / 1GB, 2)\n            FreeGB  = [math]::Round($_.FreeSpace / 1GB, 2)\n            UsedPct = [math]::Round((($_.Size - $_.FreeSpace) / $_.Size) * 100, 1)\n        }\n    }\n\n    # Top Processes by CPU\n    $topProcs = Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |\n        Select-Object Name, Id,\n            @{N='CPU(s)';E={[math]::Round($_.CPU,2)}},\n            @{N='MemMB'; E={[math]::Round($_.WorkingSet64/1MB,2)}}\n\n    # Services not running\n    $stoppedServices = Get-Service | Where-Object { $_.StartType -eq 'Automatic' -and $_.Status -ne 'Running' }\n\n    return [PSCustomObject]@{\n        OS              = $os.Caption\n        Hostname        = $env:COMPUTERNAME\n        Uptime          = (Get-Date) - $os.LastBootUpTime\n        CPU             = $cpu.Name\n        CPULoadPct      = $cpuLoad\n        TotalRAM_GB     = $totalRAM\n        UsedRAM_GB      = $usedRAM\n        RAMUsedPct      = $ramPct\n        Disks           = $disks\n        TopProcesses    = $topProcs\n        StoppedServices = $stoppedServices\n    }\n}\n\n$health = Get-SystemHealth\n\n$html = @\"\n<!DOCTYPE html>\n<html>\n<head><title>System Health Report</title>\n<style>\n  body { font-family: Segoe UI, sans-serif; margin: 20px; background: #f5f5f5; }\n  h1 { color: #0078d4; } table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }\n  th { background: #0078d4; color: white; padding: 8px; text-align: left; }\n  td { padding: 8px; border: 1px solid #ddd; } tr:nth-child(even) { background: #f2f2f2; }\n  .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }\n  .warn { color: orange; } .crit { color: red; } .ok { color: green; }\n</style></head>\n<body>\n<h1>System Health Report — $($health.Hostname)</h1>\n<p>Generated: $(Get-Date) | OS: $($health.OS) | Uptime: $([math]::Round($health.Uptime.TotalHours,1)) hours</p>\n<div class='card'>\n<h2>CPU & Memory</h2>\n<p>CPU: $($health.CPU)</p>\n<p>CPU Load: <span class='$(if($health.CPULoadPct -gt 80){'crit'}elseif($health.CPULoadPct -gt 60){'warn'}else{'ok'})'>$($health.CPULoadPct)%</span></p>\n<p>RAM: $($health.UsedRAM_GB) / $($health.TotalRAM_GB) GB (<span class='$(if($health.RAMUsedPct -gt 85){'crit'}elseif($health.RAMUsedPct -gt 70){'warn'}else{'ok'})'>$($health.RAMUsedPct)%</span>)</p>\n</div>\n<div class='card'><h2>Disk Usage</h2>\n<table><tr><th>Drive</th><th>Total (GB)</th><th>Free (GB)</th><th>Used %</th></tr>\n$($health.Disks | ForEach-Object { \"<tr><td>$($_.Drive)</td><td>$($_.TotalGB)</td><td>$($_.FreeGB)</td><td class='$(if($_.UsedPct -gt 85){'crit'}elseif($_.UsedPct -gt 70){'warn'}else{'ok'})'>$($_.UsedPct)%</td></tr>\" })\n</table></div>\n<div class='card'><h2>Top Processes by CPU</h2>\n<table><tr><th>Name</th><th>PID</th><th>CPU(s)</th><th>Mem (MB)</th></tr>\n$($health.TopProcesses | ForEach-Object { \"<tr><td>$($_.Name)</td><td>$($_.Id)</td><td>$($_.'CPU(s)')</td><td>$($_.MemMB)</td></tr>\" })\n</table></div>\n</body></html>\n\"@\n\n$html | Out-File $OutputPath -Encoding UTF8\nWrite-Host \"Report saved to: $OutputPath\" -ForegroundColor Green\nInvoke-Item $OutputPath"
+            }
+          ]
+        },
+        {
+          "name": "Project 2: Automated Backup Script",
+          "content": "Robust file backup with logging, rotation, and email notification.",
+          "examples": [
+            {
+              "title": "Backup Script",
+              "code": "#Requires -Version 5.0\n<#\n.SYNOPSIS\n    Automated backup script with rotation and logging.\n#>\nparam(\n    [string]$SourcePath      = 'C:\\ImportantData',\n    [string]$BackupRoot      = 'D:\\Backups',\n    [int]$RetainDays         = 30,\n    [string]$LogPath         = 'C:\\Logs\\backup.log',\n    [string]$EmailTo         = '',\n    [string]$SmtpServer      = ''\n)\n\nfunction Write-Log {\n    param([string]$Message, [string]$Level = 'INFO')\n    $entry = \"[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] [$Level] $Message\"\n    Add-Content -Path $LogPath -Value $entry\n    $color = switch ($Level) {\n        'ERROR'   { 'Red' }\n        'WARNING' { 'Yellow' }\n        default   { 'Cyan' }\n    }\n    Write-Host $entry -ForegroundColor $color\n}\n\nfunction Send-BackupNotification {\n    param([bool]$Success, [string]$Details)\n    if (-not $EmailTo -or -not $SmtpServer) { return }\n    $subject = if ($Success) { 'Backup Completed' } else { 'BACKUP FAILED' }\n    Send-MailMessage -To $EmailTo -Subject $subject -Body $Details -SmtpServer $SmtpServer\n}\n\ntry {\n    if (-not (Test-Path $LogPath)) {\n        New-Item -Path (Split-Path $LogPath) -ItemType Directory -Force | Out-Null\n    }\n\n    Write-Log 'Starting backup job'\n\n    if (-not (Test-Path $SourcePath)) {\n        throw \"Source path not found: $SourcePath\"\n    }\n\n    # Create timestamped backup folder\n    $timestamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'\n    $backupDest = Join-Path $BackupRoot $timestamp\n    New-Item -Path $backupDest -ItemType Directory -Force | Out-Null\n    Write-Log \"Backup destination: $backupDest\"\n\n    # Copy files with progress\n    $files = Get-ChildItem $SourcePath -Recurse -File\n    $total = $files.Count\n    $copied = 0\n    $errors = 0\n\n    $files | ForEach-Object {\n        $dest = $_.FullName.Replace($SourcePath, $backupDest)\n        $destDir = Split-Path $dest\n        if (-not (Test-Path $destDir)) {\n            New-Item $destDir -ItemType Directory -Force | Out-Null\n        }\n        try {\n            Copy-Item $_.FullName $dest -Force\n            $copied++\n        } catch {\n            Write-Log \"Failed to copy: $($_.FullName) - $($_.Exception.Message)\" 'ERROR'\n            $errors++\n        }\n        Write-Progress -Activity 'Backing up' -Status \"$copied / $total\" `\n            -PercentComplete (($copied / $total) * 100)\n    })\n\n    Write-Log \"Backup complete. Copied: $copied, Errors: $errors\"\n\n    # Rotate old backups\n    $cutoff = (Get-Date).AddDays(-$RetainDays)\n    $old = Get-ChildItem $BackupRoot -Directory | Where-Object CreationTime -lt $cutoff\n    $old | ForEach-Object {\n        Remove-Item $_.FullName -Recurse -Force\n        Write-Log \"Deleted old backup: $($_.Name)\" 'WARNING'\n    }\n    Write-Log \"Rotated $($old.Count) old backups\"\n\n    Send-BackupNotification -Success $true -Details \"Copied $copied files to $backupDest\"\n\n} catch {\n    Write-Log \"BACKUP FAILED: $($_.Exception.Message)\" 'ERROR'\n    Send-BackupNotification -Success $false -Details $_.Exception.Message\n    exit 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Project 3: Active Directory User Management",
+          "content": "Bulk create, update, and audit Active Directory users.",
+          "examples": [
+            {
+              "title": "AD User Management Script",
+              "code": "#Requires -Module ActiveDirectory\n<#\n.SYNOPSIS\n    Bulk AD user creation from CSV.\n#>\nparam(\n    [string]$CsvPath        = '.\\new_users.csv',\n    [string]$DefaultOU      = 'OU=Users,DC=company,DC=com',\n    [string]$DefaultDomain  = 'company.com'\n)\n\n# CSV format: FirstName,LastName,Department,Title,Manager\n$users = Import-Csv $CsvPath\n$created = 0\n$failed  = 0\n$report  = @()\n\nforeach ($user in $users) {\n    $samAccount = (\"$($user.FirstName[0])$($user.LastName)\").ToLower() -replace '\\s',''\n    $upn        = \"$samAccount@$DefaultDomain\"\n    $password   = ConvertTo-SecureString 'TempPass@2024!' -AsPlainText -Force\n\n    try {\n        # Check if user exists\n        if (Get-ADUser -Filter { SamAccountName -eq $samAccount } -ErrorAction SilentlyContinue) {\n            Write-Warning \"User $samAccount already exists — skipping\"\n            continue\n        }\n\n        # Create the user\n        New-ADUser `\n            -GivenName          $user.FirstName `\n            -Surname            $user.LastName `\n            -Name               \"$($user.FirstName) $($user.LastName)\" `\n            -SamAccountName     $samAccount `\n            -UserPrincipalName  $upn `\n            -Department         $user.Department `\n            -Title              $user.Title `\n            -Path               $DefaultOU `\n            -AccountPassword    $password `\n            -Enabled            $true `\n            -ChangePasswordAtLogon $true\n\n        # Add to department group\n        $groupName = \"GRP_$($user.Department)\"\n        if (Get-ADGroup -Filter { Name -eq $groupName } -ErrorAction SilentlyContinue) {\n            Add-ADGroupMember -Identity $groupName -Members $samAccount\n        }\n\n        $report += [PSCustomObject]@{\n            User   = $samAccount\n            Status = 'Created'\n            UPN    = $upn\n        }\n        $created++\n        Write-Host \"Created: $upn\" -ForegroundColor Green\n\n    } catch {\n        Write-Warning \"Failed to create $samAccount : $($_.Exception.Message)\"\n        $report += [PSCustomObject]@{ User=$samAccount; Status='Failed'; UPN='' }\n        $failed++\n    }\n}\n\nWrite-Host \"`nSummary: Created=$created, Failed=$failed\" -ForegroundColor Cyan\n$report | Export-Csv '.\\AD_Creation_Report.csv' -NoTypeInformation\nWrite-Host 'Report exported to AD_Creation_Report.csv'"
+            }
+          ]
+        },
+        {
+          "name": "Project 4: Log Parser & Alerting",
+          "content": "Parse IIS or application logs, detect anomalies, and send alerts.",
+          "examples": [
+            {
+              "title": "Log Parser Script",
+              "code": "<#\n.SYNOPSIS\n    Parse IIS/application logs for errors and anomalies.\n#>\nparam(\n    [string]$LogDirectory   = 'C:\\inetpub\\logs\\LogFiles',\n    [int]$ErrorThreshold    = 50,\n    [int]$LookbackMinutes   = 60\n)\n\n$cutoff = (Get-Date).AddMinutes(-$LookbackMinutes)\n$logFiles = Get-ChildItem $LogDirectory -Filter '*.log' -Recurse |\n    Where-Object LastWriteTime -gt $cutoff\n\n$allEntries = @()\n\nforeach ($file in $logFiles) {\n    $lines = Get-Content $file.FullName | Where-Object { $_ -notmatch '^#' }\n    foreach ($line in $lines) {\n        $parts = $line -split ' '\n        if ($parts.Count -ge 12) {\n            $allEntries += [PSCustomObject]@{\n                DateTime   = [datetime]\"$($parts[0]) $($parts[1])\"\n                ClientIP   = $parts[8]\n                Method     = $parts[4]\n                URI        = $parts[5]\n                StatusCode = [int]$parts[11]\n                TimeTaken  = [int]$parts[-1]\n            }\n        }\n    }\n}\n\n$recent = $allEntries | Where-Object DateTime -gt $cutoff\n\n# Analyze\n$errorCodes    = $recent | Where-Object StatusCode -ge 500\n$slowRequests  = $recent | Where-Object TimeTaken -gt 5000\n$topIPs        = $recent | Group-Object ClientIP | Sort-Object Count -Desc | Select-Object -First 10\n$topErrors     = $errorCodes | Group-Object URI | Sort-Object Count -Desc | Select-Object -First 10\n\n$report = [PSCustomObject]@{\n    Period           = \"Last $LookbackMinutes minutes\"\n    TotalRequests    = $recent.Count\n    ErrorCount       = $errorCodes.Count\n    SlowRequests     = $slowRequests.Count\n    AvgResponseTime  = [math]::Round(($recent | Measure-Object TimeTaken -Average).Average, 0)\n    TopOffendingIPs  = $topIPs\n    TopErrorURLs     = $topErrors\n}\n\n$report | ConvertTo-Json -Depth 5 | Set-Content '.\\log_report.json'\nWrite-Host 'Analysis complete. Report: log_report.json' -ForegroundColor Green\n\nif ($errorCodes.Count -gt $ErrorThreshold) {\n    Write-Warning \"ALERT: $($errorCodes.Count) errors exceed threshold of $ErrorThreshold!\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Project 5: Interactive Menu System",
+          "content": "Build a reusable interactive console menu framework.",
+          "examples": [
+            {
+              "title": "Console Menu Framework",
+              "code": "function Show-Menu {\n    param(\n        [string]$Title,\n        [hashtable[]]$Options\n    )\n    Clear-Host\n    Write-Host \"=\" * 50 -ForegroundColor Cyan\n    Write-Host \"  $Title\" -ForegroundColor Yellow\n    Write-Host \"=\" * 50 -ForegroundColor Cyan\n    for ($i = 0; $i -lt $Options.Count; $i++) {\n        Write-Host \"  [$($i+1)] $($Options[$i].Label)\"\n    }\n    Write-Host \"  [Q] Quit\"\n    Write-Host \"=\" * 50 -ForegroundColor Cyan\n}\n\nfunction Invoke-Menu {\n    param([string]$Title, [hashtable[]]$Options)\n    do {\n        Show-Menu -Title $Title -Options $Options\n        $choice = Read-Host 'Select option'\n        if ($choice -eq 'Q' -or $choice -eq 'q') { return }\n        $idx = [int]$choice - 1\n        if ($idx -ge 0 -and $idx -lt $Options.Count) {\n            Clear-Host\n            & $Options[$idx].Action\n            Read-Host 'Press Enter to continue...'\n        } else {\n            Write-Warning 'Invalid selection'\n            Start-Sleep -Seconds 1\n        }\n    } while ($true)\n}\n\n# Example usage\n$mainMenu = @(\n    @{ Label='System Information'; Action={ Get-CimInstance Win32_OperatingSystem | Format-List Caption, Version, LastBootUpTime }},\n    @{ Label='Top Processes';      Action={ Get-Process | Sort-Object CPU -Desc | Select-Object -First 10 | Format-Table Name,Id,CPU,WS -AutoSize }},\n    @{ Label='Network Info';       Action={ Get-NetIPAddress | Format-Table }},\n    @{ Label='Disk Usage';         Action={ Get-CimInstance Win32_LogicalDisk | Format-Table DeviceID,Size,FreeSpace -AutoSize }},\n    @{ Label='Running Services';   Action={ Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Format-Table DisplayName,Status }}\n)\n\nInvoke-Menu -Title 'System Administration Toolkit' -Options $mainMenu"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cheatsheet",
+      "title": "Cheatsheet: Bash vs PowerShell",
+      "description": "Side-by-side comparison of common Bash and PowerShell commands and concepts.",
+      "subtopics": [
+        {
+          "name": "Navigation & File System",
+          "content": "Navigating directories and listing files.",
+          "examples": [
+            {
+              "title": "Navigation Commands",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\npwd                               | Get-Location\ncd /home/user                    | Set-Location C:\\Users\\User\nls                               | Get-ChildItem\nls -la                           | Get-ChildItem -Force\nls -R                            | Get-ChildItem -Recurse\nmkdir newfolder                  | New-Item -ItemType Directory -Name newfolder\ntouch file.txt                   | New-Item -ItemType File -Name file.txt\nrm file.txt                      | Remove-Item file.txt\nrm -rf folder/                   | Remove-Item folder -Recurse -Force\ncp src.txt dst.txt               | Copy-Item src.txt dst.txt\nmv old.txt new.txt               | Move-Item old.txt new.txt (or Rename-Item)\nfind / -name '*.log'             | Get-ChildItem / -Recurse -Filter '*.log'\ndu -sh folder/                   | (Get-ChildItem folder -Recurse | Measure-Object Length -Sum).Sum"
+            }
+          ]
+        },
+        {
+          "name": "Variables",
+          "content": "Variable declaration and usage.",
+          "examples": [
+            {
+              "title": "Variable Syntax",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\nNAME='Alice'                     | $Name = 'Alice'\necho $NAME                       | Write-Output $Name\nexport PATH=$PATH:/new           | $env:PATH += ';C:\\new'\nunset NAME                       | Remove-Variable Name\nreadonly PI=3.14                 | Set-Variable -Name PI -Value 3.14 -Option ReadOnly\nARR=(1 2 3)                      | $arr = @(1, 2, 3)\n${ARR[0]}                        | $arr[0]\nARR+=(4)                         | $arr += 4\n${#ARR[@]}                       | $arr.Count\ndeclare -A dict=(...)            | $dict = @{key='value'}\n${dict[key]}                     | $dict['key'] or $dict.key"
+            }
+          ]
+        },
+        {
+          "name": "Control Flow",
+          "content": "Conditionals and loops compared.",
+          "examples": [
+            {
+              "title": "If and Loops",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\n# IF\nif [ $x -gt 5 ]; then            | if ($x -gt 5) {\n  echo 'big'                     |     Write-Host 'big'\nfi                               | }\n\n# FOR\nfor i in {1..5}; do              | for ($i=1; $i -le 5; $i++) {\n  echo $i                        |     Write-Host $i\ndone                             | }\n\n# FOREACH\nfor f in *.txt; do               | Get-ChildItem *.txt | ForEach-Object {\n  echo $f                        |     Write-Host $_.Name\ndone                             | }\n\n# WHILE\nwhile [ $n -lt 10 ]; do          | while ($n -lt 10) {\n  echo $n; ((n++))               |     Write-Host $n; $n++\ndone                             | }\n\n# CASE/SWITCH\ncase $day in                     | switch ($day) {\n  Mon) echo 'Monday' ;;          |     'Monday' { Write-Host 'Monday' }\n  Fri) echo 'Friday' ;;          |     'Friday' { Write-Host 'Friday' }\nesac                             | }"
+            }
+          ]
+        },
+        {
+          "name": "Functions",
+          "content": "Function definition and usage.",
+          "examples": [
+            {
+              "title": "Functions",
+              "code": "# --- BASH ---\ngreet() {\n  local name=$1\n  echo \"Hello, $name!\"\n}\ngreet Alice\n\n# --- POWERSHELL ---\nfunction Greet {\n  param([string]$Name)\n  Write-Output \"Hello, $Name!\"\n}\nGreet -Name 'Alice'\n\n# Return values\n# BASH: use echo or $?\nadd() { echo $(( $1 + $2 )); }\nresult=$(add 3 4)\n\n# POWERSHELL: return or implicit output\nfunction Add { param($a,$b); return $a + $b }\n$result = Add 3 4"
+            }
+          ]
+        },
+        {
+          "name": "I/O & Files",
+          "content": "Reading, writing, and searching file content.",
+          "examples": [
+            {
+              "title": "File I/O",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\ncat file.txt                     | Get-Content file.txt\ncat file.txt | head -10          | Get-Content file.txt -TotalCount 10\ntail -20 file.txt                | Get-Content file.txt -Tail 20\necho 'text' > out.txt            | 'text' | Out-File out.txt\necho 'text' >> out.txt           | 'text' | Out-File out.txt -Append\ngrep 'error' file.txt            | Select-String 'error' file.txt\ngrep -r 'pattern' .              | Select-String 'pattern' -Path . -Recurse\nsed 's/old/new/g' file.txt       | (Get-Content file.txt) -replace 'old','new'\nawk '{print $1}' file.txt        | (Get-Content file.txt) | ForEach-Object { ($_ -split ' ')[0] }\nwc -l file.txt                   | (Get-Content file.txt | Measure-Object -Line).Lines\nsort file.txt                    | Get-Content file.txt | Sort-Object\nuniq file.txt                    | Get-Content file.txt | Select-Object -Unique"
+            }
+          ]
+        },
+        {
+          "name": "Processes & System",
+          "content": "Managing processes and system resources.",
+          "examples": [
+            {
+              "title": "Process Management",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\nps aux                           | Get-Process\nkill 1234                        | Stop-Process -Id 1234\nkillall firefox                  | Stop-Process -Name firefox\ntop                              | Get-Process | Sort-Object CPU -Desc\njobs                             | Get-Job\nbg %1                            | Start-Job { ... }\nfg %1                            | Receive-Job $job\ncommand &                        | Start-Job { command }\nnohup command &                  | Start-Job { command }\nsleep 5                          | Start-Sleep -Seconds 5\nuptime                           | (Get-Date) - (gcim Win32_OperatingSystem).LastBootUpTime\nwhoami                           | $env:USERNAME or whoami\nhostname                         | $env:COMPUTERNAME or hostname\ndf -h                            | Get-PSDrive -PSProvider FileSystem\nfree -h                          | Get-CimInstance Win32_OperatingSystem | Select-Object FreePhysicalMemory"
+            }
+          ]
+        },
+        {
+          "name": "Networking",
+          "content": "Network commands and operations.",
+          "examples": [
+            {
+              "title": "Networking",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\nping google.com                  | Test-Connection google.com\nnc -zv host 443                  | Test-NetConnection host -Port 443\nnslookup google.com              | Resolve-DnsName google.com\nifconfig / ip addr               | Get-NetIPAddress\nnetstat -an                      | Get-NetTCPConnection\nss -tulpn                        | Get-NetTCPConnection -State Listen\ncurl https://api.example.com     | Invoke-RestMethod https://api.example.com\ncurl -X POST -d '{...}' url      | Invoke-RestMethod url -Method POST -Body '{...}'\nwget https://example.com/f.zip   | Invoke-WebRequest https://example.com/f.zip -OutFile f.zip\nssh user@host                    | Enter-PSSession -ComputerName host -Credential (Get-Credential)\nscp file user@host:/path         | Copy-Item file -Destination path -ToSession $session"
+            }
+          ]
+        },
+        {
+          "name": "Text Processing",
+          "content": "String manipulation and text processing.",
+          "examples": [
+            {
+              "title": "String & Text Operations",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\necho ${str^^}                    | $str.ToUpper()\necho ${str,,}                    | $str.ToLower()\necho ${#str}                     | $str.Length\necho ${str:0:5}                  | $str.Substring(0,5)\necho ${str/old/new}              | $str.Replace('old','new')\necho ${str%suffix}               | $str.TrimEnd('suffix')\ntr 'a-z' 'A-Z' <<< $str         | $str.ToUpper()\nprintf '%s %s' $a $b             | '{0} {1}' -f $a, $b\necho $str | rev                  | -join $str[-1..-($str.Length)]\nread -p 'Enter name: ' name      | $name = Read-Host 'Enter name'"
+            }
+          ]
+        },
+        {
+          "name": "Scripting Patterns",
+          "content": "Common scripting patterns and idioms.",
+          "examples": [
+            {
+              "title": "Scripting Idioms",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\n\n# Script args\n$0, $1, $2                       | $PSCommandPath, $args[0], $args[1]\n$@                               | $args\n$#                               | $args.Count\n\n# Error handling\nset -e                           | $ErrorActionPreference = 'Stop'\ncommand || echo 'failed'         | try { cmd } catch { 'failed' }\n$? == 0                          | $? == $true\n\n# String heredoc\ncat <<EOF                        | @\"\n  text                           |   text\nEOF                              | \"@\n\n# Command substitution\nresult=$(command)                | $result = command\nresult=$(echo hi | tr a-z A-Z)  | $result = 'hi'.ToUpper()\n\n# Null coalescing\n${VAR:-default}                  | $var ?? 'default'  (PS7+)\n\n# Exit codes\nexit 0                           | exit 0\nexit 1                           | exit 1\n\n# Source another script\nsource ./functions.sh            | . .\\functions.ps1  (dot-source)\n. ./functions.sh                 | Import-Module .\\MyModule.psm1\n\n# Shebang line\n#!/bin/bash                      | # (no shebang; use #Requires -Version 7)\n\n# Debug mode\nbash -x script.sh                | Set-PSDebug -Trace 2\nset -x                           | Set-PSDebug -Trace 1\nset +x                           | Set-PSDebug -Off"
+            }
+          ]
+        },
+        {
+          "name": "Package Management",
+          "content": "Installing software and packages.",
+          "examples": [
+            {
+              "title": "Package Management",
+              "code": "# --- BASH ---                    | # --- POWERSHELL ---\n\n# Linux APT\napt install vim                  | winget install Vim.Vim\napt update                       | winget upgrade --all\napt remove vim                   | winget uninstall Vim.Vim\n\n# Python pip (both)\npip install requests             | pip install requests (same)\n\n# Module / package repos\nnpm install -g typescript        | Install-Module TypeScriptCompiler\nbrew install git                 | winget install Git.Git\n\n# PowerShell specific\n# (no Bash equivalent)\n                                 | Install-Module -Name Az\n                                 | Install-Module -Name PSReadLine\n                                 | Find-Module -Tag 'Security'\n                                 | Get-Module -ListAvailable\n                                 | Update-Module -Name Az"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "totalTopics": 16,
+    "totalProjects": 5,
+    "cheatsheetCategories": 9,
+    "powershellVersionsSupported": ["5.1", "7.0", "7.1", "7.2", "7.3", "7.4"],
+    "platforms": ["Windows", "macOS", "Linux"],
+    "createdAt": "2026-04-23",
+    "tags": ["powershell", "scripting", "automation", "windows", "devops", "sysadmin"]
+  }
+}

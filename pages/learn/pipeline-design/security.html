@@ -15,10 +15,7 @@
         mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
         
         // Listen to theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            setTimeout(() => location.reload(), 100);
-        });
-    </script>
+        </script>
     <style>
         body{font-family:'Inter',sans-serif;}
         .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
@@ -32,26 +29,145 @@
         pre { background-color: #1e293b !important; color: #e2e8f0 !important; border-radius: 12px !important; padding: 1.5rem !important; overflow-x: auto; }
         code { color: #94a3b8 !important; font-family: 'Fira Code', monospace; }
     </style>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        /* Sidebar scrollbar matches theme */
+        #ds-sidebar{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
+        #ds-sidebar::-webkit-scrollbar{width:4px;}
+        #ds-sidebar::-webkit-scrollbar-track{background:transparent;}
+        #ds-sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px;}
+        .dark #ds-sidebar::-webkit-scrollbar-thumb{background:#334155;}
+        /* Scroll-to-top btn */
+        #scroll-top{opacity:0;pointer-events:none;transition:opacity .25s;}
+        #scroll-top.visible{opacity:1;pointer-events:auto;}
+        /* card hover */
+        .topic-card{transition:all 0.25s cubic-bezier(.4,0,.2,1);}
+        .topic-card:hover{transform:translateY(-4px);}
+        .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
+        .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
 <!-- NAV -->
-<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-        <a href="../../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors">Data Sheets</span></a>
-        <div class="flex items-center gap-1">
-            <a href="../../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 transition-colors no-underline">Learn</a>
-            <a href="../../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all no-underline">Practice</a>
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                <i data-lucide="panel-left" class="w-5 h-5"></i>
+            </button>
+            <a href="../../../index.html" class="no-underline">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-lg md:text-xl text-slate-900 dark:text-white transition-colors">Data Sheets</span>
+            </a>
         </div>
-        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
             <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
         </button>
     </div>
 </nav>
 
-<main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+
+<!-- SIDEBAR -->
+<!-- SIDEBAR -->
+<aside id="ds-sidebar" class="fixed top-[57px] md:top-[65px] left-0 h-[calc(100vh-57px)] md:h-[calc(100vh-65px)] w-64 border-r border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-950 z-40 overflow-y-auto py-6 px-5 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+
+    <div class="mb-8">
+        <a href="../../../pages/learn.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+            <i data-lucide="book-open" class="w-4 h-4"></i> Learn
+        </a>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-widest">Programming</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/python.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Python</a></li>
+                <li><a href="../../../pages/learn/sql.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">SQL</a></li>
+                <li><a href="../../../pages/learn/bash.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Bash</a></li>
+                <li><a href="../../../pages/learn/powershell.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">PowerShell</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-widest">Concepts</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/de-fundamentals.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DE Fundamentals</a></li>
+                <li><a href="../../../pages/learn/dsa-de.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DSA for DE</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-orange-600 dark:text-orange-400 mb-2 uppercase tracking-widest">Tools</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/spark.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Spark</a></li>
+                <li><a href="../../../pages/learn/flink.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Flink</a></li>
+                <li><a href="../../../pages/learn/kafka.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Kafka</a></li>
+                <li><a href="../../../pages/learn/dbt.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">dbt</a></li>
+                <li><a href="../../../pages/learn/pandas.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Pandas</a></li>
+                <li><a href="../../../pages/learn/numpy.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">NumPy</a></li>
+                <li><a href="../../../pages/learn/airflow.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Airflow</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest">Cloud</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/aws.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">AWS</a></li>
+                <li><a href="../../../pages/learn/gcp.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">GCP</a></li>
+                <li><a href="../../../pages/learn/azure.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Azure</a></li>
+                <li><a href="../../../pages/learn/snowflake.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Snowflake</a></li>
+                <li><a href="../../../pages/learn/databricks.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Databricks</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-violet-600 dark:text-violet-400 mb-2 uppercase tracking-widest">CI/CD</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/docker.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Docker</a></li>
+                <li><a href="../../../pages/learn/kubernetes.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Kubernetes</a></li>
+                <li><a href="../../../pages/learn/terraform.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Terraform</a></li>
+                <li><a href="../../../pages/learn/github.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">GitHub</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-rose-600 dark:text-rose-400 mb-2 uppercase tracking-widest">Design</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/system-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">System Design</a></li>
+                <li><a href="../../../pages/learn/pipeline-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">Pipeline Design</a></li>
+                <li><a href="../../../pages/learn/de-architectures.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">DE Architectures</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border-t border-slate-200 dark:border-slate-800 pt-5">
+        <a href="../../../pages/practice.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+            <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+        </a>
+        <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+            <li><a href="../../../pages/practice.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Coming Soon</a></li>
+        </ul>
+    </div>
+</aside>
+
+<!-- SCROLL TO TOP -->
+<button id="scroll-top" title="Back to top" class="fixed bottom-6 right-6 z-50 w-11 h-11 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-110">
+    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<!-- NAV -->
+\n
+
+\n
+
+<main data-sb-padded="1" class="lg:pl-64 relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
     <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Pipeline Design
@@ -98,12 +214,57 @@ CREATE MASKING POLICY email_mask AS (val string)
         </a>
     </div>
 </main>
-<script>
-lucide.createIcons();
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-    const d=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('ds-theme',d?'dark':'light');
-});
+
+</div>\n<script>
+(function() {
+    // Theme
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+        });
+    }
+
+    // Sidebar toggle
+    const sidebarBtn = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('ds-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
+    }
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }
+
+    if (sidebarBtn) {
+        sidebarBtn.addEventListener('click', () => {
+            if (sidebar.classList.contains('-translate-x-full')) openSidebar();
+            else closeSidebar();
+        });
+    }
+    if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+
+    // Scroll-to-top
+    const scrollBtn = document.getElementById('scroll-top');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // Lucide icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+})();
 </script>
 </body>
 </html>

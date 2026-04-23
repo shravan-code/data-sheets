@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>19. Real-World Projects — PowerShell Scripting</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practical scripts solving common real-world problems.">
+    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+
+        .prose h2{margin-top:2.5rem;margin-bottom:1.25rem;font-weight:700;color:inherit;font-size:2.25rem;letter-spacing:-0.02em;}
+        .prose h3{margin-top:2rem;margin-bottom:1rem;font-weight:600;color:inherit;font-size:1.6rem;letter-spacing:-0.01em;}
+        .prose p{margin-bottom:1.25rem;line-height:1.8;opacity:0.9;}
+        .prose ul{list-style-type:disc;padding-left:1.5rem;margin-bottom:1.25rem;}
+        .prose li{margin-bottom:0.6rem;}
+        .prose code{background:rgba(0,0,0,0.05);padding:0.2rem 0.4rem;border-radius:0.25rem;font-size:0.875em;font-weight:500;}
+        .dark .prose code{background:rgba(255,255,255,0.1);}
+
+        pre[class*="language-"] {
+            border-radius: 0.75rem !important;
+            margin: 1.5rem 0 !important;
+            background: #0f172a !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        body{font-family:'Inter',sans-serif;}
+        h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
+        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
+        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
+        /* Sidebar scrollbar matches theme */
+        #ds-sidebar{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
+        #ds-sidebar::-webkit-scrollbar{width:4px;}
+        #ds-sidebar::-webkit-scrollbar-track{background:transparent;}
+        #ds-sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px;}
+        .dark #ds-sidebar::-webkit-scrollbar-thumb{background:#334155;}
+        /* Scroll-to-top btn */
+        #scroll-top{opacity:0;pointer-events:none;transition:opacity .25s;}
+        #scroll-top.visible{opacity:1;pointer-events:auto;}
+        /* card hover */
+        .topic-card{transition:all 0.25s cubic-bezier(.4,0,.2,1);}
+        .topic-card:hover{transform:translateY(-4px);}
+        .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
+        .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+
+<!-- NAV -->
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                <i data-lucide="panel-left" class="w-5 h-5"></i>
+            </button>
+            <a href="../../../index.html" class="no-underline">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-lg md:text-xl text-slate-900 dark:text-white transition-colors">Data Sheets</span>
+            </a>
+        </div>
+        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+
+<!-- SIDEBAR -->
+<!-- SIDEBAR -->
+<aside id="ds-sidebar" class="fixed top-[57px] md:top-[65px] left-0 h-[calc(100vh-57px)] md:h-[calc(100vh-65px)] w-64 border-r border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-950 z-40 overflow-y-auto py-6 px-5 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+
+    <div class="mb-8">
+        <a href="../../../pages/learn.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+            <i data-lucide="book-open" class="w-4 h-4"></i> Learn
+        </a>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-blue-600 dark:text-blue-400 mb-2 uppercase tracking-widest">Programming</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/python.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Python</a></li>
+                <li><a href="../../../pages/learn/sql.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">SQL</a></li>
+                <li><a href="../../../pages/learn/bash.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Bash</a></li>
+                <li><a href="../../../pages/learn/powershell.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">PowerShell</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-widest">Concepts</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/de-fundamentals.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DE Fundamentals</a></li>
+                <li><a href="../../../pages/learn/dsa-de.html" class="block py-0.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors no-underline">DSA for DE</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-orange-600 dark:text-orange-400 mb-2 uppercase tracking-widest">Tools</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/spark.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Spark</a></li>
+                <li><a href="../../../pages/learn/flink.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Flink</a></li>
+                <li><a href="../../../pages/learn/kafka.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Kafka</a></li>
+                <li><a href="../../../pages/learn/dbt.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">dbt</a></li>
+                <li><a href="../../../pages/learn/pandas.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Pandas</a></li>
+                <li><a href="../../../pages/learn/numpy.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">NumPy</a></li>
+                <li><a href="../../../pages/learn/airflow.html" class="block py-0.5 hover:text-orange-600 dark:hover:text-orange-400 transition-colors no-underline">Airflow</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest">Cloud</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/aws.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">AWS</a></li>
+                <li><a href="../../../pages/learn/gcp.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">GCP</a></li>
+                <li><a href="../../../pages/learn/azure.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Azure</a></li>
+                <li><a href="../../../pages/learn/snowflake.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Snowflake</a></li>
+                <li><a href="../../../pages/learn/databricks.html" class="block py-0.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors no-underline">Databricks</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-violet-600 dark:text-violet-400 mb-2 uppercase tracking-widest">CI/CD</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/docker.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Docker</a></li>
+                <li><a href="../../../pages/learn/kubernetes.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Kubernetes</a></li>
+                <li><a href="../../../pages/learn/terraform.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">Terraform</a></li>
+                <li><a href="../../../pages/learn/github.html" class="block py-0.5 hover:text-violet-600 dark:hover:text-violet-400 transition-colors no-underline">GitHub</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-5">
+            <h5 class="text-[10px] font-bold text-rose-600 dark:text-rose-400 mb-2 uppercase tracking-widest">Design</h5>
+            <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+                <li><a href="../../../pages/learn/system-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">System Design</a></li>
+                <li><a href="../../../pages/learn/pipeline-design.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">Pipeline Design</a></li>
+                <li><a href="../../../pages/learn/de-architectures.html" class="block py-0.5 hover:text-rose-600 dark:hover:text-rose-400 transition-colors no-underline">DE Architectures</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border-t border-slate-200 dark:border-slate-800 pt-5">
+        <a href="../../../pages/practice.html" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider mb-4 no-underline hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+            <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+        </a>
+        <ul class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+            <li><a href="../../../pages/practice.html" class="block py-0.5 hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Coming Soon</a></li>
+        </ul>
+    </div>
+</aside>
+
+<!-- SCROLL TO TOP -->
+<button id="scroll-top" title="Back to top" class="fixed bottom-6 right-6 z-50 w-11 h-11 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-110">
+    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+
+
+
+
+
+
+<main data-sb-padded="1" class="lg:pl-64 relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
+    <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to PowerShell Scripting
+    </a>
+
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">19. Real-World Projects</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Practical scripts solving common real-world problems.</p>
+    </header>
+
+    <article class="prose dark:prose-invert max-w-none pb-20">
+        <h2>Project 1: System Health Report</h2>
+<br>
+<p>Generate a comprehensive HTML system health report.</p>
+<br>
+<h3>System Health Report Script</h3>
+<pre><code class="language-powershell">
+#Requires -Version 5.0
+&lt;#
+.SYNOPSIS
+    Generate an HTML system health report.
+.DESCRIPTION
+    Collects CPU, memory, disk, and service data and exports as HTML.
+.PARAMETER OutputPath
+    Path to save the HTML report.
+#&gt;
+param(
+    [string]$OutputPath = ".\SystemReport_$(Get-Date -Format 'yyyyMMdd_HHmmss').html"
+)
+
+function Get-SystemHealth {
+    [CmdletBinding()]
+    param()
+
+    # OS Info
+    $os = Get-CimInstance Win32_OperatingSystem
+
+    # CPU
+    $cpu = Get-CimInstance Win32_Processor
+    $cpuLoad = (Get-CimInstance Win32_Processor | Measure-Object LoadPercentage -Average).Average
+
+    # Memory
+    $totalRAM = [math]::Round($os.TotalVisibleMemorySize / 1MB, 2)
+    $freeRAM  = [math]::Round($os.FreePhysicalMemory / 1MB, 2)
+    $usedRAM  = [math]::Round($totalRAM - $freeRAM, 2)
+    $ramPct   = [math]::Round(($usedRAM / $totalRAM) * 100, 1)
+
+    # Disks
+    $disks = Get-CimInstance Win32_LogicalDisk | Where-Object DriveType -eq 3 | ForEach-Object {
+        [PSCustomObject]@{
+            Drive  = $_.DeviceID
+            TotalGB = [math]::Round($_.Size / 1GB, 2)
+            FreeGB  = [math]::Round($_.FreeSpace / 1GB, 2)
+            UsedPct = [math]::Round((($_.Size - $_.FreeSpace) / $_.Size) * 100, 1)
+        }
+    }
+
+    # Top Processes by CPU
+    $topProcs = Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 |
+        Select-Object Name, Id,
+            @{N='CPU(s)';E={[math]::Round($_.CPU,2)}},
+            @{N='MemMB'; E={[math]::Round($_.WorkingSet64/1MB,2)}}
+
+    # Services not running
+    $stoppedServices = Get-Service | Where-Object { $_.StartType -eq 'Automatic' -and $_.Status -ne 'Running' }
+
+    return [PSCustomObject]@{
+        OS              = $os.Caption
+        Hostname        = $env:COMPUTERNAME
+        Uptime          = (Get-Date) - $os.LastBootUpTime
+        CPU             = $cpu.Name
+        CPULoadPct      = $cpuLoad
+        TotalRAM_GB     = $totalRAM
+        UsedRAM_GB      = $usedRAM
+        RAMUsedPct      = $ramPct
+        Disks           = $disks
+        TopProcesses    = $topProcs
+        StoppedServices = $stoppedServices
+    }
+}
+
+$health = Get-SystemHealth
+
+$html = @"
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;System Health Report&lt;/title&gt;
+&lt;style&gt;
+  body { font-family: Segoe UI, sans-serif; margin: 20px; background: #f5f5f5; }
+  h1 { color: #0078d4; } table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+  th { background: #0078d4; color: white; padding: 8px; text-align: left; }
+  td { padding: 8px; border: 1px solid #ddd; } tr:nth-child(even) { background: #f2f2f2; }
+  .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .warn { color: orange; } .crit { color: red; } .ok { color: green; }
+&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;System Health Report — $($health.Hostname)&lt;/h1&gt;
+&lt;p&gt;Generated: $(Get-Date) | OS: $($health.OS) | Uptime: $([math]::Round($health.Uptime.TotalHours,1)) hours&lt;/p&gt;
+&lt;div class='card'&gt;
+&lt;h2&gt;CPU &amp; Memory&lt;/h2&gt;
+&lt;p&gt;CPU: $($health.CPU)&lt;/p&gt;
+&lt;p&gt;CPU Load: &lt;span class='$(if($health.CPULoadPct -gt 80){'crit'}elseif($health.CPULoadPct -gt 60){'warn'}else{'ok'})'&gt;$($health.CPULoadPct)%&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;RAM: $($health.UsedRAM_GB) / $($health.TotalRAM_GB) GB (&lt;span class='$(if($health.RAMUsedPct -gt 85){'crit'}elseif($health.RAMUsedPct -gt 70){'warn'}else{'ok'})'&gt;$($health.RAMUsedPct)%&lt;/span&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class='card'&gt;&lt;h2&gt;Disk Usage&lt;/h2&gt;
+&lt;table&gt;&lt;tr&gt;&lt;th&gt;Drive&lt;/th&gt;&lt;th&gt;Total (GB)&lt;/th&gt;&lt;th&gt;Free (GB)&lt;/th&gt;&lt;th&gt;Used %&lt;/th&gt;&lt;/tr&gt;
+$($health.Disks | ForEach-Object { "&lt;tr&gt;&lt;td&gt;$($_.Drive)&lt;/td&gt;&lt;td&gt;$($_.TotalGB)&lt;/td&gt;&lt;td&gt;$($_.FreeGB)&lt;/td&gt;&lt;td class='$(if($_.UsedPct -gt 85){'crit'}elseif($_.UsedPct -gt 70){'warn'}else{'ok'})'&gt;$($_.UsedPct)%&lt;/td&gt;&lt;/tr&gt;" })
+&lt;/table&gt;&lt;/div&gt;
+&lt;div class='card'&gt;&lt;h2&gt;Top Processes by CPU&lt;/h2&gt;
+&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;PID&lt;/th&gt;&lt;th&gt;CPU(s)&lt;/th&gt;&lt;th&gt;Mem (MB)&lt;/th&gt;&lt;/tr&gt;
+$($health.TopProcesses | ForEach-Object { "&lt;tr&gt;&lt;td&gt;$($_.Name)&lt;/td&gt;&lt;td&gt;$($_.Id)&lt;/td&gt;&lt;td&gt;$($_.'CPU(s)')&lt;/td&gt;&lt;td&gt;$($_.MemMB)&lt;/td&gt;&lt;/tr&gt;" })
+&lt;/table&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;
+"@
+
+$html | Out-File $OutputPath -Encoding UTF8
+Write-Host "Report saved to: $OutputPath" -ForegroundColor Green
+Invoke-Item $OutputPath
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Project 2: Automated Backup Script</h2>
+<br>
+<p>Robust file backup with logging, rotation, and email notification.</p>
+<br>
+<h3>Backup Script</h3>
+<pre><code class="language-powershell">
+#Requires -Version 5.0
+&lt;#
+.SYNOPSIS
+    Automated backup script with rotation and logging.
+#&gt;
+param(
+    [string]$SourcePath      = 'C:\ImportantData',
+    [string]$BackupRoot      = 'D:\Backups',
+    [int]$RetainDays         = 30,
+    [string]$LogPath         = 'C:\Logs\backup.log',
+    [string]$EmailTo         = '',
+    [string]$SmtpServer      = ''
+)
+
+function Write-Log {
+    param([string]$Message, [string]$Level = 'INFO')
+    $entry = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] [$Level] $Message"
+    Add-Content -Path $LogPath -Value $entry
+    $color = switch ($Level) {
+        'ERROR'   { 'Red' }
+        'WARNING' { 'Yellow' }
+        default   { 'Cyan' }
+    }
+    Write-Host $entry -ForegroundColor $color
+}
+
+function Send-BackupNotification {
+    param([bool]$Success, [string]$Details)
+    if (-not $EmailTo -or -not $SmtpServer) { return }
+    $subject = if ($Success) { 'Backup Completed' } else { 'BACKUP FAILED' }
+    Send-MailMessage -To $EmailTo -Subject $subject -Body $Details -SmtpServer $SmtpServer
+}
+
+try {
+    if (-not (Test-Path $LogPath)) {
+        New-Item -Path (Split-Path $LogPath) -ItemType Directory -Force | Out-Null
+    }
+
+    Write-Log 'Starting backup job'
+
+    if (-not (Test-Path $SourcePath)) {
+        throw "Source path not found: $SourcePath"
+    }
+
+    # Create timestamped backup folder
+    $timestamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
+    $backupDest = Join-Path $BackupRoot $timestamp
+    New-Item -Path $backupDest -ItemType Directory -Force | Out-Null
+    Write-Log "Backup destination: $backupDest"
+
+    # Copy files with progress
+    $files = Get-ChildItem $SourcePath -Recurse -File
+    $total = $files.Count
+    $copied = 0
+    $errors = 0
+
+    $files | ForEach-Object {
+        $dest = $_.FullName.Replace($SourcePath, $backupDest)
+        $destDir = Split-Path $dest
+        if (-not (Test-Path $destDir)) {
+            New-Item $destDir -ItemType Directory -Force | Out-Null
+        }
+        try {
+            Copy-Item $_.FullName $dest -Force
+            $copied++
+        } catch {
+            Write-Log "Failed to copy: $($_.FullName) - $($_.Exception.Message)" 'ERROR'
+            $errors++
+        }
+        Write-Progress -Activity 'Backing up' -Status "$copied / $total" `
+            -PercentComplete (($copied / $total) * 100)
+    })
+
+    Write-Log "Backup complete. Copied: $copied, Errors: $errors"
+
+    # Rotate old backups
+    $cutoff = (Get-Date).AddDays(-$RetainDays)
+    $old = Get-ChildItem $BackupRoot -Directory | Where-Object CreationTime -lt $cutoff
+    $old | ForEach-Object {
+        Remove-Item $_.FullName -Recurse -Force
+        Write-Log "Deleted old backup: $($_.Name)" 'WARNING'
+    }
+    Write-Log "Rotated $($old.Count) old backups"
+
+    Send-BackupNotification -Success $true -Details "Copied $copied files to $backupDest"
+
+} catch {
+    Write-Log "BACKUP FAILED: $($_.Exception.Message)" 'ERROR'
+    Send-BackupNotification -Success $false -Details $_.Exception.Message
+    exit 1
+}
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Project 3: Active Directory User Management</h2>
+<br>
+<p>Bulk create, update, and audit Active Directory users.</p>
+<br>
+<h3>AD User Management Script</h3>
+<pre><code class="language-powershell">
+#Requires -Module ActiveDirectory
+&lt;#
+.SYNOPSIS
+    Bulk AD user creation from CSV.
+#&gt;
+param(
+    [string]$CsvPath        = '.\new_users.csv',
+    [string]$DefaultOU      = 'OU=Users,DC=company,DC=com',
+    [string]$DefaultDomain  = 'company.com'
+)
+
+# CSV format: FirstName,LastName,Department,Title,Manager
+$users = Import-Csv $CsvPath
+$created = 0
+$failed  = 0
+$report  = @()
+
+foreach ($user in $users) {
+    $samAccount = ("$($user.FirstName[0])$($user.LastName)").ToLower() -replace '\s',''
+    $upn        = "$samAccount@$DefaultDomain"
+    $password   = ConvertTo-SecureString 'TempPass@2024!' -AsPlainText -Force
+
+    try {
+        # Check if user exists
+        if (Get-ADUser -Filter { SamAccountName -eq $samAccount } -ErrorAction SilentlyContinue) {
+            Write-Warning "User $samAccount already exists — skipping"
+            continue
+        }
+
+        # Create the user
+        New-ADUser `
+            -GivenName          $user.FirstName `
+            -Surname            $user.LastName `
+            -Name               "$($user.FirstName) $($user.LastName)" `
+            -SamAccountName     $samAccount `
+            -UserPrincipalName  $upn `
+            -Department         $user.Department `
+            -Title              $user.Title `
+            -Path               $DefaultOU `
+            -AccountPassword    $password `
+            -Enabled            $true `
+            -ChangePasswordAtLogon $true
+
+        # Add to department group
+        $groupName = "GRP_$($user.Department)"
+        if (Get-ADGroup -Filter { Name -eq $groupName } -ErrorAction SilentlyContinue) {
+            Add-ADGroupMember -Identity $groupName -Members $samAccount
+        }
+
+        $report += [PSCustomObject]@{
+            User   = $samAccount
+            Status = 'Created'
+            UPN    = $upn
+        }
+        $created++
+        Write-Host "Created: $upn" -ForegroundColor Green
+
+    } catch {
+        Write-Warning "Failed to create $samAccount : $($_.Exception.Message)"
+        $report += [PSCustomObject]@{ User=$samAccount; Status='Failed'; UPN='' }
+        $failed++
+    }
+}
+
+Write-Host "`nSummary: Created=$created, Failed=$failed" -ForegroundColor Cyan
+$report | Export-Csv '.\AD_Creation_Report.csv' -NoTypeInformation
+Write-Host 'Report exported to AD_Creation_Report.csv'
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Project 4: Log Parser & Alerting</h2>
+<br>
+<p>Parse IIS or application logs, detect anomalies, and send alerts.</p>
+<br>
+<h3>Log Parser Script</h3>
+<pre><code class="language-powershell">
+&lt;#
+.SYNOPSIS
+    Parse IIS/application logs for errors and anomalies.
+#&gt;
+param(
+    [string]$LogDirectory   = 'C:\inetpub\logs\LogFiles',
+    [int]$ErrorThreshold    = 50,
+    [int]$LookbackMinutes   = 60
+)
+
+$cutoff = (Get-Date).AddMinutes(-$LookbackMinutes)
+$logFiles = Get-ChildItem $LogDirectory -Filter '*.log' -Recurse |
+    Where-Object LastWriteTime -gt $cutoff
+
+$allEntries = @()
+
+foreach ($file in $logFiles) {
+    $lines = Get-Content $file.FullName | Where-Object { $_ -notmatch '^#' }
+    foreach ($line in $lines) {
+        $parts = $line -split ' '
+        if ($parts.Count -ge 12) {
+            $allEntries += [PSCustomObject]@{
+                DateTime   = [datetime]"$($parts[0]) $($parts[1])"
+                ClientIP   = $parts[8]
+                Method     = $parts[4]
+                URI        = $parts[5]
+                StatusCode = [int]$parts[11]
+                TimeTaken  = [int]$parts[-1]
+            }
+        }
+    }
+}
+
+$recent = $allEntries | Where-Object DateTime -gt $cutoff
+
+# Analyze
+$errorCodes    = $recent | Where-Object StatusCode -ge 500
+$slowRequests  = $recent | Where-Object TimeTaken -gt 5000
+$topIPs        = $recent | Group-Object ClientIP | Sort-Object Count -Desc | Select-Object -First 10
+$topErrors     = $errorCodes | Group-Object URI | Sort-Object Count -Desc | Select-Object -First 10
+
+$report = [PSCustomObject]@{
+    Period           = "Last $LookbackMinutes minutes"
+    TotalRequests    = $recent.Count
+    ErrorCount       = $errorCodes.Count
+    SlowRequests     = $slowRequests.Count
+    AvgResponseTime  = [math]::Round(($recent | Measure-Object TimeTaken -Average).Average, 0)
+    TopOffendingIPs  = $topIPs
+    TopErrorURLs     = $topErrors
+}
+
+$report | ConvertTo-Json -Depth 5 | Set-Content '.\log_report.json'
+Write-Host 'Analysis complete. Report: log_report.json' -ForegroundColor Green
+
+if ($errorCodes.Count -gt $ErrorThreshold) {
+    Write-Warning "ALERT: $($errorCodes.Count) errors exceed threshold of $ErrorThreshold!"
+}
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Project 5: Interactive Menu System</h2>
+<br>
+<p>Build a reusable interactive console menu framework.</p>
+<br>
+<h3>Console Menu Framework</h3>
+<pre><code class="language-powershell">
+function Show-Menu {
+    param(
+        [string]$Title,
+        [hashtable[]]$Options
+    )
+    Clear-Host
+    Write-Host "=" * 50 -ForegroundColor Cyan
+    Write-Host "  $Title" -ForegroundColor Yellow
+    Write-Host "=" * 50 -ForegroundColor Cyan
+    for ($i = 0; $i -lt $Options.Count; $i++) {
+        Write-Host "  [$($i+1)] $($Options[$i].Label)"
+    }
+    Write-Host "  [Q] Quit"
+    Write-Host "=" * 50 -ForegroundColor Cyan
+}
+
+function Invoke-Menu {
+    param([string]$Title, [hashtable[]]$Options)
+    do {
+        Show-Menu -Title $Title -Options $Options
+        $choice = Read-Host 'Select option'
+        if ($choice -eq 'Q' -or $choice -eq 'q') { return }
+        $idx = [int]$choice - 1
+        if ($idx -ge 0 -and $idx -lt $Options.Count) {
+            Clear-Host
+            &amp; $Options[$idx].Action
+            Read-Host 'Press Enter to continue...'
+        } else {
+            Write-Warning 'Invalid selection'
+            Start-Sleep -Seconds 1
+        }
+    } while ($true)
+}
+
+# Example usage
+$mainMenu = @(
+    @{ Label='System Information'; Action={ Get-CimInstance Win32_OperatingSystem | Format-List Caption, Version, LastBootUpTime }},
+    @{ Label='Top Processes';      Action={ Get-Process | Sort-Object CPU -Desc | Select-Object -First 10 | Format-Table Name,Id,CPU,WS -AutoSize }},
+    @{ Label='Network Info';       Action={ Get-NetIPAddress | Format-Table }},
+    @{ Label='Disk Usage';         Action={ Get-CimInstance Win32_LogicalDisk | Format-Table DeviceID,Size,FreeSpace -AutoSize }},
+    @{ Label='Running Services';   Action={ Get-Service | Where-Object Status -eq Running | Sort-Object DisplayName | Format-Table DisplayName,Status }}
+)
+
+Invoke-Menu -Title 'System Administration Toolkit' -Options $mainMenu
+</code></pre>
+<br>
+<hr>
+<br>
+
+    </article>
+
+    <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        
+            <a href="formatting_output.html" class="flex flex-col items-start no-underline group">
+                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-left">18. Output & Formatting</span>
+            </a>
+        
+            <a href="cheatsheet.html" class="flex flex-col items-end no-underline group text-right">
+                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">20. Cheatsheet: Bash vs PowerShell</span>
+            </a>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+
+</div>
+<script>
+(function() {
+    // Theme
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+        });
+    }
+
+    // Sidebar toggle
+    const sidebarBtn = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('ds-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
+    }
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }
+
+    if (sidebarBtn) {
+        sidebarBtn.addEventListener('click', () => {
+            if (sidebar.classList.contains('-translate-x-full')) openSidebar();
+            else closeSidebar();
+        });
+    }
+    if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+
+    // Scroll-to-top
+    const scrollBtn = document.getElementById('scroll-top');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // Lucide icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+})();
+</script>
+</body>
+</html>
