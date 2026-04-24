@@ -26,6 +26,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../../css/ds-main.css">
+<link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#ffffff">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
@@ -42,11 +44,36 @@
 
         <!-- CENTER: Logo and Page Title -->
         <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
-            <a href="../../index.html" class="no-underline group flex items-center">
-                <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
-                    class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
-                    Data Sheets
-                </span>
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 group-hover:scale-105">
+                <div class="h-9 w-auto">
+                    <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" class="h-full w-auto">
+                        <!-- Cake Slice -->
+                        <g transform="translate(10, 10)">
+                            <!-- Bottom Layer (Navy) -->
+                            <path d="M10 60 L80 90 L80 100 C80 105 75 105 70 102 L10 75 Z" fill="#0F172A" class="dark:fill-slate-400"/>
+                            <!-- Middle Layer (Purple) -->
+                            <path d="M10 45 L80 75 L80 90 L10 60 Z" fill="#6366F1"/>
+                            <!-- Top Layer (Light Purple) -->
+                            <path d="M10 30 L80 60 L80 75 L10 45 Z" fill="#C7D2FE"/>
+                            <!-- Top Surface -->
+                            <path d="M10 30 L45 10 L80 30 L45 50 Z" fill="white" stroke="#0F172A" stroke-width="2"/>
+                            <!-- Side Outlines -->
+                            <path d="M10 30 L10 75 M80 30 L80 100 M45 50 L45 95" stroke="#0F172A" stroke-width="2" fill="none" class="dark:stroke-slate-400"/>
+                            <!-- Dots on top -->
+                            <circle cx="35" cy="25" r="2.5" fill="#0F172A"/>
+                            <circle cx="55" cy="25" r="2.5" fill="#0F172A"/>
+                            <circle cx="45" cy="35" r="2.5" fill="#0F172A"/>
+                        </g>
+
+                        <!-- Text "Data Cake" -->
+                        <text x="100" y="75" 
+                              font-family="'Outfit', sans-serif" 
+                              font-size="42" 
+                              font-weight="800" 
+                              fill="currentColor" 
+                              class="text-slate-900 dark:text-white">Data Cake</text>
+                    </svg>
+                </div>
             </a>
             <div class="hidden sm:flex items-center gap-3">
                 <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>

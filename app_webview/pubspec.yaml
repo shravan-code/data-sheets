@@ -1,0 +1,16 @@
+name: app_webview
+description: "A simple WebView wrapper for Data Cake"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.4.2
+
+flutter:
+  uses-material-design: true
