@@ -155,6 +155,13 @@ def build_powershell_subpages(topics):
     os.makedirs(os.path.join('pages', 'learn', 'powershell'), exist_ok=True)
 
     for i, topic in enumerate(topics):
+        # Build list of all topics for the sidebar
+        topics_html = '<div class="toc-title mt-8">PowerShell Topics</div><ul class="toc-list">'
+        for t in topics:
+            active_cls = "active" if t['id'] == topic['id'] else ""
+            topics_html += f'<li><a href="{t["id"]}.html" class="toc-link {active_cls}">{t["title"]}</a></li>'
+        topics_html += '</ul>'
+
         prev_topic = topics[i - 1] if i > 0 else None
         next_topic = topics[i + 1] if i < len(topics) - 1 else None
         
@@ -190,26 +197,34 @@ def build_powershell_subpages(topics):
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
-    <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to PowerShell Scripting
-    </a>
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Back to PowerShell Scripting
+        </a>
 
-    <header class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{title}</h1>
-        <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{topic['description']}</p>
-    </header>
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{title}</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{topic['description']}</p>
+        </header>
 
-    <article class="prose dark:prose-invert max-w-none pb-20">
-        {content_html}
-    </article>
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            {content_html}
+        </article>
 
-    <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-        {prev_html}
-        {next_html}
-    </div>
-</main>
+        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            {prev_html}
+            {next_html}
+        </div>
+    </main>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        {topics_html}
+    </aside>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>

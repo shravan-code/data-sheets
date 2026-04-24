@@ -10,30 +10,43 @@ import os, re, glob, subprocess, sys
 # NAV + SIDEBAR HTML  (prefix = relative path back to project root)
 # ---------------------------------------------------------------------------
 
-def get_nav_sidebar(prefix):
+def get_nav_sidebar(prefix, page_title=""):
     return f"""\
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <!-- Toggle button -->
-            <button id="sidebar-toggle" aria-label="Toggle sidebar"
-                class="w-9 h-9 flex items-center justify-center transition-all duration-200 relative">
-                <i id="sb-icon-open"  data-lucide="menu" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
-                <i id="sb-icon-close" data-lucide="x" class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
+    <div class="px-4 md:px-6 py-3.5 flex items-center">
+        <!-- LEFT: Sidebar Toggle -->
+        <div class="flex-1 flex items-center">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
             </button>
+        </div>
+
+        <!-- CENTER: Logo and Page Title -->
+        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
             <a href="{prefix}index.html" class="no-underline group flex items-center">
                 <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
                     class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
                     Data Sheets
                 </span>
             </a>
+            {f'''<div class="hidden sm:flex items-center gap-3">
+                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
+                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                    {page_title}
+                </span>
+            </div>''' if page_title else ''}
         </div>
-        <button id="theme-toggle" title="Toggle theme"
-            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-        </button>
+
+        <!-- RIGHT: Theme Toggle -->
+        <div class="flex-1 flex justify-end">
+            <button id="theme-toggle" title="Toggle theme"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -172,6 +185,16 @@ def patch_html(path):
     html = re.sub(r'<style>\s*/\* DS_SHARED_SIDEBAR_STYLES \*/.*?</style>', '', html, flags=re.DOTALL)
     html = re.sub(r'<script>\s*\(function\(\)\s*{\s*const html\s*=\s*document\.documentElement;.*?</script>', '', html, flags=re.DOTALL)
 
+    # 1.5 Extract Page Title for Nav
+    # Try to get first part of title (before | or —)
+    title_match = re.search(r'<title>(.*?)</title>', html)
+    page_title = ""
+    if title_match:
+        full_title = title_match.group(1).split('|')[0].split('—')[0].strip()
+        # Hide title on homepage only
+        if 'index.html' not in path:
+            page_title = full_title
+
     # 2. Inject External CSS if not present
     css_tag = f'<link rel="stylesheet" href="{prefix}css/ds-main.css">'
     if 'ds-main.css' not in html:
@@ -184,7 +207,7 @@ def patch_html(path):
     body_match = re.search(r'<body\b[^>]*>', html)
     if body_match:
         pos = body_match.end()
-        html = html[:pos] + '\n\n' + get_nav_sidebar(prefix) + '\n\n' + html[pos:]
+        html = html[:pos] + '\n\n' + get_nav_sidebar(prefix, page_title) + '\n\n' + html[pos:]
 
     # 4. Wrap main content if needed
     if 'id="ds-main-content"' not in html:
@@ -203,9 +226,34 @@ def patch_html(path):
         html = re.sub(r'<script src="[^"]*ds-main.js"[^>]*></script>', js_tag, html)
 
     # 6. Ensure theme init script is at the top of head
-    theme_init = "<script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>"
+    theme_init = """<script>(function(){
+        const s=localStorage.getItem('ds-theme');
+        const isL = s==='light';
+        if(isL) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        
+        // Immediate Prism theme sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = !isL;
+                d.disabled = isL;
+            }
+        });
+    })();</script>"""
     if 'localStorage.getItem(\'ds-theme\')' not in html:
         html = html.replace('<head>', '<head>\n' + theme_init, 1)
+
+    # 7. Adaptive Code Blocks (Prism)
+    prism_light = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+    prism_dark = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"
+    
+    # Replace existing prism link with adaptive pair
+    prism_match = re.search(r'<link rel="stylesheet" href="[^"]*prism[^"]*\.css">', html)
+    if prism_match:
+        adaptive_prism = f'<link id="prism-theme-light" rel="stylesheet" href="{prism_light}" disabled>\n    <link id="prism-theme-dark" rel="stylesheet" href="{prism_dark}">'
+        html = html[:prism_match.start()] + adaptive_prism + html[prism_match.end():]
 
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
