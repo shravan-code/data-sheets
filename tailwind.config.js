@@ -9,9 +9,17 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
+            screens: {
+                'xs': '375px',
+                'sm': '640px',
+                'md': '768px',
+                'lg': '1024px',
+                'xl': '1280px',
+                '2xl': '1536px',
+            },
             fontFamily: {
-                display: ['Crimson Text', 'Georgia', 'serif'],
-                body: ['Segoe UI', 'system-ui', 'sans-serif'],
+                display: ['Outfit', 'system-ui', 'sans-serif'],
+                body: ['Inter', 'system-ui', 'sans-serif'],
                 mono: ['JetBrains Mono', 'Courier New', 'monospace']
             },
             colors: {
@@ -39,6 +47,7 @@ module.exports = {
                     700: '#6d28d9',
                     800: '#5b21b6',
                     900: '#4c1d95',
+                    950: '#2e1065',
                 },
                 slate: {
                     50: '#f8fafc',
@@ -59,9 +68,9 @@ module.exports = {
                 '144': '36rem',
             },
             animation: {
-                'fade-in': 'fadeIn 0.6s ease-in-out',
-                'slide-up': 'slideUp 0.7s ease-out',
-                'slide-in-left': 'slideInLeft 0.6s ease-out',
+                'fade-in': 'fadeIn 0.3s ease-out',
+                'slide-up': 'slideUp 0.4s ease-out',
+                'slide-in-left': 'slideInLeft 0.4s ease-out',
                 'glow': 'glow 3s ease-in-out infinite',
                 'float': 'float 6s ease-in-out infinite',
             },
@@ -71,11 +80,11 @@ module.exports = {
                     '100%': { opacity: '1' },
                 },
                 slideUp: {
-                    '0%': { transform: 'translateY(20px)', opacity: '0' },
+                    '0%': { transform: 'translateY(10px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
                 },
                 slideInLeft: {
-                    '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                    '0%': { transform: 'translateX(-10px)', opacity: '0' },
                     '100%': { transform: 'translateX(0)', opacity: '1' },
                 },
                 glow: {

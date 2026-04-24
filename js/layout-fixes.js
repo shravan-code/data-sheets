@@ -100,6 +100,32 @@
             '<i data-lucide="sun" class="theme-icon-light hidden dark:block"></i>',
             '<i data-lucide="moon" class="theme-icon-dark block dark:hidden"></i>'
         ].join('');
+        
+        button.setAttribute('aria-label', 'Toggle theme');
+        button.setAttribute('aria-pressed', document.documentElement.classList.contains('dark') ? 'true' : 'false');
+    }
+
+    function handleThemeToggle() {
+        let button = document.getElementById('theme-toggle');
+        if (!button || button.dataset.dsHandleInit) return;
+
+        // Replace button with clone to clear existing listeners from HTML script
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        button = newButton;
+        button.dataset.dsHandleInit = 'true';
+        
+        button.addEventListener('click', () => {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+            
+            button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+            
+            if (typeof lucide !== 'undefined') {
+                requestAnimationFrame(() => lucide.createIcons());
+            }
+        });
     }
 
     function rebuildSidebarToggle() {
@@ -322,7 +348,7 @@
         forceHomeSidebarClosed();
         syncSidebarToggle();
         rerenderLucide();
-        addRevealAnimations();
+        // addRevealAnimations();
         preserveSidebarScroll();
         autoCloseSidebarOnMobile();
 
@@ -339,9 +365,7 @@
 
         const themeToggle = document.getElementById('theme-toggle');
         if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                requestAnimationFrame(() => rerenderLucide());
-            });
+            handleThemeToggle();
         }
     }
 
