@@ -197,18 +197,14 @@ def patch_html(path):
         if 'index.html' not in path:
             page_title = full_title
 
-    # 2. Inject External CSS and PWA Manifest if not present
+    # 2. Inject External CSS
     css_tag = f'<link rel="stylesheet" href="{prefix}css/ds-main.css">'
-    pwa_tags = f'<link rel="manifest" href="{prefix}manifest.json">\n    <meta name="theme-color" content="#ffffff">'
     
     if 'ds-main.css' not in html:
         html = html.replace('</head>', css_tag + '\n</head>', 1)
     else:
         # Update existing link to correct prefix
         html = re.sub(r'<link rel="stylesheet" href="[^"]*ds-main.css">', css_tag, html)
-
-    if 'manifest.json' not in html:
-        html = html.replace('</head>', pwa_tags + '\n</head>', 1)
 
     # 3. Inject Nav + Sidebar after <body>
     body_match = re.search(r'<body\b[^>]*>', html)

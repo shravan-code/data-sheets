@@ -155,27 +155,4 @@
         headers.forEach(h => observer.observe(h));
     }
     initTOC();
-
-    /* ── Service Worker Registration ─────────────── */
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // Find the script tag for ds-main.js to determine the root path
-            const scripts = document.getElementsByTagName('script');
-            let rootPath = './';
-            for (let i = 0; i < scripts.length; i++) {
-                if (scripts[i].src && scripts[i].src.includes('js/ds-main.js')) {
-                    rootPath = scripts[i].getAttribute('src').replace('js/ds-main.js', '');
-                    break;
-                }
-            }
-            if (!rootPath) rootPath = './';
-            
-            navigator.serviceWorker.register(rootPath + 'service-worker.js').then((registration) => {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, (err) => {
-                console.log('ServiceWorker registration failed: ', err);
-            });
-        });
-    }
-
 })();
