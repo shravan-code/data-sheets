@@ -49,3 +49,11 @@ yarn-error.log*
 *.log
 .temp/
 tmp/
+
+# Flutter & Mobile App
+app_webview/build/
+app_webview/.dart_tool/
+app_webview/.flutter-plugins*
+**/key.properties
+**/*.jks
+**/*.keystore
