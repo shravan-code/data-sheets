@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Comparison Operators</h2>
-<br>
 <p>PowerShell comparison operators are case-insensitive by default. Prefix with 'c' for case-sensitive and 'i' for explicit case-insensitive.</p>
-<br>
 <h3>All Comparison Operators</h3>
 <pre><code class="language-powershell">
 # Equality
@@ -220,13 +218,9 @@ $x -is [int]         # True
 $x -isnot [string]   # True
 $x -as [string]      # Converts to '42'
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Logical Operators</h2>
-<br>
 <p>Logical operators combine boolean expressions.</p>
-<br>
 <h3>Logical Operators</h3>
 <pre><code class="language-powershell">
 $a = $true
@@ -244,13 +238,9 @@ if ($x -ne $null -and $x.Length -gt 0) {
     Write-Host 'Not null and not empty'
 }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Arithmetic & Assignment Operators</h2>
-<br>
 <p>Standard math and assignment operators with some PowerShell-specific additions.</p>
-<br>
 <h3>Arithmetic Operators</h3>
 <pre><code class="language-powershell">
 5 + 3    # 8
@@ -278,13 +268,9 @@ $x--
 @(1,2) + @(3,4)   # 1,2,3,4
 'Ha' * 3           # HaHaHa
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Special Operators</h2>
-<br>
 <p>PowerShell has several unique operators for pipeline manipulation, range, and redirection.</p>
-<br>
 <h3>Special Operators</h3>
 <pre><code class="language-powershell">
 # Range operator
@@ -323,9 +309,7 @@ Get-Process *&gt; all_output.txt      # All streams
 $x = 10
 $result = $x -gt 5 ? 'big' : 'small'
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

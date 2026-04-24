@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Cmdlet Structure</h2>
-<br>
 <p>PowerShell commands (cmdlets) follow a Verb-Noun naming convention. They accept parameters and return .NET objects.</p>
-<br>
 <h3>Basic Cmdlet Usage</h3>
 <pre><code class="language-powershell">
 # Verb-Noun structure
@@ -196,7 +194,6 @@ Start-Service -Name wuauserv
 
 # Common Verbs: Get, Set, New, Remove, Start, Stop, Invoke, Test, Add
 </code></pre>
-<br>
 <h3>Aliases</h3>
 <pre><code class="language-powershell">
 # Many cmdlets have aliases
@@ -210,13 +207,9 @@ ps          # Alias for Get-Process
 Get-Alias
 Get-Alias ls
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Comments</h2>
-<br>
 <p>PowerShell supports single-line and multi-line (block) comments.</p>
-<br>
 <h3>Comment Syntax</h3>
 <pre><code class="language-powershell">
 # This is a single-line comment
@@ -229,13 +222,9 @@ Get-Alias ls
 # Inline comment
 $x = 5  # This sets x to 5
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Semicolons & Line Continuation</h2>
-<br>
 <p>Multiple statements can be written on one line using semicolons. Long lines can be split using backtick.</p>
-<br>
 <h3>Multiple Statements & Line Continuation</h3>
 <pre><code class="language-powershell">
 $a = 1; $b = 2; $c = $a + $b
@@ -250,9 +239,7 @@ $result = Get-Process `
     -Name 'explorer' `
     -ErrorAction SilentlyContinue
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

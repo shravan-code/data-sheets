@@ -211,8 +211,11 @@ def patch_html(path):
 
     # 4. Wrap main content if needed
     if 'id="ds-main-content"' not in html:
-        html = re.sub(r'(<main\b[^>]*>)', r'<div id="ds-main-content" class="transition-all duration-300">\1', html)
+        html = re.sub(r'(<main\b[^>]*>)', r'<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0">\1', html)
         html = html.replace('</main>', '</main>\n</div>', 1)
+
+    # 4.5 Fix flex container centering bug on mobile
+    html = html.replace('class="flex justify-center max-w-[1440px] mx-auto"', 'class="flex justify-center max-w-[1440px] mx-auto w-full"')
 
     # 5. Inject External JS if not present
     js_tag = f'<script src="{prefix}js/ds-main.js" defer></script>'

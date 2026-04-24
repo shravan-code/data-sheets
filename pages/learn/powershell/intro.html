@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,22 +184,18 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>What is PowerShell?</h2>
-<br>
 <p>PowerShell is built on .NET and works with objects rather than plain text, making it more powerful than traditional shells. It runs on Windows, macOS, and Linux.</p>
-<br>
 <h3>Check PowerShell Version</h3>
 <pre><code class="language-powershell">
 $PSVersionTable
 $PSVersionTable.PSVersion
 </code></pre>
-<br>
 <h3>Get Help on Any Command</h3>
 <pre><code class="language-powershell">
 Get-Help Get-Process
 Get-Help Get-Process -Examples
 Get-Help Get-Process -Full
 </code></pre>
-<br>
 <h3>Discover Commands</h3>
 <pre><code class="language-powershell">
 Get-Command
@@ -207,13 +203,9 @@ Get-Command -Verb Get
 Get-Command -Noun Process
 Get-Command *network*
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Execution Policy</h2>
-<br>
 <p>PowerShell uses execution policies to control which scripts can run. Common policies: Restricted, AllSigned, RemoteSigned, Unrestricted, Bypass.</p>
-<br>
 <h3>Get and Set Execution Policy</h3>
 <pre><code class="language-powershell">
 Get-ExecutionPolicy
@@ -221,13 +213,9 @@ Get-ExecutionPolicy -List
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 Set-ExecutionPolicy Bypass -Scope Process
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>PowerShell ISE vs VS Code</h2>
-<br>
 <p>PowerShell ISE is the built-in editor for Windows. VS Code with the PowerShell extension is the modern recommended IDE for PowerShell scripting.</p>
-<br>
 <h3>Open PowerShell ISE</h3>
 <pre><code class="language-powershell">
 # From Run dialog
@@ -236,9 +224,7 @@ powershell_ise.exe
 # Or from PowerShell terminal
 ise
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

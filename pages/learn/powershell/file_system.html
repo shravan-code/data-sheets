@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Navigating the File System</h2>
-<br>
 <p>PowerShell uses a provider model. The filesystem is the default, but the same commands work for registry, certificates, etc.</p>
-<br>
 <h3>File System Navigation</h3>
 <pre><code class="language-powershell">
 Get-Location            # pwd
@@ -207,13 +205,9 @@ Test-Path 'C:\Windows'
 Test-Path 'C:\file.txt' -PathType Leaf
 Test-Path 'C:\folder'   -PathType Container
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>File Operations</h2>
-<br>
 <p>Creating, copying, moving, and deleting files and directories.</p>
-<br>
 <h3>CRUD Operations</h3>
 <pre><code class="language-powershell">
 # Create
@@ -242,13 +236,9 @@ $file.CreationTime
 $file.Extension
 $file.FullName
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Reading & Writing Files</h2>
-<br>
 <p>Reading text, CSV, XML, and JSON files, and writing output to files.</p>
-<br>
 <h3>Text File I/O</h3>
 <pre><code class="language-powershell">
 # Read all content
@@ -273,7 +263,6 @@ Add-Content 'output.txt' 'New line'
 Get-Content 'file.txt' -Encoding UTF8
 Set-Content 'out.txt' 'text' -Encoding UTF8
 </code></pre>
-<br>
 <h3>CSV Operations</h3>
 <pre><code class="language-powershell">
 # Import CSV
@@ -293,7 +282,6 @@ $data = @(
 )
 $data | Export-Csv 'people.csv' -NoTypeInformation
 </code></pre>
-<br>
 <h3>JSON Operations</h3>
 <pre><code class="language-powershell">
 # Read JSON
@@ -315,7 +303,6 @@ $config | ConvertTo-Json -Depth 5
 $nested = '{ "name": "Alice", "address": { "city": "NY" } }' | ConvertFrom-Json
 $nested.address.city   # NY
 </code></pre>
-<br>
 <h3>XML Operations</h3>
 <pre><code class="language-powershell">
 # Load XML
@@ -332,9 +319,7 @@ $newNode.InnerText = 'value2'
 $xml.root.AppendChild($newNode)
 $xml.Save('output.xml')
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

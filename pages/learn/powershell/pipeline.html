@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Pipeline Basics</h2>
-<br>
 <p>The | operator passes output from one command as input to the next. Objects retain all their properties.</p>
-<br>
 <h3>Basic Pipeline</h3>
 <pre><code class="language-powershell">
 # Get processes and filter/sort
@@ -199,13 +197,9 @@ Get-ChildItem C:\ -Recurse -File |
     Select-Object Name, @{N='SizeMB';E={[math]::Round($_.Length/1MB,2)}} |
     Format-Table -AutoSize
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Where-Object</h2>
-<br>
 <p>Filter pipeline objects based on conditions.</p>
-<br>
 <h3>Filtering with Where-Object</h3>
 <pre><code class="language-powershell">
 # Traditional syntax
@@ -224,13 +218,9 @@ Get-Process | Where-Object {
 # Alias: ?
 Get-Process | ? { $_.CPU -gt 100 }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Select-Object</h2>
-<br>
 <p>Choose specific properties, create calculated properties, or limit output.</p>
-<br>
 <h3>Select-Object Usage</h3>
 <pre><code class="language-powershell">
 # Select specific properties
@@ -253,13 +243,9 @@ Get-Process | Select-Object -Property Name -Unique
 # Expand a property
 Get-Process | Select-Object -ExpandProperty Name
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Sort-Object & Group-Object</h2>
-<br>
 <p>Sorting and grouping pipeline output.</p>
-<br>
 <h3>Sorting and Grouping</h3>
 <pre><code class="language-powershell">
 # Sort ascending/descending
@@ -277,13 +263,9 @@ Get-ChildItem -Recurse | Group-Object Extension |
     Sort-Object Count -Descending |
     Select-Object Name, Count
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>ForEach-Object</h2>
-<br>
 <p>Perform an action on each object in the pipeline.</p>
-<br>
 <h3>ForEach-Object</h3>
 <pre><code class="language-powershell">
 # Process each object
@@ -306,13 +288,9 @@ Get-Process | ForEach-Object `
     "Done: $_"
 } -ThrottleLimit 5
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Measure-Object & Tee-Object</h2>
-<br>
 <p>Compute statistics and duplicate pipeline output.</p>
-<br>
 <h3>Measure and Tee</h3>
 <pre><code class="language-powershell">
 # Measure stats
@@ -323,9 +301,7 @@ Get-Content file.txt | Measure-Object -Line -Word -Character
 Get-Process | Tee-Object -Variable procs | Select-Object Name
 $procs  # Still contains all process objects
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

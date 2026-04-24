@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Variable Declaration</h2>
-<br>
 <p>Variables in PowerShell start with $. They are dynamically typed but can be explicitly typed. Special variables like $null, $true, $false are built-in.</p>
-<br>
 <h3>Declaring Variables</h3>
 <pre><code class="language-powershell">
 $name = 'Alice'
@@ -204,7 +202,6 @@ $nothing = $null
 $name.GetType()
 $age.GetType().FullName
 </code></pre>
-<br>
 <h3>Special Variables</h3>
 <pre><code class="language-powershell">
 $_          # Current pipeline object
@@ -219,13 +216,9 @@ $args       # Arguments passed to a script
 $input      # Pipeline input object
 $MyInvocation  # Info about current command
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Strings</h2>
-<br>
 <p>PowerShell has two types of strings: single-quoted (literal) and double-quoted (interpolated). Here-strings support multi-line text.</p>
-<br>
 <h3>String Types</h3>
 <pre><code class="language-powershell">
 $user = 'Bob'
@@ -250,7 +243,6 @@ $html = @"
 &lt;/html&gt;
 "@
 </code></pre>
-<br>
 <h3>String Methods</h3>
 <pre><code class="language-powershell">
 $str = 'Hello, PowerShell World!'
@@ -273,13 +265,9 @@ $str.Substring(7, 10)      # PowerShell
 '{0} is {1} years old' -f 'Alice', 30
 [string]::Format('{0:N2}', 1234.5678)
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Arrays</h2>
-<br>
 <p>Arrays store multiple values. PowerShell arrays are fixed-size by default; use ArrayList or generic List for dynamic sizing.</p>
-<br>
 <h3>Array Operations</h3>
 <pre><code class="language-powershell">
 # Create arrays
@@ -313,7 +301,6 @@ $arr.IndexOf(3)
 [array]::Sort($arr)
 [array]::Reverse($arr)
 </code></pre>
-<br>
 <h3>Multi-Dimensional Arrays</h3>
 <pre><code class="language-powershell">
 # Jagged array
@@ -330,13 +317,9 @@ $grid[0,0] = 1
 $grid[1,1] = 5
 $grid[2,2] = 9
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Hash Tables</h2>
-<br>
 <p>Hash tables (dictionaries) store key-value pairs. They are widely used in PowerShell for structured data and splatting.</p>
-<br>
 <h3>Hash Table Operations</h3>
 <pre><code class="language-powershell">
 # Create hashtable
@@ -380,9 +363,7 @@ $params = @{
 }
 Get-ChildItem @params
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

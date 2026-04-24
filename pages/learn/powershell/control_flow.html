@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>If / ElseIf / Else</h2>
-<br>
 <p>Standard conditional branching in PowerShell.</p>
-<br>
 <h3>If Statements</h3>
 <pre><code class="language-powershell">
 $score = 85
@@ -204,13 +202,9 @@ if ($score -ge 90) {
 # One-liner
 if ($score -ge 60) { Write-Host 'Passed' } else { Write-Host 'Failed' }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Switch Statement</h2>
-<br>
 <p>Switch is more powerful than in many languages — it supports wildcards, regex, and multiple conditions.</p>
-<br>
 <h3>Switch Examples</h3>
 <pre><code class="language-powershell">
 $day = 'Monday'
@@ -248,13 +242,9 @@ switch (1,2,3,4,5) {
     { $_ % 2 -ne 0 } { Write-Host "$_ is Odd" }
 }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Loops</h2>
-<br>
 <p>PowerShell offers for, foreach, while, do-while, and do-until loops.</p>
-<br>
 <h3>For Loop</h3>
 <pre><code class="language-powershell">
 for ($i = 0; $i -lt 5; $i++) {
@@ -267,7 +257,6 @@ for ($i = 10; $i -ge 0; $i--) {
     Start-Sleep -Milliseconds 100
 }
 </code></pre>
-<br>
 <h3>Foreach Loop</h3>
 <pre><code class="language-powershell">
 $fruits = @('Apple', 'Banana', 'Cherry')
@@ -284,7 +273,6 @@ for ($i = 0; $i -lt $fruits.Count; $i++) {
     Write-Host "[$i] $($fruits[$i])"
 }
 </code></pre>
-<br>
 <h3>While & Do Loops</h3>
 <pre><code class="language-powershell">
 # While loop
@@ -308,7 +296,6 @@ do {
     $x--
 } until ($x -eq 0)
 </code></pre>
-<br>
 <h3>Loop Control: Break & Continue</h3>
 <pre><code class="language-powershell">
 # Break exits the loop
@@ -331,9 +318,7 @@ for ($i = 0; $i -lt 10; $i++) {
     }
 }
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 
