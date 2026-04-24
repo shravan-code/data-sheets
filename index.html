@@ -31,35 +31,68 @@
         .topic-card:hover{transform:translateY(-4px);}
         .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
         .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
+        
+        /* Home page interactive grid */
+        .animate-grid {
+            inset: 0 !important;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8 !important;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 40px);
+            grid-template-rows: repeat(auto-fill, 40px);
+            /* Important: Allow grid cells to receive hover events */
+            pointer-events: auto !important;
+        }
+        .grid-cell {
+            width: 40px;
+            height: 40px;
+            transition: background-color 0.8s ease, opacity 0.8s ease;
+        }
+        .grid-cell:hover {
+            background-color: rgba(96, 165, 250, 0.4);
+            transition: background-color 0s;
+        }
+        .dark .grid-cell:hover {
+            background-color: rgba(96, 165, 250, 0.2);
+        }
     </style>
     
     
 <link rel="stylesheet" href="css/ds-main.css">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <!-- Toggle button -->
-            <button id="sidebar-toggle" aria-label="Toggle sidebar"
-                class="w-9 h-9 flex items-center justify-center transition-all duration-200 relative">
-                <i id="sb-icon-open"  data-lucide="menu" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
-                <i id="sb-icon-close" data-lucide="x" class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
+    <div class="px-4 md:px-6 py-3.5 flex items-center">
+        <!-- LEFT: Sidebar Toggle -->
+        <div class="flex-1 flex items-center">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
             </button>
+        </div>
+
+        <!-- CENTER: Logo and Page Title -->
+        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
             <a href="index.html" class="no-underline group flex items-center">
                 <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
                     class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
                     Data Sheets
                 </span>
             </a>
+            
         </div>
-        <button id="theme-toggle" title="Toggle theme"
-            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-        </button>
+
+        <!-- RIGHT: Theme Toggle -->
+        <div class="flex-1 flex justify-end">
+            <button id="theme-toggle" title="Toggle theme"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -189,15 +222,222 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Background -->
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+<div class="fixed inset-0 grid-bg animate-grid opacity-100 z-0"></div>
 <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
 <div class="fixed bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
 
 <!-- MAIN -->
 
-    <div id="ds-main-content" class="transition-all duration-300"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-20 px-6 max-w-7xl mx-auto w-full">
-        <div class="text-center max-w-3xl">
+    <div id="ds-main-content" class="transition-all duration-300 pointer-events-none"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-20 px-6 max-w-7xl mx-auto w-full pointer-events-none">
+        <div class="text-center max-w-3xl pointer-events-auto">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300 mb-8 transition-colors duration-300 shadow-sm dark:shadow-none">
                 <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                 Your personal data engineering companion
@@ -236,6 +476,47 @@
 
 
     
+<script>
+    // Generate interactive grid cells
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.querySelector('.animate-grid');
+        if (grid) {
+            // Calculate how many 40x40 cells fit in 120vw and 120vh
+            const cols = Math.ceil((window.innerWidth * 1.2) / 40);
+            const rows = Math.ceil((window.innerHeight * 1.2) / 40);
+            const total = cols * rows;
+            
+            // Use a DocumentFragment for performance
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < total; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                fragment.appendChild(cell);
+            }
+            grid.appendChild(fragment);
+            
+            // Handle window resize by re-calculating (debounce not strictly necessary for this simple logic)
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    const newCols = Math.ceil((window.innerWidth * 1.2) / 40);
+                    const newRows = Math.ceil((window.innerHeight * 1.2) / 40);
+                    const newTotal = newCols * newRows;
+                    if (newTotal > grid.children.length) {
+                        const newFragment = document.createDocumentFragment();
+                        for (let i = grid.children.length; i < newTotal; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'grid-cell';
+                            newFragment.appendChild(cell);
+                        }
+                        grid.appendChild(newFragment);
+                    }
+                }, 200);
+            });
+        }
+    });
+</script>
 <script src="js/ds-main.js" defer></script>
 </body>
 </html>

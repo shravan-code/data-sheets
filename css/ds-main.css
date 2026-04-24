@@ -301,19 +301,194 @@ body.sidebar-open #ds-main-content {
 }
 
 .prose code {
-    background: rgba(0,0,0,.05);
     padding: .2rem .4rem;
     border-radius: .25rem;
     font-size: .875em;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .dark .prose code {
-    background: rgba(255,255,255,.1);
+    background: transparent;
+}
+
+/* ── Code Blocks (Adaptive) ────────────────── */
+pre[class*="language-"], 
+pre[class*="language-"] code,
+code[class*="language-"] {
+    font-weight: 600 !important;
+    text-shadow: none !important; /* Remove Prism default shadows that can wash out bold text */
+}
+
+/* Remove backgrounds from both the pre container and the code element */
+pre[class*="language-"],
+code[class*="language-"] {
+    background: transparent !important;
+}
+
+pre[class*="language-"] {
+    margin: 1.5rem 0 !important;
+    padding: 1.25rem !important;
+    border-radius: 12px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.03) !important;
+    background: #ffffff !important; /* Block background should be white */
+}
+
+.dark pre[class*="language-"] {
+    background: #0f172a !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4) !important;
+}
+
+/* Scrollbar for code blocks */
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 4px;
+}
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+.dark pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: #1e293b;
 }
 
 @media(min-width:1024px) {
     body.sidebar-open #ds-main-content {
         padding-left: 15rem !important;
+    }
+}
+
+/* Minimal Sidebar Toggle Animation */
+#sidebar-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: inherit;
+}
+
+#sidebar-toggle .line {
+    width: 18px;
+    height: 1.5px;
+    background-color: currentColor;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 999px;
+    display: block;
+}
+
+/* Morphing to X */
+body.sidebar-open #sidebar-toggle .line:first-child {
+    transform: translateY(3.25px) rotate(45deg);
+    width: 16px;
+}
+
+body.sidebar-open #sidebar-toggle .line:last-child {
+    transform: translateY(-3.25px) rotate(-45deg);
+    width: 16px;
+}
+
+/* --- TOC Styles --- */
+.toc-container {
+    display: none;
+}
+
+@media (min-width: 1280px) {
+    .toc-container {
+        display: block;
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        width: 240px;
+        margin-left: 40px;
+        padding-left: 20px;
+        border-left: 1px solid rgba(148, 163, 184, 0.1);
+        padding-bottom: 2rem;
+    }
+
+    /* Custom scrollbar for TOC */
+    .toc-container::-webkit-scrollbar {
+        width: 4px;
+    }
+    .toc-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .toc-container::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+    }
+    .dark .toc-container::-webkit-scrollbar-thumb {
+        background: rgba(51, 65, 85, 0.5);
+    }
+
+    .dark .toc-container {
+        border-left-color: rgba(51, 65, 85, 0.4);
+    }
+
+    .toc-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        margin-bottom: 1rem;
+    }
+
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .toc-link {
+        font-size: 0.875rem;
+        color: #64748b;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: block;
+        line-height: 1.4;
+    }
+
+    .dark .toc-link {
+        color: #94a3b8;
+    }
+
+    .toc-link:hover {
+        color: #3b82f6;
+    }
+
+    .dark .toc-link:hover {
+        color: #60a5fa;
+    }
+
+    .toc-link.active {
+        color: #3b82f6;
+        font-weight: 500;
+    }
+
+    .dark .toc-link.active {
+        color: #60a5fa;
+    }
+
+    .toc-h3 {
+        padding-left: 1rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
     }
 }

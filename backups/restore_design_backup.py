@@ -308,15 +308,60 @@ body.sidebar-open #ds-main-content {
 }
 
 .prose code {
-    background: rgba(0,0,0,.05);
     padding: .2rem .4rem;
     border-radius: .25rem;
     font-size: .875em;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .dark .prose code {
-    background: rgba(255,255,255,.1);
+    background: transparent;
+}
+
+/* ── Code Blocks (Adaptive) ────────────────── */
+pre[class*="language-"], 
+pre[class*="language-"] code,
+code[class*="language-"] {
+    font-weight: 600 !important;
+    text-shadow: none !important; /* Remove Prism default shadows that can wash out bold text */
+}
+
+/* Remove backgrounds from both the pre container and the code element */
+pre[class*="language-"],
+code[class*="language-"] {
+    background: transparent !important;
+}
+
+pre[class*="language-"] {
+    margin: 1.5rem 0 !important;
+    padding: 1.25rem !important;
+    border-radius: 12px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.03) !important;
+    background: #ffffff !important; /* Block background should be white */
+}
+
+.dark pre[class*="language-"] {
+    background: #0f172a !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4) !important;
+}
+
+/* Scrollbar for code blocks */
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 4px;
+}
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+.dark pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: #1e293b;
 }
 
 @media(min-width:1024px) {
@@ -336,6 +381,14 @@ JS_BACKUP = """(function() {
         themeBtn.addEventListener('click', () => {
             const isDark = html.classList.toggle('dark');
             localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+            
+            // Sync Prism themes
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = isDark;
+                d.disabled = !isDark;
+            }
         });
     }
 

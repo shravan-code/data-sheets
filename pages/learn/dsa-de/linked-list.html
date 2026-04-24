@@ -1,78 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
+    <script>(function(){
+        const s=localStorage.getItem('ds-theme');
+        const isL = s==='light';
+        if(isL) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        
+        // Immediate Prism theme sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = !isL;
+                d.disabled = isL;
+            }
+        });
+    })();</script>
+    <title>7. Linked List — Data Sheets</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7. Linked List — Data Sheets</title>
-    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- PrismJS for Python Code Highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    <style>
-        /* Custom Prism overrides to fit the theme */
-        pre[class*="language-"] {
-            border-radius: 0.75rem;
-            margin-top: 1.5em;
-            margin-bottom: 1.5em;
-            background: #0f172a; /* slate-900 */
-        }
-        html:not(.dark) pre[class*="language-"] {
-            background: #1e293b; /* slate-800 for contrast in light mode */
-        }
-    </style>
-
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         const isDark = document.documentElement.classList.contains('dark');
         mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
-        
-        // Listen to theme toggle
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            setTimeout(() => location.reload(), 100);
-        });
     </script>
-    <style>
-        body{font-family:'Inter',sans-serif;}
-        .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
-        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
-        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        
-        .prose h2 {font-family: 'Outfit', sans-serif; font-weight: 700; margin-top: 2.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(148, 163, 184, 0.2);}
-        .prose h3 {font-family: 'Outfit', sans-serif; font-weight: 600;}
-        .dark .prose h2 { border-bottom-color: rgba(51, 65, 85, 0.5); }
-    </style>
-    
-    
 <link rel="stylesheet" href="../../../css/ds-main.css">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <!-- Toggle button -->
-            <button id="sidebar-toggle" aria-label="Toggle sidebar"
-                class="w-9 h-9 flex items-center justify-center transition-all duration-200 relative">
-                <i id="sb-icon-open"  data-lucide="menu" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
-                <i id="sb-icon-close" data-lucide="x" class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
+    <div class="px-4 md:px-6 py-3.5 flex items-center">
+        <!-- LEFT: Sidebar Toggle -->
+        <div class="flex-1 flex items-center">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
             </button>
+        </div>
+
+        <!-- CENTER: Logo and Page Title -->
+        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
             <a href="../../../index.html" class="no-underline group flex items-center">
                 <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
                     class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
                     Data Sheets
                 </span>
             </a>
+            <div class="hidden sm:flex items-center gap-3">
+                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
+                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                    7. Linked List
+                </span>
+            </div>
         </div>
-        <button id="theme-toggle" title="Toggle theme"
-            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-        </button>
+
+        <!-- RIGHT: Theme Toggle -->
+        <div class="flex-1 flex justify-end">
+            <button id="theme-toggle" title="Toggle theme"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -175,53 +171,20 @@
 </button>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<!-- NAV -->
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Back to DSA
+        </a>
 
-
-
-
-<div class="lg:pl-64 w-full">
-
-<div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-32 px-6 max-w-3xl mx-auto">
-    <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to DSA
-    </a>
-
-    <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">7. Linked List</h1>
-    <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.</p>
-    
-    <div class="prose prose-slate dark:prose-invert prose-lg max-w-none prose-a:text-violet-600 dark:prose-a:text-violet-400 prose-headings:text-slate-900 dark:prose-headings:text-white prose-strong:text-slate-900 dark:prose-strong:text-white">
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">7. Linked List</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.</p>
         
-<h2>Understanding Linked Lists</h2>
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            <h2>Understanding Linked Lists</h2>
 <p>Unlike arrays where data is stored contiguously, a Linked List is made of independent <strong>Nodes</strong>. Each node is an object that contains data and a "link" (pointer) to the next object.</p>
 
 <div class="my-8">
@@ -257,22 +220,25 @@ def reverse_list(head):
         prev, curr = curr, next_node
     return prev
 </code></pre>
+        </div>
         
-    </div>
-    
-    <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
-        <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
-            <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
-        </a>
-    </div>
-</main>
+        <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+            <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
+                <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        <div class="toc-title mt-8">DSA Topics</div><ul class="toc-list"><li><a href="complexity-analysis.html" class="toc-link ">1. Complexity Analysis</a></li><li><a href="arrays.html" class="toc-link ">2. Arrays</a></li><li><a href="strings.html" class="toc-link ">3. Strings</a></li><li><a href="hashing.html" class="toc-link ">4. Hashing</a></li><li><a href="stacks.html" class="toc-link ">5. Stacks</a></li><li><a href="queues.html" class="toc-link ">6. Queues</a></li><li><a href="linked-list.html" class="toc-link active">7. Linked List</a></li><li><a href="binary-search.html" class="toc-link ">8. Binary Search</a></li><li><a href="sorting.html" class="toc-link ">9. Sorting</a></li><li><a href="recursion.html" class="toc-link ">10. Recursion</a></li><li><a href="trees.html" class="toc-link ">11. Trees</a></li><li><a href="graphs.html" class="toc-link ">12. Graphs</a></li><li><a href="heap.html" class="toc-link ">13. Heap</a></li></ul>
+    </aside>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-</div>
-
-    
 <script src="../../../js/ds-main.js" defer></script>
 </body>
 </html>

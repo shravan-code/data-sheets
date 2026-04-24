@@ -38,26 +38,39 @@
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <!-- Toggle button -->
-            <button id="sidebar-toggle" aria-label="Toggle sidebar"
-                class="w-9 h-9 flex items-center justify-center transition-all duration-200 relative">
-                <i id="sb-icon-open"  data-lucide="menu" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
-                <i id="sb-icon-close" data-lucide="x" class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
+    <div class="px-4 md:px-6 py-3.5 flex items-center">
+        <!-- LEFT: Sidebar Toggle -->
+        <div class="flex-1 flex items-center">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
             </button>
+        </div>
+
+        <!-- CENTER: Logo and Page Title -->
+        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
             <a href="../index.html" class="no-underline group flex items-center">
                 <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
                     class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
                     Data Sheets
                 </span>
             </a>
+            <div class="hidden sm:flex items-center gap-3">
+                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
+                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                    Learn
+                </span>
+            </div>
         </div>
-        <button id="theme-toggle" title="Toggle theme"
-            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-        </button>
+
+        <!-- RIGHT: Theme Toggle -->
+        <div class="flex-1 flex justify-end">
+            <button id="theme-toggle" title="Toggle theme"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -224,6 +237,213 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- SCROLL TO TOP -->
 
 
@@ -260,22 +480,22 @@
                 <a href="learn/python.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Python</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Core Python concepts for Data Engineers: syntax, OOP, data structures, file handling and best practices.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/sql.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">SQL</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Queries, joins, subqueries, window functions, and performance optimization.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/bash.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Bash</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Shell scripting fundamentals, variables, control flow, and automation.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/powershell.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">PowerShell</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Windows automation, cmdlets, pipelines, and scripting basics.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>
@@ -292,12 +512,12 @@
                 <a href="learn/de-fundamentals.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">DE Fundamentals</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Core concepts: architecture patterns, data modelling, quality, storage, ingestion, processing, streaming, governance, DevOps, and performance.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/dsa-de.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">DSA for DE</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Data Structures & Algorithms tailored for Data Engineering: arrays, linked lists, stacks, queues, trees, graphs, hashing, sorting, searching.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>
@@ -314,37 +534,37 @@
                 <a href="learn/spark.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Spark</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Distributed data processing, RDDs, DataFrames, Spark SQL, and streaming.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/flink.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Flink</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Stream processing framework for stateful computations.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/kafka.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Kafka</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Distributed event streaming platform, producers, consumers, topics, and streams.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/dbt.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">dbt</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Data transformation, models, tests, documentation, and packages.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/pandas.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Pandas</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Data manipulation and analysis library for Python.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/numpy.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">NumPy</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Fundamental package for scientific computing with Python.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/airflow.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Airflow</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Workflow orchestration, DAGs, operators, and scheduling.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>
@@ -361,27 +581,27 @@
                 <a href="learn/aws.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">AWS</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Amazon Web Services: S3, EC2, Lambda, Glue, Redshift, Kinesis, and more.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/gcp.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">GCP</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Google Cloud Platform: Compute Engine, GCS, BigQuery, Dataflow, and more.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/azure.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Azure</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Microsoft Azure: VMs, Blob Storage, Data Factory, Synapse, and more.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/snowflake.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Snowflake</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Cloud data platform: architecture, data loading, warehouses, and sharing.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/databricks.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Databricks</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Unified data analytics platform: notebooks, jobs, Delta Lake, and ML.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>
@@ -398,22 +618,22 @@
                 <a href="learn/docker.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Docker</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Containerization, Dockerfiles, images, containers, and Docker Compose.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/kubernetes.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Kubernetes</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Container orchestration, pods, deployments, services, and scaling.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/terraform.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Terraform</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Infrastructure as Code: providers, resources, variables, and state management.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/github.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">GitHub</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Version control, Actions, CI/CD pipelines, and collaboration workflows.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>
@@ -430,17 +650,17 @@
                 <a href="learn/system-design.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">System Design</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Scalability, high availability, caching, databases, networking, security, microservices.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/pipeline-design.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">Pipeline Design</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Batch, streaming, CDC pipelines, ingestion, processing, storage, observability.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
                 <a href="learn/de-architectures.html" class="topic-card group bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 hover:no-underline transition-all duration-300">
                     <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">DE Architectures</h3>
                     <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Lambda, Kappa, Data Lake, Medallion, and other architecture patterns.</p>
-                    <span class="text-blue-500 hover:text-blue-400 text-sm font-medium">Explore →</span>
+
                 </a>
             </div>
         </section>

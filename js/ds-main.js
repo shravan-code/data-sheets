@@ -8,6 +8,14 @@
         themeBtn.addEventListener('click', () => {
             const isDark = html.classList.toggle('dark');
             localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
+            
+            // Sync Prism themes
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = isDark;
+                d.disabled = !isDark;
+            }
         });
     }
 
@@ -15,8 +23,6 @@
     const sidebar  = document.getElementById('ds-sidebar');
     const overlay  = document.getElementById('sidebar-overlay');
     const togBtn   = document.getElementById('sidebar-toggle');
-    const iconOpen  = document.getElementById('sb-icon-open');
-    const iconClose = document.getElementById('sb-icon-close');
 
     // Restore persisted state (default: open on desktop, closed on mobile)
     const isDesktop = () => window.innerWidth >= 1024;
@@ -47,15 +53,11 @@
             body.classList.add('sidebar-open');
             if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
             if (!isDesktop() && overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
-            if (iconOpen)  { iconOpen.style.opacity  = '0'; iconOpen.style.transform  = 'scale(.7)'; }
-            if (iconClose) { iconClose.style.opacity = '1'; iconClose.style.transform = 'scale(1)'; }
         } else {
             sidebar.classList.add('sidebar-hidden');
             sidebar.classList.remove('sidebar-visible');
             body.classList.remove('sidebar-open');
             if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
-            if (iconOpen)  { iconOpen.style.opacity  = '1'; iconOpen.style.transform  = 'scale(1)'; }
-            if (iconClose) { iconClose.style.opacity = '0'; iconClose.style.transform = 'scale(.7)'; }
         }
     }
 
@@ -95,4 +97,62 @@
 
     /* ── Lucide icons ────────────────────────────── */
     if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    /* ── Table of Contents ───────────────────────── */
+    function initTOC() {
+        const tocContainer = document.querySelector('.toc-list');
+        const content = document.querySelector('.prose');
+        if (!tocContainer || !content) return;
+
+        const headers = content.querySelectorAll('h2, h3');
+        if (headers.length === 0) {
+            const tocWrapper = document.querySelector('.toc-container');
+            if (tocWrapper) tocWrapper.style.display = 'none';
+            return;
+        }
+
+        headers.forEach((header, index) => {
+            if (!header.id) {
+                header.id = header.textContent.toLowerCase().trim()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w-]/g, '') + '-' + index;
+            }
+
+            const link = document.createElement('a');
+            link.href = '#' + header.id;
+            link.textContent = header.textContent;
+            link.className = 'toc-link';
+            if (header.tagName.toLowerCase() === 'h3') link.classList.add('toc-h3');
+
+            const li = document.createElement('li');
+            li.appendChild(link);
+            tocContainer.appendChild(li);
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.getElementById(header.id);
+                if (target) {
+                    const navHeight = 100;
+                    window.scrollTo({
+                        top: target.getBoundingClientRect().top + window.pageYOffset - navHeight,
+                        behavior: 'smooth'
+                    });
+                    history.pushState(null, null, '#' + header.id);
+                }
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.toc-link').forEach(l => {
+                        l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-100px 0px -70% 0px' });
+
+        headers.forEach(h => observer.observe(h));
+    }
+    initTOC();
 })();

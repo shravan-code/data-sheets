@@ -22,7 +22,8 @@
         });
         window.mermaid = mermaid;
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" disabled>
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         body{font-family:'Inter',sans-serif;}
         .font-display,h1,h2,h3{font-family:'Outfit',sans-serif;}
@@ -44,26 +45,39 @@
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <!-- Toggle button -->
-            <button id="sidebar-toggle" aria-label="Toggle sidebar"
-                class="w-9 h-9 flex items-center justify-center transition-all duration-200 relative">
-                <i id="sb-icon-open"  data-lucide="menu" class="w-[18px] h-[18px] absolute transition-all duration-200"></i>
-                <i id="sb-icon-close" data-lucide="x" class="w-[18px] h-[18px] absolute transition-all duration-200 opacity-0 scale-75"></i>
+    <div class="px-4 md:px-6 py-3.5 flex items-center">
+        <!-- LEFT: Sidebar Toggle -->
+        <div class="flex-1 flex items-center">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
             </button>
+        </div>
+
+        <!-- CENTER: Logo and Page Title -->
+        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
             <a href="../../../index.html" class="no-underline group flex items-center">
                 <span style="font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:-.03em;"
                     class="text-xl bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-violet-500 transition-all">
                     Data Sheets
                 </span>
             </a>
+            <div class="hidden sm:flex items-center gap-3">
+                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
+                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                    7. API Design
+                </span>
+            </div>
         </div>
-        <button id="theme-toggle" title="Toggle theme"
-            class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-            <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-            <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-        </button>
+
+        <!-- RIGHT: Theme Toggle -->
+        <div class="flex-1 flex justify-end">
+            <button id="theme-toggle" title="Toggle theme"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
+                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -164,6 +178,213 @@
            shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
     <i data-lucide="arrow-up" class="w-4 h-4"></i>
 </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

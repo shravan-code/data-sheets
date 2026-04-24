@@ -80,6 +80,13 @@ def build_bash_subpages():
     os.makedirs(os.path.join('pages', 'learn', 'bash'), exist_ok=True)
 
     for i, page in enumerate(subpages):
+        # Build list of all topics for the sidebar
+        topics_html = '<div class="toc-title mt-8">Bash Topics</div><ul class="toc-list">'
+        for p in subpages:
+            active_cls = "active" if p['id'] == page['id'] else ""
+            topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
+        topics_html += '</ul>'
+
         prev_page = subpages[i-1] if i > 0 else None
         next_page = subpages[i+1] if i < len(subpages)-1 else None
         
@@ -110,26 +117,34 @@ def build_bash_subpages():
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
-    <a href="../bash.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Bash Scripting
-    </a>
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../bash.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Back to Bash Scripting
+        </a>
 
-    <header class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{page['title']}</h1>
-        <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{page['description']}</p>
-    </header>
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{page['title']}</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{page['description']}</p>
+        </header>
 
-    <article class="prose dark:prose-invert max-w-none pb-20">
-        {page['content']}
-    </article>
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            {page['content']}
+        </article>
 
-    <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-        {prev_html}
-        {next_html}
-    </div>
-</main>
+        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            {prev_html}
+            {next_html}
+        </div>
+    </main>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        {topics_html}
+    </aside>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
