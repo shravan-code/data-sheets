@@ -21,7 +21,7 @@ class LinkParser(HTMLParser):
 
 def check_links():
     root_dir = os.path.abspath('d:\\shra1\\github\\data-sheets')
-    html_files = glob.glob(os.path.join(root_dir, '**/*.html'), recursive=True)
+    html_files = [p for p in glob.glob(os.path.join(root_dir, '**/*.html'), recursive=True) if 'node_modules' not in p and 'components' not in p]
     
     # Pre-parse all files to get their IDs
     file_ids = {}

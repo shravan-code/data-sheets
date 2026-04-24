@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+<script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>15. Classic Pipeline Design Problems — Data Sheets</title>
@@ -15,107 +16,9 @@
 
 
 
-<script>
-(function() {
-    const html  = document.documentElement;
-    const body  = document.body;
 
-    /* ── Theme ──────────────────────────────────── */
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
-        });
-    }
-
-    /* ── Sidebar state ───────────────────────────── */
-    const sidebar  = document.getElementById('ds-sidebar');
-    const overlay  = document.getElementById('sidebar-overlay');
-    const togBtn   = document.getElementById('sidebar-toggle');
-    const iconOpen  = document.getElementById('sb-icon-open');
-    const iconClose = document.getElementById('sb-icon-close');
-
-    // Restore persisted state (default: open on desktop, closed on mobile)
-    const isDesktop = () => window.innerWidth >= 1024;
-    const stored = localStorage.getItem('ds-sidebar');
-    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
-
-    /* ── Active Link Highlighting ────────────────── */
-    function highlightActive() {
-        const path = window.location.pathname;
-        const page = path.split('/').pop() || 'index.html';
-        const links = document.querySelectorAll('.sb-link');
-        links.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && href.includes(page)) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-    }
-    highlightActive();
-
-    function applyState(animate) {
-        if (!sidebar) return;
-        if (sidebarOpen) {
-            sidebar.classList.remove('sidebar-hidden');
-            sidebar.classList.add('sidebar-visible');
-            body.classList.add('sidebar-open');
-            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
-            if (!isDesktop() && overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
-            if (iconOpen)  { iconOpen.style.opacity  = '0'; iconOpen.style.transform  = 'scale(.7)'; }
-            if (iconClose) { iconClose.style.opacity = '1'; iconClose.style.transform = 'scale(1)'; }
-        } else {
-            sidebar.classList.add('sidebar-hidden');
-            sidebar.classList.remove('sidebar-visible');
-            body.classList.remove('sidebar-open');
-            if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
-            if (iconOpen)  { iconOpen.style.opacity  = '1'; iconOpen.style.transform  = 'scale(1)'; }
-            if (iconClose) { iconClose.style.opacity = '0'; iconClose.style.transform = 'scale(.7)'; }
-        }
-    }
-
-    applyState(false);
-
-    if (togBtn) {
-        togBtn.addEventListener('click', () => {
-            sidebarOpen = !sidebarOpen;
-            localStorage.setItem('ds-sidebar', sidebarOpen ? 'open' : 'closed');
-            applyState(true);
-        });
-    }
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            sidebarOpen = false;
-            localStorage.setItem('ds-sidebar', 'closed');
-            applyState(true);
-        });
-    }
-
-    // On resize: if going to desktop re-open by default if never set
-    window.addEventListener('resize', () => {
-        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
-            sidebarOpen = true;
-            applyState(false);
-        }
-    });
-
-    /* ── Scroll-to-top ───────────────────────────── */
-    const scrollBtn = document.getElementById('scroll-top');
-    if (scrollBtn) {
-        window.addEventListener('scroll', () => {
-            scrollBtn.classList.toggle('visible', window.scrollY > 300);
-        });
-        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    }
-
-    /* ── Lucide icons ────────────────────────────── */
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-})();
-</script>
-    <script src="../../../js/layout-fixes.js"></script>
+    
+<script src="../../../js/ds-main.js" defer></script>
 </body>
 </html>
 
