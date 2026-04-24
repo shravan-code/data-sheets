@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>PowerShell Remoting</h2>
-<br>
 <p>WS-Management (WinRM) based remoting allows running commands on remote computers.</p>
-<br>
 <h3>PSRemoting</h3>
 <pre><code class="language-powershell">
 # Enable remoting (run as admin)
@@ -220,13 +218,9 @@ Copy-Item 'C:\local.txt' -Destination 'C:\remote.txt' -ToSession $session
 # Cleanup
 Remove-PSSession $session
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Background Jobs</h2>
-<br>
 <p>Run tasks in the background without blocking the console.</p>
-<br>
 <h3>Jobs</h3>
 <pre><code class="language-powershell">
 # Start a background job
@@ -256,9 +250,7 @@ Receive-Job -Name 'MyTask' -Wait -AutoRemoveJob
 $threadJob = Start-ThreadJob -ScriptBlock { Get-Process }
 Receive-Job $threadJob -Wait
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

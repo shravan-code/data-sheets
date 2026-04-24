@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Credentials</h2>
-<br>
 <p>Never store passwords in plain text. Use SecureString, credential objects, and Secret Management.</p>
-<br>
 <h3>Credential Handling</h3>
 <pre><code class="language-powershell">
 # Prompt for credentials
@@ -212,13 +210,9 @@ $cred.Password | ConvertFrom-SecureString | Set-Content 'saved_pass.txt'
 $loadedPass = Get-Content 'saved_pass.txt' | ConvertTo-SecureString
 $loadedCred = New-Object PSCredential('user', $loadedPass)
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Certificates</h2>
-<br>
 <p>Manage Windows certificates using the cert: PSDrive.</p>
-<br>
 <h3>Certificate Operations</h3>
 <pre><code class="language-powershell">
 # Browse cert store
@@ -237,9 +231,7 @@ Test-Certificate -Cert (Get-ChildItem Cert:\LocalMachine\My)[0]
 $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert | Select-Object -First 1
 Set-AuthenticodeSignature -FilePath '.\script.ps1' -Certificate $cert
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 

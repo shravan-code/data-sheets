@@ -492,3 +492,146 @@ body.sidebar-open #sidebar-toggle .line:last-child {
         opacity: 0.8;
     }
 }
+
+/* ── Mobile Layout Overrides ────────────────── */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    #ds-nav {
+        width: 100vw;
+    }
+
+    #ds-main-content {
+        width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden;
+    }
+
+    /* Normalize top padding for mobile - more compact for small screens */
+    main.pt-28,
+    main.pt-20,
+    #ds-main-content main {
+        padding-top: 4.5rem !important; /* 3.5rem (nav) + 1rem */
+        padding-bottom: 2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Styled breadcrumb for mobile */
+    main > a[href*="learn"],
+    main > a[href*="powershell"],
+    main > a[href*="fundamentals"] {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 0.4rem 0.75rem !important;
+        background: rgba(148, 163, 184, 0.08) !important;
+        border-radius: 8px !important;
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        color: #64748b !important;
+        margin-bottom: 1.75rem !important;
+        text-decoration: none !important;
+        border: 1px solid rgba(148, 163, 184, 0.1) !important;
+    }
+
+    .dark main > a[href*="learn"],
+    .dark main > a[href*="powershell"],
+    .dark main > a[href*="fundamentals"] {
+        background: rgba(148, 163, 184, 0.12) !important;
+        color: #94a3b8 !important;
+        border-color: rgba(148, 163, 184, 0.15) !important;
+    }
+
+    /* Smaller headings for narrow screens */
+    h1 { font-size: 1.75rem !important; line-height: 1.2 !important; margin-bottom: 0.5rem !important; }
+    h2 { font-size: 1.4rem !important; margin-top: 1.75rem !important; margin-bottom: 0.75rem !important; }
+    h3 { font-size: 1.2rem !important; margin-top: 1.5rem !important; }
+    p { margin-bottom: 1rem !important; line-height: 1.6 !important; }
+
+    /* Restore card-style for code blocks on mobile */
+    pre[class*="language-"],
+    .prose pre {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 12px !important;
+        padding: 1.25rem !important;
+        font-size: 0.825rem !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        background: #0f172a !important;
+        border: 1px solid rgba(148, 163, 184, 0.1) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+    /* Fix internal code padding that Prism might mess with */
+    pre[class*="language-"] code {
+        padding: 0 !important;
+        background: transparent !important;
+        display: block;
+        width: 100%;
+    }
+
+    /* Mermaid responsiveness */
+    .mermaid {
+        overflow-x: auto !important;
+        margin-left: -1rem !important;
+        margin-right: -1rem !important;
+        padding: 1rem !important;
+        background: rgba(148, 163, 184, 0.05);
+    }
+    
+    .mermaid svg {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Restore card aesthetic for mobile - distinct but responsive */
+    .topic-card {
+        border-radius: 12px !important;
+        border: 1px solid rgba(148, 163, 184, 0.15) !important;
+        margin-bottom: 1rem !important;
+        padding: 1.25rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        background: white !important;
+        width: 100% !important;
+    }
+
+    .dark .topic-card {
+        border-color: rgba(51, 65, 85, 0.5) !important;
+        background: rgba(30, 41, 59, 0.4) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* Grid adjustment for cards */
+    .grid:has(> .topic-card) {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        border-top: none !important;
+    }
+
+    /* Break-word safety for long technical terms */
+    h1, h2, h3, h4, p, li {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Remove manual break tag influence */
+    main br {
+        display: none !important;
+    }
+
+    main hr {
+        margin: 2rem -1rem !important;
+        opacity: 0.1 !important;
+    }
+}

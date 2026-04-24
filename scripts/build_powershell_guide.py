@@ -32,16 +32,16 @@ def render_topic_html(topic):
         
     parts = []
     for sub in topic.get("subtopics", []):
-        parts.append(f"<h2>{sub['name']}</h2>\n<br>\n")
+        parts.append(f"<h2>{sub['name']}</h2>\n")
         if sub.get("content"):
-            parts.append(f"<p>{sub['content']}</p>\n<br>\n")
+            parts.append(f"<p>{sub['content']}</p>\n")
         for ex in sub.get("examples", []):
             parts.append(f"<h3>{ex['title']}</h3>\n")
             code = ex["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             parts.append(
-                f'<pre><code class="language-powershell">\n{code}\n</code></pre>\n<br>\n'
+                f'<pre><code class="language-powershell">\n{code}\n</code></pre>\n'
             )
-        parts.append("<hr>\n<br>\n")
+        parts.append("<hr>\n")
     return "".join(parts)
 
 

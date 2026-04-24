@@ -170,8 +170,8 @@
 
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
-<div class="flex justify-center max-w-[1440px] mx-auto">
-    <div id="ds-main-content" class="transition-all duration-300"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+<div class="flex justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
         <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to PowerShell Scripting
@@ -184,9 +184,7 @@
 
         <article class="prose dark:prose-invert max-w-none pb-20">
             <h2>Project 1: System Health Report</h2>
-<br>
 <p>Generate a comprehensive HTML system health report.</p>
-<br>
 <h3>System Health Report Script</h3>
 <pre><code class="language-powershell">
 #Requires -Version 5.0
@@ -291,13 +289,9 @@ $html | Out-File $OutputPath -Encoding UTF8
 Write-Host "Report saved to: $OutputPath" -ForegroundColor Green
 Invoke-Item $OutputPath
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Project 2: Automated Backup Script</h2>
-<br>
 <p>Robust file backup with logging, rotation, and email notification.</p>
-<br>
 <h3>Backup Script</h3>
 <pre><code class="language-powershell">
 #Requires -Version 5.0
@@ -392,13 +386,9 @@ try {
     exit 1
 }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Project 3: Active Directory User Management</h2>
-<br>
 <p>Bulk create, update, and audit Active Directory users.</p>
-<br>
 <h3>AD User Management Script</h3>
 <pre><code class="language-powershell">
 #Requires -Module ActiveDirectory
@@ -469,13 +459,9 @@ Write-Host "`nSummary: Created=$created, Failed=$failed" -ForegroundColor Cyan
 $report | Export-Csv '.\AD_Creation_Report.csv' -NoTypeInformation
 Write-Host 'Report exported to AD_Creation_Report.csv'
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Project 4: Log Parser & Alerting</h2>
-<br>
 <p>Parse IIS or application logs, detect anomalies, and send alerts.</p>
-<br>
 <h3>Log Parser Script</h3>
 <pre><code class="language-powershell">
 &lt;#
@@ -536,13 +522,9 @@ if ($errorCodes.Count -gt $ErrorThreshold) {
     Write-Warning "ALERT: $($errorCodes.Count) errors exceed threshold of $ErrorThreshold!"
 }
 </code></pre>
-<br>
 <hr>
-<br>
 <h2>Project 5: Interactive Menu System</h2>
-<br>
 <p>Build a reusable interactive console menu framework.</p>
-<br>
 <h3>Console Menu Framework</h3>
 <pre><code class="language-powershell">
 function Show-Menu {
@@ -590,9 +572,7 @@ $mainMenu = @(
 
 Invoke-Menu -Title 'System Administration Toolkit' -Options $mainMenu
 </code></pre>
-<br>
 <hr>
-<br>
 
         </article>
 
