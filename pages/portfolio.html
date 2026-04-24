@@ -1,30 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
+<script>(function(){
+        const s=localStorage.getItem('ds-theme');
+        const isL = s==='light';
+        if(isL) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        
+        // Immediate Prism theme sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = !isL;
+                d.disabled = isL;
+            }
+        });
+    })();</script>
+    <title>Portfolio | Shravan Kumar Tela</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio — Data Sheets</title>
-    <meta name="description" content="Portfolio overview and contact links.">
-    <script>(function(){const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');})();</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css/ds-main.css">
+    
     <style>
-        body{font-family:'Inter',sans-serif;}
-        h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
-        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
-        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        .portfolio-card{transition:all .25s cubic-bezier(.4,0,.2,1);}
-        .portfolio-card:hover{transform:translateY(-4px);}
+        .portfolio-hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        }
+        .profile-ring {
+            position: relative;
+        }
+        .profile-ring::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 999px;
+            border: 2px dashed rgba(59, 130, 246, 0.2);
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .skill-chip {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .skill-chip:hover {
+            transform: translateY(-2px);
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
     </style>
-    
-    
-<link rel="stylesheet" href="../css/ds-main.css">
-<link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#ffffff">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
@@ -50,7 +79,7 @@
             <div class="hidden sm:flex items-center gap-3">
                 <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
                 <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                    My Portfolio
+                    Portfolio
                 </span>
             </div>
         </div>
@@ -202,464 +231,252 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-
-<div id="ds-main-content" class="transition-all duration-300"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-20 px-6 max-w-7xl mx-auto w-full">
-        <div class="text-center max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300 mb-8 transition-colors duration-300 shadow-sm dark:shadow-none">
-                <i data-lucide="user" class="w-4 h-4 text-cyan-500"></i>
-                Your Professional Profile
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY -->
+
+
+
+
+<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0">
+    <main class="relative z-10 pt-24 pb-20 px-4 md:px-8 max-w-5xl mx-auto">
+        <!-- HERO SECTION -->
+        <section class="portfolio-hero-gradient py-12 mb-16 text-center">
+            <div class="flex flex-col items-center">
+                <div class="profile-ring mb-10">
+                    <div class="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl relative z-10">
+                        <img src="../assets/images/profile-pic.jpeg" alt="Shravan Kumar Tela" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-br from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
+                    Shravan Kumar Tela
+                </h1>
+                <p class="text-xl md:text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-6 font-display">
+                    Data Engineer
+                </p>
+                <div class="flex flex-wrap justify-center gap-2 mb-10">
+                    <span class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 shadow-sm">Python</span>
+                    <span class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 shadow-sm">AWS</span>
+                    <span class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 shadow-sm">PySpark</span>
+                    <span class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 shadow-sm">Databricks</span>
+                    <span class="px-4 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 shadow-sm">SQL</span>
+                </div>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    Data Engineer with 4+ years of experience building scalable ETL pipelines and cloud-native data platforms. 
+                    Specialized in processing large-scale datasets (3–10GB/run), distributed systems, and performance optimization 
+                    using multiprocessing and vectorized computations.
+                </p>
+                
+                <!-- CONTACT BAR -->
+                <div class="flex flex-wrap justify-center gap-4 mt-12">
+                    <a href="mailto:shra1.mywork@gmail.com" class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-500/20 hover:scale-105 transition-transform">
+                        <i data-lucide="mail" class="w-4 h-4"></i>
+                        Contact Me
+                    </a>
+                    <a href="https://linkedin.com/in/sk404" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-bold hover:bg-slate-50 transition-colors">
+                        <i data-lucide="linkedin" class="w-4 h-4 text-blue-500"></i>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/ShravanKumar-404" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-bold hover:bg-slate-50 transition-colors">
+                        <i data-lucide="github" class="w-4 h-4 text-slate-900 dark:text-white"></i>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section class="mb-20">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                    <i data-lucide="cpu" class="w-5 h-5 text-emerald-500"></i>
+                </div>
+                <h2 class="font-display text-2xl font-bold">Technical Arsenal</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Data Engineering -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-display font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="layers" class="w-4 h-4 text-emerald-500"></i>
+                        Data Processing
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">PySpark</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Pandas</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">NumPy</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">ETL Patterns</span>
+                    </div>
+                </div>
+
+                <!-- Cloud & Infrastructure -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-display font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="cloud" class="w-4 h-4 text-blue-500"></i>
+                        Cloud (AWS)
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Lambda</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">AWS Batch</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">S3</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Glue</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">EMR</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Terraform</span>
+                    </div>
+                </div>
+
+                <!-- Languages & DBs -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+                    <h3 class="font-display font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="database" class="w-4 h-4 text-orange-500"></i>
+                        Core Tech
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Python</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">SQL</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">PostgreSQL</span>
+                        <span class="skill-chip px-3 py-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium">Docker</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section class="mb-20">
+            <div class="flex items-center justify-between mb-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-blue-500"></i>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold">Experience</h2>
+                </div>
             </div>
 
-            <h1 class="font-display font-bold text-5xl md:text-7xl text-slate-900 dark:text-white mb-6 leading-tight transition-colors duration-300">
-                My <span style="background:linear-gradient(135deg,#22d3ee,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;">Portfolio</span>
-            </h1>
+            <div class="space-y-8">
+                <!-- TCS -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="hidden md:block absolute left-[-21px] top-0 w-[2px] h-full bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="hidden md:block absolute left-[-25px] top-2 w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                    
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm hover:border-blue-500/30 transition-colors">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Data Engineer</h3>
+                                <p class="text-blue-600 dark:text-blue-400 font-semibold">Tata Consultancy Services (TCS)</p>
+                            </div>
+                            <span class="px-4 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                Jan 2023 – Present
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="terminal" class="w-4 h-4 text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-slate-100 mb-2">Cloud-Native Batch Processing System</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Designed event-driven architecture using AWS Batch, Lambda, and S3. Automated infrastructure with Terraform and improved incident response by 60% through real-time monitoring.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="zap" class="w-4 h-4 text-emerald-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-slate-100 mb-2">Legacy Migration & AI Optimization</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                        Migrated Oracle ETL to Python, reducing manual testing by 80% using AI-assisted unit test generation and modular components.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed transition-colors duration-300">
-                Showcase your projects, share your work, and connect with the data engineering community.
-            </p>
+                <!-- Crown Solutions -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="hidden md:block absolute left-[-21px] top-0 w-[2px] h-full bg-slate-200 dark:bg-slate-800"></div>
+                    <div class="hidden md:block absolute left-[-25px] top-2 w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+                    
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Python Developer</h3>
+                                <p class="text-slate-500 dark:text-slate-400 font-semibold">Crown Solutions</p>
+                            </div>
+                            <span class="px-4 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                Nov 2021 – Jan 2023
+                            </span>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="dataset" class="w-4 h-4 text-orange-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-slate-100 mb-2">Scalable Data Pipeline Design</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                    Processed ~3GB unstructured datasets using Pandas + Multiprocessing, reducing runtime by 70%. Built OOP-based transformation modules.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="../pages/learn.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-blue-600 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-500/20 no-underline">
-                    <i data-lucide="book-open" class="w-5 h-5"></i>
-                    Back to Learn
+        <!-- PROJECTS LINK SECTION -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            <a href="my portfolio/projects-experienced.html" class="group relative overflow-hidden bg-gradient-to-br from-indigo-600 to-blue-700 p-8 rounded-3xl text-white shadow-xl hover:shadow-indigo-500/20 transition-all">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform duration-500">
+                    <i data-lucide="briefcase" class="w-32 h-32 text-white"></i>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="font-display text-2xl font-bold mb-2">Experienced Projects</h3>
+                    <p class="text-indigo-100 mb-6 max-w-xs">Production-grade systems and enterprise data solutions.</p>
+                    <span class="inline-flex items-center gap-2 font-bold text-sm bg-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                        Explore Work <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </a>
+            <a href="my portfolio/projects-self.html" class="group relative overflow-hidden bg-gradient-to-br from-emerald-600 to-teal-700 p-8 rounded-3xl text-white shadow-xl hover:shadow-emerald-500/20 transition-all">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform duration-500">
+                    <i data-lucide="sparkles" class="w-32 h-32 text-white"></i>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="font-display text-2xl font-bold mb-2">Personal Projects</h3>
+                    <p class="text-emerald-100 mb-6 max-w-xs">Experiments in AI, modern architecture, and learning.</p>
+                    <span class="inline-flex items-center gap-2 font-bold text-sm bg-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                        View Sandbox <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </a>
+        </section>
+
+        <!-- CERTIFICATIONS -->
+        <section class="mb-10 text-center">
+            <h2 class="font-display text-2xl font-bold mb-8">Certifications</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://www.credly.com/badges/89754bfe-39d0-40be-af0c-b7afb15fdd33/linked_in?t=t6fqj3" target="_blank" class="group px-6 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:border-blue-500 hover:scale-105 transition-all">
+                    <p class="font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">AWS Certified Data Engineer Associate</p>
+                    <p class="text-xs font-bold text-blue-500 uppercase mt-1 tracking-widest">2025</p>
+                </a>
+                <a href="https://credentials.databricks.com/f7ff6d08-52cf-4873-87d8-c6cdc146b0aa#acc.kl5HIgFX" target="_blank" class="group px-6 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:border-orange-500 hover:scale-105 transition-all">
+                    <p class="font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400">Databricks Data Engineer Associate</p>
+                    <p class="text-xs font-bold text-blue-500 uppercase mt-1 tracking-widest">2025</p>
                 </a>
             </div>
-        </div>
+        </section>
     </main>
 </div>
 
+<footer class="py-12 border-t border-slate-200 dark:border-slate-800 text-center">
+    <p class="text-slate-500 dark:text-slate-400 font-medium">© 2026 Shravan Kumar Tela • Built with Data Cake</p>
+</footer>
 
-<script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
 <script src="../js/ds-main.js" defer></script>
 </body>
 </html>
