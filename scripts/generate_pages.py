@@ -144,42 +144,20 @@ pages = [
 ]
 
 template = '''<!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} — Data Sheets</title>
     <meta name="description" content="{desc}">
-    <script>(function(){{const s=localStorage.getItem('ds-theme');if(s==='light')document.documentElement.classList.remove('dark');else document.documentElement.classList.add('dark');}})();</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body{{font-family:'Inter',sans-serif;}}
-        .font-display,h1,h2,h3{{font-family:'Outfit',sans-serif;}}
-        .grid-bg{{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}}
-        .dark .grid-bg{{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}}
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen transition-colors duration-300">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 <div class="fixed top-0 left-0 w-96 h-96 bg-{cat_color}-600/8 rounded-full blur-3xl pointer-events-none z-0"></div>
-
-<!-- NAV -->
-<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-        <a href="../../index.html" class="no-underline"><span style="font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;" class="text-base md:text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300">Data Sheets</span></a>
-        <div class="flex items-center gap-1">
-            <a href="../learn.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Learn</a>
-            <a href="../practice.html" class="px-3 md:px-5 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 no-underline">Practice</a>
-        </div>
-        <button id="theme-toggle" title="Toggle theme" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200">
-            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-            <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-        </button>
-    </div>
-</nav>
 
 <main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
     <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
@@ -192,7 +170,7 @@ template = '''<!DOCTYPE html>
             <i data-lucide="{icon}" class="w-6 h-6"></i>
         </div>
         <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 transition-colors border border-{cat_color}-200 dark:border-transparent" style="background:rgba(var(--cat-rgb),.1);color:var(--cat-text)">{cat}</span>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 transition-colors border border-{cat_color}-200 dark:border-transparent" style="background:rgba({rgb},.15);color:{text}">{cat}</span>
             <h1 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white leading-tight transition-colors">{title}</h1>
         </div>
     </div>
@@ -214,11 +192,6 @@ template = '''<!DOCTYPE html>
         <p class="text-slate-500 dark:text-slate-400 text-sm transition-colors">Detailed notes, cheat sheets and examples are being prepared.</p>
     </div>
 </main>
-
-<script>
-    lucide.createIcons();
-    document.getElementById('theme-toggle').addEventListener('click',()=>{{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('ds-theme',d?'dark':'light');}});
-</script>
 </body>
 </html>'''
 
@@ -235,21 +208,13 @@ os.makedirs("pages/learn", exist_ok=True)
 
 for fname, title, icon, cat, cat_color, desc, topics in pages:
     rgb, text = color_map[cat_color]
-    # For light theme, we want a slightly darker version of the text color for the badge, or just use the same text color.
-    # In dark mode, it looks good. Let's just pass them.
     topics_html = "\n".join(
         f'            <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5" style="color:{text}"></i><span>{t}</span></li>'
         for t in topics
     )
-    badge_style = f"--cat-rgb:{rgb};--cat-text:{text}"
     content = template.format(
         title=title, icon=icon, cat=cat, cat_color=cat_color,
-        desc=desc, topics_html=topics_html, badge_style=badge_style
-    )
-    # inline the style into the badge span directly
-    content = content.replace(
-        'style="background:rgba(var(--cat-rgb),.1);color:var(--cat-text)"',
-        f'style="background:rgba({rgb},.15);color:{text}"'
+        desc=desc, topics_html=topics_html, rgb=rgb, text=text
     )
     path = os.path.join("pages", "learn", fname)
     with open(path, "w", encoding="utf-8") as f:
@@ -257,104 +222,3 @@ for fname, title, icon, cat, cat_color, desc, topics in pages:
     print(f"Created: {path}")
 
 print("Done!")
-
-
-import glob
-import os
-
-
-def inject_sidebar_into_all_html():
-    SIDEBAR_TEMPLATE = '''
-<!-- SIDEBAR -->
-<aside class="fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 border-r border-slate-200 dark:border-slate-800/60 bg-white/50 dark:bg-slate-950/50 backdrop-blur-xl z-40 hidden lg:block overflow-y-auto py-8 px-6">
-    <div class="mb-8">
-        <a href="{prefix}learn.html" class="font-display font-bold text-slate-900 dark:text-white mb-4 text-sm uppercase tracking-wider block no-underline hover:text-blue-600 dark:hover:text-blue-400">Learn</a>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Programming</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/python.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Python</a></li>
-                <li><a href="{prefix}learn/sql.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">SQL</a></li>
-                <li><a href="{prefix}learn/bash.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Bash</a></li>
-                <li><a href="{prefix}learn/powershell.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">PowerShell</a></li>
-            </ul>
-        </div>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Concepts</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/de-fundamentals.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">DE Fundamentals</a></li>
-                <li><a href="{prefix}learn/dsa-de.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">DSA for DE</a></li>
-            </ul>
-        </div>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Tools</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/spark.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Spark</a></li>
-                <li><a href="{prefix}learn/flink.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Flink</a></li>
-                <li><a href="{prefix}learn/kafka.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Kafka</a></li>
-                <li><a href="{prefix}learn/dbt.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">dbt</a></li>
-                <li><a href="{prefix}learn/pandas.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Pandas</a></li>
-                <li><a href="{prefix}learn/numpy.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">NumPy</a></li>
-                <li><a href="{prefix}learn/airflow.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Airflow</a></li>
-            </ul>
-        </div>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Cloud</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/aws.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">AWS</a></li>
-                <li><a href="{prefix}learn/gcp.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">GCP</a></li>
-                <li><a href="{prefix}learn/azure.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Azure</a></li>
-                <li><a href="{prefix}learn/snowflake.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Snowflake</a></li>
-                <li><a href="{prefix}learn/databricks.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Databricks</a></li>
-            </ul>
-        </div>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">CI/CD</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/docker.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Docker</a></li>
-                <li><a href="{prefix}learn/kubernetes.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Kubernetes</a></li>
-                <li><a href="{prefix}learn/terraform.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Terraform</a></li>
-                <li><a href="{prefix}learn/github.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">GitHub</a></li>
-            </ul>
-        </div>
-        <div class="mb-6">
-            <h5 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Design</h5>
-            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                <li><a href="{prefix}learn/system-design.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">System Design</a></li>
-                <li><a href="{prefix}learn/pipeline-design.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Pipeline Design</a></li>
-                <li><a href="{prefix}learn/de-architectures.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">DE Architectures</a></li>
-            </ul>
-        </div>
-    </div>
-    <div>
-        <a href="{prefix}practice.html" class="font-display font-bold text-slate-900 dark:text-white mb-4 text-sm uppercase tracking-wider block no-underline hover:text-blue-600 dark:hover:text-blue-400">Practice</a>
-        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-            <li><a href="{prefix}practice.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors no-underline">Coming Soon</a></li>
-        </ul>
-    </div>
-</aside>
-'''
-    html_files = glob.glob('pages/**/*.html', recursive=True)
-    for html_file in html_files:
-        if html_file.replace(chr(92)*2, '/').replace(chr(92), '/') in ['pages/learn.html', 'pages/practice.html']:
-            continue
-            
-        with open(html_file, 'r', encoding='utf-8') as f:
-            content = f.read()
-            
-        if '<!-- SIDEBAR -->' in content:
-            continue
-            
-        normalized = html_file.replace(chr(92)*2, '/').replace(chr(92), '/')
-        depth = len(normalized.split('/')) - 1
-        prefix = '../' * (depth - 1)
-        
-        sidebar_rendered = SIDEBAR_TEMPLATE.replace('{prefix}', prefix)
-        
-        if '</nav>' in content:
-            content = content.replace('</nav>', '</nav>\n' + sidebar_rendered + '\n<div class="lg:pl-64 w-full">')
-            content = content.replace('</body>', '</div>\n</body>')
-            
-            with open(html_file, 'w', encoding='utf-8') as f:
-                f.write(content)
-
-inject_sidebar_into_all_html()
