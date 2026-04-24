@@ -254,12 +254,24 @@ def patch_html(path):
     # 7. Adaptive Code Blocks (Prism)
     prism_light = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
     prism_dark = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"
+    prism_js = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"
+    prism_autoloader = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"
     
-    # Replace existing prism link with adaptive pair
-    prism_match = re.search(r'<link rel="stylesheet" href="[^"]*prism[^"]*\.css">', html)
-    if prism_match:
-        adaptive_prism = f'<link id="prism-theme-light" rel="stylesheet" href="{prism_light}" disabled>\n    <link id="prism-theme-dark" rel="stylesheet" href="{prism_dark}">'
-        html = html[:prism_match.start()] + adaptive_prism + html[prism_match.end():]
+    if '<pre' in html or '<code' in html:
+        # 7a. Inject Adaptive CSS
+        if 'id="prism-theme-light"' not in html:
+            adaptive_prism = f'<link id="prism-theme-light" rel="stylesheet" href="{prism_light}">\n    <link id="prism-theme-dark" rel="stylesheet" href="{prism_dark}">'
+            # Force injection into head
+            html = html.replace('</head>', f'    {adaptive_prism}\n</head>', 1)
+        
+        # 7b. Inject Prism JS if missing
+        if 'prism.min.js' not in html:
+            prism_scripts = f'<script src="{prism_js}"></script>\n    <script src="{prism_autoloader}"></script>'
+            html = html.replace('</body>', f'    {prism_scripts}\n</body>', 1)
+
+    # 8. Clean up redundant/old prism links if any
+    # Remove any prism links that don't have our IDs
+    html = re.sub(r'<link rel="stylesheet" href="[^"]*prism(?!\-theme)[^"]*\.css">', '', html)
 
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
