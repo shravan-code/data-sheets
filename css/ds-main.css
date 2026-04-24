@@ -516,7 +516,7 @@ body.sidebar-open #sidebar-toggle .line:last-child {
     main.pt-28,
     main.pt-20,
     #ds-main-content main {
-        padding-top: 4.5rem !important; /* 3.5rem (nav) + 1rem */
+        padding-top: 5.5rem !important; /* 3.5rem (nav) + 2rem breathing room */
         padding-bottom: 2rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
