@@ -29,6 +29,10 @@
     const stored = localStorage.getItem('ds-sidebar');
     let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
 
+    // MOBILE UX: Always start closed on mobile regardless of persisted state
+    if (!isDesktop()) sidebarOpen = false;
+
+
     /* ── Active Link Highlighting ────────────────── */
     function highlightActive() {
         const path = window.location.pathname;
@@ -44,6 +48,16 @@
         });
     }
     highlightActive();
+
+    // Close sidebar on mobile when a link is clicked
+    document.querySelectorAll('.sb-link, .sb-section').forEach(link => {
+        link.addEventListener('click', () => {
+            if (!isDesktop()) {
+                sidebarOpen = false;
+                applyState(true);
+            }
+        });
+    });
 
     function applyState(animate) {
         if (!sidebar) return;

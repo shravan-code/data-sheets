@@ -282,7 +282,7 @@ main[data-sb-padded="1"] {
 
     main[data-sb-padded="1"],
     main.pt-28 {
-        padding-top: 4.5rem !important;
+        padding-top: 5.5rem !important;
         padding-bottom: 1.5rem !important;
     }
 }
@@ -707,7 +707,6 @@ pre[class*="language-"] code {
 
 /* Maintain pre block styling and ensure internal code tag is transparent */
 pre[class*="language-"] {
-    background: #0f172a !important; /* Keep the dark block background */
     padding: 1.5rem !important;
     border-radius: 0.75rem !important;
 }
