@@ -89,58 +89,109 @@ def render_cheatsheet_html(topic):
 
 
 def build_powershell_hub(topics):
-    cards_html = []
-    for i, topic in enumerate(topics):
-        icon = TOPIC_ICONS.get(topic["id"], "file-code")
-        title = f"{i+1}. {topic['title']}"
-        cards_html.append(f"""
-    <a href="powershell/{topic['id']}.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="{icon}" class="w-6 h-6"></i>
+    # Group topics into 11 Phases for the full premium roadmap experience
+    phases = [
+        {"name": "Getting Started", "topic_ids": ["intro"]},
+        {"name": "Syntax Fundamentals", "topic_ids": ["basics"]},
+        {"name": "Variables & Objects", "topic_ids": ["variables"]},
+        {"name": "Logic & Flow Control", "topic_ids": ["operators", "control_flow"]},
+        {"name": "The Power of Pipeline", "topic_ids": ["pipeline", "formatting_output"]},
+        {"name": "Professional Scripting", "topic_ids": ["functions", "error_handling"]},
+        {"name": "Modular Automation", "topic_ids": ["modules"]},
+        {"name": "System & Infrastructure", "topic_ids": ["wmi_cim", "remoting", "scheduled_tasks"]},
+        {"name": "Security & Networking", "topic_ids": ["security", "networking"]},
+        {"name": "Advanced Data & OOP", "topic_ids": ["classes", "regex"]},
+        {"name": "Practical Projects", "topic_ids": ["projects", "cheatsheet"]}
+    ]
+
+    phases_html = ""
+    for i, phase in enumerate(phases):
+        num = i + 1
+        items_html = ""
+        for tid in phase["topic_ids"]:
+            topic = next((t for t in topics if t["id"] == tid), None)
+            if not topic: continue
+            
+            icon = TOPIC_ICONS.get(tid, "file-code")
+            items_html += f"""
+            <a href="powershell/{tid}.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="{icon}" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">{topic['title']}</span>
+            </a>"""
+
+        phases_html += f"""
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">{num:02d}</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{title}</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{topic['description']}</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    {phase['name']}
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase {num}</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {items_html}
+                </div>
             </div>
-        </div>
-    </a>""")
+        </div>"""
 
     hub_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>PowerShell Scripting — Data Sheets</title>
+    <title>PowerShell Roadmap \u2014 Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Complete PowerShell scripting guide covering syntax, pipeline, error handling, modules, and real-world projects.">
+    <meta name="description" content="Master Windows automation and cross-platform scripting with our 11-phase structured PowerShell roadmap.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <style>
+        .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }}
+        .dark .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-blue-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-blue-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-blue-200/50">
+                        <i data-lucide="terminal" class="w-4 h-4"></i>
+                        Skill Roadmap
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        PowerShell <span class="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Scripting</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the art of automation. From local cmdlets to enterprise-scale remote orchestration."
+                    </p>
+                </div>
+            </header>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
-
-    <header class="mb-12">
-        <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-                <i data-lucide="terminal" class="w-7 h-7"></i>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                {phases_html}
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight tracking-tight">PowerShell Scripting</h1>
-        </div>
-        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">Master Windows automation and cross-platform scripting. From cmdlets and pipelines to remoting, modules, and real-world projects.</p>
-    </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        {"".join(cards_html)}
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">\u00a9 2026 Data Cake \u2022 Path to Automation Mastery</p>
+            </footer>
+        </main>
     </div>
-</main>
 </body>
 </html>"""
 
@@ -148,7 +199,7 @@ def build_powershell_hub(topics):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(hub_template)
-    print(f"Built PowerShell Hub: {output_path}")
+    print(f"Built PowerShell Hub (Roadmap Style): {output_path}")
 
 
 def build_powershell_subpages(topics):
@@ -199,11 +250,6 @@ def build_powershell_subpages(topics):
 
 <div class="flex justify-center max-w-[1440px] mx-auto">
     <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
-        <a href="../powershell.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Back to PowerShell Scripting
-        </a>
-
         <header class="mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{title}</h1>
             <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{topic['description']}</p>

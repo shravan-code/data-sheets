@@ -5,7 +5,7 @@
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
         })();</script>
-    <title>2. Variables — Bash Scripting</title>
+    <title>Variables — Bash Guide</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777225407">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777225781">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -41,7 +41,7 @@
             <div class="hidden md:flex items-center gap-3 ml-2">
                 <div class="h-4 w-[1px] bg-slate-200"></div>
                 <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    2. Variables
+                    Variables
                 </span>
             </div>
         </div>
@@ -183,7 +183,7 @@
 
             <!-- Guide Specific Topics (e.g. Bash Topics) -->
             <div id="guide-topics" class="mt-6">
-                <div class="sb-cat text-slate-400">Bash Topics</div><nav class="flex flex-col gap-0.5"><a href="introduction-to-bash.html" class="sb-link py-1.5 px-3 text-sm ">1. Introduction to Bash</a><a href="variables.html" class="sb-link py-1.5 px-3 text-sm active">2. Variables</a><a href="data-types-strings.html" class="sb-link py-1.5 px-3 text-sm ">3. Data Types & Strings</a><a href="input-output.html" class="sb-link py-1.5 px-3 text-sm ">4. Input & Output</a><a href="operators-arithmetic.html" class="sb-link py-1.5 px-3 text-sm ">5. Operators & Arithmetic</a><a href="control-flow.html" class="sb-link py-1.5 px-3 text-sm ">6. Control Flow</a><a href="functions.html" class="sb-link py-1.5 px-3 text-sm ">7. Functions</a><a href="string-manipulation.html" class="sb-link py-1.5 px-3 text-sm ">8. String Manipulation</a><a href="file-directory-operations.html" class="sb-link py-1.5 px-3 text-sm ">9. File & Directory Operations</a><a href="process-management.html" class="sb-link py-1.5 px-3 text-sm ">10. Process Management</a><a href="error-handling.html" class="sb-link py-1.5 px-3 text-sm ">11. Error Handling</a><a href="regular-expressions.html" class="sb-link py-1.5 px-3 text-sm ">12. Regular Expressions</a><a href="debugging.html" class="sb-link py-1.5 px-3 text-sm ">13. Debugging</a><a href="advanced-topics.html" class="sb-link py-1.5 px-3 text-sm ">14. Advanced Topics</a><a href="script-best-practices.html" class="sb-link py-1.5 px-3 text-sm ">15. Script Best Practices</a><a href="projects.html" class="sb-link py-1.5 px-3 text-sm ">16. Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link py-1.5 px-3 text-sm ">17. Bash vs PowerShell Cheatsheet</a></nav>
+                <div class="sb-cat text-slate-400">Bash Topics</div><nav class="flex flex-col gap-0.5"><a href="introduction-to-bash.html" class="sb-link py-1.5 px-3 text-sm">Introduction to Bash</a><a href="variables.html" class="sb-link py-1.5 px-3 text-sm active">Variables</a><a href="data-types-and-strings.html" class="sb-link py-1.5 px-3 text-sm">Data Types & Strings</a><a href="input-and-output.html" class="sb-link py-1.5 px-3 text-sm">Input & Output</a><a href="operators-and-arithmetic.html" class="sb-link py-1.5 px-3 text-sm">Operators & Arithmetic</a><a href="control-flow.html" class="sb-link py-1.5 px-3 text-sm">Control Flow</a><a href="functions.html" class="sb-link py-1.5 px-3 text-sm">Functions</a><a href="string-manipulation.html" class="sb-link py-1.5 px-3 text-sm">String Manipulation</a><a href="file-and-directory-operations.html" class="sb-link py-1.5 px-3 text-sm">File & Directory Operations</a><a href="process-management.html" class="sb-link py-1.5 px-3 text-sm">Process Management</a><a href="error-handling.html" class="sb-link py-1.5 px-3 text-sm">Error Handling</a><a href="regular-expressions.html" class="sb-link py-1.5 px-3 text-sm">Regular Expressions</a><a href="debugging.html" class="sb-link py-1.5 px-3 text-sm">Debugging</a><a href="advanced-topics.html" class="sb-link py-1.5 px-3 text-sm">Advanced Topics</a><a href="script-best-practices.html" class="sb-link py-1.5 px-3 text-sm">Script Best Practices</a><a href="projects.html" class="sb-link py-1.5 px-3 text-sm">Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link py-1.5 px-3 text-sm">Bash vs PowerShell Cheatsheet</a></nav>
             </div>
 
             <!-- Page Specific TOC (populated by JS) -->
@@ -205,163 +205,97 @@
 </button>
 
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+    <div class="flex justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+            <header class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">Variables</h1>
+            </header>
 
-<div class="flex justify-center max-w-[1440px] mx-auto w-full">
-    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
-        
-
-        <header class="mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">2. Variables</h1>
-            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
-        </header>
-
-        <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Declaring and Using Variables</h2>
-<br>
+            <article class="prose dark:prose-invert max-w-none pb-20">
+                <h2>Declaring and Using Variables</h2>
 <p>Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
-<br>
 <h3>Basic Variable Assignment</h3>
-<pre><code class="language-bash">
-name="Alice"
+<pre><code class="language-bash">name="Alice"
 age=30
-echo "Name: $name, Age: $age"
-</code></pre>
-<br>
+echo "Name: $name, Age: $age"</code></pre>
 <h3>Curly Brace Syntax</h3>
-<pre><code class="language-bash">
-fruit="apple"
-echo "I have ${fruit}s"
-</code></pre>
-<br>
+<pre><code class="language-bash">fruit="apple"
+echo "I have ${fruit}s"</code></pre>
 <hr>
-<br>
 <h2>Variable Types</h2>
-<br>
 <p>Bash variables are untyped by default, but you can use declare to define types like integers or arrays.</p>
-<br>
 <h3>Integer Declaration</h3>
-<pre><code class="language-bash">
-declare -i count=10
+<pre><code class="language-bash">declare -i count=10
 count+=5
-echo $count  # Output: 15
-</code></pre>
-<br>
+echo $count  # Output: 15</code></pre>
 <h3>Readonly Variable</h3>
-<pre><code class="language-bash">
-readonly PI=3.14159
+<pre><code class="language-bash">readonly PI=3.14159
 echo $PI
-# PI=3 would cause an error
-</code></pre>
-<br>
+# PI=3 would cause an error</code></pre>
 <h3>Lowercase Variable</h3>
-<pre><code class="language-bash">
-declare -l lowered="HELLO"
-echo $lowered  # Output: hello
-</code></pre>
-<br>
+<pre><code class="language-bash">declare -l lowered="HELLO"
+echo $lowered  # Output: hello</code></pre>
 <hr>
-<br>
 <h2>Environment Variables</h2>
-<br>
 <p>Environment variables are available to the script and child processes. Use export to pass them to subprocesses.</p>
-<br>
 <h3>Common Environment Variables</h3>
-<pre><code class="language-bash">
-echo $HOME      # /home/username
+<pre><code class="language-bash">echo $HOME      # /home/username
 echo $USER      # username
 echo $PATH      # /usr/bin:/bin:...
 echo $PWD       # Current directory
 echo $SHELL     # /bin/bash
-echo $HOSTNAME  # machine-name
-</code></pre>
-<br>
+echo $HOSTNAME  # machine-name</code></pre>
 <h3>Exporting Variables</h3>
-<pre><code class="language-bash">
-export MY_VAR="hello"
-bash -c 'echo $MY_VAR'  # Output: hello
-</code></pre>
-<br>
+<pre><code class="language-bash">export MY_VAR="hello"
+bash -c 'echo $MY_VAR'  # Output: hello</code></pre>
 <hr>
-<br>
 <h2>Special Variables</h2>
-<br>
 <p>Bash provides special variables for script arguments, process info, and status codes.</p>
-<br>
 <h3>Script Arguments</h3>
-<pre><code class="language-bash">
-#!/bin/bash
+<pre><code class="language-bash">#!/bin/bash
 echo "Script name: $0"
 echo "First arg: $1"
 echo "Second arg: $2"
 echo "All args: $@"
-echo "Number of args: $#"
-</code></pre>
-<br>
+echo "Number of args: $#"</code></pre>
 <h3>Exit Status and PID</h3>
-<pre><code class="language-bash">
-ls /nonexistent 2&gt;/dev/null
+<pre><code class="language-bash">ls /nonexistent 2&gt;/dev/null
 echo "Exit status: $?"  # 1 (error)
 echo "Current PID: $$"
-echo "Last background PID: $!"
-</code></pre>
-<br>
+echo "Last background PID: $!"</code></pre>
 <hr>
-<br>
 <h2>Variable Substitution & Defaults</h2>
-<br>
 <p>Bash provides powerful parameter expansion to set defaults, substrings, and transformations.</p>
-<br>
 <h3>Default Values</h3>
-<pre><code class="language-bash">
-name=""
+<pre><code class="language-bash">name=""
 echo ${name:-"Default"}   # Default (if unset or empty)
 echo ${name:="Assigned"}  # Assigns and prints
-echo ${name:?"Error!"}    # Error if unset
-</code></pre>
-<br>
+echo ${name:?"Error!"}    # Error if unset</code></pre>
 <h3>Substring Extraction</h3>
-<pre><code class="language-bash">
-str="Hello, World!"
+<pre><code class="language-bash">str="Hello, World!"
 echo ${str:7:5}   # World
 echo ${str:0:5}   # Hello
-echo ${#str}      # 13 (length)
-</code></pre>
-<br>
+echo ${#str}      # 13 (length)</code></pre>
 <h3>Pattern Removal</h3>
-<pre><code class="language-bash">
-file="/home/user/docs/report.txt"
+<pre><code class="language-bash">file="/home/user/docs/report.txt"
 echo ${file##*/}   # report.txt (basename)
 echo ${file%/*}    # /home/user/docs (dirname)
-echo ${file%.txt}  # /home/user/docs/report
-</code></pre>
-<br>
+echo ${file%.txt}  # /home/user/docs/report</code></pre>
 <hr>
-<br>
-        </article>
+            </article>
 
-        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            
-            <a href="introduction-to-bash.html" class="flex flex-col items-start no-underline group">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-left">1. Introduction to Bash</span>
-            </a>
-            
-            <a href="data-types-strings.html" class="flex flex-col items-end no-underline group text-right">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">3. Data Types & Strings</span>
-            </a>
-        </div>
-    </main>
+            <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <a href="introduction-to-bash.html" class="nav-btn prev"><span>Previous</span>Introduction to Bash</a>
+                <a href="data-types-and-strings.html" class="nav-btn next"><span>Next</span>Data Types & Strings</a>
+            </div>
+        </main>
 </div>
 
-    
-</div>
+        
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777225407" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../../../js/ds-main.js?v=1777225781" defer></script>
 </body>
 </html>

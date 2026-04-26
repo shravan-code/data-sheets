@@ -5,7 +5,7 @@
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
         })();</script>
-    <title>10. Process Management — Bash Scripting</title>
+    <title>Process Management — Bash Guide</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777225407">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777225781">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -41,7 +41,7 @@
             <div class="hidden md:flex items-center gap-3 ml-2">
                 <div class="h-4 w-[1px] bg-slate-200"></div>
                 <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    10. Process Management
+                    Process Management
                 </span>
             </div>
         </div>
@@ -183,7 +183,7 @@
 
             <!-- Guide Specific Topics (e.g. Bash Topics) -->
             <div id="guide-topics" class="mt-6">
-                <div class="sb-cat text-slate-400">Bash Topics</div><nav class="flex flex-col gap-0.5"><a href="introduction-to-bash.html" class="sb-link py-1.5 px-3 text-sm ">1. Introduction to Bash</a><a href="variables.html" class="sb-link py-1.5 px-3 text-sm ">2. Variables</a><a href="data-types-strings.html" class="sb-link py-1.5 px-3 text-sm ">3. Data Types & Strings</a><a href="input-output.html" class="sb-link py-1.5 px-3 text-sm ">4. Input & Output</a><a href="operators-arithmetic.html" class="sb-link py-1.5 px-3 text-sm ">5. Operators & Arithmetic</a><a href="control-flow.html" class="sb-link py-1.5 px-3 text-sm ">6. Control Flow</a><a href="functions.html" class="sb-link py-1.5 px-3 text-sm ">7. Functions</a><a href="string-manipulation.html" class="sb-link py-1.5 px-3 text-sm ">8. String Manipulation</a><a href="file-directory-operations.html" class="sb-link py-1.5 px-3 text-sm ">9. File & Directory Operations</a><a href="process-management.html" class="sb-link py-1.5 px-3 text-sm active">10. Process Management</a><a href="error-handling.html" class="sb-link py-1.5 px-3 text-sm ">11. Error Handling</a><a href="regular-expressions.html" class="sb-link py-1.5 px-3 text-sm ">12. Regular Expressions</a><a href="debugging.html" class="sb-link py-1.5 px-3 text-sm ">13. Debugging</a><a href="advanced-topics.html" class="sb-link py-1.5 px-3 text-sm ">14. Advanced Topics</a><a href="script-best-practices.html" class="sb-link py-1.5 px-3 text-sm ">15. Script Best Practices</a><a href="projects.html" class="sb-link py-1.5 px-3 text-sm ">16. Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link py-1.5 px-3 text-sm ">17. Bash vs PowerShell Cheatsheet</a></nav>
+                <div class="sb-cat text-slate-400">Bash Topics</div><nav class="flex flex-col gap-0.5"><a href="introduction-to-bash.html" class="sb-link py-1.5 px-3 text-sm">Introduction to Bash</a><a href="variables.html" class="sb-link py-1.5 px-3 text-sm">Variables</a><a href="data-types-and-strings.html" class="sb-link py-1.5 px-3 text-sm">Data Types & Strings</a><a href="input-and-output.html" class="sb-link py-1.5 px-3 text-sm">Input & Output</a><a href="operators-and-arithmetic.html" class="sb-link py-1.5 px-3 text-sm">Operators & Arithmetic</a><a href="control-flow.html" class="sb-link py-1.5 px-3 text-sm">Control Flow</a><a href="functions.html" class="sb-link py-1.5 px-3 text-sm">Functions</a><a href="string-manipulation.html" class="sb-link py-1.5 px-3 text-sm">String Manipulation</a><a href="file-and-directory-operations.html" class="sb-link py-1.5 px-3 text-sm">File & Directory Operations</a><a href="process-management.html" class="sb-link py-1.5 px-3 text-sm active">Process Management</a><a href="error-handling.html" class="sb-link py-1.5 px-3 text-sm">Error Handling</a><a href="regular-expressions.html" class="sb-link py-1.5 px-3 text-sm">Regular Expressions</a><a href="debugging.html" class="sb-link py-1.5 px-3 text-sm">Debugging</a><a href="advanced-topics.html" class="sb-link py-1.5 px-3 text-sm">Advanced Topics</a><a href="script-best-practices.html" class="sb-link py-1.5 px-3 text-sm">Script Best Practices</a><a href="projects.html" class="sb-link py-1.5 px-3 text-sm">Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link py-1.5 px-3 text-sm">Bash vs PowerShell Cheatsheet</a></nav>
             </div>
 
             <!-- Page Specific TOC (populated by JS) -->
@@ -205,67 +205,44 @@
 </button>
 
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+    <div class="flex justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+            <header class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">Process Management</h1>
+            </header>
 
-<div class="flex justify-center max-w-[1440px] mx-auto w-full">
-    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
-        
-
-        <header class="mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">10. Process Management</h1>
-            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Processes can run in the background using & and be managed with jobs, fg, bg.</p>
-        </header>
-
-        <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Background & Foreground Jobs</h2>
-<br>
+            <article class="prose dark:prose-invert max-w-none pb-20">
+                <h2>Background & Foreground Jobs</h2>
 <p>Processes can run in the background using & and be managed with jobs, fg, bg.</p>
-<br>
 <h3>Job Control</h3>
-<pre><code class="language-bash">
-sleep 100 &amp;         # run in background
+<pre><code class="language-bash">sleep 100 &amp;         # run in background
 jobs                # list background jobs
 fg %1               # bring job 1 to foreground
 bg %1               # resume job 1 in background
 kill %1             # kill job 1
-wait                # wait for all background jobs
-</code></pre>
-<br>
+wait                # wait for all background jobs</code></pre>
 <h3>Running Multiple Tasks</h3>
-<pre><code class="language-bash">
-task1 &amp;
+<pre><code class="language-bash">task1 &amp;
 task2 &amp;
 task3 &amp;
 wait  # wait for all to finish
-echo "All tasks complete"
-</code></pre>
-<br>
+echo "All tasks complete"</code></pre>
 <hr>
-<br>
 <h2>Process Monitoring</h2>
-<br>
 <p>Monitor running processes with ps, top, and pgrep.</p>
-<br>
 <h3>Process Commands</h3>
-<pre><code class="language-bash">
-ps aux                    # all processes
+<pre><code class="language-bash">ps aux                    # all processes
 ps aux | grep nginx       # find specific process
 pgrep nginx               # get PID of nginx
 kill PID                  # terminate process
 kill -9 PID               # force kill
 pkill nginx               # kill by name
-nohup ./longscript.sh &amp;   # run ignoring hangup
-</code></pre>
-<br>
+nohup ./longscript.sh &amp;   # run ignoring hangup</code></pre>
 <hr>
-<br>
 <h2>Signals</h2>
-<br>
 <p>Signals are notifications sent to processes. Use trap to catch signals in your scripts.</p>
-<br>
 <h3>Trap Signals</h3>
-<pre><code class="language-bash">
-cleanup() {
+<pre><code class="language-bash">cleanup() {
   echo "Cleaning up..."
   rm -f /tmp/tempfile.$$
   exit 0
@@ -274,41 +251,25 @@ cleanup() {
 trap cleanup INT TERM EXIT
 
 echo "Script PID: $$"
-sleep 100  # will clean up on Ctrl+C
-</code></pre>
-<br>
+sleep 100  # will clean up on Ctrl+C</code></pre>
 <h3>Ignore SIGHUP</h3>
-<pre><code class="language-bash">
-trap '' HUP   # ignore hangup signal
-nohup ./script.sh &amp;
-</code></pre>
-<br>
+<pre><code class="language-bash">trap '' HUP   # ignore hangup signal
+nohup ./script.sh &amp;</code></pre>
 <hr>
-<br>
-        </article>
+            </article>
 
-        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            
-            <a href="file-directory-operations.html" class="flex flex-col items-start no-underline group">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-left">9. File & Directory Operations</span>
-            </a>
-            
-            <a href="error-handling.html" class="flex flex-col items-end no-underline group text-right">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">11. Error Handling</span>
-            </a>
-        </div>
-    </main>
+            <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <a href="file-and-directory-operations.html" class="nav-btn prev"><span>Previous</span>File & Directory Operations</a>
+                <a href="error-handling.html" class="nav-btn next"><span>Next</span>Error Handling</a>
+            </div>
+        </main>
 </div>
 
-    
-</div>
+        
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777225407" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../../../js/ds-main.js?v=1777225781" defer></script>
 </body>
 </html>
