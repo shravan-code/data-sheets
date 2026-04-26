@@ -3,20 +3,16 @@
     const body  = document.body;
 
     /* ── Theme ──────────────────────────────────── */
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
-            
-            // Sync Prism themes
-            const l = document.getElementById('prism-theme-light');
-            const d = document.getElementById('prism-theme-dark');
-            if(l && d) {
-                l.disabled = isDark;
-                d.disabled = !isDark;
-            }
-        });
+    // Dark mode removed as per user request. Defaulting to light theme.
+    html.classList.remove('dark');
+    localStorage.setItem('ds-theme', 'light');
+    
+    // Sync Prism themes to light only
+    const l = document.getElementById('prism-theme-light');
+    const d = document.getElementById('prism-theme-dark');
+    if(l && d) {
+        l.disabled = false;
+        d.disabled = true;
     }
 
     /* ── Sidebar state ───────────────────────────── */
@@ -24,28 +20,81 @@
     const overlay  = document.getElementById('sidebar-overlay');
     const togBtn   = document.getElementById('sidebar-toggle');
 
-    // Restore persisted state (default: open on desktop, closed on mobile)
+    // Default: expanded on desktop, closed on mobile
     const isDesktop = () => window.innerWidth >= 1024;
     const stored = localStorage.getItem('ds-sidebar');
-    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+    let sidebarOpen = isDesktop() ? true : (stored === 'open');
 
     // MOBILE UX: Always start closed on mobile regardless of persisted state
     if (!isDesktop()) sidebarOpen = false;
 
 
     /* ── Active Link Highlighting ────────────────── */
+    /* ── Active Link Highlighting ────────────────── */
     function highlightActive() {
-        const path = window.location.pathname;
-        const page = path.split('/').pop() || 'index.html';
+        const currentPath = window.location.pathname;
         const links = document.querySelectorAll('.sb-link');
+        let activeHeaders = new Set();
+
         links.forEach(link => {
             const href = link.getAttribute('href');
-            if (href && href.includes(page)) {
-                link.classList.add('active');
+            if (!href) return;
+
+            // Resolve relative href to absolute path for comparison
+            const linkPath = new URL(href, window.location.href).pathname;
+            
+            // Match logic: Exact match OR the current page is a sub-page of this link
+            // e.g. if we are on /bash/intro.html and link is /bash.html
+            const isExact = (currentPath === linkPath);
+            const isAncestor = !isExact && currentPath.includes(linkPath.replace('.html', ''));
+            
+            if (isExact || isAncestor) {
+                if (isExact) {
+                    link.classList.add('active');
+                    
+                    // Position active link
+                    const positionActiveLink = () => {
+                        const sidebar = document.getElementById('ds-sidebar');
+                        if (sidebar) {
+                            sidebar.scrollTo({
+                                top: link.offsetTop - 60, // Slightly more padding
+                                behavior: 'smooth'
+                            });
+                        }
+                    };
+                    positionActiveLink();
+                    setTimeout(positionActiveLink, 300);
+                } else {
+                    link.classList.add('ancestor-active');
+                }
+
+                // Expand all parent categories
+                let parent = link.parentElement;
+                while (parent && parent !== sidebar) {
+                    if (parent.tagName.toLowerCase() === 'nav') {
+                        const header = parent.previousElementSibling;
+                        if (header && header.classList.contains('sb-cat')) {
+                            activeHeaders.add(header);
+                        }
+                    }
+                    parent = parent.parentElement;
+                }
             } else {
                 link.classList.remove('active');
+                link.classList.remove('ancestor-active');
             }
         });
+
+        // Expand sections
+        if (activeHeaders.size > 0) {
+            document.querySelectorAll('.sb-cat').forEach(cat => {
+                if (activeHeaders.has(cat)) {
+                    cat.classList.remove('collapsed');
+                }
+                // We DON'T collapse others here to prevent the "main section is closing" issue
+                // when navigating within sub-sections or clicking around.
+            });
+        }
     }
     highlightActive();
 
@@ -92,11 +141,47 @@
         });
     }
 
-    // On resize: if going to desktop re-open by default if never set
+    /* ── Collapsible Sidebar Sections ─────────────── */
+    function initCollapsibleSections() {
+        const categories = document.querySelectorAll('.sb-cat');
+        categories.forEach(cat => {
+            // Add chevron icon if not present
+            if (!cat.querySelector('.chevron')) {
+                const chevron = document.createElement('i');
+                chevron.setAttribute('data-lucide', 'chevron-down');
+                chevron.classList.add('chevron', 'w-3', 'h-3', 'ml-auto', 'transition-transform', 'duration-300');
+                cat.appendChild(chevron);
+            }
+
+            cat.addEventListener('click', () => {
+                const isOpening = cat.classList.contains('collapsed');
+
+                if (isOpening) {
+                    // Collapse all others (Accordion behavior)
+                    categories.forEach(other => {
+                        if (other !== cat) {
+                            other.classList.add('collapsed');
+                        }
+                    });
+                }
+
+                cat.classList.toggle('collapsed');
+                
+                // Refresh icons
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
+
+        });
+    }
+    initCollapsibleSections();
+
+    // On resize: ensure sidebar state is correct
     window.addEventListener('resize', () => {
-        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
-            sidebarOpen = true;
-            applyState(false);
+        if (isDesktop()) {
+            if (!sidebarOpen) {
+                sidebarOpen = true;
+                applyState(false);
+            }
         }
     });
 
@@ -115,15 +200,17 @@
     /* ── Table of Contents ───────────────────────── */
     function initTOC() {
         const tocContainer = document.querySelector('.toc-list');
+        const tocWrapper = document.querySelector('.toc-container');
         const content = document.querySelector('.prose');
         if (!tocContainer || !content) return;
 
         const headers = content.querySelectorAll('h2, h3');
         if (headers.length === 0) {
-            const tocWrapper = document.querySelector('.toc-container');
             if (tocWrapper) tocWrapper.style.display = 'none';
             return;
         }
+
+        if (tocWrapper) tocWrapper.style.display = 'block';
 
         headers.forEach((header, index) => {
             if (!header.id) {
@@ -226,4 +313,6 @@
     window.addEventListener('load', () => {
         setTimeout(enhanceCodeBlocks, 500);
     });
+    // Initial Icon Load
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 })();

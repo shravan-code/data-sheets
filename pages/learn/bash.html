@@ -2,68 +2,63 @@
 <html lang="en">
 <head>
 <script>(function(){
-        const s=localStorage.getItem('ds-theme');
-        const isL = s==='light';
-        if(isL) document.documentElement.classList.remove('dark');
-        else document.documentElement.classList.add('dark');
-        
-        // Immediate Prism theme sync
-        window.addEventListener('DOMContentLoaded', () => {
-            const l = document.getElementById('prism-theme-light');
-            const d = document.getElementById('prism-theme-dark');
-            if(l && d) {
-                l.disabled = !isL;
-                d.disabled = isL;
-            }
-        });
-    })();</script>
-    <title>Bash Scripting — Data Sheets</title>
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Bash Scripting Roadmap — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Master Linux automation and shell scripting with our 11-phase structured Bash roadmap.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-<link rel="stylesheet" href="../../css/ds-main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <style>
+        .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .dark .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }
+    </style>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777229862">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
 <!-- NAV -->
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center">
-        <!-- LEFT: Sidebar Toggle -->
-        <div class="flex-1 flex items-center">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar">
-                <span class="line"></span>
-                <span class="line"></span>
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
             </button>
-        </div>
 
-        <!-- CENTER: Logo and Page Title -->
-        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
-            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 group-hover:scale-105">
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
                 <div class="flex items-center">
-                    <span style="font-family: 'Outfit', sans-serif;" class="text-[28px] tracking-tighter flex items-center">
-                        <span class="font-light text-slate-500 dark:text-slate-400">Data</span>
-                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 dark:from-indigo-400 dark:via-blue-400 dark:to-emerald-300 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
                     </span>
                 </div>
             </a>
-            <div class="hidden sm:flex items-center gap-3">
-                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
-                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                    Bash Scripting
+
+            <div class="hidden md:flex items-center gap-3 ml-2">
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                    Bash Scripting Roadmap
                 </span>
             </div>
         </div>
 
-        <!-- RIGHT: Theme Toggle -->
-        <div class="flex-1 flex justify-end">
-            <button id="theme-toggle" title="Toggle theme"
-                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
-            </button>
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <a href="../../pages/portfolio.html" id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
         </div>
     </div>
 </nav>
@@ -74,37 +69,45 @@
 
 <!-- SIDEBAR -->
 <aside id="ds-sidebar"
-    class="sidebar-hidden fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
-           bg-white dark:bg-[#0c111d] border-r border-slate-200/80 dark:border-slate-800/60
-           shadow-xl shadow-slate-200/50 dark:shadow-slate-950/80">
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
 
     <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
 
     <div class="py-5 px-3 flex flex-col h-full">
         <div class="flex-1">
-            <a href="../../pages/learn.html" class="sb-section bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/20">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="book-open" class="w-3 h-3 text-white"></i>
-                </span>
-                Learn
-            </a>
 
-            <div class="sb-cat text-blue-500 dark:text-blue-400">Programming</div>
-            <nav>
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
                 <a href="../../pages/learn/sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
                 <a href="../../pages/learn/bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
                 <a href="../../pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
             </nav>
 
-            <div class="sb-cat text-emerald-500 dark:text-emerald-400">Concepts</div>
-            <nav>
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
                 <a href="../../pages/learn/dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
             </nav>
 
-            <div class="sb-cat text-orange-500 dark:text-orange-400">Tools</div>
-            <nav>
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
                 <a href="../../pages/learn/flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
                 <a href="../../pages/learn/kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
@@ -114,8 +117,13 @@
                 <a href="../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
             </nav>
 
-            <div class="sb-cat text-cyan-500 dark:text-cyan-400">Cloud</div>
-            <nav>
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
                 <a href="../../pages/learn/gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
                 <a href="../../pages/learn/azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
@@ -123,38 +131,69 @@
                 <a href="../../pages/learn/databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
             </nav>
 
-            <div class="sb-cat text-violet-500 dark:text-violet-400">CI / CD</div>
-            <nav>
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
                 <a href="../../pages/learn/kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
                 <a href="../../pages/learn/terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
                 <a href="../../pages/learn/github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
             </nav>
 
-            <div class="sb-cat text-rose-500 dark:text-rose-400">Design</div>
-            <nav>
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
                 <a href="../../pages/learn/pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
                 <a href="../../pages/learn/de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
             </nav>
 
-            <div class="mt-5 mb-1 border-t border-slate-200 dark:border-slate-800/60 pt-5">
-                <a href="../../pages/practice.html" class="sb-section bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-500/20">
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="../../pages/roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="../../pages/roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="../../pages/roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="mt-8 mb-1 border-t border-slate-200 pt-6">
+                <a href="../../pages/practice.html" class="sb-section bg-violet-50 text-violet-700 hover:bg-violet-100">
                     <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
                         <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
                     </span>
                     Practice
-                    <span class="ml-auto text-[10px] bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
+                    <span class="ml-auto text-[10px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
                 </a>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="../../pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6 hidden">
+                
             </div>
         </div>
 
-        <div class="portfolio-link mt-auto">
-            <a href="../../pages/portfolio.html" class="sb-link">
-                <i data-lucide="user" class="w-3.5 h-3.5 flex-shrink-0"></i>
-                My Portfolio
-                <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
-            </a>
         </div>
     </div>
 </aside>
@@ -167,216 +206,315 @@
 </button>
 
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-emerald-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-emerald-200/50">
+                        <i data-lucide="terminal" class="w-4 h-4"></i>
+                        Shell Roadmap
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        Bash <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Scripting</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "The language of the cloud. From simple pipes to production-grade automation engines."
+                    </p>
+                </div>
+            </header>
 
-<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">01</span>
+            </div>
 
-    <header class="mb-12">
-        <div class="flex items-center gap-4 mb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-                <i data-lucide="terminal" class="w-7 h-7"></i>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Shell Foundations
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 1</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/introduction-to-bash.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Introduction to Bash</span>
+            </a>
+                </div>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight tracking-tight">Bash Scripting</h1>
         </div>
-        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">Master the art of automation. From basic commands to complex system scripts and cross-platform comparisons.</p>
-    </header>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">02</span>
+            </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        
-    <a href="bash/introduction-to-bash.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="terminal" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">1. Introduction to Bash</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash (Bourne Again SHell) is a Unix shell and command-line interpreter. It is the default shell on most Linux distributi...</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/variables.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="variable" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">2. Variables</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Variable Mastery
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 2</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/variables.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="variable" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Variables</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
-    <a href="bash/data-types-strings.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="type" class="w-6 h-6"></i>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">03</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">3. Data Types & Strings</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash strings can be manipulated using parameter expansion for length, replacement, case conversion, and more.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/input-output.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="hard-drive" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">4. Input & Output</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">The read command reads input from stdin. It can read into single or multiple variables.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/operators-arithmetic.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="calculator" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">5. Operators & Arithmetic</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash supports integer arithmetic via (( )) or $(()), and floating-point via bc or awk.</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Input & Output
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 3</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/input-and-output.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Input & Output</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
-    <a href="bash/control-flow.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="git-branch" class="w-6 h-6"></i>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">04</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">6. Control Flow</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Conditional branching using if/elif/else. The condition can be any command—its exit status determines the branch.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/functions.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="command" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">7. Functions</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Functions group reusable code. They can accept arguments and return values via exit codes or stdout.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/string-manipulation.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="scissors" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">8. String Manipulation</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">These are the three pillars of text processing in Bash. grep searches, sed transforms, awk processes structured text.</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Data Structures
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 4</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/data-types-and-strings.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="variable" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Data Types & Strings</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
-    <a href="bash/file-directory-operations.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="folder" class="w-6 h-6"></i>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">05</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">9. File & Directory Operations</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash provides robust file manipulation through built-in commands.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/process-management.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="cpu" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">10. Process Management</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Processes can run in the background using & and be managed with jobs, fg, bg.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/error-handling.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="alert-circle" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">11. Error Handling</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Every command returns an exit code: 0 = success, non-zero = failure. $? holds the last exit code.</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Arithmetic & Logic
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 5</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/operators-and-arithmetic.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Operators & Arithmetic</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
-    <a href="bash/regular-expressions.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="search" class="w-6 h-6"></i>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">06</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">12. Regular Expressions</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Regular expressions are patterns used with grep, sed, and awk for text matching and extraction.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/debugging.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="bug" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">13. Debugging</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Bash offers several built-in debugging tools and strategies.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/advanced-topics.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="zap" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">14. Advanced Topics</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Capture command output into a variable using $() or backticks.</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Control Flow
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 6</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/control-flow.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="git-branch" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Control Flow</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
-    <a href="bash/script-best-practices.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="check-circle" class="w-6 h-6"></i>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">07</span>
             </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">15. Script Best Practices</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Following consistent style and safety practices makes scripts robust, readable, and maintainable.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/projects.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="folder-kanban" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">16. Projects</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">A script that monitors CPU, memory, disk usage, and alerts when thresholds are exceeded.</p>
-            </div>
-        </div>
-    </a>
-    <a href="bash/bash-vs-powershell-cheatsheet.html" class="topic-card group bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <i data-lucide="layout" class="w-6 h-6"></i>
-            </div>
-            <div class="flex-1">
-                <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">17. Bash vs PowerShell Cheatsheet</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">Side-by-side comparison of Bash (Linux/macOS) and PowerShell (Windows/cross-platform) commands and syntax</p>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Reusable Functions
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 7</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/functions.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="command" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Functions</span>
+            </a>
+                </div>
             </div>
         </div>
-    </a>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">08</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Text Processing Suite
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 8</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/string-manipulation.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">String Manipulation</span>
+            </a>
+                </div>
+            </div>
+        </div>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">09</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Regex Mastery
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 9</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/regular-expressions.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Regular Expressions</span>
+            </a>
+                </div>
+            </div>
+        </div>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">10</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    System & Robustness
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 10</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/file-and-directory-operations.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="folder" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">File & Directory Operations</span>
+            </a>
+            <a href="bash/process-management.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="cpu" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Process Management</span>
+            </a>
+            <a href="bash/error-handling.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Error Handling</span>
+            </a>
+                </div>
+            </div>
+        </div>
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">11</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                    Advanced & Practical
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 11</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+            <a href="bash/debugging.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Debugging</span>
+            </a>
+            <a href="bash/advanced-topics.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Advanced Topics</span>
+            </a>
+            <a href="bash/script-best-practices.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Script Best Practices</span>
+            </a>
+            <a href="bash/projects.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Projects</span>
+            </a>
+            <a href="bash/bash-vs-powershell-cheatsheet.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                </div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Bash vs PowerShell Cheatsheet</span>
+            </a>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Linux Mastery</p>
+            </footer>
+        </main>
     </div>
-</main>
-</div>
-<script src="../../js/ds-main.js" defer></script>
+<script src="../../js/ds-main.js?v=1777229862" defer></script>
 </body>
 </html>

@@ -403,42 +403,158 @@ graph LR
     }
 ]
 
+roadmap_phases = [
+    {
+        "name": "Phase 1 — Design Fundamentals",
+        "items": [
+            {"name": "Architecture Basics", "id": "fundamentals"},
+            {"name": "Requirement Analysis", "id": "fundamentals"},
+            {"name": "Estimation (Back-of-Envelope)", "id": "fundamentals"},
+            {"name": "SLA, SLO, and SLI", "id": "fundamentals"}
+        ]
+    },
+    {
+        "name": "Phase 2 — Scalability Patterns",
+        "items": [
+            {"name": "Vertical vs Horizontal Scaling", "id": "scalability"},
+            {"name": "Load Balancing Algorithms", "id": "scalability"},
+            {"name": "Database Sharding", "id": "scalability"},
+            {"name": "Consistent Hashing", "id": "databases"}
+        ]
+    },
+    {
+        "name": "Phase 3 — Networking & Communication",
+        "items": [
+            {"name": "HTTP 1.1 / 2 / 3", "id": "networking"},
+            {"name": "Proxies & Reverse Proxies", "id": "networking"},
+            {"name": "API Gateways", "id": "networking"},
+            {"name": "CDN & Edge Computing", "id": "networking"}
+        ]
+    },
+    {
+        "name": "Phase 4 — Data Persistence",
+        "items": [
+            {"name": "SQL vs NoSQL", "id": "databases"},
+            {"name": "ACID vs BASE", "id": "databases"},
+            {"name": "CAP Theorem", "id": "databases"},
+            {"name": "Indexing & Partitioning", "id": "databases"}
+        ]
+    },
+    {
+        "name": "Phase 5 — High-Performance Caching",
+        "items": [
+            {"name": "Cache Aside / Write-Through", "id": "caching"},
+            {"name": "Eviction (LRU, LFU, TTL)", "id": "caching"},
+            {"name": "Distributed Caching (Redis)", "id": "caching"}
+        ]
+    },
+    {
+        "name": "Phase 6 — Async Messaging",
+        "items": [
+            {"name": "Message Queues (RabbitMQ)", "id": "messaging-queues"},
+            {"name": "Event Streaming (Kafka)", "id": "messaging-queues"},
+            {"name": "Delivery Guarantees", "id": "messaging-queues"}
+        ]
+    },
+    {
+        "name": "Phase 7 — Microservices & API Design",
+        "items": [
+            {"name": "RESTful API Best Practices", "id": "networking"},
+            {"name": "gRPC & Protocol Buffers", "id": "networking"},
+            {"name": "GraphQL Fundamentals", "id": "networking"},
+            {"name": "Service Discovery", "id": "scalability"}
+        ]
+    },
+    {
+        "name": "Phase 8 — Security & Identity",
+        "items": [
+            {"name": "OAuth2 & OpenID Connect", "id": "networking"},
+            {"name": "JWT Authentication", "id": "networking"},
+            {"name": "TLS/SSL Encryption", "id": "networking"},
+            {"name": "Role-Based Access Control", "id": "networking"}
+        ]
+    },
+    {
+        "name": "Phase 9 — Reliability & Monitoring",
+        "items": [
+            {"name": "Circuit Breakers & Retries", "id": "fundamentals"},
+            {"name": "Rate Limiting Patterns", "id": "networking"},
+            {"name": "Distributed Tracing", "id": "fundamentals"},
+            {"name": "Log Aggregation", "id": "fundamentals"}
+        ]
+    },
+    {
+        "name": "Phase 10 — Cloud Native & Infra",
+        "items": [
+            {"name": "Docker & Containerization", "id": "scalability"},
+            {"name": "Kubernetes Orchestration", "id": "scalability"},
+            {"name": "Serverless Architectures", "id": "scalability"},
+            {"name": "Infrastructure as Code", "id": "fundamentals"}
+        ]
+    },
+    {
+        "name": "Phase 11 — Design Interviews & Cases",
+        "items": [
+            {"name": "Twitter/X Timeline Design", "id": "messaging-queues"},
+            {"name": "Uber/Lyft Proximity Design", "id": "databases"},
+            {"name": "Netflix Content Delivery", "id": "networking"},
+            {"name": "Standard Interview Template", "id": "fundamentals"}
+        ]
+    }
+]
+
 hub_template = '''<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>System Design — Data Sheets</title>
+    <title>System Design Roadmap — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <style>
+        .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }}
+        .dark .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-blue-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-blue-200/50">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        Ultimate Learning Path
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        System <span class="bg-gradient-to-r from-blue-600 to-indigo-400 bg-clip-text text-transparent">Design</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the architecture, patterns, and best practices for building massive-scale distributed systems."
+                    </p>
+                </div>
+            </header>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                {phases_html}
+            </div>
 
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-            <i data-lucide="layout" class="w-8 h-8"></i>
-        </div>
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">Architecture</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">System Design</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Foundation of scalable architectures: Load Balancing, Databases, Caching, and Microservices.</p>
-        </div>
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Mastery</p>
+            </footer>
+        </main>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {cards_html}
-    </div>
-</main>
 </body>
 </html>'''
 
@@ -451,7 +567,7 @@ subpage_template = '''<!DOCTYPE html>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         const isDark = document.documentElement.classList.contains('dark');
@@ -468,8 +584,8 @@ subpage_template = '''<!DOCTYPE html>
 
 <div class="flex justify-center max-w-[1440px] mx-auto">
     <main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
-        <a href="../system-design.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <a href="../system-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
             Back to System Design
         </a>
 
@@ -490,46 +606,92 @@ subpage_template = '''<!DOCTYPE html>
 </body>
 </html>'''
 
-# 1. Build Hub Page
-cards_html = ""
-for page in subpages:
-    card = f'''
-    <a href="system-design/{page['id']}.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">{page["title"]}</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{page["description"]}</p>
-    </a>
-    '''
-    cards_html += card
+# 1. Build Roadmap Index
+phases_html = ""
+for i, phase in enumerate(roadmap_phases):
+    num = i + 1
+    items_html = ""
+    for item in phase['items']:
+        items_html += f"""
+        <a href="system-design/{item['id']}.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">{item['name']}</span>
+        </a>"""
 
-hub_content = hub_template.format(cards_html=cards_html)
+    phases_html += f"""
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">{num:02d}</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                {phase['name'].split(' — ')[1]}
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase {num}</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {items_html}
+            </div>
+        </div>
+    </div>"""
+
+hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
 with open("pages/learn/system-design.html", "w", encoding="utf-8") as f:
     f.write(hub_content)
 
-# 2. Build Subpages
-os.makedirs("pages/learn/system-design", exist_ok=True)
-for page in subpages:
-    # Build list of all topics for the sidebar
-    topics_html = '<div class="toc-title mt-8">System Design</div><ul class="toc-list">'
-    for p in subpages:
-        active_cls = "active" if p['id'] == page['id'] else ""
-        topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
-    topics_html += '</ul>'
+    # 2. Build Subpages
+    os.makedirs("pages/learn/system-design", exist_ok=True)
+    for i, page in enumerate(subpages):
+        # Navigation logic
+        prev_page = subpages[i-1] if i > 0 else None
+        next_page = subpages[i+1] if i < len(subpages)-1 else None
 
-    content = subpage_template.format(
-        title=page["title"],
-        description=page["description"],
-        content=page["content"],
-        topics_list_html=topics_html
-    )
-    path = os.path.join("pages", "learn", "system-design", f"{page['id']}.html")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
+        prev_html = ""
+        if prev_page:
+            prev_html = f"""
+            <a href="{prev_page['id']}.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">{prev_page["title"]}</span>
+            </a>"""
+            
+        next_html = ""
+        if next_page:
+            next_html = f"""
+            <a href="{next_page['id']}.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">{next_page["title"]}</span>
+            </a>"""
 
-print("Successfully generated System Design pages!")
+        # Build list of all topics for the sidebar
+        topics_html = '<div class="toc-title mt-8">System Design</div><ul class="toc-list">'
+        for p in subpages:
+            active_cls = "active" if p['id'] == page['id'] else ""
+            topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
+        topics_html += '</ul>'
+
+        content = subpage_template.format(
+            title=page["title"],
+            description=page["description"],
+            content=page["content"],
+            topics_list_html=topics_html
+        )
+
+        # Inject Navigation Cards before </body> or at the end of main
+        nav_html = f"""
+        <div class="nav-container">
+            {prev_html if prev_html else "<div></div>"}
+            {next_html if next_html else "<div></div>"}
+        </div>
+        """
+        content = content.replace('</main>', nav_html + '</main>')
+
+        path = os.path.join("pages", "learn", "system-design", f"{page['id']}.html")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+
+print("Successfully generated System Design Roadmap!")
