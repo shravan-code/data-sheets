@@ -13,7 +13,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777225781">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777228331">
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
@@ -181,13 +183,17 @@
 
             <!-- Guide Specific Topics (e.g. Bash Topics) -->
             <div id="guide-topics" class="mt-6">
-                <div class="sb-cat text-slate-400">Bash Topics</div><nav class="flex flex-col gap-0.5"><a href="introduction-to-bash.html" class="sb-link py-1.5 px-3 text-sm">Introduction to Bash</a><a href="variables.html" class="sb-link py-1.5 px-3 text-sm">Variables</a><a href="data-types-and-strings.html" class="sb-link py-1.5 px-3 text-sm">Data Types & Strings</a><a href="input-and-output.html" class="sb-link py-1.5 px-3 text-sm">Input & Output</a><a href="operators-and-arithmetic.html" class="sb-link py-1.5 px-3 text-sm">Operators & Arithmetic</a><a href="control-flow.html" class="sb-link py-1.5 px-3 text-sm">Control Flow</a><a href="functions.html" class="sb-link py-1.5 px-3 text-sm">Functions</a><a href="string-manipulation.html" class="sb-link py-1.5 px-3 text-sm">String Manipulation</a><a href="file-and-directory-operations.html" class="sb-link py-1.5 px-3 text-sm">File & Directory Operations</a><a href="process-management.html" class="sb-link py-1.5 px-3 text-sm">Process Management</a><a href="error-handling.html" class="sb-link py-1.5 px-3 text-sm">Error Handling</a><a href="regular-expressions.html" class="sb-link py-1.5 px-3 text-sm">Regular Expressions</a><a href="debugging.html" class="sb-link py-1.5 px-3 text-sm">Debugging</a><a href="advanced-topics.html" class="sb-link py-1.5 px-3 text-sm">Advanced Topics</a><a href="script-best-practices.html" class="sb-link py-1.5 px-3 text-sm">Script Best Practices</a><a href="projects.html" class="sb-link py-1.5 px-3 text-sm">Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link py-1.5 px-3 text-sm active">Bash vs PowerShell Cheatsheet</a></nav>
-            </div>
-
-            <!-- Page Specific TOC (populated by JS) -->
-            <div id="sidebar-toc" class="mt-6 hidden">
-                <div class="sb-cat text-slate-400">On this page</div>
-                <nav class="toc-list pl-2"></nav>
+                
+        <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="list" class="w-3 h-3 text-white"></i>
+            </span>
+            Bash Topics
+        </div>
+        <nav class="pl-2">
+            <a href="introduction-to-bash.html" class="sb-link">Introduction to Bash</a><a href="variables.html" class="sb-link">Variables</a><a href="data-types-and-strings.html" class="sb-link">Data Types & Strings</a><a href="input-and-output.html" class="sb-link">Input & Output</a><a href="operators-and-arithmetic.html" class="sb-link">Operators & Arithmetic</a><a href="control-flow.html" class="sb-link">Control Flow</a><a href="functions.html" class="sb-link">Functions</a><a href="string-manipulation.html" class="sb-link">String Manipulation</a><a href="file-and-directory-operations.html" class="sb-link">File & Directory Operations</a><a href="process-management.html" class="sb-link">Process Management</a><a href="error-handling.html" class="sb-link">Error Handling</a><a href="regular-expressions.html" class="sb-link">Regular Expressions</a><a href="debugging.html" class="sb-link">Debugging</a><a href="advanced-topics.html" class="sb-link">Advanced Topics</a><a href="script-best-practices.html" class="sb-link">Script Best Practices</a><a href="projects.html" class="sb-link">Projects</a><a href="bash-vs-powershell-cheatsheet.html" class="sb-link active">Bash vs PowerShell Cheatsheet</a>
+        </nav>
+        
             </div>
         </div>
 
@@ -210,21 +216,669 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                
+                <h2>Basic Output</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Print text</div>
+<code>echo "Hello, World!"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Write-Host "Hello, World!"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Print without newline</div>
+<code>echo -n "No newline"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Write-Host -NoNewline "No newline"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Print to stderr</div>
+<code>echo "Error" >&2</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Write-Error "Error"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Formatted output</div>
+<code>printf "%-10s %5d\n" "item" 42</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>"{0,-10} {1,5}" -f "item", 42</code></td>
+</tr>
+</tbody></table></div>
+<h2>Variables</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Assign variable</div>
+<code>name="Alice"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$name = "Alice"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Use variable</div>
+<code>echo $name</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Write-Host $name</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Integer variable</div>
+<code>declare -i num=10</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>[int]$num = 10</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Read-only variable</div>
+<code>readonly PI=3.14</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Set-Variable -Name PI -Value 3.14 -Option Constant</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Unset variable</div>
+<code>unset name</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Remove-Variable name</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">String length</div>
+<code>${#str}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str.Length</code></td>
+</tr>
+</tbody></table></div>
+<h2>Conditionals</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">if-else</div>
+<code>if [ $x -gt 5 ]; then echo "yes"; fi</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>if ($x -gt 5) { Write-Host "yes" }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Equal comparison (int)</div>
+<code>[ $a -eq $b ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$a -eq $b</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Not equal (int)</div>
+<code>[ $a -ne $b ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$a -ne $b</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Greater than</div>
+<code>[ $a -gt $b ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$a -gt $b</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">String equals</div>
+<code>[ "$a" = "$b" ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$a -eq $b</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">String contains</div>
+<code>[[ $str == *substring* ]]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str -like "*substring*"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Regex match</div>
+<code>[[ $str =~ pattern ]]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str -match "pattern"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Null/empty check</div>
+<code>[ -z "$str" ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>[string]::IsNullOrEmpty($str)</code></td>
+</tr>
+</tbody></table></div>
+<h2>Loops</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">For range loop</div>
+<code>for i in {1..10}; do echo $i; done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>for ($i=1; $i -le 10; $i++) { Write-Host $i }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">For each item</div>
+<code>for item in a b c; do echo $item; done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>foreach ($item in @('a','b','c')) { Write-Host $item }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">While loop</div>
+<code>while [ $x -lt 10 ]; do ((x++)); done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>while ($x -lt 10) { $x++ }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Loop with break</div>
+<code>while true; do break; done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>while ($true) { break }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Loop over files</div>
+<code>for f in *.txt; do echo $f; done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-ChildItem *.txt | ForEach-Object { Write-Host $_.Name }</code></td>
+</tr>
+</tbody></table></div>
+<h2>Functions</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Define function</div>
+<code>greet() { echo "Hello $1"; }</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>function Greet($name) { Write-Host "Hello $name" }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Call function</div>
+<code>greet "Alice"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Greet "Alice"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Return value</div>
+<code>result=$(add 5 3)</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$result = Add 5 3</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Local variable</div>
+<code>local x=10</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$local:x = 10</code></td>
+</tr>
+</tbody></table></div>
+<h2>File & Directory</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">List files</div>
+<code>ls -la</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-ChildItem -Force</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Change directory</div>
+<code>cd /path/to/dir</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Set-Location /path/to/dir</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Current directory</div>
+<code>pwd</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Location</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Create directory</div>
+<code>mkdir -p dir/subdir</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>New-Item -ItemType Directory -Path dir/subdir</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Copy file</div>
+<code>cp source.txt dest.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Copy-Item source.txt dest.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Move file</div>
+<code>mv old.txt new.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Move-Item old.txt new.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Delete file</div>
+<code>rm file.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Remove-Item file.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">File exists?</div>
+<code>[ -f file.txt ]</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Test-Path file.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Read file</div>
+<code>cat file.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Content file.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Write to file</div>
+<code>echo "text" > file.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>"text" | Out-File file.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Append to file</div>
+<code>echo "text" >> file.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>"text" | Add-Content file.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Find files</div>
+<code>find . -name "*.txt"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-ChildItem -Recurse -Filter *.txt</code></td>
+</tr>
+</tbody></table></div>
+<h2>String Operations</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Substring</div>
+<code>${str:2:5}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str.Substring(2,5)</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Replace</div>
+<code>${str/old/new}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str -replace 'old','new'</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Uppercase</div>
+<code>${str^^}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str.ToUpper()</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Lowercase</div>
+<code>${str,,}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str.ToLower()</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Split string</div>
+<code>IFS=',' read -ra arr <<< "$str"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr = $str -split ','</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Join array</div>
+<code>IFS=','; echo "${arr[*]}"</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr -join ','</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Trim whitespace</div>
+<code>echo $str | xargs</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$str.Trim()</code></td>
+</tr>
+</tbody></table></div>
+<h2>Arrays</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Create array</div>
+<code>arr=(1 2 3)</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr = @(1, 2, 3)</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Access element</div>
+<code>${arr[0]}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr[0]</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Array length</div>
+<code>${#arr[@]}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr.Count</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">All elements</div>
+<code>${arr[@]}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Append element</div>
+<code>arr+=(4)</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr += 4</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Array slice</div>
+<code>${arr[@]:1:3}</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$arr[1..3]</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Loop over array</div>
+<code>for x in "${arr[@]}"; do echo $x; done</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>foreach ($x in $arr) { Write-Host $x }</code></td>
+</tr>
+</tbody></table></div>
+<h2>Input / Output</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Read user input</div>
+<code>read -p "Name: " name</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$name = Read-Host "Name"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Read password</div>
+<code>read -s -p "Pass: " pass</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$pass = Read-Host -AsSecureString "Pass"</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Redirect stdout</div>
+<code>cmd > out.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>cmd | Out-File out.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Redirect stderr</div>
+<code>cmd 2> err.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>cmd 2> err.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Redirect both</div>
+<code>cmd &> all.txt</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>cmd *> all.txt</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Pipe</div>
+<code>cmd1 | cmd2</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>cmd1 | cmd2</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Discard output</div>
+<code>cmd > /dev/null 2>&1</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>cmd | Out-Null</code></td>
+</tr>
+</tbody></table></div>
+<h2>Process Management</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">List processes</div>
+<code>ps aux</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Process</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Kill process by PID</div>
+<code>kill 1234</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Stop-Process -Id 1234</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Kill by name</div>
+<code>pkill nginx</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Stop-Process -Name nginx</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Run in background</div>
+<code>cmd &</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Start-Job { cmd }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Wait for background</div>
+<code>wait</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Job | Wait-Job</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Get PID</div>
+<code>echo $$</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$PID</code></td>
+</tr>
+</tbody></table></div>
+<h2>Environment & System</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Set env variable</div>
+<code>export MY_VAR=value</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$env:MY_VAR = 'value'</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Get env variable</div>
+<code>echo $HOME</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$env:USERPROFILE</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">List all env vars</div>
+<code>env</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-ChildItem Env:</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Current user</div>
+<code>whoami</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$env:USERNAME</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Hostname</div>
+<code>hostname</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$env:COMPUTERNAME</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">OS info</div>
+<code>uname -a</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$PSVersionTable.OS</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Date/time</div>
+<code>date</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Date</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Formatted date</div>
+<code>date +%Y-%m-%d</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Get-Date -Format 'yyyy-MM-dd'</code></td>
+</tr>
+</tbody></table></div>
+<h2>Error Handling</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Exit on error</div>
+<code>set -e</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$ErrorActionPreference = 'Stop'</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Get exit code</div>
+<code>echo $?</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>$LASTEXITCODE</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Custom exit code</div>
+<code>exit 1</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>exit 1</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Try-catch</div>
+<code>if ! cmd; then echo "failed"; fi</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>try { cmd } catch { Write-Error $_ }</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Trap signal</div>
+<code>trap 'cleanup' EXIT INT TERM</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { cleanup }</code></td>
+</tr>
+</tbody></table></div>
+<h2>Network & Web</h2>
+<div class="overflow-x-auto my-6">
+<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+<thead class="bg-slate-100 dark:bg-slate-800/50">
+<tr>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>
+<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Download file</div>
+<code>curl -O https://example.com/file.zip</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Invoke-WebRequest -Uri https://example.com/file.zip -OutFile file.zip</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">HTTP GET request</div>
+<code>curl https://api.example.com/data</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Invoke-RestMethod -Uri https://api.example.com/data</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">HTTP POST (JSON)</div>
+<code>curl -X POST -H 'Content-Type: application/json' -d '{"key":"val"}' url</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Invoke-RestMethod -Method Post -Uri url -Body (@{key='val'} | ConvertTo-Json) -ContentType 'application/json'</code></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="border border-slate-200 dark:border-slate-800 p-3">
+<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Test connectivity</div>
+<code>ping -c 4 google.com</code></td>
+<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>Test-NetConnection -ComputerName google.com</code></td>
+</tr>
+</tbody></table></div>
             </article>
 
-            <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-                <a href="projects.html" class="nav-btn prev"><span>Previous</span>Projects</a>
+            <div class="nav-container">
+                
+            <a href="projects.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">Projects</span>
+            </a>
                 
             </div>
         </main>
 </div>
 
-        
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list"></ul>
+            
+        </aside>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777225781" defer></script>
+<script src="../../../js/ds-main.js?v=1777228331" defer></script>
 </body>
 </html>

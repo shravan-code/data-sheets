@@ -5,14 +5,24 @@
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
         })();</script>
-    <title>DSA for Data Engineering — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Roadmap — Data Cake</title>
+    <meta name="description" content="Master Data Structures and Algorithms with our 11-phase structured roadmap.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-<link rel="stylesheet" href="../../css/ds-main.css?v=1777225781">
+    <style>
+        .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .dark .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }
+    </style>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777228331">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
@@ -38,7 +48,7 @@
             <div class="hidden md:flex items-center gap-3 ml-2">
                 <div class="h-4 w-[1px] bg-slate-200"></div>
                 <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    DSA for Data Engineering
+                    DSA Roadmap
                 </span>
             </div>
         </div>
@@ -182,12 +192,6 @@
             <div id="guide-topics" class="mt-6 hidden">
                 
             </div>
-
-            <!-- Page Specific TOC (populated by JS) -->
-            <div id="sidebar-toc" class="mt-6 hidden">
-                <div class="sb-cat text-slate-400">On this page</div>
-                <nav class="toc-list pl-2"></nav>
-            </div>
         </div>
 
         </div>
@@ -202,171 +206,319 @@
 </button>
 
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-emerald-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-emerald-200/50">
+                        <i data-lucide="git-branch-plus" class="w-4 h-4"></i>
+                        DSA for Data Engineering
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        DSA <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Roadmap</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the algorithms and data structures that power modern data platforms. From complexity analysis to graph algorithms and dynamic programming."
+                    </p>
+                </div>
+            </header>
 
-<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    
-
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">
-            <i data-lucide="braces" class="w-8 h-8"></i>
+            <!-- ROADMAP TIMELINE -->
+            <div class="max-w-4xl mx-auto">
+                
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">01</span>
         </div>
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300">Concepts</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">DSA for Data Engineering</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Algorithms and data structures commonly used in data engineering systems and interviews.</p>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Complexity Analysis
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 1</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/complexity-analysis.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="bar-chart" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">1. Complexity Analysis</span>
+    </a>
+            </div>
         </div>
     </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">02</span>
+        </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        
-    <a href="dsa-de/complexity-analysis.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="bar-chart" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Arrays
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 2</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/arrays.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">1. Complexity Analysis</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Big O Notation (Time & Space), how to analyze loops & recursion.</p>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">2. Arrays</span>
     </a>
-    
-    <a href="dsa-de/arrays.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i>
             </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">2. Arrays</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Traversal, Two Pointers, Sliding Window, Prefix Sum.</p>
-    </a>
-    
-    <a href="dsa-de/strings.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="type" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">3. Strings</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">String Manipulation, Palindromes, Anagrams.</p>
-    </a>
-    
-    <a href="dsa-de/hashing.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="hash" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">4. Hashing</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">HashMap, HashSet, Frequency Count, Two-Sum Pattern.</p>
-    </a>
-    
-    <a href="dsa-de/stacks.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="layers" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">5. Stacks</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">LIFO principle, push, pop, peek, and valid parentheses problems.</p>
-    </a>
-    
-    <a href="dsa-de/queues.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="list-ordered" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">6. Queues</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">FIFO principle, enqueue, dequeue, and Breadth-First Search.</p>
-    </a>
-    
-    <a href="dsa-de/linked-list.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="link" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">7. Linked List</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.</p>
-    </a>
-    
-    <a href="dsa-de/binary-search.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="search" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">8. Binary Search</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Search on sorted array, find first & last position.</p>
-    </a>
-    
-    <a href="dsa-de/sorting.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="sort-asc" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">9. Sorting</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Bubble, Merge, Quick Sort basics and built-in sort usage.</p>
-    </a>
-    
-    <a href="dsa-de/recursion.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="repeat" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">10. Recursion</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Base case, Recursive case, Divide & Conquer basics.</p>
-    </a>
-    
-    <a href="dsa-de/trees.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="git-merge" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">11. Trees</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Binary Tree structure, Traversal, BFS and DFS.</p>
-    </a>
-    
-    <a href="dsa-de/graphs.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="share-2" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">12. Graphs</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">What is a Graph, BFS, DFS, and Cycle Detection.</p>
-    </a>
-    
-    <a href="dsa-de/heap.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="pyramid" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">13. Heap</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Min Heap & Max Heap concept, Top-K Elements.</p>
-    </a>
-    
     </div>
-</main>
-</div>
-<script src="../../js/ds-main.js?v=1777225781" defer></script>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">03</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Strings
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 3</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/strings.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="type" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">3. Strings</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">04</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Hashing
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 4</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/hashing.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="hash" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">4. Hashing</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">05</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Stacks
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 5</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/stacks.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">5. Stacks</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">06</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Queues
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 6</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/queues.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="list-ordered" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">6. Queues</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">07</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Linked List
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 7</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/linked-list.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="link" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">7. Linked List</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">08</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Binary Search
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 8</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/binary-search.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="search" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">8. Binary Search</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">09</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Sorting
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 9</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/sorting.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="sort-asc" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">9. Sorting</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">10</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Recursion
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 10</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/recursion.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="repeat" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">10. Recursion</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">11</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Trees
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 11</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/trees.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="git-merge" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">11. Trees</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">12</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Graphs
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 12</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/graphs.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">12. Graphs</span>
+    </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">13</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                Heap
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 13</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+    <a href="dsa-de/heap.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
+            <i data-lucide="pyramid" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">13. Heap</span>
+    </a>
+            </div>
+        </div>
+    </div>
+            </div>
+        </main>
+    </div>
+<script src="../../js/ds-main.js?v=1777228331" defer></script>
 </body>
 </html>

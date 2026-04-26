@@ -219,15 +219,15 @@ def build_powershell_subpages(topics):
         title = f"{i+1}. {topic['title']}"
 
         prev_html = f"""
-            <a href="{prev_topic['id']}.html" class="flex flex-col items-start no-underline group">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Previous</span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-left">{i}. {prev_topic['title']}</span>
+            <a href="{prev_topic['id']}.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">{prev_topic['title']}</span>
             </a>""" if prev_topic else "<div></div>"
 
         next_html = f"""
-            <a href="{next_topic['id']}.html" class="flex flex-col items-end no-underline group text-right">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">{i+2}. {next_topic['title']}</span>
+            <a href="{next_topic['id']}.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">{next_topic['title']}</span>
             </a>""" if next_topic else "<div></div>"
 
         content_html = render_topic_html(topic)
@@ -259,7 +259,7 @@ def build_powershell_subpages(topics):
             {content_html}
         </article>
 
-        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        <div class="nav-container">
             {prev_html}
             {next_html}
         </div>

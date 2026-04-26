@@ -18,83 +18,216 @@ if not os.path.exists(data_path):
 with open(data_path, 'r', encoding='utf-8') as f:
     subpages = json.load(f)
 
-def generate_index():
-    cards_html = ""
-    for page in subpages:
-        cards_html += f"""
-        <a href="pipeline-design/{page['id']}.html" class="topic-card group relative p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-2xl no-underline transition-all hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-500/30 overflow-hidden">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <i data-lucide="{page['icon']}" class="w-16 h-16 text-blue-600"></i>
-            </div>
-            <div class="relative z-10">
-                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{page['title']}</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{page['description']}</p>
-                <div class="flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                </div>
-            </div>
-        </a>
-        """
+roadmap_phases = [
+    {
+        "name": "Phase 1 — Core Foundations",
+        "items": [
+            {"name": "What is a Data Pipeline?", "id": "fundamentals"},
+            {"name": "Pipeline Components", "id": "fundamentals"},
+            {"name": "Idempotency & Replayability", "id": "fundamentals"},
+            {"name": "SLA & Monitoring Basics", "id": "fundamentals"}
+        ]
+    },
+    {
+        "name": "Phase 2 — Architecture Strategies",
+        "items": [
+            {"name": "Batch vs Streaming vs Hybrid", "id": "pipeline-types"},
+            {"name": "ETL vs ELT Patterns", "id": "pipeline-types"},
+            {"name": "Reverse ETL", "id": "pipeline-types"},
+            {"name": "Lambda & Kappa Architectures", "id": "pipeline-design-patterns"}
+        ]
+    },
+    {
+        "name": "Phase 3 — Ingestion Layer",
+        "items": [
+            {"name": "Log-based CDC (Debezium)", "id": "cdc-pipeline-design"},
+            {"name": "API & Webhook Ingestion", "id": "ingestion-layer-design"},
+            {"name": "File-based Ingestion (S3)", "id": "ingestion-layer-design"},
+            {"name": "Incremental vs Full Loads", "id": "ingestion-layer-design"}
+        ]
+    },
+    {
+        "name": "Phase 4 — Processing Layer",
+        "items": [
+            {"name": "Stateless vs Stateful", "id": "processing-layer-design"},
+            {"name": "Transformation Patterns", "id": "processing-layer-design"},
+            {"name": "Error Handling & DLQs", "id": "processing-layer-design"},
+            {"name": "Parallel Processing Design", "id": "processing-layer-design"}
+        ]
+    },
+    {
+        "name": "Phase 5 — Storage Layer",
+        "items": [
+            {"name": "Medallion Architecture", "id": "storage-layer-design"},
+            {"name": "Partitioning Strategies", "id": "storage-layer-design"},
+            {"name": "File Formats (Parquet/Avro)", "id": "storage-layer-design"},
+            {"name": "Compaction & Vacuuming", "id": "storage-layer-design"}
+        ]
+    },
+    {
+        "name": "Phase 6 — Batch Design",
+        "items": [
+            {"name": "Airflow DAG Anatomy", "id": "batch-pipeline-design"},
+            {"name": "Scheduling & Windowing", "id": "batch-pipeline-design"},
+            {"name": "Upsert Patterns (Merge)", "id": "batch-pipeline-design"},
+            {"name": "Backfill Strategies", "id": "batch-pipeline-design"}
+        ]
+    },
+    {
+        "name": "Phase 7 — Streaming Design",
+        "items": [
+            {"name": "Event Time vs Processing Time", "id": "streaming-pipeline-design"},
+            {"name": "Streaming Windows", "id": "streaming-pipeline-design"},
+            {"name": "Watermarking & Late Data", "id": "streaming-pipeline-design"},
+            {"name": "Exactly-once Semantics", "id": "streaming-pipeline-design"}
+        ]
+    },
+    {
+        "name": "Phase 8 — Orchestration",
+        "items": [
+            {"name": "DAG Design Principles", "id": "orchestration-design"},
+            {"name": "Dynamic DAG Generation", "id": "orchestration-design"},
+            {"name": "Cross-DAG Dependencies", "id": "orchestration-design"},
+            {"name": "Retry & Timeout Policies", "id": "orchestration-design"}
+        ]
+    },
+    {
+        "name": "Phase 9 — Data Quality",
+        "items": [
+            {"name": "Validation at Ingestion", "id": "data-quality-in-pipelines"},
+            {"name": "Data Quality Gates", "id": "data-quality-in-pipelines"},
+            {"name": "Quarantine Pattern", "id": "data-quality-in-pipelines"},
+            {"name": "Schema Enforcement", "id": "data-quality-in-pipelines"}
+        ]
+    },
+    {
+        "name": "Phase 10 — Pipeline Observability",
+        "items": [
+            {"name": "Structured Logging", "id": "pipeline-observability"},
+            {"name": "Prometheus Metrics", "id": "pipeline-observability"},
+            {"name": "Data Lineage Tracking", "id": "pipeline-observability"},
+            {"name": "Health Dashboards", "id": "pipeline-observability"}
+        ]
+    },
+    {
+        "name": "Phase 11 — Optimization & Security",
+        "items": [
+            {"name": "Handling Data Skew", "id": "performance-optimization"},
+            {"name": "Pushdown Optimization", "id": "performance-optimization"},
+            {"name": "PII Masking & Redaction", "id": "security-in-pipelines"},
+            {"name": "Secrets Management", "id": "security-in-pipelines"}
+        ]
+    }
+]
 
-    html = f"""<!DOCTYPE html>
+hub_template = '''<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Data Pipeline Design — Data Sheets</title>
+    <title>Pipeline Design Roadmap — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <style>
+        .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }}
+        .dark .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-amber-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-amber-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-orange-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-amber-200/50">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        Data Engineering Mastery
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        Pipeline <span class="bg-gradient-to-r from-amber-600 to-orange-400 bg-clip-text text-transparent">Design</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Architecting robust, scalable, and observable data lifecycles for the modern data stack."
+                    </p>
+                </div>
+            </header>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                {phases_html}
+            </div>
 
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-            <i data-lucide="layout" class="w-8 h-8"></i>
-        </div>
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">Data Engineering</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">Data Pipeline Design</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Master the architecture, patterns, and best practices for building robust data lifecycles.</p>
-        </div>
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Mastery</p>
+            </footer>
+        </main>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {cards_html}
-    </div>
-</main>
 </body>
-</html>"""
+</html>'''
+
+def generate_index():
+    phases_html = ""
+    for i, phase in enumerate(roadmap_phases):
+        num = i + 1
+        items_html = ""
+        for item in phase['items']:
+            items_html += f"""
+            <a href="pipeline-design/{item['id']}.html" class="flex items-center gap-3 p-3 bg-amber-50/30 dark:bg-slate-900 border border-amber-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:border-amber-200 group/item no-underline">
+                <div class="w-2 h-2 rounded-full bg-amber-400 group-hover/item:scale-125 transition-transform"></div>
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-amber-700 transition-colors">{item['name']}</span>
+            </a>"""
+
+        phases_html += f"""
+        <div class="relative pl-12 pb-12 group last:pb-0">
+            <!-- Timeline Line -->
+            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+            
+            <!-- Timeline Dot -->
+            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-amber-500 transition-colors shadow-sm">
+                <span class="text-xs font-bold text-slate-500 group-hover:text-amber-600">{num:02d}</span>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-amber-500/5">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                    {phase['name'].split(' — ')[1]}
+                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-amber-100 text-amber-700 rounded-lg font-bold border border-amber-200">Phase {num}</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {items_html}
+                </div>
+            </div>
+        </div>"""
+
+    hub_content = hub_template.format(phases_html=phases_html)
     with open(INDEX_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(hub_content)
 
 def generate_subpages():
     for i, page in enumerate(subpages):
         prev_page = subpages[i-1] if i > 0 else None
         next_page = subpages[i+1] if i < len(subpages)-1 else None
         
-        nav_buttons = ""
-        if next_page:
-            nav_buttons += f"""
-            <a href="{next_page['id']}.html" class="flex flex-col items-end no-underline group text-right">
-                <span class="text-xs text-slate-500 mb-1 flex items-center gap-1">Next <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
-                <span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors text-right">{next_page['title']}</span>
-            </a>
-            """
-        else:
-            nav_buttons += "<div></div>"
+        prev_html = f"""
+            <a href="{prev_page['id']}.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">{prev_page['title']}</span>
+            </a>""" if prev_page else "<div></div>"
+
+        next_html = f"""
+            <a href="{next_page['id']}.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">{next_page['title']}</span>
+            </a>""" if next_page else "<div></div>"
 
         content = page['content']
         content = re.sub(r'<pre><code class="language-mermaid">(.*?)</code></pre>', r'<div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50"><div class="mermaid text-center">\1</div></div>', content, flags=re.DOTALL)
@@ -146,9 +279,9 @@ def generate_subpages():
             {content}
         </article>
 
-        <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            <div></div>
-            {nav_buttons}
+        <div class="nav-container">
+            {prev_html}
+            {next_html}
         </div>
     </main>
 
@@ -174,4 +307,4 @@ def generate_subpages():
 if __name__ == "__main__":
     generate_index()
     generate_subpages()
-    print(f"Generated Corrected Index and {len(subpages)} subpages.")
+    print(f"Generated Pipeline Design Roadmap and {len(subpages)} subpages.")

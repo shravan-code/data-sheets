@@ -1,8 +1,49 @@
 import json
 import os
 
+def render_projects_html(topic_data):
+    """Render projects specifically."""
+    parts = []
+    for project in topic_data.get("projects", []):
+        parts.append(f'<div class="mb-16 p-8 bg-emerald-50/20 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 rounded-3xl">')
+        parts.append(f'<h2 class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-0">{project["name"]}</h2>')
+        parts.append(f'<p class="text-lg text-slate-600 dark:text-slate-400 mb-6">{project["description"]}</p>')
+        code = project["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        parts.append(f'<pre><code class="language-bash">{code}</code></pre>')
+        parts.append('</div>')
+    return "\n".join(parts)
+
+def render_cheatsheet_html(topic_data):
+    """Render the side-by-side cheatsheet."""
+    parts = []
+    for cat in topic_data.get("categories", []):
+        parts.append(f"<h2>{cat['category']}</h2>")
+        parts.append('<div class="overflow-x-auto my-6">')
+        parts.append('<table class="min-w-full border-collapse border border-slate-200 dark:border-slate-800 text-sm">')
+        parts.append('<thead class="bg-slate-100 dark:bg-slate-800/50">')
+        parts.append('<tr>')
+        parts.append('<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold w-1/2">Bash</th>')
+        parts.append('<th class="border border-slate-200 dark:border-slate-800 p-3 text-left font-bold text-blue-500 w-1/2">PowerShell</th>')
+        parts.append('</tr>')
+        parts.append('</thead>')
+        parts.append('<tbody>')
+        for comp in cat.get("comparisons", []):
+            parts.append('<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">')
+            parts.append(f'<td class="border border-slate-200 dark:border-slate-800 p-3">')
+            parts.append(f'<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">{comp["task"]}</div>')
+            parts.append(f'<code>{comp["bash"]}</code></td>')
+            parts.append(f'<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>{comp["powershell"]}</code></td>')
+            parts.append('</tr>')
+        parts.append('</tbody></table></div>')
+    return "\n".join(parts)
+
 def render_topic_html(topic_data):
     """Render the detailed content for a topic (subpage)."""
+    if topic_data["id"] == 16:
+        return render_projects_html(topic_data)
+    if topic_data["id"] == 17:
+        return render_cheatsheet_html(topic_data)
+        
     parts = []
     for sub in topic_data.get("subtopics", []):
         parts.append(f"<h2>{sub['name']}</h2>")
@@ -27,7 +68,7 @@ def build_bash_hub(topics):
         {"name": "Text Processing Suite", "topic_ids": [8]},
         {"name": "Regex Mastery", "topic_ids": [12]},
         {"name": "System & Robustness", "topic_ids": [9, 10, 11]},
-        {"name": "Advanced Bash & Debugging", "topic_ids": [13, 14, 15]}
+        {"name": "Advanced & Practical", "topic_ids": [13, 14, 15, 16, 17]}
     ]
 
     phases_html = ""
@@ -159,12 +200,20 @@ def build_bash_subpages(topics):
         prev_html = ""
         if prev_topic:
             pslug = prev_topic['topic'].lower().replace(" ", "-").replace("&", "and")
-            prev_html = f'<a href="{pslug}.html" class="nav-btn prev"><span>Previous</span>{prev_topic["topic"]}</a>'
+            prev_html = f"""
+            <a href="{pslug}.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">{prev_topic["topic"]}</span>
+            </a>"""
             
         next_html = ""
         if next_topic:
             nslug = next_topic['topic'].lower().replace(" ", "-").replace("&", "and")
-            next_html = f'<a href="{nslug}.html" class="nav-btn next"><span>Next</span>{next_topic["topic"]}</a>'
+            next_html = f"""
+            <a href="{nslug}.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">{next_topic["topic"]}</span>
+            </a>"""
 
         content = render_topic_html(topic)
         
@@ -194,7 +243,7 @@ def build_bash_subpages(topics):
                 {content}
             </article>
 
-            <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            <div class="nav-container">
                 {prev_html}
                 {next_html}
             </div>

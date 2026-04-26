@@ -5,14 +5,23 @@
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
         })();</script>
-    <title>System Design — Data Cake</title>
+    <title>System Design Roadmap — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-<link rel="stylesheet" href="../../css/ds-main.css?v=1777225783">
+    <style>
+        .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .dark .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }
+    </style>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777228333">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
@@ -38,7 +47,7 @@
             <div class="hidden md:flex items-center gap-3 ml-2">
                 <div class="h-4 w-[1px] bg-slate-200"></div>
                 <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    System Design
+                    System Design Roadmap
                 </span>
             </div>
         </div>
@@ -182,12 +191,6 @@
             <div id="guide-topics" class="mt-6 hidden">
                 
             </div>
-
-            <!-- Page Specific TOC (populated by JS) -->
-            <div id="sidebar-toc" class="mt-6 hidden">
-                <div class="sb-cat text-slate-400">On this page</div>
-                <nav class="toc-list pl-2"></nav>
-            </div>
         </div>
 
         </div>
@@ -202,94 +205,414 @@
 </button>
 
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-blue-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-blue-200/50">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        Ultimate Learning Path
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        System <span class="bg-gradient-to-r from-blue-600 to-indigo-400 bg-clip-text text-transparent">Design</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the architecture, patterns, and best practices for building massive-scale distributed systems."
+                    </p>
+                </div>
+            </header>
 
-<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    
-
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-            <i data-lucide="layout" class="w-8 h-8"></i>
-        </div>
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">Architecture</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">System Design</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Foundation of scalable architectures: Load Balancing, Databases, Caching, and Microservices.</p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
         
-    <a href="system-design/fundamentals.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="box" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">01</span>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">1. Fundamentals</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">The foundation of architecture: FR, NFR, Estimation, and Metrics.</p>
-    </a>
-    
-    <a href="system-design/scalability.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Design Fundamentals
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 1</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Architecture Basics</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Requirement Analysis</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Estimation (Back-of-Envelope)</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SLA, SLO, and SLI</span>
+        </a>
             </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
         </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">2. Scalability</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">How systems handle growth: Scaling, Load Balancing, and Sharding.</p>
-    </a>
-    
-    <a href="system-design/networking.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="globe" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">3. Networking Basics</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Protocols, Proxies, and Content Delivery.</p>
-    </a>
-    
-    <a href="system-design/databases.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="database" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">4. Databases</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">SQL, NoSQL, ACID, BASE, and the CAP Theorem.</p>
-    </a>
-    
-    <a href="system-design/caching.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">5. Caching</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Improving speed with Memory storage and Eviction patterns.</p>
-    </a>
-    
-    <a href="system-design/messaging-queues.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="message-square" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">6. Messaging & Queues</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Kafka, RabbitMQ, Decoupling, and Delivery Guarantees.</p>
-    </a>
-    
     </div>
-</main>
-</div>
-<script src="../../js/ds-main.js?v=1777225783" defer></script>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">02</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Scalability Patterns
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 2</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Vertical vs Horizontal Scaling</span>
+        </a>
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Load Balancing Algorithms</span>
+        </a>
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Database Sharding</span>
+        </a>
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Consistent Hashing</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">03</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Networking & Communication
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 3</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">HTTP 1.1 / 2 / 3</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Proxies & Reverse Proxies</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">API Gateways</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CDN & Edge Computing</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">04</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Data Persistence
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 4</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQL vs NoSQL</span>
+        </a>
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ACID vs BASE</span>
+        </a>
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CAP Theorem</span>
+        </a>
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Indexing & Partitioning</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">05</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                High-Performance Caching
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 5</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/caching.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Cache Aside / Write-Through</span>
+        </a>
+        <a href="system-design/caching.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Eviction (LRU, LFU, TTL)</span>
+        </a>
+        <a href="system-design/caching.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Distributed Caching (Redis)</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">06</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Async Messaging
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 6</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/messaging-queues.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Message Queues (RabbitMQ)</span>
+        </a>
+        <a href="system-design/messaging-queues.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Event Streaming (Kafka)</span>
+        </a>
+        <a href="system-design/messaging-queues.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Delivery Guarantees</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">07</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Microservices & API Design
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 7</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RESTful API Best Practices</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">gRPC & Protocol Buffers</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">GraphQL Fundamentals</span>
+        </a>
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Service Discovery</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">08</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Security & Identity
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 8</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">OAuth2 & OpenID Connect</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">JWT Authentication</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TLS/SSL Encryption</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Role-Based Access Control</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">09</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Reliability & Monitoring
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 9</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Circuit Breakers & Retries</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Rate Limiting Patterns</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Distributed Tracing</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Log Aggregation</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">10</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Cloud Native & Infra
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 10</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Docker & Containerization</span>
+        </a>
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Kubernetes Orchestration</span>
+        </a>
+        <a href="system-design/scalability.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Serverless Architectures</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Infrastructure as Code</span>
+        </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <!-- Timeline Line -->
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        
+        <!-- Timeline Dot -->
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-blue-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-blue-600">11</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-blue-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                Design Interviews & Cases
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-blue-100 text-blue-700 rounded-lg font-bold border border-blue-200">Phase 11</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                
+        <a href="system-design/messaging-queues.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Twitter/X Timeline Design</span>
+        </a>
+        <a href="system-design/databases.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Uber/Lyft Proximity Design</span>
+        </a>
+        <a href="system-design/networking.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Netflix Content Delivery</span>
+        </a>
+        <a href="system-design/fundamentals.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
+            <div class="w-2 h-2 rounded-full bg-blue-400 group-hover/item:scale-125 transition-transform"></div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Standard Interview Template</span>
+        </a>
+            </div>
+        </div>
+    </div>
+            </div>
+
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Mastery</p>
+            </footer>
+        </main>
+    </div>
+<script src="../../js/ds-main.js?v=1777228333" defer></script>
 </body>
 </html>

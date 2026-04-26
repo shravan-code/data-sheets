@@ -178,12 +178,6 @@ def get_nav_sidebar(prefix, page_title="", guide_topics_html=""):
             <div id="guide-topics" class="mt-6 hidden">
                 {guide_topics_html}
             </div>
-
-            <!-- Page Specific TOC (populated by JS) -->
-            <div id="sidebar-toc" class="mt-6 hidden">
-                <div class="sb-cat text-slate-400">On this page</div>
-                <nav class="toc-list pl-2"></nav>
-            </div>
         </div>
 
         </div>
@@ -227,21 +221,41 @@ def patch_html(path):
     html = re.sub(r'<!--\s*═+\s*SIDEBAR\s*═+\s*-->.*?<!--\s*SCROLL TO TOP\s*-->', '', html, flags=re.DOTALL)
     html = re.sub(r'<!-- SIDEBAR -->.*?</aside>', '', html, flags=re.DOTALL)
     # Extract guide topics if they exist before wiping the container
+    # Extract guide topics (e.g. "Bash Topics" or "Fundamentals")
+    # We look for the 'mt-8' class which we use for guide-wide navigation, 
+    # and we ignore "On this page" which is for local page headers.
     guide_topics_match = re.search(r'<div class="toc-title mt-8">(.*?)</div>\s*<ul class="toc-list">(.*?)</ul>', html, flags=re.DOTALL)
+    
     guide_topics_html = ""
     if guide_topics_match:
-        title = guide_topics_match.group(1)
+        title = guide_topics_match.group(1).strip()
         list_items = guide_topics_match.group(2)
-        # Convert toc-link to sb-link and remove <li> tags for cleaner sidebar
+            
+        # Convert toc-link to sb-link and remove <li> tags
         list_items = list_items.replace('<li>', '').replace('</li>', '')
-        list_items = list_items.replace('toc-link', 'sb-link py-1.5 px-3 text-sm')
-        guide_topics_html = f'<div class="sb-cat text-slate-400">{title}</div><nav class="flex flex-col gap-0.5">{list_items}</nav>'
+        list_items = list_items.replace('toc-link', 'sb-link')
+        
+        # Standardize the injected section to look like other sb-cat sections
+        guide_topics_html = f"""
+        <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="list" class="w-3 h-3 text-white"></i>
+            </span>
+            {title}
+        </div>
+        <nav class="pl-2">
+            {list_items}
+        </nav>
+        """
+        # Remove it from the original content
+        html = html.replace(guide_topics_match.group(0), '')
 
     html = re.sub(r'<nav\s+id="ds-nav".*?>.*?</nav>', '', html, flags=re.DOTALL)
     html = re.sub(r'<aside id="ds-sidebar"\b[^>]*?>.*?</aside>', '', html, flags=re.DOTALL)
     html = re.sub(r'<div id="sidebar-overlay"[^>]*?>.*?</div>', '', html, flags=re.DOTALL)
     html = re.sub(r'<button id="scroll-top"[^>]*?>.*?</button>', '', html, flags=re.DOTALL)
-    html = re.sub(r'<aside class="toc-container">.*?</aside>', '', html, flags=re.DOTALL)
+    # DO NOT REMOVE toc-container ANYMORE
+    # html = re.sub(r'<aside class="toc-container">.*?</aside>', '', html, flags=re.DOTALL)
     
     # Remove breadcrumb links (Back to Learn / Back to Home / Back to Guide)
     html = re.sub(r'<a\s+href="[^"]*"(?:\s+class="[^"]*")?>\s*<i\s+data-lucide="arrow-left"[^>]*></i>\s*Back to.*?</a>', '', html, flags=re.DOTALL)

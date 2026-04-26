@@ -546,37 +546,50 @@ hub_template = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Engineering Fundamentals — Data Sheets</title>
+    <title>DE Fundamentals Roadmap — Data Cake</title>
+    <meta name="description" content="Master the core principles of data engineering with our 11-phase structured roadmap.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <style>
+        .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }}
+        .dark .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
-<div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-violet-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-violet-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-violet-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-violet-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-100 text-violet-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-violet-200/50">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        Core Concepts
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        DE <span class="bg-gradient-to-r from-violet-600 to-violet-400 bg-clip-text text-transparent">Fundamentals</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
+                    </p>
+                </div>
+            </header>
 
-<main class="relative z-10 pt-28 pb-20 px-6 max-w-5xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
-
-    <div class="flex items-start gap-5 mb-10">
-        <div class="w-16 h-16 rounded-xl flex items-center justify-center bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">
-            <i data-lucide="book-open" class="w-8 h-8"></i>
-        </div>
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300">Concepts</span>
-            <h1 class="font-display font-bold text-4xl text-slate-900 dark:text-white leading-tight">Data Engineering Fundamentals</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2 text-lg">Core principles of data engineering: pipelines, storage, modelling, and the data lifecycle.</p>
-        </div>
+            <!-- ROADMAP TIMELINE -->
+            <div class="max-w-4xl mx-auto">
+                {phases_html}
+            </div>
+        </main>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {cards_html}
-    </div>
-</main>
 </body>
 </html>'''
 
@@ -613,11 +626,7 @@ subpage_template = '''<!DOCTYPE html>
             {content}
         </div>
         
-        <div class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between">
-            <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white no-underline font-medium">
-                <i data-lucide="list" class="w-4 h-4"></i> Table of Contents
-            </a>
-        </div>
+        <div class="mt-20"></div>
     </main>
 
     <aside class="toc-container">
@@ -630,23 +639,53 @@ subpage_template = '''<!DOCTYPE html>
 </html>'''
 
 # 1. Build Hub Page
-cards_html = ""
-for page in subpages:
-    card = f'''
-    <a href="de-fundamentals/{page['id']}.html" class="topic-card block p-6 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl no-underline group shadow-sm dark:shadow-none hover:border-violet-300 dark:hover:border-violet-500/50">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-10 h-10 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i data-lucide="{page['icon']}" class="w-5 h-5"></i>
-            </div>
-            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all"></i>
-        </div>
-        <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white mb-2">{page["title"]}</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{page["description"]}</p>
-    </a>
-    '''
-    cards_html += card
+subpages.sort(key=lambda x: int(x['title'].split('.')[0]))
+phases = [
+    {"name": "The Foundation", "items": [subpages[0]]},
+    {"name": "Pipeline Basics", "items": [subpages[1]]},
+    {"name": "Storage Strategy", "items": [subpages[2]]},
+    {"name": "Data Modelling", "items": [subpages[3]]},
+    {"name": "Ingestion Patterns", "items": [subpages[4]]},
+    {"name": "Processing Core", "items": [subpages[5]]},
+    {"name": "Streaming Mastery", "items": [subpages[6]]},
+    {"name": "Data Quality", "items": [subpages[7]]},
+    {"name": "Governance & Observability", "items": [subpages[8]]},
+    {"name": "Advanced Architectures", "items": [subpages[9]]},
+    {"name": "Performance & DevOps", "items": [subpages[10], subpages[11]]}
+]
 
-hub_content = hub_template.format(cards_html=cards_html)
+phases_html = ""
+for i, phase in enumerate(phases):
+    num = i + 1
+    items_html = ""
+    for page in phase["items"]:
+        items_html += f"""
+        <a href="de-fundamentals/{page['id']}.html" class="flex items-center gap-3 p-3 bg-violet-50/30 dark:bg-slate-900 border border-violet-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-violet-50 dark:hover:bg-violet-900/20 hover:border-violet-200 group/item no-underline">
+            <div class="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-violet-600 dark:text-violet-400 group-hover/item:bg-violet-600 group-hover/item:text-white transition-all">
+                <i data-lucide="{page['icon']}" class="w-4 h-4"></i>
+            </div>
+            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-violet-700 transition-colors">{page['title']}</span>
+        </a>"""
+
+    phases_html += f"""
+    <div class="relative pl-12 pb-12 group last:pb-0">
+        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-violet-500 transition-colors shadow-sm">
+            <span class="text-xs font-bold text-slate-500 group-hover:text-violet-600">{num:02d}</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-violet-500/5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
+                {phase['name']}
+                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-violet-100 text-violet-700 rounded-lg font-bold border border-violet-200">Phase {num}</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {items_html}
+            </div>
+        </div>
+    </div>"""
+
+hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
 with open("pages/learn/de-fundamentals.html", "w", encoding="utf-8") as f:
     f.write(hub_content)
@@ -655,7 +694,27 @@ print("Created Hub: pages/learn/de-fundamentals.html")
 
 # 2. Build Subpages
 os.makedirs("pages/learn/de-fundamentals", exist_ok=True)
-for page in subpages:
+for i, page in enumerate(subpages):
+    # Navigation logic
+    prev_page = subpages[i-1] if i > 0 else None
+    next_page = subpages[i+1] if i < len(subpages)-1 else None
+
+    prev_html = ""
+    if prev_page:
+        prev_html = f"""
+        <a href="{prev_page['id']}.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">{prev_page["title"]}</span>
+        </a>"""
+        
+    next_html = ""
+    if next_page:
+        next_html = f"""
+        <a href="{next_page['id']}.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">{next_page["title"]}</span>
+        </a>"""
+
     # Build list of all topics for the sidebar
     topics_html = '<div class="toc-title mt-8">Fundamentals</div><ul class="toc-list">'
     for p in subpages:
@@ -669,6 +728,16 @@ for page in subpages:
         content=page["content"],
         topics_list_html=topics_html
     )
+
+    # Inject Navigation Cards
+    nav_html = f"""
+    <div class="nav-container">
+        {prev_html if prev_html else "<div></div>"}
+        {next_html if next_html else "<div></div>"}
+    </div>
+    """
+    content = content.replace('</main>', nav_html + '</main>')
+
     path = os.path.join("pages", "learn", "de-fundamentals", f"{page['id']}.html")
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)

@@ -30,37 +30,69 @@
 
 
     /* ── Active Link Highlighting ────────────────── */
+    /* ── Active Link Highlighting ────────────────── */
     function highlightActive() {
-        const path = window.location.pathname;
-        const page = path.split('/').pop() || 'index.html';
+        const currentPath = window.location.pathname;
         const links = document.querySelectorAll('.sb-link');
-        let activeHeader = null;
+        let activeHeaders = new Set();
 
         links.forEach(link => {
             const href = link.getAttribute('href');
-            if (href && href.includes(page)) {
-                link.classList.add('active');
-                // Identify the parent section header
-                const parentNav = link.closest('nav');
-                if (parentNav) {
-                    const header = parentNav.previousElementSibling;
-                    if (header && header.classList.contains('sb-cat')) {
-                        activeHeader = header;
+            if (!href) return;
+
+            // Resolve relative href to absolute path for comparison
+            const linkPath = new URL(href, window.location.href).pathname;
+            
+            // Match logic: Exact match OR the current page is a sub-page of this link
+            // e.g. if we are on /bash/intro.html and link is /bash.html
+            const isExact = (currentPath === linkPath);
+            const isAncestor = !isExact && currentPath.includes(linkPath.replace('.html', ''));
+            
+            if (isExact || isAncestor) {
+                if (isExact) {
+                    link.classList.add('active');
+                    
+                    // Position active link
+                    const positionActiveLink = () => {
+                        const sidebar = document.getElementById('ds-sidebar');
+                        if (sidebar) {
+                            sidebar.scrollTo({
+                                top: link.offsetTop - 60, // Slightly more padding
+                                behavior: 'smooth'
+                            });
+                        }
+                    };
+                    positionActiveLink();
+                    setTimeout(positionActiveLink, 300);
+                } else {
+                    link.classList.add('ancestor-active');
+                }
+
+                // Expand all parent categories
+                let parent = link.parentElement;
+                while (parent && parent !== sidebar) {
+                    if (parent.tagName.toLowerCase() === 'nav') {
+                        const header = parent.previousElementSibling;
+                        if (header && header.classList.contains('sb-cat')) {
+                            activeHeaders.add(header);
+                        }
                     }
+                    parent = parent.parentElement;
                 }
             } else {
                 link.classList.remove('active');
+                link.classList.remove('ancestor-active');
             }
         });
 
-        // If we found an active page, expand its section and collapse others
-        if (activeHeader) {
+        // Expand sections
+        if (activeHeaders.size > 0) {
             document.querySelectorAll('.sb-cat').forEach(cat => {
-                if (cat === activeHeader) {
+                if (activeHeaders.has(cat)) {
                     cat.classList.remove('collapsed');
-                } else {
-                    cat.classList.add('collapsed');
                 }
+                // We DON'T collapse others here to prevent the "main section is closing" issue
+                // when navigating within sub-sections or clicking around.
             });
         }
     }
@@ -168,7 +200,7 @@
     /* ── Table of Contents ───────────────────────── */
     function initTOC() {
         const tocContainer = document.querySelector('.toc-list');
-        const tocWrapper = document.getElementById('sidebar-toc');
+        const tocWrapper = document.querySelector('.toc-container');
         const content = document.querySelector('.prose');
         if (!tocContainer || !content) return;
 
@@ -178,7 +210,7 @@
             return;
         }
 
-        if (tocWrapper) tocWrapper.classList.remove('hidden');
+        if (tocWrapper) tocWrapper.style.display = 'block';
 
         headers.forEach((header, index) => {
             if (!header.id) {
