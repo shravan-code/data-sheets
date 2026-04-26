@@ -614,9 +614,9 @@ subpage_template = '''<!DOCTYPE html>
 
 <div class="flex justify-center max-w-[1440px] mx-auto">
     <main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
-        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-10 no-underline transition-colors duration-200">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Back to Fundamentals
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
         </a>
 
         <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">{title}</h1>

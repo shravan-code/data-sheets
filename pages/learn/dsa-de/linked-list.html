@@ -30,7 +30,7 @@
         const isDark = document.documentElement.classList.contains('dark');
         mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
     </script>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777228331">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777229863">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -229,8 +229,11 @@
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 
 <div class="flex justify-center max-w-[1440px] mx-auto w-full">
-    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
-        
+        <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+            <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to DSA
+            </a>
 
         <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">7. Linked List</h1>
         <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.</p>
@@ -300,6 +303,6 @@ def reverse_list(head):
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777228331" defer></script>
+<script src="../../../js/ds-main.js?v=1777229863" defer></script>
 </body>
 </html>

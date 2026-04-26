@@ -258,7 +258,7 @@ def patch_html(path):
     # html = re.sub(r'<aside class="toc-container">.*?</aside>', '', html, flags=re.DOTALL)
     
     # Remove breadcrumb links (Back to Learn / Back to Home / Back to Guide)
-    html = re.sub(r'<a\s+href="[^"]*"(?:\s+class="[^"]*")?>\s*<i\s+data-lucide="arrow-left"[^>]*></i>\s*Back to.*?</a>', '', html, flags=re.DOTALL)
+    # html = re.sub(r'<a\s+href="[^"]*"(?:\s+class="[^"]*")?>\s*<i\s+data-lucide="arrow-left"[^>]*></i>\s*Back to.*?</a>', '', html, flags=re.DOTALL)
     
     # Remove any old theme initialization scripts
     html = re.sub(r'<script>\(function\(\){const s=localStorage.getItem\(\'ds-theme\'\);.*?</script>', '', html, flags=re.DOTALL)
@@ -367,7 +367,7 @@ def patch_html(path):
 def run_builders():
     # Builders are now in scripts/
     builders = [
-        'build_roadmaps.py', 'build_bash_guide.py', 'build_powershell_guide.py',
+        'build_roadmaps.py', 'build_bash_guide.py', 'build_powershell_guide.py', 'build_python_guide.py',
         'build_de_fundamentals.py', 'build_dsa.py', 'build_system_design.py', 'build_pipeline_design.py',
     ]
     for script in builders:

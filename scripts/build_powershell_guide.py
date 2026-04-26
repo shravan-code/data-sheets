@@ -250,6 +250,10 @@ def build_powershell_subpages(topics):
 
 <div class="flex justify-center max-w-[1440px] mx-auto">
     <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../powershell.html" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to PowerShell
+        </a>
         <header class="mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">{title}</h1>
             <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">{topic['description']}</p>
