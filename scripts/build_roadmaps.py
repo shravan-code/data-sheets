@@ -5,8 +5,10 @@ def build_roadmaps():
     roadmaps = [
         {
             "id": "data-engineering",
-            "title": "Data Engineering Roadmap",
-            "description": "A comprehensive path to becoming a professional Data Engineer.",
+            "title": "Data Engineering",
+            "subtitle": "Architecting the Future of Data",
+            "description": "A comprehensive path to becoming a professional Data Engineer, covering everything from Linux foundations to advanced Data Mesh architectures.",
+            "color": "indigo",
             "phases": [
                 {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking Basics"]},
                 {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Database Fundamentals"]},
@@ -25,8 +27,10 @@ def build_roadmaps():
         },
         {
             "id": "ml-engineer",
-            "title": "ML Engineer Roadmap",
-            "description": "Master the intersection of Software Engineering and Machine Learning.",
+            "title": "ML Engineer",
+            "subtitle": "Bridging Science and Scale",
+            "description": "Master the intersection of Software Engineering and Machine Learning to build and deploy production-grade models.",
+            "color": "emerald",
             "phases": [
                 {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking Basics"]},
                 {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Probability & Statistics", "Linear Algebra", "Calculus"]},
@@ -44,8 +48,10 @@ def build_roadmaps():
         },
         {
             "id": "ai-engineer",
-            "title": "AI Engineer Roadmap",
-            "description": "Focus on Large Language Models, Agents, and Generative AI applications.",
+            "title": "AI Engineer",
+            "subtitle": "The Generative Frontier",
+            "description": "Focus on Large Language Models, AI Agents, and the modern Generative AI stack for building autonomous systems.",
+            "color": "rose",
             "phases": [
                 {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking & APIs"]},
                 {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Probability & Statistics", "Linear Algebra"]},
@@ -67,48 +73,89 @@ def build_roadmaps():
     os.makedirs(os.path.join('pages', 'roadmaps'), exist_ok=True)
 
     for rm in roadmaps:
+        c = rm['color']
         phases_html = ""
-        for phase in rm['phases']:
-            items_html = "".join([f'<li>{item}</li>' for item in phase['items']])
+        for i, phase in enumerate(rm['phases']):
+            num = i + 1
+            items_html = "".join([f"""
+                <div class="flex items-center gap-3 p-3 bg-{c}-50/30 dark:bg-slate-900 border border-{c}-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-{c}-50 dark:hover:bg-{c}-900/20 hover:border-{c}-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-{c}-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-{c}-700 transition-colors">{item}</span>
+                </div>""" for item in phase['items']])
+            
             phases_html += f"""
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">{phase['name']}</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    {"".join([f'<li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>{item}</li>' for item in phase['items']])}
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-{c}-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-{c}-600">{num:02d}</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-{c}-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        {phase['name'].split(' \u2014 ')[1]}
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-{c}-100 text-{c}-700 rounded-lg font-bold border border-{c}-200">Phase {num}</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {items_html}
+                    </div>
+                </div>
             </div>"""
 
         template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{rm['title']} \u2014 Data Cake</title>
+    <title>{rm['title']} Roadmap \u2014 Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     <style>
-        .roadmap-phase:last-child {{ border-l-color: transparent; }}
+        .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }}
+        .dark .roadmap-hero-bg {{
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }}
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
-    <main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
-        <header class="mb-16">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-amber-100 text-amber-600">
-                    <i data-lucide="map" class="w-7 h-7"></i>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-{c}-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-{c}-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-{c}-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-blue-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-{c}-100 text-{c}-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-{c}-200/50">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        Ultimate Learning Path
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        {rm['title']} <span class="bg-gradient-to-r from-{c}-600 to-{c}-400 bg-clip-text text-transparent">Roadmap</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "{rm['description']}"
+                    </p>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight tracking-tight">{rm['title']}</h1>
-            </div>
-            <p class="text-xl text-slate-600 max-w-3xl leading-relaxed">{rm['description']}</p>
-        </header>
+            </header>
 
-        <div class="roadmap-container">
-            {phases_html}
-        </div>
-    </main>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                {phases_html}
+            </div>
+
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">\u00a9 2026 Data Cake \u2022 Path to Mastery</p>
+            </footer>
+        </main>
+    </div>
 </body>
 </html>"""
 

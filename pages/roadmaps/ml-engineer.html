@@ -10,14 +10,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     <style>
-        .roadmap-phase:last-child { border-l-color: transparent; }
+        .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .dark .roadmap-hero-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        }
     </style>
-<link rel="stylesheet" href="../../css/ds-main.css?v=1777225149">
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777225410">
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
 <!-- NAV -->
 <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
@@ -205,106 +211,497 @@
 </button>
 
 
-    <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
-        <header class="mb-16">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-amber-100 text-amber-600">
-                    <i data-lucide="map" class="w-7 h-7"></i>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-emerald-500/10">
+                <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-blue-500/5 blur-[100px] rounded-full"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-emerald-200/50">
+                        <i data-lucide="map" class="w-4 h-4"></i>
+                        Ultimate Learning Path
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+                        ML Engineer <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Roadmap</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the intersection of Software Engineering and Machine Learning to build and deploy production-grade models."
+                    </p>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight tracking-tight">ML Engineer Roadmap</h1>
-            </div>
-            <p class="text-xl text-slate-600 max-w-3xl leading-relaxed">Master the intersection of Software Engineering and Machine Learning.</p>
-        </header>
+            </header>
 
-        <div class="roadmap-container">
-            
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 1 — Programming Foundations</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Python</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>SQL</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Bash</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Linux Fundamentals</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Networking Basics</li>
-                </ul>
+            <!-- ROADMAP CONTENT -->
+            <div class="max-w-4xl mx-auto">
+                
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">01</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Programming Foundations
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 1</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Python</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">SQL</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Bash</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Linux Fundamentals</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Networking Basics</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 2 — CS Fundamentals</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>DSA</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>OOP Concepts</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Probability & Statistics</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Linear Algebra</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Calculus</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">02</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        CS Fundamentals
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 2</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">DSA</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">OOP Concepts</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Probability & Statistics</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Linear Algebra</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Calculus</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 3 — Data Libraries</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>NumPy</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Pandas</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Matplotlib & Seaborn</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Scikit-learn</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">03</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Data Libraries
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 3</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">NumPy</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Pandas</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Matplotlib & Seaborn</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Scikit-learn</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 4 — Machine Learning Fundamentals</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Supervised Learning</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Unsupervised Learning</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Model Evaluation & Metrics</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Feature Engineering</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Hyperparameter Tuning</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Cross Validation</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">04</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Machine Learning Fundamentals
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 4</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Supervised Learning</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Unsupervised Learning</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Model Evaluation & Metrics</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Feature Engineering</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Hyperparameter Tuning</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Cross Validation</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 5 — Deep Learning</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Neural Networks</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>TensorFlow / Keras</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>PyTorch</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>CNNs</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>RNNs & LSTMs</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Transformers</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">05</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Deep Learning
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 5</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Neural Networks</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">TensorFlow / Keras</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">PyTorch</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">CNNs</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">RNNs & LSTMs</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Transformers</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 6 — Data Engineering for ML</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Data Pipelines</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Data Versioning (DVC)</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Feature Stores (Feast)</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Data Labeling</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">06</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Data Engineering for ML
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 6</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Data Pipelines</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Data Versioning (DVC)</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Feature Stores (Feast)</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Data Labeling</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 7 — ML Frameworks & Tools</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>XGBoost / LightGBM / CatBoost</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Hugging Face</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>OpenCV</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>NLTK / spaCy</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">07</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        ML Frameworks & Tools
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 7</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">XGBoost / LightGBM / CatBoost</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Hugging Face</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">OpenCV</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">NLTK / spaCy</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 8 — MLOps</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>MLflow</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Weights & Biases</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Kubeflow</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>ZenML / Metaflow</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Model Registry</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Experiment Tracking</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">08</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        MLOps
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 8</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">MLflow</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Weights & Biases</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Kubeflow</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">ZenML / Metaflow</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Model Registry</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Experiment Tracking</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 9 — Model Deployment & Serving</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>FastAPI / Flask</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Docker</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Kubernetes</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>BentoML / Triton Inference Server</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>REST & gRPC APIs</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">09</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Model Deployment & Serving
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 9</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">FastAPI / Flask</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Docker</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Kubernetes</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">BentoML / Triton Inference Server</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">REST & gRPC APIs</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 10 — Cloud Platforms for ML</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>AWS SageMaker</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>GCP Vertex AI</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Azure ML</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Databricks</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">10</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Cloud Platforms for ML
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 10</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">AWS SageMaker</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">GCP Vertex AI</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Azure ML</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Databricks</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 11 — CI/CD for ML</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>GitHub Actions</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Terraform</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Continuous Training Pipelines</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Model Monitoring & Drift Detection</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">11</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        CI/CD for ML
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 11</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">GitHub Actions</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Terraform</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Continuous Training Pipelines</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Model Monitoring & Drift Detection</span>
+                </div>
+                    </div>
+                </div>
             </div>
-            <div class="roadmap-phase mb-10 relative pl-8 border-l-2 border-slate-200">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-white shadow-sm"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-4">Phase 12 — Advanced Topics</h3>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-                    <li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Distributed Training (Horovod, DeepSpeed)</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Quantization & Pruning</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>Responsible AI & Fairness</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>A/B Testing & Shadow Deployment</li><li class="flex items-center gap-2 text-slate-600 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>LLM Fine-tuning</li>
-                </ul>
+            <div class="relative pl-12 pb-12 group last:pb-0">
+                <!-- Timeline Line -->
+                <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
+                
+                <!-- Timeline Dot -->
+                <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
+                    <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">12</span>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                        Advanced Topics
+                        <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase 12</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Distributed Training (Horovod, DeepSpeed)</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Quantization & Pruning</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">Responsible AI & Fairness</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">A/B Testing & Shadow Deployment</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 group-hover/item:scale-125 transition-transform"></div>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-emerald-700 transition-colors">LLM Fine-tuning</span>
+                </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
-</div>
-<script src="../../js/ds-main.js?v=1777225149" defer></script>
+            </div>
+
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Mastery</p>
+            </footer>
+        </main>
+    </div>
+<script src="../../js/ds-main.js?v=1777225410" defer></script>
 </body>
 </html>
