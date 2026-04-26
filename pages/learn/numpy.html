@@ -2,21 +2,9 @@
 <html lang="en">
 <head>
 <script>(function(){
-        const s=localStorage.getItem('ds-theme');
-        const isL = s==='light';
-        if(isL) document.documentElement.classList.remove('dark');
-        else document.documentElement.classList.add('dark');
-        
-        // Immediate Prism theme sync
-        window.addEventListener('DOMContentLoaded', () => {
-            const l = document.getElementById('prism-theme-light');
-            const d = document.getElementById('prism-theme-dark');
-            if(l && d) {
-                l.disabled = !isL;
-                d.disabled = isL;
-            }
-        });
-    })();</script>
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NumPy — Data Cake</title>
@@ -25,45 +13,42 @@
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-<link rel="stylesheet" href="../../css/ds-main.css">
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777224321">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
 
 <!-- NAV -->
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center">
-        <!-- LEFT: Sidebar Toggle -->
-        <div class="flex-1 flex items-center">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar">
-                <span class="line"></span>
-                <span class="line"></span>
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
             </button>
-        </div>
 
-        <!-- CENTER: Logo and Page Title -->
-        <div class="flex-none flex items-center justify-center gap-3 md:gap-4 mx-4">
-            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 group-hover:scale-105">
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
                 <div class="flex items-center">
-                    <span style="font-family: 'Outfit', sans-serif;" class="text-[28px] tracking-tighter flex items-center">
-                        <span class="font-light text-slate-500 dark:text-slate-400">Data</span>
-                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 dark:from-indigo-400 dark:via-blue-400 dark:to-emerald-300 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
                     </span>
                 </div>
             </a>
-            <div class="hidden sm:flex items-center gap-3">
-                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
-                <span class="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+
+            <div class="hidden md:flex items-center gap-3 ml-2">
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
                     NumPy
                 </span>
             </div>
         </div>
 
-        <!-- RIGHT: Theme Toggle -->
-        <div class="flex-1 flex justify-end">
-            <button id="theme-toggle" title="Toggle theme"
-                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
-                <i data-lucide="sun"  class="w-[18px] h-[18px] hidden dark:block"></i>
-                <i data-lucide="moon" class="w-[18px] h-[18px] block dark:hidden"></i>
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <button id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60">
+                <i data-lucide="user" class="w-5 h-5"></i>
             </button>
         </div>
     </div>
@@ -75,37 +60,45 @@
 
 <!-- SIDEBAR -->
 <aside id="ds-sidebar"
-    class="sidebar-hidden fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
-           bg-white dark:bg-[#0c111d] border-r border-slate-200/80 dark:border-slate-800/60
-           shadow-xl shadow-slate-200/50 dark:shadow-slate-950/80">
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
 
     <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
 
     <div class="py-5 px-3 flex flex-col h-full">
         <div class="flex-1">
-            <a href="../../pages/learn.html" class="sb-section bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/20">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="book-open" class="w-3 h-3 text-white"></i>
-                </span>
-                Learn
-            </a>
 
-            <div class="sb-cat text-blue-500 dark:text-blue-400">Programming</div>
-            <nav>
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
                 <a href="../../pages/learn/sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
                 <a href="../../pages/learn/bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
                 <a href="../../pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
             </nav>
 
-            <div class="sb-cat text-emerald-500 dark:text-emerald-400">Concepts</div>
-            <nav>
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
                 <a href="../../pages/learn/dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
             </nav>
 
-            <div class="sb-cat text-orange-500 dark:text-orange-400">Tools</div>
-            <nav>
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
                 <a href="../../pages/learn/flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
                 <a href="../../pages/learn/kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
@@ -115,8 +108,13 @@
                 <a href="../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
             </nav>
 
-            <div class="sb-cat text-cyan-500 dark:text-cyan-400">Cloud</div>
-            <nav>
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
                 <a href="../../pages/learn/gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
                 <a href="../../pages/learn/azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
@@ -124,38 +122,63 @@
                 <a href="../../pages/learn/databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
             </nav>
 
-            <div class="sb-cat text-violet-500 dark:text-violet-400">CI / CD</div>
-            <nav>
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
                 <a href="../../pages/learn/kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
                 <a href="../../pages/learn/terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
                 <a href="../../pages/learn/github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
             </nav>
 
-            <div class="sb-cat text-rose-500 dark:text-rose-400">Design</div>
-            <nav>
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
                 <a href="../../pages/learn/system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
                 <a href="../../pages/learn/pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
                 <a href="../../pages/learn/de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
             </nav>
 
-            <div class="mt-5 mb-1 border-t border-slate-200 dark:border-slate-800/60 pt-5">
-                <a href="../../pages/practice.html" class="sb-section bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-500/20">
+            <div class="mt-8 mb-1 border-t border-slate-200 pt-6">
+                <a href="../../pages/practice.html" class="sb-section bg-violet-50 text-violet-700 hover:bg-violet-100">
                     <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
                         <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
                     </span>
                     Practice
-                    <span class="ml-auto text-[10px] bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
+                    <span class="ml-auto text-[10px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
                 </a>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="../../pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6 hidden">
+                
+            </div>
+
+            <!-- Page Specific TOC (populated by JS) -->
+            <div id="sidebar-toc" class="mt-6 hidden">
+                <div class="sb-cat text-slate-400">On this page</div>
+                <nav class="toc-list pl-2"></nav>
             </div>
         </div>
 
-        <div class="portfolio-link mt-auto">
-            <a href="../../pages/portfolio.html" class="sb-link">
-                <i data-lucide="user" class="w-3.5 h-3.5 flex-shrink-0"></i>
-                My Portfolio
-                <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
-            </a>
         </div>
     </div>
 </aside>
@@ -168,14 +191,83 @@
 </button>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
 <div class="fixed top-0 left-0 w-96 h-96 bg-orange-600/8 rounded-full blur-3xl pointer-events-none z-0"></div>
 
 <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 max-w-4xl mx-auto">
-    <a href="../learn.html" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-        Back to Learn
-    </a>
+    
 
     <div class="flex items-start gap-5 mb-6">
         <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 transition-colors">
@@ -212,6 +304,6 @@
     </div>
 </main>
 </div>
-<script src="../../js/ds-main.js" defer></script>
+<script src="../../js/ds-main.js?v=1777224321" defer></script>
 </body>
 </html>

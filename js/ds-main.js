@@ -3,20 +3,16 @@
     const body  = document.body;
 
     /* ── Theme ──────────────────────────────────── */
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('ds-theme', isDark ? 'dark' : 'light');
-            
-            // Sync Prism themes
-            const l = document.getElementById('prism-theme-light');
-            const d = document.getElementById('prism-theme-dark');
-            if(l && d) {
-                l.disabled = isDark;
-                d.disabled = !isDark;
-            }
-        });
+    // Dark mode removed as per user request. Defaulting to light theme.
+    html.classList.remove('dark');
+    localStorage.setItem('ds-theme', 'light');
+    
+    // Sync Prism themes to light only
+    const l = document.getElementById('prism-theme-light');
+    const d = document.getElementById('prism-theme-dark');
+    if(l && d) {
+        l.disabled = false;
+        d.disabled = true;
     }
 
     /* ── Sidebar state ───────────────────────────── */
@@ -24,10 +20,10 @@
     const overlay  = document.getElementById('sidebar-overlay');
     const togBtn   = document.getElementById('sidebar-toggle');
 
-    // Restore persisted state (default: open on desktop, closed on mobile)
+    // Default: expanded on desktop, closed on mobile
     const isDesktop = () => window.innerWidth >= 1024;
     const stored = localStorage.getItem('ds-sidebar');
-    let sidebarOpen = stored !== null ? stored === 'open' : isDesktop();
+    let sidebarOpen = isDesktop() ? true : (stored === 'open');
 
     // MOBILE UX: Always start closed on mobile regardless of persisted state
     if (!isDesktop()) sidebarOpen = false;
@@ -92,11 +88,46 @@
         });
     }
 
-    // On resize: if going to desktop re-open by default if never set
+    /* ── Collapsible Sidebar Sections ─────────────── */
+    function initCollapsibleSections() {
+        const categories = document.querySelectorAll('.sb-cat');
+        categories.forEach(cat => {
+            // Add chevron icon if not present
+            if (!cat.querySelector('.chevron')) {
+                const chevron = document.createElement('i');
+                chevron.setAttribute('data-lucide', 'chevron-down');
+                chevron.classList.add('chevron', 'w-3', 'h-3', 'ml-auto', 'transition-transform', 'duration-300');
+                cat.appendChild(chevron);
+            }
+
+            cat.addEventListener('click', () => {
+                cat.classList.toggle('collapsed');
+                const isCollapsed = cat.classList.contains('collapsed');
+                
+                // Persist state if needed (optional)
+                const catText = cat.textContent.trim();
+                localStorage.setItem(`sb-cat-${catText}`, isCollapsed ? 'collapsed' : 'expanded');
+                
+                // Refresh icons
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
+
+            // Restore state
+            const catText = cat.textContent.trim();
+            if (localStorage.getItem(`sb-cat-${catText}`) === 'collapsed') {
+                cat.classList.add('collapsed');
+            }
+        });
+    }
+    initCollapsibleSections();
+
+    // On resize: ensure sidebar state is correct
     window.addEventListener('resize', () => {
-        if (isDesktop() && localStorage.getItem('ds-sidebar') === null) {
-            sidebarOpen = true;
-            applyState(false);
+        if (isDesktop()) {
+            if (!sidebarOpen) {
+                sidebarOpen = true;
+                applyState(false);
+            }
         }
     });
 
@@ -115,15 +146,17 @@
     /* ── Table of Contents ───────────────────────── */
     function initTOC() {
         const tocContainer = document.querySelector('.toc-list');
+        const tocWrapper = document.getElementById('sidebar-toc');
         const content = document.querySelector('.prose');
         if (!tocContainer || !content) return;
 
         const headers = content.querySelectorAll('h2, h3');
         if (headers.length === 0) {
-            const tocWrapper = document.querySelector('.toc-container');
             if (tocWrapper) tocWrapper.style.display = 'none';
             return;
         }
+
+        if (tocWrapper) tocWrapper.classList.remove('hidden');
 
         headers.forEach((header, index) => {
             if (!header.id) {
