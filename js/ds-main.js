@@ -34,14 +34,35 @@
         const path = window.location.pathname;
         const page = path.split('/').pop() || 'index.html';
         const links = document.querySelectorAll('.sb-link');
+        let activeHeader = null;
+
         links.forEach(link => {
             const href = link.getAttribute('href');
             if (href && href.includes(page)) {
                 link.classList.add('active');
+                // Identify the parent section header
+                const parentNav = link.closest('nav');
+                if (parentNav) {
+                    const header = parentNav.previousElementSibling;
+                    if (header && header.classList.contains('sb-cat')) {
+                        activeHeader = header;
+                    }
+                }
             } else {
                 link.classList.remove('active');
             }
         });
+
+        // If we found an active page, expand its section and collapse others
+        if (activeHeader) {
+            document.querySelectorAll('.sb-cat').forEach(cat => {
+                if (cat === activeHeader) {
+                    cat.classList.remove('collapsed');
+                } else {
+                    cat.classList.add('collapsed');
+                }
+            });
+        }
     }
     highlightActive();
 
@@ -101,22 +122,23 @@
             }
 
             cat.addEventListener('click', () => {
+                const isOpening = cat.classList.contains('collapsed');
+
+                if (isOpening) {
+                    // Collapse all others (Accordion behavior)
+                    categories.forEach(other => {
+                        if (other !== cat) {
+                            other.classList.add('collapsed');
+                        }
+                    });
+                }
+
                 cat.classList.toggle('collapsed');
-                const isCollapsed = cat.classList.contains('collapsed');
-                
-                // Persist state if needed (optional)
-                const catText = cat.textContent.trim();
-                localStorage.setItem(`sb-cat-${catText}`, isCollapsed ? 'collapsed' : 'expanded');
                 
                 // Refresh icons
                 if (typeof lucide !== 'undefined') lucide.createIcons();
             });
 
-            // Restore state
-            const catText = cat.textContent.trim();
-            if (localStorage.getItem(`sb-cat-${catText}`) === 'collapsed') {
-                cat.classList.add('collapsed');
-            }
         });
     }
     initCollapsibleSections();
@@ -259,4 +281,6 @@
     window.addEventListener('load', () => {
         setTimeout(enhanceCodeBlocks, 500);
     });
+    // Initial Icon Load
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 })();

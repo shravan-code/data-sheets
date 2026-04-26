@@ -56,7 +56,7 @@
 
         return new Promise((resolve) => {
             const script = document.createElement('script');
-            script.src = 'https://unpkg.com/lucide@latest';
+            script.src = 'https://unpkg.com/lucide@0.395.0';
             script.onload = resolve;
             script.onerror = resolve;
             document.head.appendChild(script);
