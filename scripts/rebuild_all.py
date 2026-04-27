@@ -154,15 +154,17 @@ def get_nav_sidebar(prefix, page_title="", guide_topics_html=""):
                 <a href="{prefix}pages/roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
             </nav>
 
-            <div class="mt-8 mb-1 border-t border-slate-200 pt-6">
-                <a href="{prefix}pages/practice.html" class="sb-section bg-violet-50 text-violet-700 hover:bg-violet-100">
-                    <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
-                    </span>
-                    Practice
-                    <span class="ml-auto text-[10px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
-                </a>
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
             </div>
+            <nav class="pl-2">
+                <a href="{prefix}pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="{prefix}pages/practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="{prefix}pages/practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
 
             <div class="mt-4 pt-4 border-t border-slate-200">
                 <a href="{prefix}pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
@@ -310,7 +312,7 @@ def patch_html(path):
         html = html.replace('</main>', '</main>\n</div>', 1)
 
     # 4.5 Fix flex container centering bug on mobile
-    html = html.replace('class="flex justify-center max-w-[1440px] mx-auto"', 'class="flex justify-center max-w-[1440px] mx-auto w-full"')
+    html = html.replace('class="flex justify-center max-w-[1440px] mx-auto"', 'class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full"')
 
     # 5. Inject External JS if not present
     js_tag = f'<script src="{prefix}js/ds-main.js?v={version}" defer></script>'
@@ -369,6 +371,7 @@ def run_builders():
     builders = [
         'build_roadmaps.py', 'build_bash_guide.py', 'build_powershell_guide.py', 'build_python_guide.py',
         'build_de_fundamentals.py', 'build_dsa.py', 'build_system_design.py', 'build_pipeline_design.py',
+        'build_practice.py',
     ]
     for script in builders:
         script_path = os.path.join('scripts', script)
