@@ -309,7 +309,7 @@ def patch_html(path):
 
     # 4. Wrap main content if needed
     if 'id="ds-main-content"' not in html:
-        html = re.sub(r'(<main\b[^>]*>)', r'<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0">\1', html)
+        html = re.sub(r'(<main\b[^>]*>)', r'<div id="ds-main-content" class="transition-all duration-300 min-w-0">\1', html)
         html = html.replace('</main>', '</main>\n</div>', 1)
 
     # 4.5 Fix flex container centering bug on mobile

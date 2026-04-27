@@ -593,14 +593,16 @@ body.sidebar-open #sidebar-toggle .line:last-child {
     .toc-container {
         display: block;
         position: sticky;
-        top: 100px;
-        max-height: calc(100vh - 120px);
+        top: 110px; /* Adjusted to give more space from top nav */
+        align-self: flex-start;
+        max-height: calc(100vh - 140px);
         overflow-y: auto;
-        width: 240px;
+        width: 260px; /* Slightly wider */
         margin-left: 40px;
         padding-left: 20px;
         border-left: 1px solid rgba(148, 163, 184, 0.1);
         padding-bottom: 2rem;
+        z-index: 30; /* Ensure it stays above other content */
     }
 
     /* Custom scrollbar for TOC */
