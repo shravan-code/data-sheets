@@ -1,0 +1,45 @@
+{
+    "title": "Practice Hub",
+    "description": "Master Data Engineering through hands-on challenges and real-world scenarios.",
+    "categories": [
+        {
+            "id": "python",
+            "name": "Python Coding",
+            "icon": "code-2",
+            "color": "blue",
+            "description": "Solve algorithmic and data transformation problems using Python.",
+            "exercises": [
+                {
+                    "id": "p1",
+                    "title": "List Comprehensions Mastery",
+                    "difficulty": "Easy",
+                    "description": "Practice creating complex lists with one-liners.",
+                    "slug": "list-comprehensions"
+                },
+                {
+                    "id": "p2",
+                    "title": "Generator Functions",
+                    "difficulty": "Medium",
+                    "description": "Build memory-efficient data pipelines using generators.",
+                    "slug": "generator-functions"
+                }
+            ]
+        },
+        {
+            "id": "sql",
+            "name": "SQL Challenges",
+            "icon": "database",
+            "color": "indigo",
+            "description": "Complex queries, window functions, and optimization tasks.",
+            "exercises": [
+                {
+                    "id": "s1",
+                    "title": "Window Functions Deep Dive",
+                    "difficulty": "Medium",
+                    "description": "Calculate running totals and moving averages.",
+                    "slug": "sql-window-functions"
+                }
+            ]
+        }
+    ]
+}

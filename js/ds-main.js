@@ -98,8 +98,8 @@
     }
     highlightActive();
 
-    // Close sidebar on mobile when a link is clicked
-    document.querySelectorAll('.sb-link, .sb-section').forEach(link => {
+    // Close sidebar on mobile ONLY when a sub-link is clicked (not on main sections/categories)
+    document.querySelectorAll('.sb-link').forEach(link => {
         link.addEventListener('click', () => {
             if (!isDesktop()) {
                 sidebarOpen = false;
@@ -210,7 +210,10 @@
             return;
         }
 
-        if (tocWrapper) tocWrapper.style.display = 'block';
+        if (tocWrapper) {
+            if (window.innerWidth >= 1280) tocWrapper.style.display = 'block';
+            else tocWrapper.style.display = 'none';
+        }
 
         headers.forEach((header, index) => {
             if (!header.id) {

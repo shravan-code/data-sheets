@@ -45,6 +45,13 @@ h3,
     transform: translateX(-100%);
 }
 
+/* Default state for mobile should be hidden to avoid flash */
+@media (max-width: 1023px) {
+    #ds-sidebar:not(.sidebar-visible) {
+        transform: translateX(-100%);
+    }
+}
+
 #ds-sidebar.sidebar-visible {
     transform: translateX(0);
 }
