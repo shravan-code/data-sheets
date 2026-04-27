@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265320">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271312">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -237,9 +238,9 @@
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>sqlite3 and SQLAlchemy</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Database access using built-in sqlite3 and SQLAlchemy ORM.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">import sqlite3
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>import sqlite3
 from contextlib import contextmanager
 
 # sqlite3 - built-in
@@ -280,13 +281,14 @@ with get_db() as db:
     # Aggregate
     result = db.execute('SELECT AVG(age) as avg_age FROM users').fetchone()
     print(f'Avg age: {result["avg_age"]:.1f}')</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>{'id': 1, 'name': 'Alice', 'email': 'alice@example.com', 'age': 30}
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">{'id': 1, 'name': 'Alice', 'email': 'alice@example.com', 'age': 30}
 {'id': 2, 'name': 'Bob', 'email': 'bob@example.com', 'age': 25}
 {'id': 3, 'name': 'Carol', 'email': 'carol@example.com', 'age': 35}
 Avg age: 30.0</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -327,6 +329,6 @@ Avg age: 30.0</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265320" defer></script>
+<script src="../../../js/ds-main.js?v=1777271312" defer></script>
 </body>
 </html>

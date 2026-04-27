@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265319">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Pipeline Basics</h2>
-<p>The | operator passes output from one command as input to the next. Objects retain all their properties.</p>
-<h3>Basic Pipeline</h3>
-<pre><code class="language-powershell">
-# Get processes and filter/sort
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Pipeline Basics</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">The | operator passes output from one command as input to the next. Objects retain all their properties.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic Pipeline</h3>
+<div class="my-6"><pre class="language-powershell"><code># Get processes and filter/sort
 Get-Process | Where-Object { $_.CPU -gt 10 } | Sort-Object CPU -Descending | Select-Object Name, CPU, ID
 
 # Get files, filter by size, sort
@@ -238,14 +238,11 @@ Get-ChildItem C:\ -Recurse -File |
     Where-Object Length -gt 1MB |
     Sort-Object Length -Descending |
     Select-Object Name, @{N='SizeMB';E={[math]::Round($_.Length/1MB,2)}} |
-    Format-Table -AutoSize
-</code></pre>
-<hr>
-<h2>Where-Object</h2>
-<p>Filter pipeline objects based on conditions.</p>
-<h3>Filtering with Where-Object</h3>
-<pre><code class="language-powershell">
-# Traditional syntax
+    Format-Table -AutoSize</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Where-Object</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Filter pipeline objects based on conditions.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Filtering with Where-Object</h3>
+<div class="my-6"><pre class="language-powershell"><code># Traditional syntax
 Get-Process | Where-Object { $_.Name -like 'chrome*' }
 
 # Simplified syntax (PowerShell 3+)
@@ -259,14 +256,11 @@ Get-Process | Where-Object {
 }
 
 # Alias: ?
-Get-Process | ? { $_.CPU -gt 100 }
-</code></pre>
-<hr>
-<h2>Select-Object</h2>
-<p>Choose specific properties, create calculated properties, or limit output.</p>
-<h3>Select-Object Usage</h3>
-<pre><code class="language-powershell">
-# Select specific properties
+Get-Process | ? { $_.CPU -gt 100 }</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Select-Object</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Choose specific properties, create calculated properties, or limit output.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Select-Object Usage</h3>
+<div class="my-6"><pre class="language-powershell"><code># Select specific properties
 Get-Process | Select-Object Name, Id, CPU, WorkingSet64
 
 # Calculated property
@@ -284,14 +278,11 @@ Get-Process | Select-Object -Skip 10
 Get-Process | Select-Object -Property Name -Unique
 
 # Expand a property
-Get-Process | Select-Object -ExpandProperty Name
-</code></pre>
-<hr>
-<h2>Sort-Object & Group-Object</h2>
-<p>Sorting and grouping pipeline output.</p>
-<h3>Sorting and Grouping</h3>
-<pre><code class="language-powershell">
-# Sort ascending/descending
+Get-Process | Select-Object -ExpandProperty Name</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Sort-Object & Group-Object</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Sorting and grouping pipeline output.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Sorting and Grouping</h3>
+<div class="my-6"><pre class="language-powershell"><code># Sort ascending/descending
 Get-Process | Sort-Object CPU
 Get-Process | Sort-Object CPU -Descending
 
@@ -304,14 +295,11 @@ Get-Process | Group-Object -Property PriorityClass
 # Group and count
 Get-ChildItem -Recurse | Group-Object Extension |
     Sort-Object Count -Descending |
-    Select-Object Name, Count
-</code></pre>
-<hr>
-<h2>ForEach-Object</h2>
-<p>Perform an action on each object in the pipeline.</p>
-<h3>ForEach-Object</h3>
-<pre><code class="language-powershell">
-# Process each object
+    Select-Object Name, Count</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>ForEach-Object</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Perform an action on each object in the pipeline.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">ForEach-Object</h3>
+<div class="my-6"><pre class="language-powershell"><code># Process each object
 Get-Process | ForEach-Object {
     Write-Host "PID: $($_.Id) - $($_.Name)"
 }
@@ -329,22 +317,17 @@ Get-Process | ForEach-Object `
 1..10 | ForEach-Object -Parallel {
     Start-Sleep -Seconds 1
     "Done: $_"
-} -ThrottleLimit 5
-</code></pre>
-<hr>
-<h2>Measure-Object & Tee-Object</h2>
-<p>Compute statistics and duplicate pipeline output.</p>
-<h3>Measure and Tee</h3>
-<pre><code class="language-powershell">
-# Measure stats
+} -ThrottleLimit 5</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Measure-Object & Tee-Object</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Compute statistics and duplicate pipeline output.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Measure and Tee</h3>
+<div class="my-6"><pre class="language-powershell"><code># Measure stats
 Get-Process | Measure-Object CPU -Sum -Average -Maximum -Minimum
 Get-Content file.txt | Measure-Object -Line -Word -Character
 
 # Tee-Object: output to variable AND continue pipeline
 Get-Process | Tee-Object -Variable procs | Select-Object Name
-$procs  # Still contains all process objects
-</code></pre>
-<hr>
+$procs  # Still contains all process objects</code></pre></div></div>
 
         </article>
 
@@ -373,6 +356,6 @@ $procs  # Still contains all process objects
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265319" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

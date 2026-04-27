@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265319">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Navigating the File System</h2>
-<p>PowerShell uses a provider model. The filesystem is the default, but the same commands work for registry, certificates, etc.</p>
-<h3>File System Navigation</h3>
-<pre><code class="language-powershell">
-Get-Location            # pwd
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Navigating the File System</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell uses a provider model. The filesystem is the default, but the same commands work for registry, certificates, etc.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">File System Navigation</h3>
+<div class="my-6"><pre class="language-powershell"><code>Get-Location            # pwd
 Set-Location C:\Users   # cd
 Set-Location ..         # cd ..
 Set-Location ~          # Home directory
@@ -246,14 +246,11 @@ Get-ChildItem -File
 # Test if path exists
 Test-Path 'C:\Windows'
 Test-Path 'C:\file.txt' -PathType Leaf
-Test-Path 'C:\folder'   -PathType Container
-</code></pre>
-<hr>
-<h2>File Operations</h2>
-<p>Creating, copying, moving, and deleting files and directories.</p>
-<h3>CRUD Operations</h3>
-<pre><code class="language-powershell">
-# Create
+Test-Path 'C:\folder'   -PathType Container</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>File Operations</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Creating, copying, moving, and deleting files and directories.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">CRUD Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Create
 New-Item -Path 'C:\Temp\test.txt' -ItemType File
 New-Item -Path 'C:\Temp\NewFolder' -ItemType Directory
 New-Item -Path 'C:\Temp\test.txt' -ItemType File -Force  # Overwrite
@@ -277,14 +274,11 @@ $file.Length
 $file.LastWriteTime
 $file.CreationTime
 $file.Extension
-$file.FullName
-</code></pre>
-<hr>
-<h2>Reading & Writing Files</h2>
-<p>Reading text, CSV, XML, and JSON files, and writing output to files.</p>
-<h3>Text File I/O</h3>
-<pre><code class="language-powershell">
-# Read all content
+$file.FullName</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Reading & Writing Files</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Reading text, CSV, XML, and JSON files, and writing output to files.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Text File I/O</h3>
+<div class="my-6"><pre class="language-powershell"><code># Read all content
 $content = Get-Content 'C:\log.txt'
 
 # Read as single string
@@ -304,11 +298,8 @@ Add-Content 'output.txt' 'New line'
 
 # Encoding
 Get-Content 'file.txt' -Encoding UTF8
-Set-Content 'out.txt' 'text' -Encoding UTF8
-</code></pre>
-<h3>CSV Operations</h3>
-<pre><code class="language-powershell">
-# Import CSV
+Set-Content 'out.txt' 'text' -Encoding UTF8</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">CSV Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Import CSV
 $users = Import-Csv 'users.csv'
 $users | ForEach-Object {
     Write-Host "$($_.Name): $($_.Email)"
@@ -323,11 +314,8 @@ $data = @(
     [PSCustomObject]@{Name='Alice'; Age=30; City='NY'}
     [PSCustomObject]@{Name='Bob';   Age=25; City='LA'}
 )
-$data | Export-Csv 'people.csv' -NoTypeInformation
-</code></pre>
-<h3>JSON Operations</h3>
-<pre><code class="language-powershell">
-# Read JSON
+$data | Export-Csv 'people.csv' -NoTypeInformation</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">JSON Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Read JSON
 $json = Get-Content 'config.json' -Raw | ConvertFrom-Json
 Write-Host $json.setting1
 
@@ -344,11 +332,8 @@ $config | ConvertTo-Json -Depth 5
 
 # Nested JSON
 $nested = '{ "name": "Alice", "address": { "city": "NY" } }' | ConvertFrom-Json
-$nested.address.city   # NY
-</code></pre>
-<h3>XML Operations</h3>
-<pre><code class="language-powershell">
-# Load XML
+$nested.address.city   # NY</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">XML Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Load XML
 [xml]$doc = Get-Content 'data.xml'
 $doc.root.item
 
@@ -360,9 +345,7 @@ $xml = [xml]'&lt;root&gt;&lt;item&gt;value&lt;/item&gt;&lt;/root&gt;'
 $newNode = $xml.CreateElement('item2')
 $newNode.InnerText = 'value2'
 $xml.root.AppendChild($newNode)
-$xml.Save('output.xml')
-</code></pre>
-<hr>
+$xml.Save('output.xml')</code></pre></div></div>
 
         </article>
 
@@ -391,6 +374,6 @@ $xml.Save('output.xml')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265319" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

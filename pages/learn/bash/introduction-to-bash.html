@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,45 +223,69 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>What is Bash?</h2>
-<p>Bash (Bourne Again SHell) is a Unix shell and command-line interpreter. It is the default shell on most Linux distributions and macOS (before Catalina). Bash scripts are plain text files containing a sequence of commands executed by the shell.</p>
-<h3>Check Bash Version</h3>
-<pre><code class="language-bash">bash --version
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>What is Bash?</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash (Bourne Again SHell) is a Unix shell and command-line interpreter. It is the default shell on most Linux distributions and macOS (before Catalina). Bash scripts are plain text files containing a sequence of commands executed by the shell.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Check Bash Version</h3>
+<div class="my-6">
+<pre class="language-bash"><code>bash --version
 # Output: GNU bash, version 5.x.x</code></pre>
-<h3>Find Bash Location</h3>
-<pre><code class="language-bash">which bash
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Find Bash Location</h3>
+<div class="my-6">
+<pre class="language-bash"><code>which bash
 # Output: /bin/bash</code></pre>
-<hr>
-<h2>Shebang Line</h2>
-<p>The shebang (#!) at the top of a script tells the OS which interpreter to use. It must be the very first line.</p>
-<h3>Basic Shebang</h3>
-<pre><code class="language-bash">#!/bin/bash
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Shebang Line</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">The shebang (#!) at the top of a script tells the OS which interpreter to use. It must be the very first line.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic Shebang</h3>
+<div class="my-6">
+<pre class="language-bash"><code>#!/bin/bash
 echo "Hello, World!"</code></pre>
-<h3>Portable Shebang</h3>
-<pre><code class="language-bash">#!/usr/bin/env bash
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Portable Shebang</h3>
+<div class="my-6">
+<pre class="language-bash"><code>#!/usr/bin/env bash
 echo "This works across different systems"</code></pre>
-<hr>
-<h2>Running a Script</h2>
-<p>Scripts must be executable. Use chmod to grant permissions, then run with ./ or bash.</p>
-<h3>Make Executable and Run</h3>
-<pre><code class="language-bash">chmod +x myscript.sh
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Running a Script</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Scripts must be executable. Use chmod to grant permissions, then run with ./ or bash.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Make Executable and Run</h3>
+<div class="my-6">
+<pre class="language-bash"><code>chmod +x myscript.sh
 ./myscript.sh</code></pre>
-<h3>Run Without Making Executable</h3>
-<pre><code class="language-bash">bash myscript.sh</code></pre>
-<hr>
-<h2>Comments</h2>
-<p>Single-line comments start with #. Bash has no native multi-line comment syntax, but a here-doc workaround exists.</p>
-<h3>Single-Line Comment</h3>
-<pre><code class="language-bash"># This is a comment
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Run Without Making Executable</h3>
+<div class="my-6">
+<pre class="language-bash"><code>bash myscript.sh</code></pre>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Comments</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Single-line comments start with #. Bash has no native multi-line comment syntax, but a here-doc workaround exists.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Single-Line Comment</h3>
+<div class="my-6">
+<pre class="language-bash"><code># This is a comment
 echo "Hello" # Inline comment</code></pre>
-<h3>Multi-Line Comment Workaround</h3>
-<pre><code class="language-bash">: '
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Multi-Line Comment Workaround</h3>
+<div class="my-6">
+<pre class="language-bash"><code>: '
 This is a
 multi-line comment
 using a here-doc
 '
 echo "Done"</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -283,6 +308,6 @@ echo "Done"</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

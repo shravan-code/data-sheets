@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,47 +223,66 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>Command Substitution</h2>
-<p>Capture command output into a variable using $() or backticks.</p>
-<h3>Command Substitution</h3>
-<pre><code class="language-bash">current_date=$(date +%Y-%m-%d)
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Command Substitution</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Capture command output into a variable using $() or backticks.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Command Substitution</h3>
+<div class="my-6">
+<pre class="language-bash"><code>current_date=$(date +%Y-%m-%d)
 file_count=$(ls | wc -l)
 uptime_info=$(uptime)
 echo "Date: $current_date, Files: $file_count"</code></pre>
-<hr>
-<h2>Subshells</h2>
-<p>Code in ( ) runs in a subshell—a child process. Changes don't affect the parent.</p>
-<h3>Subshell Example</h3>
-<pre><code class="language-bash">x=10
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Subshells</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Code in ( ) runs in a subshell—a child process. Changes don't affect the parent.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Subshell Example</h3>
+<div class="my-6">
+<pre class="language-bash"><code>x=10
 (x=99; echo "Inside subshell: $x")  # 99
 echo "Outside subshell: $x"           # 10</code></pre>
-<h3>Group Commands</h3>
-<pre><code class="language-bash"># Braces run in current shell
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Group Commands</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Braces run in current shell
 { date; ls; whoami; } &gt; report.txt</code></pre>
-<hr>
-<h2>eval and exec</h2>
-<p>eval executes a string as a command. exec replaces the current process with a new one.</p>
-<h3>eval Usage</h3>
-<pre><code class="language-bash">cmd="echo Hello World"
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>eval and exec</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">eval executes a string as a command. exec replaces the current process with a new one.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">eval Usage</h3>
+<div class="my-6">
+<pre class="language-bash"><code>cmd="echo Hello World"
 eval "$cmd"  # Hello World
 
 # Dynamic variable names
 var_name="color"
 eval "${var_name}=blue"
 echo $color  # blue</code></pre>
-<h3>exec Usage</h3>
-<pre><code class="language-bash"># Replace shell with a command
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">exec Usage</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Replace shell with a command
 exec python3 myapp.py
 # Script stops here; python takes over PID
 
 # Redirect all script output
 exec &gt; /tmp/output.log 2&gt;&amp;1
 echo "This goes to the log"</code></pre>
-<hr>
-<h2>Named Pipes (FIFOs)</h2>
-<p>Named pipes allow two-way communication between processes using a special file.</p>
-<h3>FIFO Example</h3>
-<pre><code class="language-bash">mkfifo /tmp/mypipe
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Named Pipes (FIFOs)</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Named pipes allow two-way communication between processes using a special file.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">FIFO Example</h3>
+<div class="my-6">
+<pre class="language-bash"><code>mkfifo /tmp/mypipe
 
 # Producer
 echo "Hello from producer" &gt; /tmp/mypipe &amp;
@@ -271,15 +291,20 @@ echo "Hello from producer" &gt; /tmp/mypipe &amp;
 cat /tmp/mypipe
 
 rm /tmp/mypipe</code></pre>
-<hr>
-<h2>coproc (Coprocesses)</h2>
-<p>coproc runs a command in the background and connects its stdin/stdout to file descriptors.</p>
-<h3>Coprocess</h3>
-<pre><code class="language-bash">coproc bc
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>coproc (Coprocesses)</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">coproc runs a command in the background and connects its stdin/stdout to file descriptors.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Coprocess</h3>
+<div class="my-6">
+<pre class="language-bash"><code>coproc bc
 echo "3 + 4" &gt;&amp;${COPROC[1]}
 read result &lt;&amp;${COPROC[0]}
 echo "3 + 4 = $result"  # 7</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -306,6 +331,6 @@ echo "3 + 4 = $result"  # 7</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

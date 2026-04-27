@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265321">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271313">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -236,91 +237,72 @@
                 <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">Sets are unordered collections of unique hashable elements. O(1) average for add/remove/lookup.</p>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>All Set Methods</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">Complete set method reference.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">s = {1, 2, 3, 4}
-
-# add
-s.add(5)
-print(s)
-
-# remove vs discard
-s.remove(5)      # raises KeyError if missing
-s.discard(99)    # no error if missing
-print(s)
-
-# pop - removes arbitrary element
-val = s.pop()
-print(val, s)
-
-# Set operations
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-
-print(a | b)   # union
-print(a &amp; b)   # intersection
-print(a - b)   # difference
-print(a ^ b)   # symmetric difference
-
-# In-place versions
-c = {1, 2, 3}
-c.update({4, 5})          # union in-place
-print(c)
-c.intersection_update({3,4,5,6})
-print(c)
-c.difference_update({5})
-print(c)
-c.symmetric_difference_update({3,7})
-print(c)
-
-# Subset/superset
-print({1,2}.issubset({1,2,3}))     # True
-print({1,2,3}.issuperset({1,2}))   # True
-print({1,2}.isdisjoint({3,4}))     # True - no common</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Basic Operations: add, remove, discard, pop</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Modify set elements. remove() raises KeyError if the item is missing; discard() does not. pop() removes an arbitrary element.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>s = {1, 2, 3}
+s.add(4)
+s.remove(1)
+s.discard(10)  # no error
+print(s.pop()) # returns arbitrary
+print(s)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>{1, 2, 3, 4, 5}
-{1, 2, 3, 4}
-1 {2, 3, 4}
-{1, 2, 3, 4, 5, 6}
-{3, 4}
-{1, 2, 5, 6}
-{1, 2, 5, 6}
-{1, 2, 3, 4, 5}
-{3, 4}
-{4}
-{7}
-True
-True
-True</code></pre>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">2
+{3, 4}</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Set Mathematics: union, intersection, difference</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Standard set theory operations. Can be performed using methods or operators (| for union, & for intersection, - for difference).</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>a = {1, 2, 3}
+b = {3, 4, 5}
+print(a | b)   # union: {1, 2, 3, 4, 5}
+print(a &amp; b)   # intersection: {3}
+print(a - b)   # difference: {1, 2}</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">{1, 2, 3, 4, 5}
+{3}
+{1, 2}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Membership & Subsets</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Check relationships between sets. Efficient O(1) average time complexity.</p>
+<pre class="language-python"><code>a = {1, 2}
+b = {1, 2, 3}
+print(a.issubset(b))   # True
+print(b.issuperset(a)) # True
+print(a.isdisjoint({4, 5})) # True</code></pre>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>frozenset</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Immutable set — hashable, usable as dict key.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">fs = frozenset([1, 2, 3])
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>fs = frozenset([1, 2, 3])
 print(fs)
 
 # Can use as dict key
-graph = {frozenset({'A','B'}): 5, frozenset({'B','C'}): 3}
-print(graph)
-
-# Supports same operations
-print(fs | frozenset([4, 5]))
-print(fs &amp; frozenset([2, 3, 4]))</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+graph = {frozenset({'A','B'}): 5}
+print(graph)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>frozenset({1, 2, 3})
-{frozenset({'A', 'B'}): 5, frozenset({'B', 'C'}): 3}
-frozenset({1, 2, 3, 4, 5})
-frozenset({2, 3})</code></pre>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">frozenset({1, 2, 3})
+{frozenset({'A', 'B'}): 5}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -361,6 +343,6 @@ frozenset({2, 3})</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265321" defer></script>
+<script src="../../../js/ds-main.js?v=1777271313" defer></script>
 </body>
 </html>

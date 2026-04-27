@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265321">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271312">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -235,84 +236,45 @@
             <article class="prose dark:prose-invert max-w-none pb-20">
                 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Single and Multiple Inheritance</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">Python supports multiple inheritance with C3 MRO.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">class Animal:
-    def __init__(self, name):
-        self.name = name
-    def speak(self):
-        return 'Some sound'
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Single Inheritance</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Create a hierarchy where a child class inherits all attributes and methods from a parent. Perfect for sharing code between related objects.</p>
+<pre class="language-python"><code>class Animal:
+    def speak(self): return 'Sound'
 
 class Dog(Animal):
-    def speak(self):
-        return f'{self.name} says Woof!'
-
-class Cat(Animal):
-    def speak(self):
-        return f'{self.name} says Meow!'
-
-# Multiple inheritance
-class FlyingMixin:
-    def fly(self):
-        return f'{self.name} is flying'
-
-class FlyingDog(FlyingMixin, Dog):
-    pass
-
-fd = FlyingDog('AirBud')
-print(fd.speak())
-print(fd.fly())
-print(FlyingDog.__mro__)</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
-<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>AirBud says Woof!
-AirBud is flying
-(&lt;class 'FlyingDog'&gt;, &lt;class 'FlyingMixin'&gt;, &lt;class 'Dog'&gt;, &lt;class 'Animal'&gt;, &lt;class 'object'&gt;)</code></pre>
-</div>
+    def speak(self): return 'Woof!'</code></pre>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>super() and Method Resolution</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">super() calls the next class in MRO.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">class Shape:
-    def __init__(self, color):
-        self.color = color
-    def area(self):
-        return 0
-    def describe(self):
-        return f'{self.color} shape with area {self.area():.2f}'
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Multiple Inheritance & Mixins</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Python allows a class to inherit from multiple parents. Mixins are small classes that provide specific functionality to be mixed into other classes.</p>
+<pre class="language-python"><code>class Flyer:
+    def fly(self): return 'Flying'
 
-class Circle(Shape):
-    def __init__(self, color, radius):
-        super().__init__(color)  # call parent __init__
-        self.radius = radius
-    def area(self):
-        import math
-        return math.pi * self.radius ** 2
-
-class BorderedCircle(Circle):
-    def __init__(self, color, radius, border_width):
-        super().__init__(color, radius)
-        self.border_width = border_width
-    def describe(self):
-        base = super().describe()
-        return f'{base}, border={self.border_width}px'
-
-bc = BorderedCircle('red', 5, 2)
-print(bc.describe())
-print(isinstance(bc, Shape))   # True
-print(issubclass(BorderedCircle, Circle))  # True</code></pre>
+class Bird(Flyer, Animal):
+    pass</code></pre>
 </div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>super() & MRO</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">super() calls the next class in the Method Resolution Order (MRO). MRO ensures a consistent search path in complex multiple inheritance scenarios.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class A:
+    def say(self): print('A')
+
+class B(A):
+    def say(self): 
+        super().say()
+        print('B')
+
+B().say()</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>red shape with area 78.54, border=2px
-True
-True</code></pre>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">A
+B</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -353,6 +315,6 @@ True</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265321" defer></script>
+<script src="../../../js/ds-main.js?v=1777271312" defer></script>
 </body>
 </html>

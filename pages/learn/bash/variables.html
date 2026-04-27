@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,76 +223,110 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>Declaring and Using Variables</h2>
-<p>Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
-<h3>Basic Variable Assignment</h3>
-<pre><code class="language-bash">name="Alice"
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Declaring and Using Variables</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Variables are assigned without spaces around =. Access them with $ prefix. Variable names are case-sensitive.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic Variable Assignment</h3>
+<div class="my-6">
+<pre class="language-bash"><code>name="Alice"
 age=30
 echo "Name: $name, Age: $age"</code></pre>
-<h3>Curly Brace Syntax</h3>
-<pre><code class="language-bash">fruit="apple"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Curly Brace Syntax</h3>
+<div class="my-6">
+<pre class="language-bash"><code>fruit="apple"
 echo "I have ${fruit}s"</code></pre>
-<hr>
-<h2>Variable Types</h2>
-<p>Bash variables are untyped by default, but you can use declare to define types like integers or arrays.</p>
-<h3>Integer Declaration</h3>
-<pre><code class="language-bash">declare -i count=10
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Variable Types</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash variables are untyped by default, but you can use declare to define types like integers or arrays.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Integer Declaration</h3>
+<div class="my-6">
+<pre class="language-bash"><code>declare -i count=10
 count+=5
 echo $count  # Output: 15</code></pre>
-<h3>Readonly Variable</h3>
-<pre><code class="language-bash">readonly PI=3.14159
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Readonly Variable</h3>
+<div class="my-6">
+<pre class="language-bash"><code>readonly PI=3.14159
 echo $PI
 # PI=3 would cause an error</code></pre>
-<h3>Lowercase Variable</h3>
-<pre><code class="language-bash">declare -l lowered="HELLO"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Lowercase Variable</h3>
+<div class="my-6">
+<pre class="language-bash"><code>declare -l lowered="HELLO"
 echo $lowered  # Output: hello</code></pre>
-<hr>
-<h2>Environment Variables</h2>
-<p>Environment variables are available to the script and child processes. Use export to pass them to subprocesses.</p>
-<h3>Common Environment Variables</h3>
-<pre><code class="language-bash">echo $HOME      # /home/username
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Environment Variables</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Environment variables are available to the script and child processes. Use export to pass them to subprocesses.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Common Environment Variables</h3>
+<div class="my-6">
+<pre class="language-bash"><code>echo $HOME      # /home/username
 echo $USER      # username
 echo $PATH      # /usr/bin:/bin:...
 echo $PWD       # Current directory
 echo $SHELL     # /bin/bash
 echo $HOSTNAME  # machine-name</code></pre>
-<h3>Exporting Variables</h3>
-<pre><code class="language-bash">export MY_VAR="hello"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Exporting Variables</h3>
+<div class="my-6">
+<pre class="language-bash"><code>export MY_VAR="hello"
 bash -c 'echo $MY_VAR'  # Output: hello</code></pre>
-<hr>
-<h2>Special Variables</h2>
-<p>Bash provides special variables for script arguments, process info, and status codes.</p>
-<h3>Script Arguments</h3>
-<pre><code class="language-bash">#!/bin/bash
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Special Variables</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash provides special variables for script arguments, process info, and status codes.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Script Arguments</h3>
+<div class="my-6">
+<pre class="language-bash"><code>#!/bin/bash
 echo "Script name: $0"
 echo "First arg: $1"
 echo "Second arg: $2"
 echo "All args: $@"
 echo "Number of args: $#"</code></pre>
-<h3>Exit Status and PID</h3>
-<pre><code class="language-bash">ls /nonexistent 2&gt;/dev/null
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Exit Status and PID</h3>
+<div class="my-6">
+<pre class="language-bash"><code>ls /nonexistent 2&gt;/dev/null
 echo "Exit status: $?"  # 1 (error)
 echo "Current PID: $$"
 echo "Last background PID: $!"</code></pre>
-<hr>
-<h2>Variable Substitution & Defaults</h2>
-<p>Bash provides powerful parameter expansion to set defaults, substrings, and transformations.</p>
-<h3>Default Values</h3>
-<pre><code class="language-bash">name=""
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Variable Substitution & Defaults</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash provides powerful parameter expansion to set defaults, substrings, and transformations.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Default Values</h3>
+<div class="my-6">
+<pre class="language-bash"><code>name=""
 echo ${name:-"Default"}   # Default (if unset or empty)
 echo ${name:="Assigned"}  # Assigns and prints
 echo ${name:?"Error!"}    # Error if unset</code></pre>
-<h3>Substring Extraction</h3>
-<pre><code class="language-bash">str="Hello, World!"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Substring Extraction</h3>
+<div class="my-6">
+<pre class="language-bash"><code>str="Hello, World!"
 echo ${str:7:5}   # World
 echo ${str:0:5}   # Hello
 echo ${#str}      # 13 (length)</code></pre>
-<h3>Pattern Removal</h3>
-<pre><code class="language-bash">file="/home/user/docs/report.txt"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Pattern Removal</h3>
+<div class="my-6">
+<pre class="language-bash"><code>file="/home/user/docs/report.txt"
 echo ${file##*/}   # report.txt (basename)
 echo ${file%/*}    # /home/user/docs (dirname)
 echo ${file%.txt}  # /home/user/docs/report</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -318,6 +353,6 @@ echo ${file%.txt}  # /home/user/docs/report</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

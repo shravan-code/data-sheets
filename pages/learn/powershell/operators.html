@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265319">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Comparison Operators</h2>
-<p>PowerShell comparison operators are case-insensitive by default. Prefix with 'c' for case-sensitive and 'i' for explicit case-insensitive.</p>
-<h3>All Comparison Operators</h3>
-<pre><code class="language-powershell">
-# Equality
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Comparison Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell comparison operators are case-insensitive by default. Prefix with 'c' for case-sensitive and 'i' for explicit case-insensitive.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">All Comparison Operators</h3>
+<div class="my-6"><pre class="language-powershell"><code># Equality
 5 -eq 5       # Equal: True
 5 -ne 3       # Not Equal: True
 
@@ -259,14 +259,11 @@
 $x = 42
 $x -is [int]         # True
 $x -isnot [string]   # True
-$x -as [string]      # Converts to '42'
-</code></pre>
-<hr>
-<h2>Logical Operators</h2>
-<p>Logical operators combine boolean expressions.</p>
-<h3>Logical Operators</h3>
-<pre><code class="language-powershell">
-$a = $true
+$x -as [string]      # Converts to '42'</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Logical Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Logical operators combine boolean expressions.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Logical Operators</h3>
+<div class="my-6"><pre class="language-powershell"><code>$a = $true
 $b = $false
 
 $a -and $b   # AND: False
@@ -279,14 +276,11 @@ $a -xor $b   # XOR: True
 $x = $null
 if ($x -ne $null -and $x.Length -gt 0) {
     Write-Host 'Not null and not empty'
-}
-</code></pre>
-<hr>
-<h2>Arithmetic & Assignment Operators</h2>
-<p>Standard math and assignment operators with some PowerShell-specific additions.</p>
-<h3>Arithmetic Operators</h3>
-<pre><code class="language-powershell">
-5 + 3    # 8
+}</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Arithmetic & Assignment Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Standard math and assignment operators with some PowerShell-specific additions.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Arithmetic Operators</h3>
+<div class="my-6"><pre class="language-powershell"><code>5 + 3    # 8
 10 - 4   # 6
 3 * 4    # 12
 15 / 4   # 3.75
@@ -309,14 +303,11 @@ $x--
 # String and array concatenation
 'Hello' + ' ' + 'World'
 @(1,2) + @(3,4)   # 1,2,3,4
-'Ha' * 3           # HaHaHa
-</code></pre>
-<hr>
-<h2>Special Operators</h2>
-<p>PowerShell has several unique operators for pipeline manipulation, range, and redirection.</p>
-<h3>Special Operators</h3>
-<pre><code class="language-powershell">
-# Range operator
+'Ha' * 3           # HaHaHa</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Special Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell has several unique operators for pipeline manipulation, range, and redirection.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Special Operators</h3>
+<div class="my-6"><pre class="language-powershell"><code># Range operator
 1..10           # 1 to 10
 10..1           # 10 to 1
 'a'..'z'        # a to z
@@ -350,9 +341,7 @@ Get-Process *&gt; all_output.txt      # All streams
 
 # Ternary (PowerShell 7+)
 $x = 10
-$result = $x -gt 5 ? 'big' : 'small'
-</code></pre>
-<hr>
+$result = $x -gt 5 ? 'big' : 'small'</code></pre></div></div>
 
         </article>
 
@@ -381,6 +370,6 @@ $result = $x -gt 5 ? 'big' : 'small'
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265319" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

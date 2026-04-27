@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265321">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271313">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -236,38 +237,37 @@
                 <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">Python supports arithmetic, comparison, logical, bitwise, assignment, identity, and membership operators.</p>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Arithmetic Operators</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">Basic math operations including floor division, modulo, and exponentiation.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">print(10 + 3)   # 13  addition
-print(10 - 3)   # 7   subtraction
-print(10 * 3)   # 30  multiplication
-print(10 / 3)   # 3.333... true division
-print(10 // 3)  # 3   floor division
-print(10 % 3)   # 1   modulo (remainder)
-print(2 ** 10)  # 1024 exponentiation
-print(-7 // 2)  # -4  floor toward negative infinity</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Arithmetic: Basic Math</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Standard operations like addition, subtraction, multiplication, and division. Division (/) always returns a float.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>print(10 + 3)   # 13
+print(10 - 3)   # 7
+print(10 * 3)   # 30
+print(10 / 3)   # 3.333...</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>13
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">13
 7
 30
-3.3333333333333335
-3
-1
-1024
--4</code></pre>
+3.3333333333333335</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Arithmetic: Advanced Math</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Floor division (//) truncates results; modulo (%) returns the remainder; exponentiation (**) raises to power.</p>
+<pre class="language-python"><code>print(10 // 3)  # 3
+print(10 % 3)   # 1
+print(2 ** 3)   # 8</code></pre>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Comparison Operators</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Return boolean values. Python supports chained comparisons.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">print(5 == 5)    # True
+<pre class="language-python"><code>print(5 == 5)    # True
 print(5 != 3)    # True
 print(5 &gt; 3)     # True
 print(5 &lt; 3)     # False
@@ -279,25 +279,13 @@ x = 5
 print(1 &lt; x &lt; 10)   # True
 print(1 &lt; x &lt; 4)    # False</code></pre>
 </div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
-<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>True
-True
-True
-False
-True
-False
-True
-False</code></pre>
-</div>
-</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Logical Operators</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">and, or, not with short-circuit evaluation. Return the actual values, not just True/False.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python"># Short-circuit: returns first falsy for 'and', first truthy for 'or'
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code># Short-circuit: returns first falsy for 'and', first truthy for 'or'
 print(True and False)   # False
 print(True or False)    # True
 print(not True)         # False
@@ -307,10 +295,9 @@ print(0 or 'default')   # 'default' (0 is falsy)
 print(5 or 'default')   # 5 (5 is truthy)
 print(None and 'never') # None (short-circuits)
 print([] or {} or 42)   # 42 (first truthy)</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>False
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">False
 True
 False
 default
@@ -319,23 +306,24 @@ None
 42</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Bitwise Operators</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Operate on integer bits directly.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">a, b = 0b1010, 0b1100  # 10 and 12
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>a, b = 0b1010, 0b1100  # 10 and 12
 print(bin(a &amp; b))   # AND:  0b1000 = 8
 print(bin(a | b))   # OR:   0b1110 = 14
 print(bin(a ^ b))   # XOR:  0b0110 = 6
 print(bin(~a))      # NOT:  -11 (two's complement)
 print(bin(a &lt;&lt; 1))  # Left shift:  0b10100 = 20
 print(bin(a &gt;&gt; 1))  # Right shift: 0b0101 = 5</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>0b1000
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">0b1000
 0b1110
 0b110
 -0b1011
@@ -343,13 +331,15 @@ print(bin(a &gt;&gt; 1))  # Right shift: 0b0101 = 5</code></pre>
 0b101</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Identity & Membership</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">is/is not for object identity; in/not in for membership testing.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python"># Identity
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code># Identity
 a = [1, 2]
 b = a
 c = [1, 2]
@@ -362,16 +352,17 @@ print(3 in [1, 2, 3])        # True
 print('py' in 'python')      # True
 print('key' in {'key': 1})   # True (checks keys)
 print(5 not in range(3))     # True</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>True
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">True
 False
 True
 True
 True
 True
 True</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -419,6 +410,6 @@ True</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265321" defer></script>
+<script src="../../../js/ds-main.js?v=1777271313" defer></script>
 </body>
 </html>

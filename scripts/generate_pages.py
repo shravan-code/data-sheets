@@ -107,6 +107,13 @@ pages = [
       "Delta Live Tables (DLT) pipelines", "Auto Loader for incremental ingestion",
       "MLflow for experiment tracking", "Databricks Asset Bundles (CI/CD)"]),
 
+    ("regex.html", "Regex", "search", "Tools", "orange",
+     "Master Regular Expressions for data cleaning, pattern matching and text processing in Python, SQL and Bash.",
+     ["Literals and character classes ([a-z], \d, \s)", "Quantifiers (*, +, ?, {n,m})",
+      "Anchors (^, $) and Word Boundaries (\\b)", "Groups and Capturing ((...), (?:...))",
+      "Alternation (|) and Escaping (\\)", "Lookahead and Lookbehind assertions",
+      "Regex in Python (re module)", "Regex in SQL (REGEXP, SIMILAR TO)"]),
+
     ("docker.html", "Docker", "container", "CI/CD", "green",
      "Containerization with Docker for consistent, reproducible data engineering environments.",
      ["Containers vs virtual machines", "Dockerfile: FROM, RUN, COPY, CMD, ENTRYPOINT",

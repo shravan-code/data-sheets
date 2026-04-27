@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265319">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>If / ElseIf / Else</h2>
-<p>Standard conditional branching in PowerShell.</p>
-<h3>If Statements</h3>
-<pre><code class="language-powershell">
-$score = 85
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>If / ElseIf / Else</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Standard conditional branching in PowerShell.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">If Statements</h3>
+<div class="my-6"><pre class="language-powershell"><code>$score = 85
 
 if ($score -ge 90) {
     Write-Host 'Grade: A'
@@ -243,14 +243,11 @@ if ($score -ge 90) {
 }
 
 # One-liner
-if ($score -ge 60) { Write-Host 'Passed' } else { Write-Host 'Failed' }
-</code></pre>
-<hr>
-<h2>Switch Statement</h2>
-<p>Switch is more powerful than in many languages — it supports wildcards, regex, and multiple conditions.</p>
-<h3>Switch Examples</h3>
-<pre><code class="language-powershell">
-$day = 'Monday'
+if ($score -ge 60) { Write-Host 'Passed' } else { Write-Host 'Failed' }</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Switch Statement</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Switch is more powerful than in many languages — it supports wildcards, regex, and multiple conditions.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Switch Examples</h3>
+<div class="my-6"><pre class="language-powershell"><code>$day = 'Monday'
 
 switch ($day) {
     'Monday'   { Write-Host 'Start of work week' }
@@ -283,14 +280,11 @@ switch -Regex ('user123@email.com') {
 switch (1,2,3,4,5) {
     { $_ % 2 -eq 0 } { Write-Host "$_ is Even" }
     { $_ % 2 -ne 0 } { Write-Host "$_ is Odd" }
-}
-</code></pre>
-<hr>
-<h2>Loops</h2>
-<p>PowerShell offers for, foreach, while, do-while, and do-until loops.</p>
-<h3>For Loop</h3>
-<pre><code class="language-powershell">
-for ($i = 0; $i -lt 5; $i++) {
+}</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Loops</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell offers for, foreach, while, do-while, and do-until loops.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">For Loop</h3>
+<div class="my-6"><pre class="language-powershell"><code>for ($i = 0; $i -lt 5; $i++) {
     Write-Host "Iteration: $i"
 }
 
@@ -298,11 +292,8 @@ for ($i = 0; $i -lt 5; $i++) {
 for ($i = 10; $i -ge 0; $i--) {
     Write-Host $i
     Start-Sleep -Milliseconds 100
-}
-</code></pre>
-<h3>Foreach Loop</h3>
-<pre><code class="language-powershell">
-$fruits = @('Apple', 'Banana', 'Cherry')
+}</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Foreach Loop</h3>
+<div class="my-6"><pre class="language-powershell"><code>$fruits = @('Apple', 'Banana', 'Cherry')
 
 foreach ($fruit in $fruits) {
     Write-Host "Fruit: $fruit"
@@ -314,11 +305,8 @@ foreach ($fruit in $fruits) {
 # Foreach with index workaround
 for ($i = 0; $i -lt $fruits.Count; $i++) {
     Write-Host "[$i] $($fruits[$i])"
-}
-</code></pre>
-<h3>While & Do Loops</h3>
-<pre><code class="language-powershell">
-# While loop
+}</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">While & Do Loops</h3>
+<div class="my-6"><pre class="language-powershell"><code># While loop
 $count = 0
 while ($count -lt 5) {
     Write-Host "Count: $count"
@@ -337,11 +325,8 @@ $x = 10
 do {
     Write-Host $x
     $x--
-} until ($x -eq 0)
-</code></pre>
-<h3>Loop Control: Break & Continue</h3>
-<pre><code class="language-powershell">
-# Break exits the loop
+} until ($x -eq 0)</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Loop Control: Break & Continue</h3>
+<div class="my-6"><pre class="language-powershell"><code># Break exits the loop
 for ($i = 0; $i -lt 10; $i++) {
     if ($i -eq 5) { break }
     Write-Host $i
@@ -359,9 +344,7 @@ for ($i = 0; $i -lt 10; $i++) {
         if ($j -eq 1) { break outer }
         Write-Host "$i,$j"
     }
-}
-</code></pre>
-<hr>
+}</code></pre></div></div>
 
         </article>
 
@@ -390,6 +373,6 @@ for ($i = 0; $i -lt 10; $i++) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265319" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

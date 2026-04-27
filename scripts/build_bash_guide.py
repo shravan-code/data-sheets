@@ -46,13 +46,65 @@ def render_topic_html(topic_data):
         
     parts = []
     for sub in topic_data.get("subtopics", []):
-        parts.append(f"<h2>{sub['name']}</h2>")
-        parts.append(f"<p>{sub['explanation']}</p>")
+        parts.append(f'<div class="mb-16">')
+        parts.append(f'<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">')
+        parts.append(f'<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>{sub["name"]}</h2>')
+        
+        parts.append(f'<p class="text-slate-600 dark:text-slate-400 mb-8">{sub["explanation"]}</p>')
+        
         for ex in sub.get("examples", []):
-            parts.append(f"<h3>{ex['title']}</h3>")
-            code = ex["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            parts.append(f'<pre><code class="language-bash">{code}</code></pre>')
-        parts.append("<hr>")
+            parts.append(f'<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">{ex["title"]}</h3>')
+            
+            raw_code = ex.get("code", "")
+            raw_output = ex.get("output", "")
+            
+            # Check if output is already in comments
+            output_in_comments = False
+            if raw_output and raw_code:
+                output_lines = [l.strip() for l in raw_output.split('\n') if l.strip()]
+                if output_lines:
+                    # Get all comment parts from code
+                    code_comments = [line.split('#', 1)[1].strip() for line in raw_code.split('\n') if '#' in line]
+                    # Check if all non-empty output lines are represented in comments
+                    prefixes = ["Output:", "Result:", "->", "=>"]
+                    found_count = 0
+                    for o_line in output_lines:
+                        matched = False
+                        for c in code_comments:
+                            c_clean = c.strip()
+                            if o_line == c_clean:
+                                matched = True; break
+                            for p in prefixes:
+                                if c_clean.startswith(p) and c_clean[len(p):].strip() == o_line:
+                                    matched = True; break
+                            if matched: break
+                        if matched: found_count += 1
+                    
+                    if found_count == len(output_lines):
+                        output_in_comments = True
+
+            code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            output = raw_output.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            
+            if output and not output_in_comments:
+                # Combined Code + Output Card
+                parts.append(f'<div class="my-8 group">')
+                parts.append(f'<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">')
+                parts.append(f'<pre class="language-bash"><code>{code}</code></pre>')
+                parts.append(f'<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">')
+                parts.append(f'<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>')
+                parts.append(f'<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-emerald-600 font-mono text-sm leading-relaxed">{output}</code></pre>')
+                parts.append(f'</div>')
+                parts.append(f'</div>')
+                parts.append(f'</div>')
+            else:
+                # Standalone Code Block
+                parts.append(f'<div class="my-6">')
+                parts.append(f'<pre class="language-bash"><code>{code}</code></pre>')
+                parts.append(f'</div>')
+        
+        parts.append(f'</div>')
+        
     return "\n".join(parts)
 
 def build_bash_hub(topics):
@@ -100,78 +152,60 @@ def build_bash_hub(topics):
             </a>"""
 
         phases_html += f"""
-        <div class="relative pl-12 pb-12 group last:pb-0">
-            <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
-            <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-emerald-500 transition-colors shadow-sm">
-                <span class="text-xs font-bold text-slate-500 group-hover:text-emerald-600">{num:02d}</span>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-emerald-500/5">
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
-                    {phase['name']}
-                    <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-bold border border-emerald-200">Phase {num}</span>
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {items_html}
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                    <span class="text-sm font-black">{num}</span>
                 </div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white font-display tracking-tight">{phase['name']}</h2>
             </div>
-        </div>"""
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {items_html}
+            </div>
+        </section>"""
 
     hub_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bash Scripting Roadmap \u2014 Data Cake</title>
+    <title>Bash Scripting \u2014 Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Master Linux automation and shell scripting with our 11-phase structured Bash roadmap.">
+    <meta name="description" content="Master Linux automation and shell scripting with our structured Bash guide.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <style>
-        .roadmap-hero-bg {{
-            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
-            background-size: 24px 24px;
-        }}
-        .dark .roadmap-hero-bg {{
-            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
-        }}
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
     <div id="ds-main-content">
         <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
             <!-- HERO -->
-            <header class="roadmap-hero-bg mb-20 p-10 md:p-14 rounded-[48px] border-2 border-emerald-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-2xl shadow-emerald-500/10">
-                <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
-                <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-500/5 blur-[100px] rounded-full"></div>
-                
-                <div class="relative z-10">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-black uppercase tracking-widest mb-8 border-2 border-emerald-200/50">
-                        <i data-lucide="terminal" class="w-4 h-4"></i>
-                        Shell Roadmap
-                    </div>
-                    <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
-                        Bash <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Scripting</span>
-                    </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
-                        "The language of the cloud. From simple pipes to production-grade automation engines."
-                    </p>
+            <header class="mb-20 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border-2 border-emerald-200/50">
+                    <i data-lucide="terminal" class="w-3 h-3"></i> Shell Guide
                 </div>
+                <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
+                    Bash <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Scripting</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
+                    "The language of the cloud. From simple pipes to production-grade automation engines."
+                </p>
             </header>
 
-            <!-- ROADMAP CONTENT -->
-            <div class="max-w-4xl mx-auto">
+            <!-- CARD CONTENT -->
+            <div class="space-y-16">
                 {phases_html}
             </div>
 
             <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-medium">\u00a9 2026 Data Cake \u2022 Path to Linux Mastery</p>
+                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase">\u00a9 2026 Data Cake \u2022 Linux Mastery</p>
             </footer>
         </main>
     </div>
+    <script>lucide.createIcons();</script>
 </body>
 </html>"""
+
 
     output_path = os.path.join('pages', 'learn', 'bash.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

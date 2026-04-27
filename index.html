@@ -41,12 +41,26 @@
             inset: 0 !important;
             width: 100%;
             height: 100%;
-            opacity: 0.8 !important;
+            pointer-events: auto !important;
+            overflow: hidden;
+        }
+
+        .grid-cells-layer {
+            position: absolute;
+            inset: 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, 40px);
             grid-template-rows: repeat(auto-fill, 40px);
-            /* Important: Allow grid cells to receive hover events */
-            pointer-events: auto !important;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .traveling-blocks-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.4;
         }
         .grid-cell {
             width: 40px;
@@ -60,10 +74,121 @@
         .dark .grid-cell:hover {
             background-color: rgba(96, 165, 250, 0.2);
         }
+
+        /* Traveling Blocks */
+        .traveling-block {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(59, 130, 246, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            pointer-events: none;
+            z-index: 10;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+            border-radius: 4px;
+        }
+        .dark .traveling-block {
+            background-color: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
+        }
+
+        /* Shifting Pulse Animation */
+        .grid-cell.animate {
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(59, 130, 246, 0.12); }
+        }
+        .dark @keyframes gridPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(96, 165, 250, 0.08); }
+        }
+
+        /* Feature Cards Style */
+        .feature-card {
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 1.5rem;
+            padding: 1.25rem 1.75rem;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none !important;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12);
+        }
+
+        .feature-card .icon-box {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .feature-card:hover .icon-box {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .feature-card.practice .icon-box { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .feature-card.portfolio .icon-box { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        .feature-card.practice:hover { border-color: #8b5cf6; }
+        .feature-card.portfolio:hover { border-color: #10b981; }
+
+        .feature-card .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .feature-card .card-arrow {
+            margin-left: auto;
+            color: #94a3b8;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover .card-arrow {
+            transform: translateX(4px);
+        }
+
+        .feature-card.practice .card-arrow { color: #8b5cf6; }
+        .feature-card.portfolio .card-arrow { color: #10b981; }
+
+        .dark .feature-card {
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(51, 65, 85, 0.5);
+            backdrop-blur: xl;
+        }
+
+        .dark .feature-card:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(30, 41, 59, 0.6);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark .feature-card .card-title { color: white; }
+        .dark .feature-card .card-desc { color: #94a3b8; }
     </style>
     
     
-<link rel="stylesheet" href="css/ds-main.css?v=1777265316">
+<link rel="stylesheet" href="css/ds-main.css?v=1777271308">
 <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
 </head>
@@ -153,6 +278,7 @@
                 <a href="pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -1236,6 +1362,222 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Background -->
 <div class="fixed inset-0 grid-bg animate-grid opacity-100 z-0"></div>
 <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
@@ -1258,18 +1600,29 @@
                 Curated guides, architectural patterns, and practical cheat sheets covering everything from Python and SQL to Cloud and System Design.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="index.html" class="ds-hero-btn btn-blue w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-blue-600 hover:bg-blue-500 transition-colors shadow-lg shadow-blue-500/20 no-underline">
-                    <i data-lucide="book-open" class="w-5 h-5"></i>
-                    Start Learning
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 max-w-2xl mx-auto">
+                <a href="pages/practice.html" class="feature-card practice group">
+                    <div class="icon-box">
+                        <i data-lucide="hammer" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Practice Skills</h3>
+                    </div>
+                    <div class="card-arrow">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
                 </a>
-                <a href="pages/practice.html" class="ds-hero-btn btn-violet w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-violet-600 hover:bg-violet-500 transition-colors shadow-lg shadow-violet-500/20 no-underline">
-                    <i data-lucide="hammer" class="w-5 h-5"></i>
-                    Practice Skills
-                </a>
-                <a href="pages/portfolio.html" class="ds-hero-btn btn-cyan w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-cyan-600 hover:bg-cyan-500 transition-colors shadow-lg shadow-cyan-500/20 no-underline">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                    My Portfolio
+
+                <a href="pages/portfolio.html" class="feature-card portfolio group">
+                    <div class="icon-box">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="card-title">My Portfolio</h3>
+                    </div>
+                    <div class="card-arrow">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
                 </a>
             </div>
         </div>
@@ -1286,23 +1639,31 @@
 <script>
     // Generate interactive grid cells
     document.addEventListener('DOMContentLoaded', () => {
-        const grid = document.querySelector('.animate-grid');
-        if (grid) {
-            // Calculate how many 40x40 cells fit in 120vw and 120vh
+        const gridContainer = document.querySelector('.animate-grid');
+        if (gridContainer) {
+            // Create layers
+            const cellsLayer = document.createElement('div');
+            cellsLayer.className = 'grid-cells-layer';
+            const blocksLayer = document.createElement('div');
+            blocksLayer.className = 'traveling-blocks-layer';
+            
+            gridContainer.appendChild(cellsLayer);
+            gridContainer.appendChild(blocksLayer);
+
             const cols = Math.ceil((window.innerWidth * 1.2) / 40);
             const rows = Math.ceil((window.innerHeight * 1.2) / 40);
             const total = cols * rows;
             
-            // Use a DocumentFragment for performance
             const fragment = document.createDocumentFragment();
             for (let i = 0; i < total; i++) {
                 const cell = document.createElement('div');
-                cell.className = 'grid-cell';
+                cell.className = 'grid-cell animate';
+                cell.style.animationDelay = `${Math.random() * 8}s`;
                 fragment.appendChild(cell);
             }
-            grid.appendChild(fragment);
-            
-            // Handle window resize by re-calculating (debounce not strictly necessary for this simple logic)
+            cellsLayer.appendChild(fragment);
+
+            // Handle window resize
             let resizeTimeout;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
@@ -1310,21 +1671,68 @@
                     const newCols = Math.ceil((window.innerWidth * 1.2) / 40);
                     const newRows = Math.ceil((window.innerHeight * 1.2) / 40);
                     const newTotal = newCols * newRows;
-                    if (newTotal > grid.children.length) {
+                    if (newTotal > cellsLayer.children.length) {
                         const newFragment = document.createDocumentFragment();
-                        for (let i = grid.children.length; i < newTotal; i++) {
+                        for (let i = cellsLayer.children.length; i < newTotal; i++) {
                             const cell = document.createElement('div');
-                            cell.className = 'grid-cell';
+                            cell.className = 'grid-cell animate';
+                            cell.style.animationDelay = `${Math.random() * 8}s`;
                             newFragment.appendChild(cell);
                         }
-                        grid.appendChild(newFragment);
+                        cellsLayer.appendChild(newFragment);
                     }
                 }, 200);
             });
+
+            // Traveling Blocks Logic
+            const blocksCount = 25;
+            for (let i = 0; i < blocksCount; i++) {
+                createTravelingBlock(blocksLayer, cols, rows);
+            }
+        }
+
+        function createTravelingBlock(container, cols, rows) {
+            const block = document.createElement('div');
+            block.className = 'traveling-block';
+            
+            let x = Math.floor(Math.random() * cols);
+            let y = Math.floor(Math.random() * rows);
+            
+            const updatePos = () => {
+                block.style.left = `${x * 40}px`;
+                block.style.top = `${y * 40}px`;
+            };
+            
+            updatePos();
+            container.appendChild(block);
+            
+            const move = () => {
+                const direction = Math.floor(Math.random() * 4);
+                if (direction === 0 && x < cols - 1) x++;
+                else if (direction === 1 && x > 0) x--;
+                else if (direction === 2 && y < rows - 1) y++;
+                else if (direction === 3 && y > 0) y--;
+                
+                updatePos();
+                
+                if (Math.random() > 0.95) {
+                    block.style.opacity = '0';
+                    setTimeout(() => {
+                        x = Math.floor(Math.random() * cols);
+                        y = Math.floor(Math.random() * rows);
+                        updatePos();
+                        block.style.opacity = '1';
+                    }, 600);
+                }
+                
+                setTimeout(move, 1000 + Math.random() * 2000);
+            };
+            
+            setTimeout(move, Math.random() * 2000);
         }
     });
 </script>
-<script src="js/ds-main.js?v=1777265316" defer></script>
+<script src="js/ds-main.js?v=1777271308" defer></script>
 </body>
 </html>
 

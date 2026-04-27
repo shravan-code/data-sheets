@@ -668,22 +668,59 @@ for i, phase in enumerate(phases):
         </a>"""
 
     phases_html += f"""
-    <div class="relative pl-12 pb-12 group last:pb-0">
-        <div class="absolute left-[19px] top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-800 group-last:bottom-auto group-last:h-10"></div>
-        <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-violet-500 transition-colors shadow-sm">
-            <span class="text-xs font-bold text-slate-500 group-hover:text-violet-600">{num:02d}</span>
-        </div>
-
-        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-6 rounded-3xl transition-all hover:shadow-xl hover:shadow-violet-500/5">
-            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 font-display">
-                {phase['name']}
-                <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-violet-100 text-violet-700 rounded-lg font-bold border border-violet-200">Phase {num}</span>
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {items_html}
+    <section class="mb-12">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-600">
+                <span class="text-sm font-black">{num}</span>
             </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white font-display tracking-tight">{phase['name']}</h2>
         </div>
-    </div>"""
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {items_html}
+        </div>
+    </section>"""
+
+hub_template = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DE Fundamentals — Data Cake</title>
+    <meta name="description" content="Master the core principles of data engineering with our structured guide.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-5xl mx-auto">
+            <!-- HERO -->
+            <header class="mb-20 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-100 text-violet-700 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border-2 border-violet-200/50">
+                    <i data-lucide="layers" class="w-3 h-3"></i> Core Concepts
+                </div>
+                <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
+                    DE <span class="bg-gradient-to-r from-violet-600 to-violet-400 bg-clip-text text-transparent">Fundamentals</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
+                    "The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
+                </p>
+            </header>
+
+            <!-- CARD CONTENT -->
+            <div class="space-y-16">
+                {phases_html}
+            </div>
+            
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase text-[10px]">\u00a9 2026 Data Cake \u2022 Foundations Mastery</p>
+            </footer>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>'''
 
 hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
