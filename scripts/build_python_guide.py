@@ -23,6 +23,122 @@ PART_ICONS = {
     18: "award",
 }
 
+def get_global_sidebar(rel_path):
+    return f"""
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/python.html" class="sb-link"><i data-lucide="code-2" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+                <a href="{rel_path}pages/learn/sql.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+                <a href="{rel_path}pages/learn/bash.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+                <a href="{rel_path}pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="{rel_path}pages/learn/dsa-de.html" class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/spark.html" class="sb-link"><i data-lucide="zap" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+                <a href="{rel_path}pages/learn/flink.html" class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+                <a href="{rel_path}pages/learn/kafka.html" class="sb-link"><i data-lucide="radio" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+                <a href="{rel_path}pages/learn/dbt.html" class="sb-link"><i data-lucide="blocks" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+                <a href="{rel_path}pages/learn/pandas.html" class="sb-link"><i data-lucide="table-2" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+                <a href="{rel_path}pages/learn/numpy.html" class="sb-link"><i data-lucide="hash" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+                <a href="{rel_path}pages/learn/airflow.html" class="sb-link"><i data-lucide="wind" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="{rel_path}pages/learn/regex.html" class="sb-link"><i data-lucide="search" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/aws.html" class="sb-link"><i data-lucide="cloud" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+                <a href="{rel_path}pages/learn/gcp.html" class="sb-link"><i data-lucide="cloud-sun" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+                <a href="{rel_path}pages/learn/azure.html" class="sb-link"><i data-lucide="cloud-cog" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+                <a href="{rel_path}pages/learn/snowflake.html" class="sb-link"><i data-lucide="snowflake" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+                <a href="{rel_path}pages/learn/databricks.html" class="sb-link"><i data-lucide="box" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/docker.html" class="sb-link"><i data-lucide="container" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+                <a href="{rel_path}pages/learn/kubernetes.html" class="sb-link"><i data-lucide="network" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+                <a href="{rel_path}pages/learn/terraform.html" class="sb-link"><i data-lucide="sliders" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+                <a href="{rel_path}pages/learn/github.html" class="sb-link"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/learn/system-design.html" class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+                <a href="{rel_path}pages/learn/pipeline-design.html" class="sb-link"><i data-lucide="workflow" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+                <a href="{rel_path}pages/learn/de-architectures.html" class="sb-link"><i data-lucide="cpu" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="{rel_path}pages/roadmaps/ml-engineer.html" class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="{rel_path}pages/roadmaps/ai-engineer.html" class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="{rel_path}pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="{rel_path}pages/practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="{rel_path}pages/practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="{rel_path}pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>"""
+
 def slugify(text):
     s = text.lower()
     s = s.replace(" ", "-").replace("&", "and").replace("/", "-")
@@ -154,6 +270,29 @@ def build_python_hub(data):
             
     final_parts.sort(key=lambda x: x["part"])
     
+    all_topics = []
+    for part in final_parts:
+        if part.get("topics"):
+            for topic in part["topics"]:
+                all_topics.append(topic)
+        else:
+            all_topics.append(part)
+
+    # Pre-build sidebar HTML
+    sidebar_html = """
+        <div id="guide-topics" class="mt-6">
+            <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+                <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="list" class="w-3 h-3 text-white"></i>
+                </span>
+                Python Guide
+            </div>
+            <nav class="pl-2">"""
+    for t in all_topics:
+        slug = slugify(t["title"])
+        sidebar_html += f'<a href="python/{slug}.html" class="sb-link">{t["title"]}</a>'
+    sidebar_html += '</nav></div>'
+
     # Phase mapping (11 phases)
     phases = [
         {"name": "Foundations", "part_ids": [1]},
@@ -221,10 +360,12 @@ def build_python_hub(data):
             </div>
         </section>"""
 
+    global_sidebar = get_global_sidebar("../../")
+
     hub_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Python Mastery \u2014 Data Cake</title>
+    <title>Python Mastery — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{data['description']}">
@@ -232,9 +373,63 @@ def build_python_hub(data):
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../css/ds-main.css">
+    <link rel="stylesheet" href="../../css/layout-fixes.css">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-    <div id="ds-main-content">
+    <!-- NAV -->
+    <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+        <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+            <!-- LEFT: Toggle, Logo and Page Title -->
+            <div class="flex items-center gap-4">
+                <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                </button>
+
+                <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                    <div class="flex items-center">
+                        <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                            <span class="font-light text-slate-500">Data</span>
+                            <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                        </span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-3 ml-2">
+                    <div class="h-4 w-[1px] bg-slate-200"></div>
+                    <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                        Python Mastery
+                    </span>
+                </div>
+            </div>
+
+            <!-- RIGHT: Profile Icon -->
+            <div class="flex items-center">
+                <a href="../../pages/portfolio.html" id="profile-btn" title="Profile"
+                    class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50 transition-transform duration-300">
+        <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+        <div class="py-5 px-3 flex flex-col h-full">
+            <div class="flex-1">
+                {global_sidebar}
+
+                {sidebar_html}
+            </div>
+        </div>
+    </aside>
+
+    <div id="ds-main-content" class="lg:pl-60 transition-all duration-300">
         <main class="relative z-10 pt-24 pb-20 px-6 max-w-6xl mx-auto">
             <!-- HERO -->
             <header class="mb-20 text-center">
@@ -259,6 +454,7 @@ def build_python_hub(data):
             </footer>
         </main>
     </div>
+    <script src="../../js/ds-main.js"></script>
     <script>lucide.createIcons();</script>
 </body>
 </html>"""
@@ -293,11 +489,18 @@ def build_python_subpages(data):
     os.makedirs(os.path.join('pages', 'learn', 'python'), exist_ok=True)
     
     # Pre-build sidebar HTML
-    sidebar_html = '<div class="toc-title mt-8">Python Guide</div><ul class="toc-list">'
+    sidebar_html = """
+        <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="list" class="w-3 h-3 text-white"></i>
+            </span>
+            Python Guide
+        </div>
+        <nav class="pl-2">"""
     for t in all_topics:
         slug = slugify(t["title"])
-        sidebar_html += f'<li><a href="{slug}.html" class="toc-link">{t["title"]}</a></li>'
-    sidebar_html += '</ul>'
+        sidebar_html += f'<a href="{slug}.html" class="sb-link">{t["title"]}</a>'
+    sidebar_html += '</nav>'
     
     for i, topic in enumerate(all_topics):
         slug = slugify(topic["title"])
@@ -358,12 +561,12 @@ def build_python_subpages(data):
         else:
             content = render_topic_content(topic)
             
-        active_sidebar = sidebar_html.replace(f'href="{slug}.html" class="toc-link"', f'href="{slug}.html" class="toc-link active"')
+        active_sidebar = sidebar_html.replace(f'href="{slug}.html" class="sb-link"', f'href="{slug}.html" class="sb-link active"')
         
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{topic['title']} \u2014 Python Guide</title>
+    <title>{topic['title']} — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -371,49 +574,103 @@ def build_python_subpages(data):
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <style>
-        pre[class*="language-"] {{
-            margin: 0 !important;
-            padding: 1.5rem !important;
-            border-radius: 0.75rem !important;
-            font-size: 0.9rem !important;
-            line-height: 1.6 !important;
-        }}
-    </style>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/layout-fixes.css">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-    <div class="flex justify-center max-w-[1440px] mx-auto">
-        <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
-            <a href="../python.html" class="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors mb-6 group no-underline">
-                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
-                Back to Python
-            </a>
-            <header class="mb-12">
-                <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
-                    {topic['title']}
-                </h1>
-            </header>
+    <!-- NAV -->
+    <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+        <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+            <!-- LEFT: Toggle, Logo and Page Title -->
+            <div class="flex items-center gap-4">
+                <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                </button>
 
-            <article class="prose dark:prose-invert max-w-none pb-20">
-                {content}
-            </article>
+                <a href="../../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                    <div class="flex items-center">
+                        <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                            <span class="font-light text-slate-500">Data</span>
+                            <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                        </span>
+                    </div>
+                </a>
 
-            <div class="nav-container">
-                {prev_html}
-                {next_html}
+                <div class="hidden md:flex items-center gap-3 ml-2">
+                    <div class="h-4 w-[1px] bg-slate-200"></div>
+                    <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                        {topic['title']}
+                    </span>
+                </div>
             </div>
-        </main>
+
+            <!-- RIGHT: Profile Icon -->
+            <div class="flex items-center">
+                <a href="../../../pages/portfolio.html" id="profile-btn" title="Profile"
+                    class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50 transition-transform duration-300">
+        <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+        <div class="py-5 px-3 flex flex-col h-full">
+            <div class="flex-1">
+                {get_global_sidebar("../../../")}
+
+                <div id="guide-topics" class="mt-6">
+                    {active_sidebar}
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html#{slug}" class="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors mb-6 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    Back to Python
+                </a>
+
+                <header class="mb-12">
+                    <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-[1px] bg-slate-300"></span>
+                        Section {topic['part_num']}: {topic.get('category', 'Foundations')}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                        {topic['title']}
+                    </h1>
+                </header>
+
+                <article class="prose dark:prose-invert max-w-none pb-20">
+                    {content}
+                </article>
+
+                <div class="nav-container">
+                    {prev_html}
+                    {next_html}
+                </div>
+            </main>
+        </div>
 
         <aside class="toc-container">
             <div class="toc-title">On this page</div>
             <ul class="toc-list"></ul>
-            {active_sidebar}
         </aside>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
+    <script src="../../../js/ds-main.js" defer></script>
 </body>
 </html>"""
         

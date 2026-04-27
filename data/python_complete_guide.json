@@ -54,6 +54,34 @@
                   "explanation": "Python can be run interactively (REPL), as scripts, or in notebooks.",
                   "code": "# Check Python version\nimport sys\nprint(sys.version)\nprint(sys.version_info)",
                   "output": "3.11.0 (main, Oct 24 2022)\nsys.version_info(major=3, minor=11, micro=0, releaselevel='final', serial=0)"
+                },
+                {
+                  "title": "High-Level Language",
+                  "explanation": "Python is a high-level language, meaning it abstracts away complex details like memory management and CPU instructions. It uses English-like syntax, making it more readable for humans and allowing developers to focus on 'what' to do rather than 'how' the hardware should do it."
+                },
+                {
+                  "title": "Interpreted vs Compiled",
+                  "explanation": "In Compiled languages (C, C++), code is converted to machine code before running. In Interpreted languages (PHP, Ruby), code is executed line-by-line. Python is a hybrid: Source code (.py) is first compiled into intermediate Bytecode (.pyc), which is then interpreted by the Python Virtual Machine (PVM)."
+                },
+                {
+                  "title": "Global Interpreter Lock (GIL)",
+                  "explanation": "The GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecodes at once. While it makes CPython's memory management simpler, it means that even on multi-core systems, only one thread runs at a time for CPU-bound tasks."
+                },
+                {
+                  "title": "Dynamic Typing",
+                  "explanation": "Python is dynamically typed, meaning variable types are determined at runtime. You don't need to declare whether a variable is an int, str, or list; the interpreter figures it out based on the value assigned. This allows for rapid development but requires discipline to avoid type errors."
+                },
+                {
+                  "title": "Execution Flow: Source to Machine",
+                  "explanation": "Python's execution flow involves a compilation step to bytecode followed by interpretation by the PVM. This hybrid approach provides portability and ease of development.",
+                  "code": "┌─────────────┐      ┌──────────────┐      ┌──────────────┐\n│ Source Code │ ---> │   Compiler   │ ---> │   Bytecode   │\n│ (.py)       │      │ (Syntax/AST) │      │   (.pyc)     │\n└─────────────┘      └──────────────┘      └──────┬───────┘\n                                                  │\n                                                  v\n┌─────────────┐      ┌──────────────┐      ┌──────────────┐\n│ Machine Code│ <--- │ Interpreter  │ <--- │   PVM Load   │\n│ (CPU Binary)│      │    (PVM)     │      │ (Memory)     │\n└─────────────┘      └──────────────┘      └──────────────┘",
+                  "output": "# Step-by-step transformation process"
+                },
+                {
+                  "title": "Bytecode vs Machine Code",
+                  "explanation": "Bytecode is a low-level, platform-independent set of instructions for the PVM. Machine Code is the binary code (0s and 1s) specific to your computer's hardware (e.g., Intel vs. ARM). You can view Python's bytecode using the 'dis' module.",
+                  "code": "import dis\n\ndef add(a, b):\n    return a + b\n\n# Display the bytecode instructions\ndis.dis(add)",
+                  "output": "  2           0 LOAD_FAST                0 (a)\n              2 LOAD_FAST                1 (b)\n              4 BINARY_ADD\n              6 RETURN_VALUE"
                 }
               ],
               "interview_qa": [

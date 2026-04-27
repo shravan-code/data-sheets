@@ -206,6 +206,11 @@ p {
         padding-left: 16rem !important;
     }
 
+    #ds-main-content {
+        width: auto !important; /* Allow flex to determine width */
+        min-width: 0;
+    }
+
     /* Neutralize Tailwind's static padding if present */
     .lg\:pl-64 {
         padding-left: 0 !important;
@@ -634,13 +639,13 @@ body.ds-learn-home .ds-accent-rose .ds-topic-card-cta {
 
 /* Mobile Content Layout Fixes */
 html {
-    overflow-x: hidden;
+    overflow-x: clip; /* clip is safer than hidden for sticky elements in some browsers */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 /* Global content wrapper */

@@ -43,10 +43,12 @@
             // Resolve relative href to absolute path for comparison
             const linkPath = new URL(href, window.location.href).pathname;
             
-            // Match logic: Exact match OR the current page is a sub-page of this link
-            // e.g. if we are on /bash/intro.html and link is /bash.html
-            const isExact = (currentPath === linkPath);
-            const isAncestor = !isExact && currentPath.includes(linkPath.replace('.html', ''));
+            // Normalize paths for comparison (handle .html extension)
+            const normLink = linkPath.replace(/\.html$/, '');
+            const normCurr = currentPath.replace(/\.html$/, '');
+            
+            const isExact = (normCurr === normLink);
+            const isAncestor = !isExact && normCurr.startsWith(normLink + '/');
             
             if (isExact || isAncestor) {
                 if (isExact) {
