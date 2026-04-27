@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,10 +223,13 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>if / elif / else</h2>
-<p>Conditional branching using if/elif/else. The condition can be any command—its exit status determines the branch.</p>
-<h3>Basic if-else</h3>
-<pre><code class="language-bash">#!/bin/bash
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>if / elif / else</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Conditional branching using if/elif/else. The condition can be any command—its exit status determines the branch.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic if-else</h3>
+<div class="my-6">
+<pre class="language-bash"><code>#!/bin/bash
 read -p "Enter age: " age
 if [ $age -ge 18 ]; then
   echo "Adult"
@@ -234,15 +238,21 @@ elif [ $age -ge 13 ]; then
 else
   echo "Child"
 fi</code></pre>
-<h3>if with Command</h3>
-<pre><code class="language-bash">if grep -q "error" logfile.txt; then
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">if with Command</h3>
+<div class="my-6">
+<pre class="language-bash"><code>if grep -q "error" logfile.txt; then
   echo "Errors found in log"
 fi</code></pre>
-<hr>
-<h2>case Statement</h2>
-<p>case matches a variable against patterns, like a switch statement. Patterns support wildcards.</p>
-<h3>Basic case</h3>
-<pre><code class="language-bash">read -p "Enter day: " day
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>case Statement</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">case matches a variable against patterns, like a switch statement. Patterns support wildcards.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic case</h3>
+<div class="my-6">
+<pre class="language-bash"><code>read -p "Enter day: " day
 case $day in
   Monday|Tuesday|Wednesday|Thursday|Friday)
     echo "Weekday"
@@ -254,70 +264,98 @@ case $day in
     echo "Unknown day"
     ;;
 esac</code></pre>
-<h3>case with Options</h3>
-<pre><code class="language-bash">option="$1"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">case with Options</h3>
+<div class="my-6">
+<pre class="language-bash"><code>option="$1"
 case "$option" in
   -h|--help)   echo "Show help" ;;
   -v|--version) echo "Version 1.0" ;;
   -q|--quiet)  QUIET=true ;;
   *)  echo "Unknown option: $option" ; exit 1 ;;
 esac</code></pre>
-<hr>
-<h2>for Loop</h2>
-<p>Iterate over lists, ranges, or command output using for loops.</p>
-<h3>List Loop</h3>
-<pre><code class="language-bash">for animal in cat dog bird; do
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>for Loop</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Iterate over lists, ranges, or command output using for loops.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">List Loop</h3>
+<div class="my-6">
+<pre class="language-bash"><code>for animal in cat dog bird; do
   echo "Animal: $animal"
 done</code></pre>
-<h3>Range with seq / brace</h3>
-<pre><code class="language-bash">for i in {1..5}; do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Range with seq / brace</h3>
+<div class="my-6">
+<pre class="language-bash"><code>for i in {1..5}; do
   echo "Count: $i"
 done
 
 for i in $(seq 0 2 10); do  # 0,2,4,6,8,10
   echo $i
 done</code></pre>
-<h3>C-Style for Loop</h3>
-<pre><code class="language-bash">for ((i=0; i&lt;5; i++)); do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">C-Style for Loop</h3>
+<div class="my-6">
+<pre class="language-bash"><code>for ((i=0; i&lt;5; i++)); do
   echo "Index: $i"
 done</code></pre>
-<h3>Loop Over Files</h3>
-<pre><code class="language-bash">for file in *.txt; do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Loop Over Files</h3>
+<div class="my-6">
+<pre class="language-bash"><code>for file in *.txt; do
   echo "Processing: $file"
 done</code></pre>
-<hr>
-<h2>while Loop</h2>
-<p>while loops execute as long as the condition is true. Use break and continue to control flow.</p>
-<h3>Basic while</h3>
-<pre><code class="language-bash">count=1
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>while Loop</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">while loops execute as long as the condition is true. Use break and continue to control flow.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic while</h3>
+<div class="my-6">
+<pre class="language-bash"><code>count=1
 while [ $count -le 5 ]; do
   echo "Count: $count"
   ((count++))
 done</code></pre>
-<h3>Read File Line by Line</h3>
-<pre><code class="language-bash">while IFS= read -r line; do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Read File Line by Line</h3>
+<div class="my-6">
+<pre class="language-bash"><code>while IFS= read -r line; do
   echo "Line: $line"
 done &lt; file.txt</code></pre>
-<h3>Infinite Loop with Break</h3>
-<pre><code class="language-bash">while true; do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Infinite Loop with Break</h3>
+<div class="my-6">
+<pre class="language-bash"><code>while true; do
   read -p "Enter 'quit' to exit: " input
   [ "$input" = "quit" ] &amp;&amp; break
   echo "You entered: $input"
 done</code></pre>
-<hr>
-<h2>until Loop</h2>
-<p>until is the inverse of while—it executes until the condition becomes true.</p>
-<h3>Basic until</h3>
-<pre><code class="language-bash">num=1
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>until Loop</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">until is the inverse of while—it executes until the condition becomes true.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic until</h3>
+<div class="my-6">
+<pre class="language-bash"><code>num=1
 until [ $num -gt 5 ]; do
   echo "Num: $num"
   ((num++))
 done</code></pre>
-<hr>
-<h2>select Menu</h2>
-<p>select creates interactive numbered menus from a list of options.</p>
-<h3>Interactive Menu</h3>
-<pre><code class="language-bash">PS3="Choose an option: "
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>select Menu</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">select creates interactive numbered menus from a list of options.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Interactive Menu</h3>
+<div class="my-6">
+<pre class="language-bash"><code>PS3="Choose an option: "
 select opt in "Start" "Stop" "Restart" "Quit"; do
   case $opt in
     "Start")   echo "Starting..." ;;
@@ -327,7 +365,8 @@ select opt in "Start" "Stop" "Restart" "Quit"; do
     *) echo "Invalid option" ;;
   esac
 done</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -354,6 +393,6 @@ done</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

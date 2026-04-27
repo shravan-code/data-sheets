@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,10 +223,13 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>grep, sed, awk</h2>
-<p>These are the three pillars of text processing in Bash. grep searches, sed transforms, awk processes structured text.</p>
-<h3>grep Patterns</h3>
-<pre><code class="language-bash"># Basic search
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>grep, sed, awk</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">These are the three pillars of text processing in Bash. grep searches, sed transforms, awk processes structured text.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">grep Patterns</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Basic search
 grep "error" logfile.txt
 
 # Case-insensitive
@@ -242,8 +246,10 @@ grep -v "debug" logfile.txt
 
 # Regex
 grep -E "^[0-9]{4}-[0-9]{2}" dates.txt</code></pre>
-<h3>sed Transformations</h3>
-<pre><code class="language-bash"># Replace text
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">sed Transformations</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Replace text
 sed 's/old/new/g' file.txt
 
 # Delete lines matching pattern
@@ -257,8 +263,10 @@ sed 's/^/PREFIX: /' file.txt
 
 # In-place edit
 sed -i 's/foo/bar/g' file.txt</code></pre>
-<h3>awk Processing</h3>
-<pre><code class="language-bash"># Print columns
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">awk Processing</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Print columns
 awk '{print $1, $3}' data.txt
 
 # Field separator
@@ -272,11 +280,15 @@ awk '{sum += $2} END {print "Total:", sum}' data.txt
 
 # Print with formatting
 awk '{printf "%-20s %5d\n", $1, $2}' data.txt</code></pre>
-<hr>
-<h2>cut, tr, sort, uniq</h2>
-<p>Utility commands for column extraction, character translation, sorting, and deduplication.</p>
-<h3>cut & tr</h3>
-<pre><code class="language-bash"># Extract columns
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>cut, tr, sort, uniq</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Utility commands for column extraction, character translation, sorting, and deduplication.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">cut & tr</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Extract columns
 cut -d':' -f1,3 /etc/passwd
 
 # Extract characters
@@ -287,8 +299,10 @@ echo "Hello World" | tr '[:lower:]' '[:upper:]'
 
 # Delete characters
 echo "H-e-l-l-o" | tr -d '-'</code></pre>
-<h3>sort & uniq</h3>
-<pre><code class="language-bash"># Sort alphabetically
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">sort & uniq</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Sort alphabetically
 sort names.txt
 
 # Sort numerically
@@ -305,7 +319,8 @@ sort names.txt | uniq
 
 # Count occurrences
 sort names.txt | uniq -c | sort -rn</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -332,6 +347,6 @@ sort names.txt | uniq -c | sort -rn</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

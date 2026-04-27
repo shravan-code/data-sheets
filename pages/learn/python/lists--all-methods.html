@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265321">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271312">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -236,84 +237,62 @@
                 <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">Lists are ordered, mutable sequences. They can contain mixed types.</p>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>All List Methods</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">Complete reference for all list methods with examples.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">lst = [3, 1, 4, 1, 5, 9]
-
-# append - add to end
-lst.append(2)
-print(lst)       # [3,1,4,1,5,9,2]
-
-# extend - merge iterable
-lst.extend([6, 5])
-print(lst)       # [3,1,4,1,5,9,2,6,5]
-
-# insert(index, value)
-lst.insert(0, 0)
-print(lst)       # [0,3,1,4,1,5,9,2,6,5]
-
-# remove - removes first occurrence
-lst.remove(1)
-print(lst)       # [0,3,4,1,5,9,2,6,5]
-
-# pop - removes and returns by index (default: last)
-val = lst.pop()
-print(val, lst)  # 5, [0,3,4,1,5,9,2,6]
-
-# index(x, start, end) - find position
-lst2 = [10, 20, 30, 20, 40]
-print(lst2.index(20))      # 1
-print(lst2.index(20, 2))   # 3 (search from index 2)
-
-# count
-print([1,1,2,3,1].count(1))  # 3
-
-# sort - in-place, stable
-nums = [3,1,4,1,5,9]
-nums.sort()
-print(nums)  # [1,1,3,4,5,9]
-nums.sort(reverse=True)
-print(nums)  # [9,5,4,3,1,1]
-nums.sort(key=lambda x: -x)  # same as reverse
-print(nums)
-
-# reverse - in-place
-nums.reverse()
-print(nums)
-
-# copy - shallow copy
-copy = nums.copy()
-
-# clear
-copy.clear()
-print(copy)   # []</code></pre>
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Adding Elements: append, extend, insert</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Add single items, merge iterables, or inject at specific positions. append() is O(1), while insert() is O(n).</p>
+<pre class="language-python"><code>lst = [1, 2]
+lst.append(3)         # [1, 2, 3]
+lst.extend([4, 5])    # [1, 2, 3, 4, 5]
+lst.insert(0, 0)      # [0, 1, 2, 3, 4, 5]
+print(lst)</code></pre>
 </div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Removing Elements: pop, remove, clear</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Remove items by index (pop), value (remove), or wipe the entire list. pop() from the end is O(1); remove() is O(n).</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>lst = [10, 20, 30, 40]
+print(lst.pop())      # 40 (removes last)
+print(lst.pop(0))     # 10 (removes index 0)
+lst.remove(30)        # removes value 30
+print(lst)            # [20]
+lst.clear()           # empty the list
+print(lst)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>[3, 1, 4, 1, 5, 9, 2]
-[3, 1, 4, 1, 5, 9, 2, 6, 5]
-[0, 3, 1, 4, 1, 5, 9, 2, 6, 5]
-[0, 3, 4, 1, 5, 9, 2, 6, 5]
-5 [0, 3, 4, 1, 5, 9, 2, 6]
-1
-3
-3
-[1, 1, 3, 4, 5, 9]
-[9, 5, 4, 3, 1, 1]
-[9, 5, 4, 3, 1, 1]
-[1, 1, 3, 4, 5, 9]
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">40
+10
+[20]
 []</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Searching: index & count</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Find the position of an item or count its occurrences. Both operations are O(n).</p>
+<pre class="language-python"><code>lst = ['a', 'b', 'a', 'c']
+print(lst.index('b')) # 1
+print(lst.count('a')) # 2</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Ordering: sort & reverse</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">sort() modifies the list in-place (Timsort, O(n log n)). reverse() flips the order in-place (O(n)).</p>
+<pre class="language-python"><code>lst = [3, 1, 4, 2]
+lst.sort()            # [1, 2, 3, 4]
+print(lst)
+lst.reverse()         # [4, 3, 2, 1]
+print(lst)</code></pre>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>sorted() vs sort()</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">sorted() returns new list; sort() modifies in-place.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">nums = [3, 1, 4, 1, 5]
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>nums = [3, 1, 4, 1, 5]
 result = sorted(nums)          # new list
 print(nums)                    # original unchanged
 print(result)
@@ -325,22 +304,23 @@ print(sorted(words, key=len))
 # Sort by multiple criteria
 people = [('Alice', 30), ('Bob', 25), ('Charlie', 30)]
 print(sorted(people, key=lambda x: (x[1], x[0])))</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>[3, 1, 4, 1, 5]
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">[3, 1, 4, 1, 5]
 [1, 1, 3, 4, 5]
 ['fig', 'apple', 'banana', 'cherry']
 [('Bob', 25), ('Alice', 30), ('Charlie', 30)]</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Shallow vs Deep Copy</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Shallow copy copies the list but not nested objects. Deep copy copies everything.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">import copy
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>import copy
 
 # Shallow copy - nested objects still shared
 original = [[1, 2], [3, 4]]
@@ -353,11 +333,12 @@ original2 = [[1, 2], [3, 4]]
 deep = copy.deepcopy(original2)
 deep[0].append(99)
 print(original2)  # [[1,2],[3,4]] - unchanged</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>[[1, 2, 99], [3, 4]]
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">[[1, 2, 99], [3, 4]]
 [[1, 2], [3, 4]]</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -405,6 +386,6 @@ print(original2)  # [[1,2],[3,4]] - unchanged</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265321" defer></script>
+<script src="../../../js/ds-main.js?v=1777271312" defer></script>
 </body>
 </html>

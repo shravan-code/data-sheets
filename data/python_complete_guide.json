@@ -73,10 +73,16 @@
               "explanation": "Python uses dynamic typing — variables don't have fixed types. Types are inferred at runtime and can change.",
               "subtopics": [
                 {
-                  "title": "Basic Types",
-                  "explanation": "Python's built-in scalar types: int, float, complex, str, bool, None.",
-                  "code": "x = 42           # int\ny = 3.14         # float\nz = 2 + 3j       # complex\ns = 'hello'      # str\nb = True         # bool\nn = None         # NoneType\n\nprint(type(x), type(y), type(z))\nprint(type(s), type(b), type(n))",
-                  "output": "<class 'int'> <class 'float'> <class 'complex'>\n<class 'str'> <class 'bool'> <class 'NoneType'>"
+                  "title": "Basic Types: Numbers",
+                  "explanation": "Python handles integers (int), decimals (float), and complex numbers (complex) automatically. Perfect for scientific computing or financial calculations.",
+                  "code": "x = 42           # int\ny = 3.14         # float\nz = 2 + 3j       # complex\nprint(type(x), type(y), type(z))",
+                  "output": "<class 'int'> <class 'float'> <class 'complex'>"
+                },
+                {
+                  "title": "Basic Types: Booleans & None",
+                  "explanation": "bool represents True/False; None represents the absence of a value (null). Critical for control flow and status tracking.",
+                  "code": "b = True         # bool\nn = None         # NoneType\nprint(type(b), type(n))",
+                  "output": "<class 'bool'> <class 'NoneType'>"
                 },
                 {
                   "title": "Dynamic Typing",
@@ -114,10 +120,16 @@
               "explanation": "Python supports arithmetic, comparison, logical, bitwise, assignment, identity, and membership operators.",
               "subtopics": [
                 {
-                  "title": "Arithmetic Operators",
-                  "explanation": "Basic math operations including floor division, modulo, and exponentiation.",
-                  "code": "print(10 + 3)   # 13  addition\nprint(10 - 3)   # 7   subtraction\nprint(10 * 3)   # 30  multiplication\nprint(10 / 3)   # 3.333... true division\nprint(10 // 3)  # 3   floor division\nprint(10 % 3)   # 1   modulo (remainder)\nprint(2 ** 10)  # 1024 exponentiation\nprint(-7 // 2)  # -4  floor toward negative infinity",
-                  "output": "13\n7\n30\n3.3333333333333335\n3\n1\n1024\n-4"
+                  "title": "Arithmetic: Basic Math",
+                  "explanation": "Standard operations like addition, subtraction, multiplication, and division. Division (/) always returns a float.",
+                  "code": "print(10 + 3)   # 13\nprint(10 - 3)   # 7\nprint(10 * 3)   # 30\nprint(10 / 3)   # 3.333...",
+                  "output": "13\n7\n30\n3.3333333333333335"
+                },
+                {
+                  "title": "Arithmetic: Advanced Math",
+                  "explanation": "Floor division (//) truncates results; modulo (%) returns the remainder; exponentiation (**) raises to power.",
+                  "code": "print(10 // 3)  # 3\nprint(10 % 3)   # 1\nprint(2 ** 3)   # 8",
+                  "output": "3\n1\n8"
                 },
                 {
                   "title": "Comparison Operators",
@@ -167,52 +179,94 @@
                   "output": "H\n!\nHello\nWorld!\nHello\nHlo ol!\n!dlroW ,olleH"
                 },
                 {
-                  "title": "Case Methods",
-                  "explanation": "Methods for changing string case.",
-                  "code": "s = 'hello WORLD'\nprint(s.upper())        # HELLO WORLD\nprint(s.lower())        # hello world\nprint(s.capitalize())   # Hello world (first char upper)\nprint(s.title())        # Hello World (each word)\nprint(s.swapcase())     # HELLO world",
-                  "output": "HELLO WORLD\nhello world\nHello world\nHello World\nHELLO world"
+                  "title": "Case Methods: upper & lower",
+                  "explanation": "Convert the entire string to uppercase or lowercase. Useful for case-insensitive comparisons or normalizing user input.",
+                  "code": "s = 'hello WORLD'\nprint(s.upper())        # HELLO WORLD\nprint(s.lower())        # hello world",
+                  "output": "HELLO WORLD\nhello world"
                 },
                 {
-                  "title": "Search Methods",
-                  "explanation": "find returns -1 if not found; index raises ValueError.",
-                  "code": "s = 'hello world hello'\nprint(s.find('hello'))          # 0 (first occurrence)\nprint(s.find('hello', 1))       # 12 (search from index 1)\nprint(s.rfind('hello'))         # 12 (from right)\nprint(s.find('xyz'))            # -1 (not found)\n# s.index('xyz')               # raises ValueError\nprint(s.count('hello'))         # 2\nprint(s.startswith('hello'))    # True\nprint(s.endswith('hello'))      # True\nprint(s.startswith('world', 6)) # True (from index 6)",
-                  "output": "0\n12\n12\n-1\n2\nTrue\nTrue\nTrue"
+                  "title": "Case Methods: capitalize & title",
+                  "explanation": "capitalize() uppers only the first character; title() uppers the first character of each word. Perfect for formatting names or headings.",
+                  "code": "s = 'hello world'\nprint(s.capitalize())   # Hello world\nprint(s.title())        # Hello World",
+                  "output": "Hello world\nHello World"
                 },
                 {
-                  "title": "Check Methods (is*)",
-                  "explanation": "Boolean check methods for string content.",
-                  "code": "print('abc'.isalpha())      # True - all letters\nprint('123'.isdigit())      # True - all digits\nprint('abc123'.isalnum())   # True - letters or digits\nprint('   '.isspace())      # True - all whitespace\nprint('hello'.islower())    # True\nprint('HELLO'.isupper())    # True\nprint('Hello World'.istitle()) # True\nprint('var_1'.isidentifier())  # True - valid Python name\nprint('123'.isdecimal())    # True\nprint('123'.isnumeric())    # True (also handles fractions)\nprint('abc'.isprintable())  # True",
-                  "output": "True\nTrue\nTrue\nTrue\nTrue\nTrue\nTrue\nTrue\nTrue\nTrue\nTrue"
+                  "title": "Search: find & index",
+                  "explanation": "Locate a substring. find() returns -1 if missing, whereas index() raises an error. Use find() when absence is expected, and index() when it should be present.",
+                  "code": "s = 'hello world'\nprint(s.find('world'))   # 6\nprint(s.find('xyz'))     # -1\nprint(s.index('world'))  # 6",
+                  "output": "6\n-1\n6"
                 },
                 {
-                  "title": "Modify Methods",
-                  "explanation": "Strip whitespace/chars, replace substrings.",
-                  "code": "s = '  hello world  '\nprint(repr(s.strip()))        # 'hello world'\nprint(repr(s.lstrip()))       # 'hello world  '\nprint(repr(s.rstrip()))       # '  hello world'\nprint('***hi***'.strip('*'))  # hi\n\nprint('hello'.replace('l', 'r'))      # herro\nprint('hello'.replace('l', 'r', 1))   # herlo (max 1 replace)\n\n# Python 3.9+\nprint('hello world'.removeprefix('hello '))  # world\nprint('hello world'.removesuffix(' world'))  # hello",
-                  "output": "'hello world'\n'hello world  '\n'  hello world'\nhi\nherro\nherlo\nworld\nhello"
+                  "title": "Search: count",
+                  "explanation": "Count non-overlapping occurrences of a substring. Useful for basic frequency analysis.",
+                  "code": "s = 'banana'\nprint(s.count('a'))      # 3\nprint(s.count('na'))     # 2",
+                  "output": "3\n2"
+                },
+                {
+                  "title": "Search: startswith & endswith",
+                  "explanation": "Check if a string starts or ends with a specific prefix/suffix. Faster and more readable than manual slicing.",
+                  "code": "filename = 'data.csv'\nprint(filename.startswith('data')) # True\nprint(filename.endswith('.csv'))   # True",
+                  "output": "True\nTrue"
+                },
+                {
+                  "title": "Check Methods: isalpha & isdigit",
+                  "explanation": "Validate if string contains only letters or only digits. Critical for input validation (e.g., age vs name).",
+                  "code": "print('Python'.isalpha()) # True\nprint('12345'.isdigit())  # True\nprint('Python3'.isalpha()) # False (has digit)",
+                  "output": "True\nTrue\nFalse"
+                },
+                {
+                  "title": "Modify: strip, lstrip, rstrip",
+                  "explanation": "Remove leading/trailing whitespace or specific characters. Essential for cleaning data from files or user input.",
+                  "code": "s = '  clean me  '\nprint(repr(s.strip()))    # 'clean me'\nprint('***hi***'.strip('*')) # hi",
+                  "output": "'clean me'\nhi"
+                },
+                {
+                  "title": "Modify: replace",
+                  "explanation": "Replace all occurrences of a substring with another. Useful for template filling or correcting data.",
+                  "code": "s = 'hello world'\nprint(s.replace('world', 'Python')) # hello Python\nprint('1,2,3'.replace(',', ';'))    # 1;2;3",
+                  "output": "hello Python\n1;2;3"
                 },
                 {
                   "title": "Split & Join",
-                  "explanation": "Split strings into lists; join lists into strings.",
-                  "code": "s = 'a,b,c,d'\nprint(s.split(','))          # ['a', 'b', 'c', 'd']\nprint(s.split(',', 2))       # ['a', 'b', 'c,d'] (max 2 splits)\nprint(s.rsplit(',', 1))      # ['a,b,c', 'd']\nprint('hello\\nworld'.splitlines())  # ['hello', 'world']\n\n# join - reverse of split\nwords = ['Hello', 'World']\nprint(' '.join(words))   # Hello World\nprint('-'.join('abc'))   # a-b-c",
-                  "output": "['a', 'b', 'c', 'd']\n['a', 'b', 'c,d']\n['a,b,c', 'd']\n['hello', 'world']\nHello World\na-b-c"
+                  "explanation": "split() converts a string into a list; join() merges a list back into a string. The foundation of text processing in Python.",
+                  "code": "s = 'apple,banana,cherry'\nlst = s.split(',')\nprint(lst)                # ['apple', 'banana', 'cherry']\n\n# join\nprint(' -> '.join(lst))   # apple -> banana -> cherry",
+                  "output": "['apple', 'banana', 'cherry']\napple -> banana -> cherry"
                 },
                 {
-                  "title": "Align & Pad Methods",
-                  "explanation": "Align text within a field width.",
-                  "code": "print('hi'.center(10))        #     hi    \nprint('hi'.center(10, '-'))   # ----hi----\nprint('hi'.ljust(10, '.'))    # hi........\nprint('hi'.rjust(10, '.'))    # ........hi\nprint('42'.zfill(6))          # 000042\nprint('-42'.zfill(6))         # -00042",
-                  "output": "    hi    \n----hi----\nhi........\n........hi\n000042\n-00042"
+                  "title": "Alignment: center, ljust, rjust",
+                  "explanation": "Pad strings with spaces or characters to a fixed width. Essential for creating aligned tables or reports in text-based interfaces.",
+                  "code": "s = 'hi'\nprint(s.center(10))        #     hi    \nprint(s.ljust(10, '.'))    # hi........\nprint(s.rjust(10, '.'))    # ........hi",
+                  "output": "    hi    \nhi........\n........hi"
                 },
                 {
-                  "title": "Format Methods",
-                  "explanation": "Multiple ways to format strings in Python.",
-                  "code": "name, age = 'Alice', 30\n\n# f-strings (Python 3.6+) - preferred\nprint(f'Name: {name}, Age: {age}')\nprint(f'{3.14159:.2f}')   # 2 decimal places\nprint(f'{1000000:,}')     # comma separator\nprint(f'{42:08b}')        # binary, zero-padded\nprint(f'{name!r}')        # repr\nprint(f'{age=}')          # debug: prints age=30\n\n# .format()\nprint('{} is {}'.format(name, age))\nprint('{0} and {0}'.format('echo'))\nprint('{n} is {a}'.format(n=name, a=age))",
-                  "output": "Name: Alice, Age: 30\n3.14\n1,000,000\n00101010\n'Alice'\nage=30\nAlice is 30\necho and echo\nAlice is 30"
+                  "title": "Alignment: zfill",
+                  "explanation": "Pad numeric strings with leading zeros. Primarily used for formatting IDs, serial numbers, or fixed-width numerical data.",
+                  "code": "print('42'.zfill(5))       # 00042\nprint('-42'.zfill(5))      # -0042",
+                  "output": "00042\n-0042"
                 },
                 {
-                  "title": "Partition & Translate",
-                  "explanation": "partition splits into exactly 3 parts; translate maps characters.",
-                  "code": "# partition\nprint('hello:world'.partition(':'))   # ('hello', ':', 'world')\nprint('hello world'.partition(':'))   # ('hello world', '', '')\nprint('a:b:c'.rpartition(':'))        # ('a:b', ':', 'c')\n\n# translate + maketrans\ntable = str.maketrans('aeiou', '12345')\nprint('hello world'.translate(table))  # h2ll4 w4rld\n\n# Delete chars with translate\ntable2 = str.maketrans('', '', 'aeiou')  # delete vowels\nprint('hello world'.translate(table2))   # hll wrld",
-                  "output": "('hello', ':', 'world')\n('hello world', '', '')\n('a:b', ':', 'c')\nh2ll4 w4rld\nhll wrld"
+                  "title": "String Formatting: f-strings",
+                  "explanation": "The modern and fastest way to embed expressions in string literals. Introduced in Python 3.6.",
+                  "code": "name, price = 'Widget', 19.99\nprint(f'{name} costs ${price:.2f}')\nprint(f'2 + 2 = {2 + 2}')",
+                  "output": "Widget costs $19.99\n2 + 2 = 4"
+                },
+                {
+                  "title": "String Formatting: .format()",
+                  "explanation": "A powerful formatting method that preceded f-strings. Still useful for reusable templates.",
+                  "code": "tpl = 'ID: {id}, Status: {st}'\nprint(tpl.format(id=101, st='Active'))",
+                  "output": "ID: 101, Status: Active"
+                },
+                {
+                  "title": "Partitioning",
+                  "explanation": "split into exactly 3 parts: (before, separator, after). Safer than split() when you only need to divide at the first occurrence.",
+                  "code": "s = 'user@example.com'\nprint(s.partition('@'))    # ('user', '@', 'example.com')",
+                  "output": "('user', '@', 'example.com')"
+                },
+                {
+                  "title": "Translate & Maketrans",
+                  "explanation": "Efficiently map multiple characters at once. Perfect for complex character replacements or deletions.",
+                  "code": "table = str.maketrans('aeiou', '12345')\nprint('hello world'.translate(table))",
+                  "output": "h2ll4 w4rld"
                 },
                 {
                   "title": "Encode/Decode",
@@ -285,10 +339,22 @@
           "title": "Loops",
           "subtopics": [
             {
-              "title": "for loop",
-              "explanation": "Iterates over any iterable. The most Pythonic looping construct.",
-              "code": "# Basic for loop\nfor i in range(5):\n    print(i, end=' ')\nprint()\n\n# Loop with enumerate\nfruits = ['apple', 'banana', 'cherry']\nfor i, fruit in enumerate(fruits):\n    print(f'{i}: {fruit}')\n\n# Loop with zip\nnames = ['Alice', 'Bob']\nscores = [90, 85]\nfor name, score in zip(names, scores):\n    print(f'{name}: {score}')",
-              "output": "0 1 2 3 4 \n0: apple\n1: banana\n2: cherry\nAlice: 90\nBob: 85"
+              "title": "Basic for loop",
+              "explanation": "Iterates over a sequence (range, list, string). The standard way to repeat a task a fixed number of times.",
+              "code": "for i in range(3):\n    print(f'Iteration {i}')",
+              "output": "Iteration 0\nIteration 1\nIteration 2"
+            },
+            {
+              "title": "Loop with enumerate",
+              "explanation": "Get both index and value simultaneously. Avoids manual counter variables.",
+              "code": "fruits = ['apple', 'banana']\nfor i, fruit in enumerate(fruits):\n    print(f'{i}: {fruit}')",
+              "output": "0: apple\n1: banana"
+            },
+            {
+              "title": "Loop with zip",
+              "explanation": "Iterate over multiple iterables in parallel. Stops at the shortest iterable.",
+              "code": "names = ['Alice', 'Bob']\nscores = [90, 85]\nfor name, score in zip(names, scores):\n    print(f'{name}: {score}')",
+              "output": "Alice: 90\nBob: 85"
             },
             {
               "title": "while loop",
@@ -366,10 +432,28 @@
           "explanation": "Lists are ordered, mutable sequences. They can contain mixed types.",
           "subtopics": [
             {
-              "title": "All List Methods",
-              "explanation": "Complete reference for all list methods with examples.",
-              "code": "lst = [3, 1, 4, 1, 5, 9]\n\n# append - add to end\nlst.append(2)\nprint(lst)       # [3,1,4,1,5,9,2]\n\n# extend - merge iterable\nlst.extend([6, 5])\nprint(lst)       # [3,1,4,1,5,9,2,6,5]\n\n# insert(index, value)\nlst.insert(0, 0)\nprint(lst)       # [0,3,1,4,1,5,9,2,6,5]\n\n# remove - removes first occurrence\nlst.remove(1)\nprint(lst)       # [0,3,4,1,5,9,2,6,5]\n\n# pop - removes and returns by index (default: last)\nval = lst.pop()\nprint(val, lst)  # 5, [0,3,4,1,5,9,2,6]\n\n# index(x, start, end) - find position\nlst2 = [10, 20, 30, 20, 40]\nprint(lst2.index(20))      # 1\nprint(lst2.index(20, 2))   # 3 (search from index 2)\n\n# count\nprint([1,1,2,3,1].count(1))  # 3\n\n# sort - in-place, stable\nnums = [3,1,4,1,5,9]\nnums.sort()\nprint(nums)  # [1,1,3,4,5,9]\nnums.sort(reverse=True)\nprint(nums)  # [9,5,4,3,1,1]\nnums.sort(key=lambda x: -x)  # same as reverse\nprint(nums)\n\n# reverse - in-place\nnums.reverse()\nprint(nums)\n\n# copy - shallow copy\ncopy = nums.copy()\n\n# clear\ncopy.clear()\nprint(copy)   # []",
-              "output": "[3, 1, 4, 1, 5, 9, 2]\n[3, 1, 4, 1, 5, 9, 2, 6, 5]\n[0, 3, 1, 4, 1, 5, 9, 2, 6, 5]\n[0, 3, 4, 1, 5, 9, 2, 6, 5]\n5 [0, 3, 4, 1, 5, 9, 2, 6]\n1\n3\n3\n[1, 1, 3, 4, 5, 9]\n[9, 5, 4, 3, 1, 1]\n[9, 5, 4, 3, 1, 1]\n[1, 1, 3, 4, 5, 9]\n[]"
+              "title": "Adding Elements: append, extend, insert",
+              "explanation": "Add single items, merge iterables, or inject at specific positions. append() is O(1), while insert() is O(n).",
+              "code": "lst = [1, 2]\nlst.append(3)         # [1, 2, 3]\nlst.extend([4, 5])    # [1, 2, 3, 4, 5]\nlst.insert(0, 0)      # [0, 1, 2, 3, 4, 5]\nprint(lst)",
+              "output": "[0, 1, 2, 3, 4, 5]"
+            },
+            {
+              "title": "Removing Elements: pop, remove, clear",
+              "explanation": "Remove items by index (pop), value (remove), or wipe the entire list. pop() from the end is O(1); remove() is O(n).",
+              "code": "lst = [10, 20, 30, 40]\nprint(lst.pop())      # 40 (removes last)\nprint(lst.pop(0))     # 10 (removes index 0)\nlst.remove(30)        # removes value 30\nprint(lst)            # [20]\nlst.clear()           # empty the list\nprint(lst)",
+              "output": "40\n10\n[20]\n[]"
+            },
+            {
+              "title": "Searching: index & count",
+              "explanation": "Find the position of an item or count its occurrences. Both operations are O(n).",
+              "code": "lst = ['a', 'b', 'a', 'c']\nprint(lst.index('b')) # 1\nprint(lst.count('a')) # 2",
+              "output": "1\n2"
+            },
+            {
+              "title": "Ordering: sort & reverse",
+              "explanation": "sort() modifies the list in-place (Timsort, O(n log n)). reverse() flips the order in-place (O(n)).",
+              "code": "lst = [3, 1, 4, 2]\nlst.sort()            # [1, 2, 3, 4]\nprint(lst)\nlst.reverse()         # [4, 3, 2, 1]\nprint(lst)",
+              "output": "[1, 2, 3, 4]\n[4, 3, 2, 1]"
             },
             {
               "title": "sorted() vs sort()",
@@ -425,10 +509,22 @@
           "explanation": "Dictionaries are hash maps: O(1) average for get/set/delete. Ordered by insertion since Python 3.7.",
           "subtopics": [
             {
-              "title": "All Dict Methods",
-              "explanation": "Complete reference for dictionary methods.",
-              "code": "d = {'a': 1, 'b': 2, 'c': 3}\n\n# get - safe access with default\nprint(d.get('a'))         # 1\nprint(d.get('z'))         # None\nprint(d.get('z', 0))      # 0 (default)\n\n# setdefault - insert if missing\nd.setdefault('d', 4)\nd.setdefault('a', 99)   # won't overwrite\nprint(d)\n\n# update\nd.update({'e': 5, 'a': 100})  # overwrites 'a'\nprint(d)\n\n# pop\nval = d.pop('e')\nprint(val, d)\n\n# popitem - removes last inserted\nk, v = d.popitem()\nprint(k, v)\n\n# keys, values, items\nd2 = {'x': 10, 'y': 20}\nprint(list(d2.keys()))\nprint(list(d2.values()))\nprint(list(d2.items()))\n\n# copy\nd3 = d2.copy()\n\n# clear\nd3.clear()\nprint(d3)\n\n# fromkeys\nd4 = dict.fromkeys(['a','b','c'], 0)\nprint(d4)",
-              "output": "1\nNone\n0\n{'a': 1, 'b': 2, 'c': 3, 'd': 4}\n{'a': 100, 'b': 2, 'c': 3, 'd': 4, 'e': 5}\n5 {'a': 100, 'b': 2, 'c': 3, 'd': 4}\nd 4\n['x', 'y']\n[10, 20]\n[('x', 10), ('y', 20)]\n{}\n{'a': 0, 'b': 0, 'c': 0}"
+              "title": "Accessing Data: get & setdefault",
+              "explanation": "get() provides safe access with a default value to avoid KeyError. setdefault() returns the value if present, otherwise inserts the default.",
+              "code": "d = {'a': 1}\nprint(d.get('b', 0))    # 0\nprint(d.setdefault('b', 2)) # 2\nprint(d)                # {'a': 1, 'b': 2}",
+              "output": "0\n2\n{'a': 1, 'b': 2}"
+            },
+            {
+              "title": "Modifying: update, pop, popitem",
+              "explanation": "update() merges another dict. pop() removes by key. popitem() removes the last inserted item (Python 3.7+).",
+              "code": "d = {'a': 1, 'b': 2}\nd.update({'c': 3, 'a': 0})\nprint(d.pop('b'))       # 2\nprint(d.popitem())      # ('c', 3)\nprint(d)                # {'a': 0}",
+              "output": "2\n('c', 3)\n{'a': 0}"
+            },
+            {
+              "title": "Dict Views: keys, values, items",
+              "explanation": "Return dynamic view objects that reflect changes in the dictionary. items() is perfect for iterating through pairs.",
+              "code": "d = {'a': 1, 'b': 2}\nprint(list(d.keys()))   # ['a', 'b']\nprint(list(d.values())) # [1, 2]\nfor k, v in d.items():\n    print(f'{k}:{v}', end=' ')",
+              "output": "['a', 'b']\n[1, 2]\na:1 b:2"
             },
             {
               "title": "Dict Merging (Python 3.9+)",
@@ -466,16 +562,28 @@
           "explanation": "Sets are unordered collections of unique hashable elements. O(1) average for add/remove/lookup.",
           "subtopics": [
             {
-              "title": "All Set Methods",
-              "explanation": "Complete set method reference.",
-              "code": "s = {1, 2, 3, 4}\n\n# add\ns.add(5)\nprint(s)\n\n# remove vs discard\ns.remove(5)      # raises KeyError if missing\ns.discard(99)    # no error if missing\nprint(s)\n\n# pop - removes arbitrary element\nval = s.pop()\nprint(val, s)\n\n# Set operations\na = {1, 2, 3, 4}\nb = {3, 4, 5, 6}\n\nprint(a | b)   # union\nprint(a & b)   # intersection\nprint(a - b)   # difference\nprint(a ^ b)   # symmetric difference\n\n# In-place versions\nc = {1, 2, 3}\nc.update({4, 5})          # union in-place\nprint(c)\nc.intersection_update({3,4,5,6})\nprint(c)\nc.difference_update({5})\nprint(c)\nc.symmetric_difference_update({3,7})\nprint(c)\n\n# Subset/superset\nprint({1,2}.issubset({1,2,3}))     # True\nprint({1,2,3}.issuperset({1,2}))   # True\nprint({1,2}.isdisjoint({3,4}))     # True - no common",
-              "output": "{1, 2, 3, 4, 5}\n{1, 2, 3, 4}\n1 {2, 3, 4}\n{1, 2, 3, 4, 5, 6}\n{3, 4}\n{1, 2, 5, 6}\n{1, 2, 5, 6}\n{1, 2, 3, 4, 5}\n{3, 4}\n{4}\n{7}\nTrue\nTrue\nTrue"
+              "title": "Basic Operations: add, remove, discard, pop",
+              "explanation": "Modify set elements. remove() raises KeyError if the item is missing; discard() does not. pop() removes an arbitrary element.",
+              "code": "s = {1, 2, 3}\ns.add(4)\ns.remove(1)\ns.discard(10)  # no error\nprint(s.pop()) # returns arbitrary\nprint(s)",
+              "output": "2\n{3, 4}"
+            },
+            {
+              "title": "Set Mathematics: union, intersection, difference",
+              "explanation": "Standard set theory operations. Can be performed using methods or operators (| for union, & for intersection, - for difference).",
+              "code": "a = {1, 2, 3}\nb = {3, 4, 5}\nprint(a | b)   # union: {1, 2, 3, 4, 5}\nprint(a & b)   # intersection: {3}\nprint(a - b)   # difference: {1, 2}",
+              "output": "{1, 2, 3, 4, 5}\n{3}\n{1, 2}"
+            },
+            {
+              "title": "Membership & Subsets",
+              "explanation": "Check relationships between sets. Efficient O(1) average time complexity.",
+              "code": "a = {1, 2}\nb = {1, 2, 3}\nprint(a.issubset(b))   # True\nprint(b.issuperset(a)) # True\nprint(a.isdisjoint({4, 5})) # True",
+              "output": "True\nTrue\nTrue"
             },
             {
               "title": "frozenset",
               "explanation": "Immutable set — hashable, usable as dict key.",
-              "code": "fs = frozenset([1, 2, 3])\nprint(fs)\n\n# Can use as dict key\ngraph = {frozenset({'A','B'}): 5, frozenset({'B','C'}): 3}\nprint(graph)\n\n# Supports same operations\nprint(fs | frozenset([4, 5]))\nprint(fs & frozenset([2, 3, 4]))",
-              "output": "frozenset({1, 2, 3})\n{frozenset({'A', 'B'}): 5, frozenset({'B', 'C'}): 3}\nfrozenset({1, 2, 3, 4, 5})\nfrozenset({2, 3})"
+              "code": "fs = frozenset([1, 2, 3])\nprint(fs)\n\n# Can use as dict key\ngraph = {frozenset({'A','B'}): 5}\nprint(graph)",
+              "output": "frozenset({1, 2, 3})\n{frozenset({'A', 'B'}): 5}"
             }
           ],
           "interview_qa": [
@@ -496,10 +604,22 @@
           "title": "Defining Functions",
           "subtopics": [
             {
-              "title": "Arguments: positional, keyword, defaults, *args, **kwargs",
-              "explanation": "Python functions support multiple argument styles.",
-              "code": "# Basic\ndef greet(name, greeting='Hello'):\n    return f'{greeting}, {name}!'\nprint(greet('Alice'))\nprint(greet('Bob', 'Hi'))\nprint(greet(greeting='Hey', name='Carol'))\n\n# *args - variable positional\ndef total(*args):\n    return sum(args)\nprint(total(1, 2, 3, 4))  # 10\n\n# **kwargs - variable keyword\ndef show(**kwargs):\n    for k, v in kwargs.items():\n        print(f'{k}={v}')\nshow(name='Alice', age=30)\n\n# Combined\ndef func(a, b, *args, key='default', **kwargs):\n    print(a, b, args, key, kwargs)\nfunc(1, 2, 3, 4, key='custom', x=10, y=20)",
-              "output": "Hello, Alice!\nHi, Bob!\nHey, Carol!\n10\nname=Alice\nage=30\n1 2 (3, 4) custom {'x': 10, 'y': 20}"
+              "title": "Arguments: Positional & Keyword",
+              "explanation": "Standard arguments where order matters (positional) or names are specified (keyword). Keyword arguments improve readability.",
+              "code": "def greet(name, greeting='Hello'):\n    return f'{greeting}, {name}!'\n\nprint(greet('Alice'))              # positional\nprint(greet(name='Bob', greeting='Hi')) # keyword",
+              "output": "Hello, Alice!\nHi, Bob!"
+            },
+            {
+              "title": "Variable Arguments: *args",
+              "explanation": "Accept any number of positional arguments as a tuple. Perfect for functions like sum() or join().",
+              "code": "def sum_all(*args):\n    return sum(args)\n\nprint(sum_all(1, 2, 3, 4, 5))",
+              "output": "15"
+            },
+            {
+              "title": "Variable Keyword Arguments: **kwargs",
+              "explanation": "Accept any number of named arguments as a dictionary. Useful for handling optional configurations or passing settings.",
+              "code": "def print_config(**kwargs):\n    for key, value in kwargs.items():\n        print(f'{key}: {value}')\n\nprint_config(host='localhost', port=8080)",
+              "output": "host: localhost\nport: 8080"
             },
             {
               "title": "Keyword-only and Positional-only Parameters",
@@ -526,16 +646,22 @@
           "title": "Scope & Closures",
           "subtopics": [
             {
-              "title": "LEGB Rule",
-              "explanation": "Python looks up names in: Local -> Enclosing -> Global -> Built-in.",
-              "code": "x = 'global'\n\ndef outer():\n    x = 'enclosing'\n    def inner():\n        x = 'local'\n        print(x)    # local\n    inner()\n    print(x)        # enclosing\n\nouter()\nprint(x)            # global\n\n# global keyword\ncount = 0\ndef increment():\n    global count\n    count += 1\nincrement()\nprint(count)   # 1\n\n# nonlocal keyword\ndef make_counter():\n    n = 0\n    def counter():\n        nonlocal n\n        n += 1\n        return n\n    return counter\n\nc = make_counter()\nprint(c(), c(), c())",
-              "output": "local\nenclosing\nglobal\n1\n1 2 3"
+              "title": "The LEGB Rule",
+              "explanation": "Python's name resolution order: Local -> Enclosing -> Global -> Built-in. Understanding this is key to avoiding 'undefined variable' errors.",
+              "code": "x = 'global'\ndef outer():\n    x = 'enclosing'\n    def inner():\n        x = 'local'\n        print(f'Inner: {x}')\n    inner()\nouter()",
+              "output": "Inner: local"
             },
             {
-              "title": "Closures",
-              "explanation": "A closure captures variables from its enclosing scope.",
-              "code": "def multiplier(factor):\n    def multiply(x):\n        return x * factor  # 'factor' is closed over\n    return multiply\n\ndouble = multiplier(2)\ntriple = multiplier(3)\nprint(double(5))   # 10\nprint(triple(5))   # 15\n\n# Inspect closure\nprint(double.__closure__[0].cell_contents)  # 2\n\n# Factory function pattern\ndef make_adder(n):\n    return lambda x: x + n\nadd5 = make_adder(5)\nprint(add5(10))  # 15",
-              "output": "10\n15\n2\n15"
+              "title": "Managing State: global & nonlocal",
+              "explanation": "Modify variables outside the local scope. global targets the module level; nonlocal targets the nearest enclosing scope (useful for stateful closures).",
+              "code": "count = 0\ndef increment():\n    global count\n    count += 1\n\ndef outer():\n    x = 0\n    def inner():\n        nonlocal x\n        x += 1\n        return x\n    return inner\n\nc = outer()\nprint(c(), c())",
+              "output": "1 2"
+            },
+            {
+              "title": "Closures: Data Hiding",
+              "explanation": "A function that remembers variables from its enclosing scope even after that scope has finished executing. Perfect for data hiding or factory patterns.",
+              "code": "def multiplier(n):\n    def multiply(x):\n        return x * n\n    return multiply\n\ndouble = multiplier(2)\nprint(double(5))",
+              "output": "10"
             }
           ],
           "interview_qa": [
@@ -671,16 +797,22 @@
           "title": "Inheritance",
           "subtopics": [
             {
-              "title": "Single and Multiple Inheritance",
-              "explanation": "Python supports multiple inheritance with C3 MRO.",
-              "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        return 'Some sound'\n\nclass Dog(Animal):\n    def speak(self):\n        return f'{self.name} says Woof!'\n\nclass Cat(Animal):\n    def speak(self):\n        return f'{self.name} says Meow!'\n\n# Multiple inheritance\nclass FlyingMixin:\n    def fly(self):\n        return f'{self.name} is flying'\n\nclass FlyingDog(FlyingMixin, Dog):\n    pass\n\nfd = FlyingDog('AirBud')\nprint(fd.speak())\nprint(fd.fly())\nprint(FlyingDog.__mro__)",
-              "output": "AirBud says Woof!\nAirBud is flying\n(<class 'FlyingDog'>, <class 'FlyingMixin'>, <class 'Dog'>, <class 'Animal'>, <class 'object'>)"
+              "title": "Single Inheritance",
+              "explanation": "Create a hierarchy where a child class inherits all attributes and methods from a parent. Perfect for sharing code between related objects.",
+              "code": "class Animal:\n    def speak(self): return 'Sound'\n\nclass Dog(Animal):\n    def speak(self): return 'Woof!'",
+              "output": ""
             },
             {
-              "title": "super() and Method Resolution",
-              "explanation": "super() calls the next class in MRO.",
-              "code": "class Shape:\n    def __init__(self, color):\n        self.color = color\n    def area(self):\n        return 0\n    def describe(self):\n        return f'{self.color} shape with area {self.area():.2f}'\n\nclass Circle(Shape):\n    def __init__(self, color, radius):\n        super().__init__(color)  # call parent __init__\n        self.radius = radius\n    def area(self):\n        import math\n        return math.pi * self.radius ** 2\n\nclass BorderedCircle(Circle):\n    def __init__(self, color, radius, border_width):\n        super().__init__(color, radius)\n        self.border_width = border_width\n    def describe(self):\n        base = super().describe()\n        return f'{base}, border={self.border_width}px'\n\nbc = BorderedCircle('red', 5, 2)\nprint(bc.describe())\nprint(isinstance(bc, Shape))   # True\nprint(issubclass(BorderedCircle, Circle))  # True",
-              "output": "red shape with area 78.54, border=2px\nTrue\nTrue"
+              "title": "Multiple Inheritance & Mixins",
+              "explanation": "Python allows a class to inherit from multiple parents. Mixins are small classes that provide specific functionality to be mixed into other classes.",
+              "code": "class Flyer:\n    def fly(self): return 'Flying'\n\nclass Bird(Flyer, Animal):\n    pass",
+              "output": ""
+            },
+            {
+              "title": "super() & MRO",
+              "explanation": "super() calls the next class in the Method Resolution Order (MRO). MRO ensures a consistent search path in complex multiple inheritance scenarios.",
+              "code": "class A:\n    def say(self): print('A')\n\nclass B(A):\n    def say(self): \n        super().say()\n        print('B')\n\nB().say()",
+              "output": "A\nB"
             }
           ],
           "interview_qa": [
@@ -695,10 +827,34 @@
           "title": "Dunder / Magic Methods",
           "subtopics": [
             {
-              "title": "Complete Magic Methods Reference",
-              "explanation": "Dunder methods let you customize how objects behave with Python's operators and built-in functions.",
-              "code": "class Vector:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n    \n    # String representation\n    def __repr__(self):\n        return f'Vector({self.x}, {self.y})'\n    def __str__(self):\n        return f'({self.x}, {self.y})'\n    \n    # Arithmetic\n    def __add__(self, other):\n        return Vector(self.x + other.x, self.y + other.y)\n    def __sub__(self, other):\n        return Vector(self.x - other.x, self.y - other.y)\n    def __mul__(self, scalar):\n        return Vector(self.x * scalar, self.y * scalar)\n    def __rmul__(self, scalar):  # scalar * vector\n        return self.__mul__(scalar)\n    def __neg__(self):\n        return Vector(-self.x, -self.y)\n    def __abs__(self):\n        return (self.x**2 + self.y**2) ** 0.5\n    \n    # Comparison\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n    def __lt__(self, other):\n        return abs(self) < abs(other)\n    \n    # Container-like\n    def __len__(self):\n        return 2\n    def __getitem__(self, idx):\n        return (self.x, self.y)[idx]\n    def __iter__(self):\n        yield self.x\n        yield self.y\n    def __contains__(self, val):\n        return val in (self.x, self.y)\n    \n    # Boolean\n    def __bool__(self):\n        return self.x != 0 or self.y != 0\n    \n    # Callable\n    def __call__(self, scale):\n        return Vector(self.x * scale, self.y * scale)\n\nv1 = Vector(1, 2)\nv2 = Vector(3, 4)\nprint(repr(v1))\nprint(str(v1))\nprint(v1 + v2)\nprint(v1 * 3)\nprint(3 * v1)\nprint(abs(v2))\nprint(v1 == Vector(1, 2))\nprint(list(v1))\nprint(2 in v1)\nprint(bool(Vector(0, 0)))\nprint(v1(10))",
-              "output": "Vector(1, 2)\n(1, 2)\n(4, 6)\n(3, 6)\n(3, 6)\n5.0\nTrue\n[1, 2]\nTrue\nFalse\n(10, 20)"
+              "title": "Object Representation: __str__ & __repr__",
+              "explanation": "__str__ is for end-users (readable); __repr__ is for developers (detailed/ambiguous). Critical for debugging and logging.",
+              "code": "class User:\n    def __init__(self, name): self.name = name\n    def __repr__(self): return f'User(name={self.name!r})'\n    def __str__(self): return f'User: {self.name}'\n\nu = User('Alice')\nprint(repr(u))\nprint(str(u))",
+              "output": "User(name='Alice')\nUser: Alice"
+            },
+            {
+              "title": "Arithmetic Dunders: __add__, __mul__",
+              "explanation": "Implement mathematical operations for your objects. Allows using + and * operators directly on custom instances.",
+              "code": "class Point:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __add__(self, other): return Point(self.x + other.x, self.y + other.y)\n    def __repr__(self): return f'({self.x}, {self.y})'\n\np1 = Point(1, 2); p2 = Point(3, 4)\nprint(p1 + p2)",
+              "output": "(4, 6)"
+            },
+            {
+              "title": "Comparison Dunders: __eq__, __lt__",
+              "explanation": "Custom objects don't have built-in comparison logic. Implement these to enable sorting and equality checks.",
+              "code": "class Task:\n    def __init__(self, p): self.priority = p\n    def __lt__(self, other): return self.priority < other.priority\n\ntasks = [Task(3), Task(1)]\nprint(sorted(tasks)[0].priority)",
+              "output": "1"
+            },
+            {
+              "title": "Container Dunders: __len__, __getitem__",
+              "explanation": "Make your objects behave like lists or dictionaries. Allows using len() and square-bracket indexing [].",
+              "code": "class Deck:\n    def __init__(self): self.cards = ['A', 'K', 'Q']\n    def __len__(self): return len(self.cards)\n    def __getitem__(self, i): return self.cards[i]\n\nd = Deck()\nprint(len(d), d[0])",
+              "output": "3 A"
+            },
+            {
+              "title": "Callable Objects: __call__",
+              "explanation": "Allows an instance to be called like a function. Useful for creating stateful functions or decorators.",
+              "code": "class Adder:\n    def __init__(self, n): self.n = n\n    def __call__(self, x): return x + self.n\n\nadd5 = Adder(5)\nprint(add5(10))",
+              "output": "15"
             }
           ],
           "interview_qa": [
@@ -851,10 +1007,22 @@
           "title": "Infinite Iterators",
           "subtopics": [
             {
-              "title": "count, cycle, repeat",
-              "explanation": "Iterators that produce values indefinitely.",
-              "code": "from itertools import count, cycle, repeat, islice\n\n# count(start, step)\nfor n in islice(count(10, 3), 5):\n    print(n, end=' ')\nprint()\n\n# count with floats\nfor f in islice(count(0.0, 0.5), 6):\n    print(f, end=' ')\nprint()\n\n# cycle\ncolors = cycle(['red', 'green', 'blue'])\nfor c in islice(colors, 7):\n    print(c, end=' ')\nprint()\n\n# repeat\nfor val in repeat('hello', 3):\n    print(val, end=' ')\nprint()\n\n# repeat with map\nresult = list(map(pow, range(5), repeat(2)))\nprint(result)",
-              "output": "10 13 16 19 22 \n0.0 0.5 1.0 1.5 2.0 2.5 \nred green blue red green blue red \nhello hello hello \n[0, 1, 4, 9, 16]"
+              "title": "count",
+              "explanation": "An iterator that produces values by adding a step to a start value indefinitely.",
+              "code": "from itertools import count, islice\n\n# count(start, step)\nfor n in islice(count(10, 3), 5):\n    print(n, end=' ')\nprint()\n\n# count with floats\nfor f in islice(count(0.0, 0.5), 6):\n    print(f, end=' ')",
+              "output": "10 13 16 19 22 \n0.0 0.5 1.0 1.5 2.0 2.5"
+            },
+            {
+              "title": "cycle",
+              "explanation": "An iterator that repeats the elements of an iterable indefinitely.",
+              "code": "from itertools import cycle, islice\n\ncolors = cycle(['red', 'green', 'blue'])\nfor c in islice(colors, 7):\n    print(c, end=' ')",
+              "output": "red green blue red green blue red"
+            },
+            {
+              "title": "repeat",
+              "explanation": "An iterator that produces the same value either indefinitely or a fixed number of times.",
+              "code": "from itertools import repeat\n\n# repeat(val, times)\nfor val in repeat('hello', 3):\n    print(val, end=' ')\nprint()\n\n# repeat with map\nresult = list(map(pow, range(5), repeat(2)))\nprint(result)",
+              "output": "hello hello hello \n[0, 1, 4, 9, 16]"
             }
           ]
         },
@@ -875,16 +1043,46 @@
               "output": "[1, 2, 3, 4, 5, 6]\n[1, 2, 3, 4, 5, 6]\n[1, 2, 3, 4, 5, 6, 7, 8, 9]"
             },
             {
-              "title": "compress, dropwhile, takewhile, filterfalse",
-              "explanation": "Filtering iterators.",
-              "code": "from itertools import compress, dropwhile, takewhile, filterfalse\n\n# compress - boolean mask selector\ndata = ['a','b','c','d','e']\nmask = [1, 0, 1, 0, 1]\nprint(list(compress(data, mask)))\n\n# takewhile - take until predicate fails\nprint(list(takewhile(lambda x: x < 5, [1,2,3,4,5,6,1])))\n\n# dropwhile - drop until predicate fails, then take rest\nprint(list(dropwhile(lambda x: x < 5, [1,2,3,4,5,6,1])))\n\n# filterfalse - keep where predicate is False\nprint(list(filterfalse(lambda x: x%2==0, range(10))))",
-              "output": "['a', 'c', 'e']\n[1, 2, 3, 4]\n[5, 6, 1]\n[1, 3, 5, 7, 9]"
+              "title": "compress",
+              "explanation": "Filters elements from data using a selectors iterable as a boolean mask.",
+              "code": "from itertools import compress\n\ndata = ['a','b','c','d','e']\nmask = [1, 0, 1, 0, 1]\nprint(list(compress(data, mask)))",
+              "output": "['a', 'c', 'e']"
             },
             {
-              "title": "islice, starmap, zip_longest",
-              "explanation": "Slicing, unpacking, and zipping iterators.",
-              "code": "from itertools import islice, starmap, zip_longest\n\n# islice - lazy slicing\ngen = (x**2 for x in range(1000000))\nprint(list(islice(gen, 5)))       # [0,1,4,9,16]\nprint(list(islice(gen, 2, 8, 2))) # [25,49,81] (start=2,stop=8,step=2)\n\n# starmap - unpack args from iterable\npoints = [(1,2),(3,4),(5,6)]\nprint(list(starmap(lambda x,y: x+y, points)))\n\nimport operator\nprint(list(starmap(operator.mul, [(2,3),(4,5),(6,7)])))\n\n# zip_longest\nfor a,b in zip_longest([1,2,3], ['a','b'], fillvalue='N/A'):\n    print(a, b)",
-              "output": "[0, 1, 4, 9, 16]\n[25, 49, 81]\n[3, 7, 11]\n[6, 20, 42]\n1 a\n2 b\n3 N/A"
+              "title": "takewhile",
+              "explanation": "Yields elements from an iterable as long as the predicate is true.",
+              "code": "from itertools import takewhile\n\nprint(list(takewhile(lambda x: x < 5, [1,2,3,4,5,6,1])))",
+              "output": "[1, 2, 3, 4]"
+            },
+            {
+              "title": "dropwhile",
+              "explanation": "Drops elements from an iterable as long as the predicate is true, then yields the rest.",
+              "code": "from itertools import dropwhile\n\nprint(list(dropwhile(lambda x: x < 5, [1,2,3,4,5,6,1])))",
+              "output": "[5, 6, 1]"
+            },
+            {
+              "title": "filterfalse",
+              "explanation": "Yields elements from an iterable for which the predicate is false.",
+              "code": "from itertools import filterfalse\n\nprint(list(filterfalse(lambda x: x%2==0, range(10))))",
+              "output": "[1, 3, 5, 7, 9]"
+            },
+            {
+              "title": "islice",
+              "explanation": "Yields selected elements from an iterable, like list slicing but lazy.",
+              "code": "from itertools import islice\n\ngen = (x**2 for x in range(100))\nprint(list(islice(gen, 5)))       # [0,1,4,9,16]\nprint(list(islice(gen, 2, 8, 2))) # [25, 49, 81]",
+              "output": "[0, 1, 4, 9, 16]\n[25, 49, 81]"
+            },
+            {
+              "title": "starmap",
+              "explanation": "Applies a function to arguments unpacked from an iterable.",
+              "code": "from itertools import starmap\nimport operator\n\npoints = [(1,2),(3,4),(5,6)]\nprint(list(starmap(lambda x,y: x+y, points)))\nprint(list(starmap(operator.mul, [(2,3),(4,5),(6,7)])))",
+              "output": "[3, 7, 11]\n[6, 20, 42]"
+            },
+            {
+              "title": "zip_longest",
+              "explanation": "Zips iterables together, filling missing values with a fillvalue.",
+              "code": "from itertools import zip_longest\n\nfor a,b in zip_longest([1,2,3], ['a','b'], fillvalue='N/A'):\n    print(a, b)",
+              "output": "1 a\n2 b\n3 N/A"
             },
             {
               "title": "pairwise and batched",
@@ -899,10 +1097,22 @@
           "title": "Combinatoric Iterators",
           "subtopics": [
             {
-              "title": "product, permutations, combinations",
-              "explanation": "Generate all combinations and arrangements.",
-              "code": "from itertools import product, permutations, combinations, combinations_with_replacement\n\n# product - cartesian product\nprint(list(product([1,2], ['a','b'])))\nprint(list(product(range(2), repeat=3)))  # binary strings\n\n# permutations - ordered arrangements\nprint(list(permutations('ABC', 2)))\nprint(f'Count: {len(list(permutations([1,2,3,4])))}')  # 4! = 24\n\n# combinations - unordered selection\nprint(list(combinations('ABCD', 2)))\nprint(f'Count: {len(list(combinations(range(10), 3)))}')  # C(10,3)=120\n\n# combinations_with_replacement - allow repeats\nprint(list(combinations_with_replacement('AB', 3)))",
-              "output": "[(1, 'a'), (1, 'b'), (2, 'a'), (2, 'b')]\n[(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1)]\n[('A','B'),('A','C'),('B','A'),('B','C'),('C','A'),('C','B')]\nCount: 24\n[('A','B'),('A','C'),('A','D'),('B','C'),('B','D'),('C','D')]\nCount: 120\n[('A','A','A'),('A','A','B'),('A','B','B'),('B','B','B')]"
+              "title": "product",
+              "explanation": "Cartesian product of input iterables.",
+              "code": "from itertools import product\n\nprint(list(product([1,2], ['a','b'])))\nprint(list(product(range(2), repeat=3)))",
+              "output": "[(1, 'a'), (1, 'b'), (2, 'a'), (2, 'b')]\n[(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1)]"
+            },
+            {
+              "title": "permutations",
+              "explanation": "Successive r-length permutations of elements in an iterable.",
+              "code": "from itertools import permutations\n\nprint(list(permutations('ABC', 2)))\nprint(f'Count: {len(list(permutations([1,2,3,4])))}')",
+              "output": "[('A','B'),('A','C'),('B','A'),('B','C'),('C','A'),('C','B')]\nCount: 24"
+            },
+            {
+              "title": "combinations",
+              "explanation": "Successive r-length combinations of elements in an iterable.",
+              "code": "from itertools import combinations, combinations_with_replacement\n\nprint(list(combinations('ABCD', 2)))\nprint(list(combinations_with_replacement('AB', 3)))",
+              "output": "[('A','B'),('A','C'),('A','D'),('B','C'),('B','D'),('C','D')]\n[('A','A','A'),('A','A','B'),('A','B','B'),('B','B','B')]"
             },
             {
               "title": "groupby",

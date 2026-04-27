@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265321">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271313">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -237,9 +238,9 @@
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Thread Basics</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">threading.Thread runs code concurrently. Best for I/O-bound tasks. GIL limits CPU-bound parallelism.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">import threading
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>import threading
 import time
 
 def download(url, delay):
@@ -272,10 +273,9 @@ def background_task():
 daemon = threading.Thread(target=background_task, daemon=True)
 daemon.start()
 print('Main thread done')</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Starting site1.com
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Starting site1.com
 Done site1.com
 Starting site2.com
 Done site2.com
@@ -288,13 +288,15 @@ Threaded: 1.0s
 Main thread done</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Thread Synchronization: Lock, RLock, Semaphore, Event</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Synchronization primitives prevent race conditions when threads share state.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">import threading
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>import threading
 
 # Lock - mutual exclusion
 class BankAccount:
@@ -342,21 +344,22 @@ t.start()
 import time; time.sleep(0.1)
 event.set()  # signal all waiters
 t.join()</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Final balance: 1500
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Final balance: 1500
 Waiting for event...
 Event received!</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>ThreadPoolExecutor</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">High-level interface for managing a pool of worker threads.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from concurrent.futures import ThreadPoolExecutor, as_completed
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
 def fetch_data(url):
@@ -380,13 +383,14 @@ with ThreadPoolExecutor(max_workers=3) as executor:
             print(f'{url} -&gt; {result}')
         except Exception as e:
             print(f'{url} failed: {e}')</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>['Data from http://site0.com', ..., 'Data from http://site4.com']
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">['Data from http://site0.com', ..., 'Data from http://site4.com']
 http://site0.com -&gt; Data from http://site0.com
 http://site2.com -&gt; Data from http://site2.com
 ...</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -434,6 +438,6 @@ http://site2.com -&gt; Data from http://site2.com
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265321" defer></script>
+<script src="../../../js/ds-main.js?v=1777271313" defer></script>
 </body>
 </html>

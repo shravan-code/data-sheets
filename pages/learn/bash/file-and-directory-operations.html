@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,18 +223,23 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>File Management</h2>
-<p>Bash provides robust file manipulation through built-in commands.</p>
-<h3>Create, Copy, Move, Delete</h3>
-<pre><code class="language-bash">touch newfile.txt              # create empty file
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>File Management</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash provides robust file manipulation through built-in commands.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Create, Copy, Move, Delete</h3>
+<div class="my-6">
+<pre class="language-bash"><code>touch newfile.txt              # create empty file
 cp source.txt dest.txt         # copy file
 cp -r src_dir/ dst_dir/        # copy directory
 mv oldname.txt newname.txt     # rename/move
 rm file.txt                    # delete file
 rm -rf directory/              # delete directory (CAREFUL!)
 ln -s target link_name         # create symlink</code></pre>
-<h3>Find Files</h3>
-<pre><code class="language-bash"># Find by name
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Find Files</h3>
+<div class="my-6">
+<pre class="language-bash"><code># Find by name
 find /home -name "*.txt"
 
 # Find by size
@@ -247,31 +253,42 @@ find . -name "*.log" -exec rm {} \;
 
 # Find and process
 find . -type f -name "*.sh" | xargs chmod +x</code></pre>
-<hr>
-<h2>Directory Operations</h2>
-<p>Creating, navigating, and managing directories.</p>
-<h3>Directory Commands</h3>
-<pre><code class="language-bash">mkdir mydir                  # create directory
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Directory Operations</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Creating, navigating, and managing directories.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Directory Commands</h3>
+<div class="my-6">
+<pre class="language-bash"><code>mkdir mydir                  # create directory
 mkdir -p a/b/c               # create nested dirs
 rmdir emptydir               # remove empty dir
 pushd /tmp                   # save &amp; change dir
 popd                         # restore previous dir
 ls -la                       # list with details
 tree -L 2                    # tree view (2 levels)</code></pre>
-<hr>
-<h2>File Permissions</h2>
-<p>Linux permissions follow owner/group/other model. Use chmod (symbolic or octal) and chown.</p>
-<h3>chmod Permissions</h3>
-<pre><code class="language-bash">chmod 755 script.sh    # rwxr-xr-x
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>File Permissions</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Linux permissions follow owner/group/other model. Use chmod (symbolic or octal) and chown.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">chmod Permissions</h3>
+<div class="my-6">
+<pre class="language-bash"><code>chmod 755 script.sh    # rwxr-xr-x
 chmod 644 file.txt     # rw-r--r--
 chmod +x script.sh     # add execute
 chmod -w file.txt      # remove write
 chmod u+x,g+x file.sh  # symbolic</code></pre>
-<h3>chown and chgrp</h3>
-<pre><code class="language-bash">chown user:group file.txt    # change owner &amp; group
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">chown and chgrp</h3>
+<div class="my-6">
+<pre class="language-bash"><code>chown user:group file.txt    # change owner &amp; group
 chown -R user:group dir/     # recursive
 chgrp developers file.txt    # change group only</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -298,6 +315,6 @@ chgrp developers file.txt    # change group only</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

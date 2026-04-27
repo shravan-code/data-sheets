@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,69 +223,97 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>String Operations</h2>
-<p>Bash strings can be manipulated using parameter expansion for length, replacement, case conversion, and more.</p>
-<h3>String Length</h3>
-<pre><code class="language-bash">str="Hello World"
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>String Operations</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash strings can be manipulated using parameter expansion for length, replacement, case conversion, and more.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Length</h3>
+<div class="my-6">
+<pre class="language-bash"><code>str="Hello World"
 echo ${#str}  # 11</code></pre>
-<h3>String Replace</h3>
-<pre><code class="language-bash">msg="I like cats and cats"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Replace</h3>
+<div class="my-6">
+<pre class="language-bash"><code>msg="I like cats and cats"
 echo ${msg/cats/dogs}   # Replace first: I like dogs and cats
 echo ${msg//cats/dogs}  # Replace all:   I like dogs and dogs</code></pre>
-<h3>Case Conversion (Bash 4+)</h3>
-<pre><code class="language-bash">text="Hello World"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Case Conversion (Bash 4+)</h3>
+<div class="my-6">
+<pre class="language-bash"><code>text="Hello World"
 echo ${text^^}   # HELLO WORLD (uppercase)
 echo ${text,,}   # hello world (lowercase)
 echo ${text^}    # Hello World (capitalize first)</code></pre>
-<h3>String Concatenation</h3>
-<pre><code class="language-bash">first="Hello"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Concatenation</h3>
+<div class="my-6">
+<pre class="language-bash"><code>first="Hello"
 second="World"
 combined="$first $second"
 echo $combined  # Hello World</code></pre>
-<hr>
-<h2>Arrays</h2>
-<p>Bash supports indexed and associative arrays. Indexed arrays use numeric indices; associative arrays use string keys.</p>
-<h3>Indexed Array</h3>
-<pre><code class="language-bash">fruits=("apple" "banana" "cherry")
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Arrays</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash supports indexed and associative arrays. Indexed arrays use numeric indices; associative arrays use string keys.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Indexed Array</h3>
+<div class="my-6">
+<pre class="language-bash"><code>fruits=("apple" "banana" "cherry")
 echo ${fruits[0]}    # apple
 echo ${fruits[@]}    # all elements
 echo ${#fruits[@]}   # 3 (length)
 fruits+=("date")     # append
 unset fruits[1]      # delete element</code></pre>
-<h3>Array Iteration</h3>
-<pre><code class="language-bash">colors=("red" "green" "blue")
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Array Iteration</h3>
+<div class="my-6">
+<pre class="language-bash"><code>colors=("red" "green" "blue")
 for color in "${colors[@]}"; do
   echo "Color: $color"
 done</code></pre>
-<h3>Associative Array (Bash 4+)</h3>
-<pre><code class="language-bash">declare -A person
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Associative Array (Bash 4+)</h3>
+<div class="my-6">
+<pre class="language-bash"><code>declare -A person
 person[name]="Alice"
 person[age]=30
 person[city]="NYC"
 echo ${person[name]}        # Alice
 echo ${!person[@]}          # keys: name age city
 echo ${person[@]}           # values</code></pre>
-<h3>Array Slicing</h3>
-<pre><code class="language-bash">nums=(10 20 30 40 50)
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Array Slicing</h3>
+<div class="my-6">
+<pre class="language-bash"><code>nums=(10 20 30 40 50)
 echo ${nums[@]:1:3}   # 20 30 40 (offset 1, length 3)</code></pre>
-<hr>
-<h2>Here Documents & Here Strings</h2>
-<p>Here-docs allow multi-line strings. Here-strings pass a single string to stdin.</p>
-<h3>Here Document</h3>
-<pre><code class="language-bash">cat &lt;&lt; EOF
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Here Documents & Here Strings</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Here-docs allow multi-line strings. Here-strings pass a single string to stdin.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Here Document</h3>
+<div class="my-6">
+<pre class="language-bash"><code>cat &lt;&lt; EOF
 Line 1
 Line 2
 Line 3
 EOF</code></pre>
-<h3>Here Document to File</h3>
-<pre><code class="language-bash">cat &lt;&lt; EOF &gt; output.txt
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Here Document to File</h3>
+<div class="my-6">
+<pre class="language-bash"><code>cat &lt;&lt; EOF &gt; output.txt
 Name: Alice
 Age: 30
 EOF</code></pre>
-<h3>Here String</h3>
-<pre><code class="language-bash">grep "hello" &lt;&lt;&lt; "hello world"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Here String</h3>
+<div class="my-6">
+<pre class="language-bash"><code>grep "hello" &lt;&lt;&lt; "hello world"
 # Output: hello world</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -311,6 +340,6 @@ EOF</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

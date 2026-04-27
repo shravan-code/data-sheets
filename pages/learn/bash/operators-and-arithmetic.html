@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,60 +223,85 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>Arithmetic Operations</h2>
-<p>Bash supports integer arithmetic via (( )) or $(()), and floating-point via bc or awk.</p>
-<h3>Integer Arithmetic</h3>
-<pre><code class="language-bash">a=10; b=3
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Arithmetic Operations</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Bash supports integer arithmetic via (( )) or $(()), and floating-point via bc or awk.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Integer Arithmetic</h3>
+<div class="my-6">
+<pre class="language-bash"><code>a=10; b=3
 echo $((a + b))   # 13
 echo $((a - b))   # 7
 echo $((a * b))   # 30
 echo $((a / b))   # 3 (integer)
 echo $((a % b))   # 1 (modulo)
 echo $((a ** b))  # 1000 (power)</code></pre>
-<h3>Increment & Decrement</h3>
-<pre><code class="language-bash">x=5
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Increment & Decrement</h3>
+<div class="my-6">
+<pre class="language-bash"><code>x=5
 ((x++))
 echo $x   # 6
 ((x+=10))
 echo $x   # 16
 ((x--))
 echo $x   # 15</code></pre>
-<h3>Floating Point with bc</h3>
-<pre><code class="language-bash">result=$(echo "scale=4; 10 / 3" | bc)
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Floating Point with bc</h3>
+<div class="my-6">
+<pre class="language-bash"><code>result=$(echo "scale=4; 10 / 3" | bc)
 echo $result   # 3.3333</code></pre>
-<hr>
-<h2>Comparison Operators</h2>
-<p>Integer comparisons use -eq, -ne, -lt, -le, -gt, -ge. String comparisons use =, !=, <, >.</p>
-<h3>Integer Comparisons</h3>
-<pre><code class="language-bash">a=10; b=20
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Comparison Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Integer comparisons use -eq, -ne, -lt, -le, -gt, -ge. String comparisons use =, !=, <, >.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Integer Comparisons</h3>
+<div class="my-6">
+<pre class="language-bash"><code>a=10; b=20
 [ $a -eq $b ] &amp;&amp; echo "equal" || echo "not equal"
 [ $a -lt $b ] &amp;&amp; echo "a less than b"
 [ $a -ge 10 ] &amp;&amp; echo "a &gt;= 10"</code></pre>
-<h3>String Comparisons</h3>
-<pre><code class="language-bash">s1="hello"; s2="world"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Comparisons</h3>
+<div class="my-6">
+<pre class="language-bash"><code>s1="hello"; s2="world"
 [ "$s1" = "$s2" ]  &amp;&amp; echo "same"
 [ "$s1" != "$s2" ] &amp;&amp; echo "different"
 [ -z "$s1" ]       &amp;&amp; echo "empty"
 [ -n "$s1" ]       &amp;&amp; echo "not empty"</code></pre>
-<h3>Modern [[ Double Brackets ]]</h3>
-<pre><code class="language-bash">name="Alice"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Modern [[ Double Brackets ]]</h3>
+<div class="my-6">
+<pre class="language-bash"><code>name="Alice"
 [[ $name == A* ]] &amp;&amp; echo "Starts with A"
 [[ $name =~ ^[A-Z] ]] &amp;&amp; echo "Starts with uppercase"</code></pre>
-<hr>
-<h2>Logical Operators</h2>
-<p>Combine conditions using && (AND), || (OR), and ! (NOT).</p>
-<h3>AND and OR</h3>
-<pre><code class="language-bash">age=25
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Logical Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Combine conditions using && (AND), || (OR), and ! (NOT).</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">AND and OR</h3>
+<div class="my-6">
+<pre class="language-bash"><code>age=25
 [[ $age -ge 18 &amp;&amp; $age -le 65 ]] &amp;&amp; echo "Working age"
 [[ $age -lt 18 || $age -gt 65 ]] &amp;&amp; echo "Not working age"</code></pre>
-<h3>NOT Operator</h3>
-<pre><code class="language-bash">file="test.txt"
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">NOT Operator</h3>
+<div class="my-6">
+<pre class="language-bash"><code>file="test.txt"
 [[ ! -f "$file" ]] &amp;&amp; echo "File does not exist"</code></pre>
-<hr>
-<h2>File Test Operators</h2>
-<p>Test file existence, type, and permissions using various -x flags.</p>
-<h3>File Tests</h3>
-<pre><code class="language-bash">file="test.txt"
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>File Test Operators</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Test file existence, type, and permissions using various -x flags.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">File Tests</h3>
+<div class="my-6">
+<pre class="language-bash"><code>file="test.txt"
 [ -e "$file" ] &amp;&amp; echo "exists"
 [ -f "$file" ] &amp;&amp; echo "is a regular file"
 [ -d "$file" ] &amp;&amp; echo "is a directory"
@@ -284,7 +310,8 @@ echo $result   # 3.3333</code></pre>
 [ -x "$file" ] &amp;&amp; echo "executable"
 [ -s "$file" ] &amp;&amp; echo "non-empty"
 [ -L "$file" ] &amp;&amp; echo "is a symlink"</code></pre>
-<hr>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -311,6 +338,6 @@ echo $result   # 3.3333</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

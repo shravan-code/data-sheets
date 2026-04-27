@@ -55,18 +55,51 @@ def render_topic_content(topic_or_part):
             parts.append(f'<p class="text-slate-600 dark:text-slate-400 mb-6">{sub_expl}</p>')
         
         if sub.get("code"):
-            code = sub["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            parts.append(f'<div class="relative group my-8">')
-            parts.append(f'<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>')
-            parts.append(f'<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">{code}</code></pre>')
-            parts.append(f'</div>')
+            # Check if output is already in comments to avoid redundancy
+            output_in_comments = False
+            raw_output = sub.get("output", "")
+            raw_code = sub.get("code", "")
+            if raw_output and raw_code:
+                output_lines = [l.strip() for l in raw_output.split('\n') if l.strip()]
+                if output_lines:
+                    # Get all comment parts from code
+                    code_comments = [line.split('#', 1)[1].strip() for line in raw_code.split('\n') if '#' in line]
+                    # Check if all non-empty output lines are represented in comments
+                    # We look for exact matches or matches after common prefixes (Output:, ->, etc.)
+                    prefixes = ["Output:", "Result:", "->", "=>"]
+                    found_count = 0
+                    for o_line in output_lines:
+                        matched = False
+                        for c in code_comments:
+                            c_clean = c.strip()
+                            if o_line == c_clean:
+                                matched = True; break
+                            for p in prefixes:
+                                if c_clean.startswith(p) and c_clean[len(p):].strip() == o_line:
+                                    matched = True; break
+                            if matched: break
+                        if matched: found_count += 1
+                    
+                    if found_count == len(output_lines):
+                        output_in_comments = True
+
+            code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            output = raw_output.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             
-        if sub.get("output"):
-            output = sub["output"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            parts.append(f'<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">')
-            parts.append(f'<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>')
-            parts.append(f'<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>{output}</code></pre>')
-            parts.append(f'</div>')
+            if output and not output_in_comments:
+                # Combined Code + Output Card
+                parts.append(f'<div class="my-8 group">')
+                parts.append(f'<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">')
+                parts.append(f'<pre class="language-python"><code>{code}</code></pre>')
+                parts.append(f'<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">')
+                parts.append(f'<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>')
+                parts.append(f'<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">{output}</code></pre>')
+                parts.append(f'</div>')
+                parts.append(f'</div>')
+                parts.append(f'</div>')
+            else:
+                # Standalone Code Block (uses pre[class*="language-"] style from CSS)
+                parts.append(f'<pre class="language-python"><code>{code}</code></pre>')
             
         # Check for nested interview_qa in subtopics
         if sub.get("interview_qa"):
@@ -176,27 +209,22 @@ def build_python_hub(data):
                 </a>"""
 
         phases_html += f"""
-        <div class="relative pl-12 pb-16 group last:pb-0">
-            <div class="absolute left-[19px] top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-200 to-transparent dark:from-slate-800 group-last:bottom-auto group-last:h-12"></div>
-            <div class="absolute left-0 top-0 w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border-2 border-indigo-100 dark:border-slate-800 flex items-center justify-center z-10 group-hover:border-indigo-500 transition-all shadow-lg group-hover:scale-110">
-                <span class="text-sm font-black text-indigo-600">{num}</span>
-            </div>
-
-            <div class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200/60 dark:border-slate-800/60 p-8 rounded-[32px] transition-all hover:shadow-2xl hover:shadow-indigo-500/5 hover:bg-white dark:hover:bg-slate-900">
-                <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-4 font-display tracking-tight">
-                    {phase['name']}
-                    <span class="text-[10px] uppercase tracking-[0.2em] px-3 py-1.5 bg-indigo-600 text-white rounded-full font-black shadow-lg shadow-indigo-500/20">Phase {num}</span>
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {items_html}
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
+                    <span class="text-xl font-black">{num}</span>
                 </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">{phase['name']}</h2>
             </div>
-        </div>"""
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {items_html}
+            </div>
+        </section>"""
 
     hub_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Python Mastery Roadmap \u2014 Data Cake</title>
+    <title>Python Mastery \u2014 Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{data['description']}">
@@ -204,45 +232,30 @@ def build_python_hub(data):
     <script>tailwind.config={{darkMode:'class',theme:{{extend:{{fontFamily:{{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <style>
-        .roadmap-hero-bg {{
-            background-image: radial-gradient(circle at 2px 2px, rgba(99, 102, 241, 0.05) 1px, transparent 0);
-            background-size: 32px 32px;
-        }}
-        .dark .roadmap-hero-bg {{
-            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
-        }}
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
     <div id="ds-main-content">
         <main class="relative z-10 pt-24 pb-20 px-6 max-w-6xl mx-auto">
             <!-- HERO -->
-            <header class="roadmap-hero-bg mb-24 p-12 md:p-20 rounded-[64px] border border-indigo-100 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)]">
-                <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 blur-[120px] rounded-full"></div>
-                <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/5 blur-[120px] rounded-full"></div>
-                
-                <div class="relative z-10 text-center">
-                    <div class="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-10 border border-indigo-100 dark:border-indigo-800">
-                        <i data-lucide="award" class="w-4 h-4"></i>
-                        The definitive Python Guide
-                    </div>
-                    <h1 class="font-display text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-none">
-                        Python <span class="bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-400 bg-clip-text text-transparent">Mastery</span>
-                    </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
-                        "{data['description']}"
-                    </p>
+            <header class="mb-20 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border border-indigo-100 dark:border-indigo-800">
+                    <i data-lucide="award" class="w-3 h-3"></i> Expert Documentation
                 </div>
+                <h1 class="font-display text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-tight">
+                    Python <span class="bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-400 bg-clip-text text-transparent">Mastery</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium">
+                    {data['description']}
+                </p>
             </header>
 
-            <!-- ROADMAP CONTENT -->
-            <div class="max-w-4xl mx-auto">
+            <!-- CARD CONTENT -->
+            <div class="space-y-16">
                 {phases_html}
             </div>
 
             <footer class="mt-32 py-12 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-bold tracking-widest uppercase text-xs">Developed for Data Cake \u2022 2026</p>
+                <p class="text-slate-400 font-bold tracking-widest uppercase text-[10px]">Data Cake Documentation \u2022 2026</p>
             </footer>
         </main>
     </div>

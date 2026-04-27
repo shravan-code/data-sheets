@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265320">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271312">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -237,9 +238,9 @@
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>@dataclass decorator and all parameters</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">Dataclasses auto-generate __init__, __repr__, __eq__ and more.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from dataclasses import dataclass, field, fields, asdict, astuple, replace, make_dataclass, is_dataclass
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from dataclasses import dataclass, field, fields, asdict, astuple, replace, make_dataclass, is_dataclass
 from typing import ClassVar, List
 
 @dataclass(order=True, frozen=False)
@@ -269,10 +270,9 @@ print(astuple(e1))
 e3 = replace(e1, salary=95000.0)
 print(e3)
 print(fields(Employee))  # Field objects</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Employee(name='Alice', department='Engineering', salary=90000.0, skills=['Python', 'SQL'])
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Employee(name='Alice', department='Engineering', salary=90000.0, skills=['Python', 'SQL'])
 Acme Corp
 True
 {'name': 'Alice', 'department': 'Engineering', 'salary': 90000.0, 'skills': ['Python', 'SQL']}
@@ -281,13 +281,15 @@ Employee(name='Alice', department='Engineering', salary=95000.0, skills=['Python
 (Field(name='name',...), ...)</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>field() — All Parameters</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">field() gives fine-grained control over each field.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from dataclasses import dataclass, field
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from dataclasses import dataclass, field
 
 @dataclass
 class Config:
@@ -307,23 +309,24 @@ print(c1 == Config())  # True
 from dataclasses import fields
 for f in fields(Config):
     print(f'{f.name}: default={f.default}, metadata={f.metadata}')</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Config(host='localhost', port=8080, tags=[], debug=False)
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Config(host='localhost', port=8080, tags=[], debug=False)
 Config(host='prod.server.com', port=443, tags=['web'], debug=False)
 True
 host: default=localhost, metadata={'help': 'Server host'}
 port: default=8080, metadata={}</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Frozen Dataclasses & Inheritance</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">frozen=True makes instances immutable and hashable.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from dataclasses import dataclass
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Point:
@@ -349,21 +352,22 @@ class Point3D(Point):
 
 p3 = Point3D(1.0, 2.0, 3.0)
 print(p3)</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>5.0
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">5.0
 far
 Point3D(x=1.0, y=2.0, z=3.0)</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>InitVar and __post_init__</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">InitVar fields are passed to __init__ but not stored as attributes.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from dataclasses import dataclass, field
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from dataclasses import dataclass, field
 from dataclasses import InitVar
 
 @dataclass
@@ -383,22 +387,23 @@ db = DatabaseConnection('localhost', 5432, 'secret123')
 print(db)
 print(hasattr(db, 'password'))  # False!
 print(db._conn_string)</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Connecting to localhost:5432
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Connecting to localhost:5432
 DatabaseConnection(host='localhost', port=5432)
 False
 localhost:5432?pwd=secret123</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
 <span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>All Helper Functions</h2>
 <p class="text-slate-600 dark:text-slate-400 mb-6">dataclasses module utility functions.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">from dataclasses import (
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>from dataclasses import (
     dataclass, fields, asdict, astuple,
     replace, make_dataclass, is_dataclass, field
 )
@@ -434,10 +439,9 @@ print(is_dataclass(dict))      # False
 Point = make_dataclass('Point', ['x', 'y'])
 pt = Point(1, 2)
 print(pt)</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>name: type=str, default=MISSING
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">name: type=str, default=MISSING
 price: type=float, default=MISSING
 qty: type=int, default=0
 {'name': 'Apple', 'price': 1.5, 'qty': 100}
@@ -447,6 +451,8 @@ True
 True
 False
 Point(x=1, y=2)</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -494,6 +500,6 @@ Point(x=1, y=2)</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265320" defer></script>
+<script src="../../../js/ds-main.js?v=1777271312" defer></script>
 </body>
 </html>

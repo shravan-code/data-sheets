@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265320">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>PowerShell Remoting</h2>
-<p>WS-Management (WinRM) based remoting allows running commands on remote computers.</p>
-<h3>PSRemoting</h3>
-<pre><code class="language-powershell">
-# Enable remoting (run as admin)
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>PowerShell Remoting</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">WS-Management (WinRM) based remoting allows running commands on remote computers.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">PSRemoting</h3>
+<div class="my-6"><pre class="language-powershell"><code># Enable remoting (run as admin)
 Enable-PSRemoting -Force
 
 # One-time remote command
@@ -259,14 +259,11 @@ Invoke-Command -ComputerName Server01, Server02, Server03 -ScriptBlock {
 Copy-Item 'C:\local.txt' -Destination 'C:\remote.txt' -ToSession $session
 
 # Cleanup
-Remove-PSSession $session
-</code></pre>
-<hr>
-<h2>Background Jobs</h2>
-<p>Run tasks in the background without blocking the console.</p>
-<h3>Jobs</h3>
-<pre><code class="language-powershell">
-# Start a background job
+Remove-PSSession $session</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Background Jobs</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Run tasks in the background without blocking the console.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Jobs</h3>
+<div class="my-6"><pre class="language-powershell"><code># Start a background job
 $job = Start-Job -ScriptBlock {
     Start-Sleep -Seconds 5
     Get-Process | Measure-Object | Select-Object -Exp Count
@@ -291,9 +288,7 @@ Receive-Job -Name 'MyTask' -Wait -AutoRemoveJob
 
 # Thread jobs (faster, no new process)
 $threadJob = Start-ThreadJob -ScriptBlock { Get-Process }
-Receive-Job $threadJob -Wait
-</code></pre>
-<hr>
+Receive-Job $threadJob -Wait</code></pre></div></div>
 
         </article>
 
@@ -322,6 +317,6 @@ Receive-Job $threadJob -Wait
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265320" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

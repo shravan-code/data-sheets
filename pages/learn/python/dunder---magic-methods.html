@@ -22,7 +22,7 @@
             line-height: 1.6 !important;
         }
     </style>
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265320">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271312">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -117,6 +117,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -235,87 +236,102 @@
             <article class="prose dark:prose-invert max-w-none pb-20">
                 <div class="mb-16">
 <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
-<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Complete Magic Methods Reference</h2>
-<p class="text-slate-600 dark:text-slate-400 mb-6">Dunder methods let you customize how objects behave with Python's operators and built-in functions.</p>
-<div class="relative group my-8">
-<div class="absolute -inset-2 bg-indigo-500/5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-<pre class="relative rounded-xl overflow-hidden bg-slate-900 shadow-xl border border-slate-800"><code class="language-python">class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-    
-    # String representation
-    def __repr__(self):
-        return f'Vector({self.x}, {self.y})'
-    def __str__(self):
-        return f'({self.x}, {self.y})'
-    
-    # Arithmetic
-    def __add__(self, other):
-        return Vector(self.x + other.x, self.y + other.y)
-    def __sub__(self, other):
-        return Vector(self.x - other.x, self.y - other.y)
-    def __mul__(self, scalar):
-        return Vector(self.x * scalar, self.y * scalar)
-    def __rmul__(self, scalar):  # scalar * vector
-        return self.__mul__(scalar)
-    def __neg__(self):
-        return Vector(-self.x, -self.y)
-    def __abs__(self):
-        return (self.x**2 + self.y**2) ** 0.5
-    
-    # Comparison
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
-    def __lt__(self, other):
-        return abs(self) &lt; abs(other)
-    
-    # Container-like
-    def __len__(self):
-        return 2
-    def __getitem__(self, idx):
-        return (self.x, self.y)[idx]
-    def __iter__(self):
-        yield self.x
-        yield self.y
-    def __contains__(self, val):
-        return val in (self.x, self.y)
-    
-    # Boolean
-    def __bool__(self):
-        return self.x != 0 or self.y != 0
-    
-    # Callable
-    def __call__(self, scale):
-        return Vector(self.x * scale, self.y * scale)
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Object Representation: __str__ & __repr__</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">__str__ is for end-users (readable); __repr__ is for developers (detailed/ambiguous). Critical for debugging and logging.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class User:
+    def __init__(self, name): self.name = name
+    def __repr__(self): return f'User(name={self.name!r})'
+    def __str__(self): return f'User: {self.name}'
 
-v1 = Vector(1, 2)
-v2 = Vector(3, 4)
-print(repr(v1))
-print(str(v1))
-print(v1 + v2)
-print(v1 * 3)
-print(3 * v1)
-print(abs(v2))
-print(v1 == Vector(1, 2))
-print(list(v1))
-print(2 in v1)
-print(bool(Vector(0, 0)))
-print(v1(10))</code></pre>
-</div>
-<div class="mt-4 p-5 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+u = User('Alice')
+print(repr(u))
+print(str(u))</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
 <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
-<pre class="text-indigo-600 dark:text-indigo-400 font-mono text-sm leading-relaxed"><code>Vector(1, 2)
-(1, 2)
-(4, 6)
-(3, 6)
-(3, 6)
-5.0
-True
-[1, 2]
-True
-False
-(10, 20)</code></pre>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">User(name='Alice')
+User: Alice</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Arithmetic Dunders: __add__, __mul__</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Implement mathematical operations for your objects. Allows using + and * operators directly on custom instances.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class Point:
+    def __init__(self, x, y): self.x, self.y = x, y
+    def __add__(self, other): return Point(self.x + other.x, self.y + other.y)
+    def __repr__(self): return f'({self.x}, {self.y})'
+
+p1 = Point(1, 2); p2 = Point(3, 4)
+print(p1 + p2)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">(4, 6)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Comparison Dunders: __eq__, __lt__</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Custom objects don't have built-in comparison logic. Implement these to enable sorting and equality checks.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class Task:
+    def __init__(self, p): self.priority = p
+    def __lt__(self, other): return self.priority &lt; other.priority
+
+tasks = [Task(3), Task(1)]
+print(sorted(tasks)[0].priority)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">1</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Container Dunders: __len__, __getitem__</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Make your objects behave like lists or dictionaries. Allows using len() and square-bracket indexing [].</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class Deck:
+    def __init__(self): self.cards = ['A', 'K', 'Q']
+    def __len__(self): return len(self.cards)
+    def __getitem__(self, i): return self.cards[i]
+
+d = Deck()
+print(len(d), d[0])</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">3 A</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Callable Objects: __call__</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Allows an instance to be called like a function. Useful for creating stateful functions or decorators.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>class Adder:
+    def __init__(self, n): self.n = n
+    def __call__(self, x): return x + self.n
+
+add5 = Adder(5)
+print(add5(10))</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">15</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
@@ -363,6 +379,6 @@ False
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script>lucide.createIcons();</script>
-<script src="../../../js/ds-main.js?v=1777265320" defer></script>
+<script src="../../../js/ds-main.js?v=1777271312" defer></script>
 </body>
 </html>

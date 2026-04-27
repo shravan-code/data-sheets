@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265317">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271309">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -108,6 +108,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -222,62 +223,94 @@
             </header>
 
             <article class="prose dark:prose-invert max-w-none pb-20">
-                <h2>Reading User Input</h2>
-<p>The read command reads input from stdin. It can read into single or multiple variables.</p>
-<h3>Basic Input</h3>
-<pre><code class="language-bash">read -p "Enter your name: " name
+                <div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Reading User Input</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">The read command reads input from stdin. It can read into single or multiple variables.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic Input</h3>
+<div class="my-6">
+<pre class="language-bash"><code>read -p "Enter your name: " name
 echo "Hello, $name!"</code></pre>
-<h3>Silent Input (Password)</h3>
-<pre><code class="language-bash">read -s -p "Enter password: " password
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Silent Input (Password)</h3>
+<div class="my-6">
+<pre class="language-bash"><code>read -s -p "Enter password: " password
 echo
 echo "Password entered (hidden)"</code></pre>
-<h3>Read with Timeout</h3>
-<pre><code class="language-bash">if read -t 5 -p "Enter within 5 seconds: " answer; then
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Read with Timeout</h3>
+<div class="my-6">
+<pre class="language-bash"><code>if read -t 5 -p "Enter within 5 seconds: " answer; then
   echo "You entered: $answer"
 else
   echo "Timed out!"
 fi</code></pre>
-<h3>Read Array from Input</h3>
-<pre><code class="language-bash">read -a items -p "Enter items separated by spaces: "
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Read Array from Input</h3>
+<div class="my-6">
+<pre class="language-bash"><code>read -a items -p "Enter items separated by spaces: "
 for item in "${items[@]}"; do
   echo "Item: $item"
 done</code></pre>
-<hr>
-<h2>Output with echo and printf</h2>
-<p>echo is simple; printf provides C-style formatted output with more control.</p>
-<h3>echo Options</h3>
-<pre><code class="language-bash">echo "Simple output"
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Output with echo and printf</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">echo is simple; printf provides C-style formatted output with more control.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">echo Options</h3>
+<div class="my-6">
+<pre class="language-bash"><code>echo "Simple output"
 echo -n "No newline"    # no newline
 echo -e "Tab:\there"    # interpret escapes
 echo -e "\033[32mGreen Text\033[0m"  # colored</code></pre>
-<h3>printf Formatting</h3>
-<pre><code class="language-bash">printf "Name: %s, Age: %d\n" "Alice" 30
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">printf Formatting</h3>
+<div class="my-6">
+<pre class="language-bash"><code>printf "Name: %s, Age: %d\n" "Alice" 30
 printf "Pi: %.4f\n" 3.14159
 printf "%-15s %5d\n" "Item" 100  # left-aligned</code></pre>
-<hr>
-<h2>Redirection</h2>
-<p>Redirect stdout, stderr, and stdin using >, >>, 2>, &>, and <.</p>
-<h3>Output Redirection</h3>
-<pre><code class="language-bash">echo "Hello" &gt; output.txt       # overwrite
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Redirection</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Redirect stdout, stderr, and stdin using >, >>, 2>, &>, and <.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Output Redirection</h3>
+<div class="my-6">
+<pre class="language-bash"><code>echo "Hello" &gt; output.txt       # overwrite
 echo "World" &gt;&gt; output.txt      # append
 ls /nonexistent 2&gt; error.txt    # stderr only
 ls /nonexistent &amp;&gt; all.txt      # both stdout+stderr</code></pre>
-<h3>Input Redirection</h3>
-<pre><code class="language-bash">while read line; do
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Input Redirection</h3>
+<div class="my-6">
+<pre class="language-bash"><code>while read line; do
   echo "Line: $line"
 done &lt; input.txt</code></pre>
-<h3>Discard Output</h3>
-<pre><code class="language-bash">command &gt; /dev/null 2&gt;&amp;1  # discard all output</code></pre>
-<hr>
-<h2>Pipes</h2>
-<p>Pipes (|) connect stdout of one command to stdin of another, enabling powerful command chaining.</p>
-<h3>Basic Pipe</h3>
-<pre><code class="language-bash">ls -la | grep ".sh" | sort</code></pre>
-<h3>Count Lines with Pipe</h3>
-<pre><code class="language-bash">cat /etc/passwd | wc -l</code></pre>
-<h3>Process Substitution</h3>
-<pre><code class="language-bash">diff &lt;(ls dir1/) &lt;(ls dir2/)  # compare two command outputs</code></pre>
-<hr>
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Discard Output</h3>
+<div class="my-6">
+<pre class="language-bash"><code>command &gt; /dev/null 2&gt;&amp;1  # discard all output</code></pre>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-emerald-500 rounded-full"></span>Pipes</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Pipes (|) connect stdout of one command to stdin of another, enabling powerful command chaining.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Basic Pipe</h3>
+<div class="my-6">
+<pre class="language-bash"><code>ls -la | grep ".sh" | sort</code></pre>
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Count Lines with Pipe</h3>
+<div class="my-6">
+<pre class="language-bash"><code>cat /etc/passwd | wc -l</code></pre>
+</div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Process Substitution</h3>
+<div class="my-6">
+<pre class="language-bash"><code>diff &lt;(ls dir1/) &lt;(ls dir2/)  # compare two command outputs</code></pre>
+</div>
+</div>
             </article>
 
             <div class="nav-container">
@@ -304,6 +337,6 @@ done &lt; input.txt</code></pre>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265317" defer></script>
+<script src="../../../js/ds-main.js?v=1777271309" defer></script>
 </body>
 </html>

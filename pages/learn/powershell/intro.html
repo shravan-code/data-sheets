@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265319">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,48 +227,33 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>What is PowerShell?</h2>
-<p>PowerShell is built on .NET and works with objects rather than plain text, making it more powerful than traditional shells. It runs on Windows, macOS, and Linux.</p>
-<h3>Check PowerShell Version</h3>
-<pre><code class="language-powershell">
-$PSVersionTable
-$PSVersionTable.PSVersion
-</code></pre>
-<h3>Get Help on Any Command</h3>
-<pre><code class="language-powershell">
-Get-Help Get-Process
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>What is PowerShell?</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell is built on .NET and works with objects rather than plain text, making it more powerful than traditional shells. It runs on Windows, macOS, and Linux.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Check PowerShell Version</h3>
+<div class="my-6"><pre class="language-powershell"><code>$PSVersionTable
+$PSVersionTable.PSVersion</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Get Help on Any Command</h3>
+<div class="my-6"><pre class="language-powershell"><code>Get-Help Get-Process
 Get-Help Get-Process -Examples
-Get-Help Get-Process -Full
-</code></pre>
-<h3>Discover Commands</h3>
-<pre><code class="language-powershell">
-Get-Command
+Get-Help Get-Process -Full</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Discover Commands</h3>
+<div class="my-6"><pre class="language-powershell"><code>Get-Command
 Get-Command -Verb Get
 Get-Command -Noun Process
-Get-Command *network*
-</code></pre>
-<hr>
-<h2>Execution Policy</h2>
-<p>PowerShell uses execution policies to control which scripts can run. Common policies: Restricted, AllSigned, RemoteSigned, Unrestricted, Bypass.</p>
-<h3>Get and Set Execution Policy</h3>
-<pre><code class="language-powershell">
-Get-ExecutionPolicy
+Get-Command *network*</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Execution Policy</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell uses execution policies to control which scripts can run. Common policies: Restricted, AllSigned, RemoteSigned, Unrestricted, Bypass.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Get and Set Execution Policy</h3>
+<div class="my-6"><pre class="language-powershell"><code>Get-ExecutionPolicy
 Get-ExecutionPolicy -List
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-Set-ExecutionPolicy Bypass -Scope Process
-</code></pre>
-<hr>
-<h2>PowerShell ISE vs VS Code</h2>
-<p>PowerShell ISE is the built-in editor for Windows. VS Code with the PowerShell extension is the modern recommended IDE for PowerShell scripting.</p>
-<h3>Open PowerShell ISE</h3>
-<pre><code class="language-powershell">
-# From Run dialog
+Set-ExecutionPolicy Bypass -Scope Process</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>PowerShell ISE vs VS Code</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell ISE is the built-in editor for Windows. VS Code with the PowerShell extension is the modern recommended IDE for PowerShell scripting.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Open PowerShell ISE</h3>
+<div class="my-6"><pre class="language-powershell"><code># From Run dialog
 powershell_ise.exe
 
 # Or from PowerShell terminal
-ise
-</code></pre>
-<hr>
+ise</code></pre></div></div>
 
         </article>
 
@@ -292,6 +278,6 @@ ise
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265319" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>

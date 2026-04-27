@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
     
-<link rel="stylesheet" href="../../../css/ds-main.css?v=1777265320">
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1777271311">
     <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
@@ -109,6 +109,7 @@
                 <a href="../../../pages/learn/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
                 <a href="../../../pages/learn/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
                 <a href="../../../pages/learn/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../../pages/learn/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
             </nav>
 
             <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
@@ -226,11 +227,10 @@
         </header>
 
         <article class="prose dark:prose-invert max-w-none pb-20">
-            <h2>Variable Declaration</h2>
-<p>Variables in PowerShell start with $. They are dynamically typed but can be explicitly typed. Special variables like $null, $true, $false are built-in.</p>
-<h3>Declaring Variables</h3>
-<pre><code class="language-powershell">
-$name = 'Alice'
+            <div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Variable Declaration</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Variables in PowerShell start with $. They are dynamically typed but can be explicitly typed. Special variables like $null, $true, $false are built-in.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Declaring Variables</h3>
+<div class="my-6"><pre class="language-powershell"><code>$name = 'Alice'
 $age = 30
 $isAdmin = $true
 $nothing = $null
@@ -243,11 +243,8 @@ $nothing = $null
 
 # Check variable type
 $name.GetType()
-$age.GetType().FullName
-</code></pre>
-<h3>Special Variables</h3>
-<pre><code class="language-powershell">
-$_          # Current pipeline object
+$age.GetType().FullName</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Special Variables</h3>
+<div class="my-6"><pre class="language-powershell"><code>$_          # Current pipeline object
 $$          # Last token in previous command
 $?          # Status of last operation (True/False)
 $LASTEXITCODE  # Exit code of last native command
@@ -257,14 +254,11 @@ $HOME       # User's home directory
 $env:PATH   # Environment variable PATH
 $args       # Arguments passed to a script
 $input      # Pipeline input object
-$MyInvocation  # Info about current command
-</code></pre>
-<hr>
-<h2>Strings</h2>
-<p>PowerShell has two types of strings: single-quoted (literal) and double-quoted (interpolated). Here-strings support multi-line text.</p>
-<h3>String Types</h3>
-<pre><code class="language-powershell">
-$user = 'Bob'
+$MyInvocation  # Info about current command</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Strings</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">PowerShell has two types of strings: single-quoted (literal) and double-quoted (interpolated). Here-strings support multi-line text.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Types</h3>
+<div class="my-6"><pre class="language-powershell"><code>$user = 'Bob'
 
 # Single-quoted: literal, no interpolation
 $s1 = 'Hello $user'     # Output: Hello $user
@@ -284,11 +278,8 @@ $html = @"
 &lt;html&gt;
   &lt;body&gt;Hello, $user&lt;/body&gt;
 &lt;/html&gt;
-"@
-</code></pre>
-<h3>String Methods</h3>
-<pre><code class="language-powershell">
-$str = 'Hello, PowerShell World!'
+"@</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">String Methods</h3>
+<div class="my-6"><pre class="language-powershell"><code>$str = 'Hello, PowerShell World!'
 
 $str.ToUpper()             # HELLO, POWERSHELL WORLD!
 $str.ToLower()             # hello, powershell world!
@@ -306,14 +297,11 @@ $str.Substring(7, 10)      # PowerShell
 
 # String formatting
 '{0} is {1} years old' -f 'Alice', 30
-[string]::Format('{0:N2}', 1234.5678)
-</code></pre>
-<hr>
-<h2>Arrays</h2>
-<p>Arrays store multiple values. PowerShell arrays are fixed-size by default; use ArrayList or generic List for dynamic sizing.</p>
-<h3>Array Operations</h3>
-<pre><code class="language-powershell">
-# Create arrays
+[string]::Format('{0:N2}', 1234.5678)</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Arrays</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Arrays store multiple values. PowerShell arrays are fixed-size by default; use ArrayList or generic List for dynamic sizing.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Array Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Create arrays
 $arr = 1, 2, 3, 4, 5
 $arr = @(1, 2, 3)
 $empty = @()
@@ -342,11 +330,8 @@ $list.Insert(0, 'cherry')
 $arr -contains 3      # True
 $arr.IndexOf(3)
 [array]::Sort($arr)
-[array]::Reverse($arr)
-</code></pre>
-<h3>Multi-Dimensional Arrays</h3>
-<pre><code class="language-powershell">
-# Jagged array
+[array]::Reverse($arr)</code></pre></div><h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Multi-Dimensional Arrays</h3>
+<div class="my-6"><pre class="language-powershell"><code># Jagged array
 $matrix = @(
     @(1, 2, 3),
     @(4, 5, 6),
@@ -358,14 +343,11 @@ $matrix[0][1]  # 2
 $grid = New-Object 'int[,]' 3, 3
 $grid[0,0] = 1
 $grid[1,1] = 5
-$grid[2,2] = 9
-</code></pre>
-<hr>
-<h2>Hash Tables</h2>
-<p>Hash tables (dictionaries) store key-value pairs. They are widely used in PowerShell for structured data and splatting.</p>
-<h3>Hash Table Operations</h3>
-<pre><code class="language-powershell">
-# Create hashtable
+$grid[2,2] = 9</code></pre></div></div>
+<div class="mb-16"><h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>Hash Tables</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-8">Hash tables (dictionaries) store key-value pairs. They are widely used in PowerShell for structured data and splatting.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Hash Table Operations</h3>
+<div class="my-6"><pre class="language-powershell"><code># Create hashtable
 $person = @{
     Name    = 'Alice'
     Age     = 30
@@ -404,9 +386,7 @@ $params = @{
     Recurse     = $true
     Filter      = '*.log'
 }
-Get-ChildItem @params
-</code></pre>
-<hr>
+Get-ChildItem @params</code></pre></div></div>
 
         </article>
 
@@ -435,6 +415,6 @@ Get-ChildItem @params
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-<script src="../../../js/ds-main.js?v=1777265320" defer></script>
+<script src="../../../js/ds-main.js?v=1777271311" defer></script>
 </body>
 </html>
