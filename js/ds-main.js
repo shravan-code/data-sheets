@@ -491,6 +491,10 @@
         const path = window.location.pathname.replace(/\\/g, '/');
         if (!path.includes('/pages/')) return;
 
+        // Exclude index-level pages that have no valid parent to link to
+        const noBreadcrumbPages = ['/pages/learn/de-architectures.html'];
+        if (noBreadcrumbPages.some(p => path.endsWith(p))) return;
+
         const parts = path.split('/').filter(Boolean);
         const pagesIdx = parts.indexOf('pages');
         if (pagesIdx < 0 || pagesIdx + 2 >= parts.length) return; // not deep enough to be a subpage
