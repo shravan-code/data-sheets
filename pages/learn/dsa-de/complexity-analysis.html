@@ -258,25 +258,87 @@
 
 <h3>Core Concepts</h3>
 <ul>
-    <li><strong>Worst Case (O):</strong> The maximum time an algorithm could take. We optimize for this to ensure reliability.</li>
-    <li><strong>Average Case (Θ):</strong> The expected time taken over all possible inputs.</li>
-    <li><strong>Big O Hierarchy:</strong> O(1) < O(log N) < O(N) < O(N log N) < O(N²).</li>
+    <li><strong>Big O (O):</strong> Upper bound (worst-case growth). It tells us the maximum growth rate as input size grows.</li>
+    <li><strong>Big Theta (Θ):</strong> Tight bound (average/typical growth when upper and lower bounds match).</li>
+    <li><strong>Big Omega (Ω):</strong> Lower bound (best-case growth).</li>
+    <li><strong>Rule of thumb:</strong> Ignore constants and lower-order terms (for example, O(3N + 10) becomes O(N)).</li>
 </ul>
 
-<h3>Python Example: Linear vs Quadratic</h3>
-<pre><code class="language-python"># O(N) Time: Linear scan (Efficiency)
-def find_max(arr):
-    max_val = arr[0]
-    for num in arr:
-        if num > max_val:
-            max_val = num
-    return max_val
+<h3>Big O Classes with Python Examples</h3>
+<p>From fastest-growing to slowest-growing runtime, we usually compare algorithms using these classes:</p>
+<ul>
+    <li><strong>O(1) - Constant:</strong> Runtime does not depend on input size.</li>
+    <li><strong>O(log N) - Logarithmic:</strong> Work reduces by a factor each step (e.g., halving search space).</li>
+    <li><strong>O(N) - Linear:</strong> One full pass through input.</li>
+    <li><strong>O(N log N) - Linearithmic:</strong> Divide-and-conquer style work (common in efficient sorting).</li>
+    <li><strong>O(N²) - Quadratic:</strong> Nested loops over the same input.</li>
+    <li><strong>O(2^N) - Exponential:</strong> Branching recursion, doubling possibilities per step.</li>
+    <li><strong>O(N!) - Factorial:</strong> All permutations/combinations of ordering explored.</li>
+</ul>
 
-# O(N^2) Time: Nested loops (Inefficiency)
-def print_pairs(arr):
+<h4>O(1) - Constant Time</h4>
+<p>Work stays the same no matter how large the input gets.</p>
+<pre><code class="language-python">def first_item(arr):
+    return arr[0] if arr else None
+</code></pre>
+
+<h4>O(log N) - Logarithmic Time</h4>
+<p>Each step discards a large portion of the search space.</p>
+<pre><code class="language-python">def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        if arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+</code></pre>
+
+<h4>O(N) - Linear Time</h4>
+<p>You process each element once in the worst case.</p>
+<pre><code class="language-python">def contains_value(arr, target):
+    for x in arr:
+        if x == target:
+            return True
+    return False
+</code></pre>
+
+<h4>O(N log N) - Linearithmic Time</h4>
+<p>Common for efficient sorting and divide-and-conquer strategies.</p>
+<pre><code class="language-python">def sort_values(arr):
+    return sorted(arr)
+</code></pre>
+
+<h4>O(N^2) - Quadratic Time</h4>
+<p>Typical pattern: nested loops over the same input.</p>
+<pre><code class="language-python">def print_pairs(arr):
     for i in arr:
         for j in arr:
             print(i, j)
+</code></pre>
+
+<h4>O(2^N) - Exponential Time</h4>
+<p>Branching recursion creates rapidly growing repeated work.</p>
+<pre><code class="language-python">def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+</code></pre>
+
+<h4>O(N!) - Factorial Time</h4>
+<p>Exploring all permutations quickly becomes infeasible as N grows.</p>
+<pre><code class="language-python">def permutations(items):
+    if len(items) <= 1:
+        return [items]
+    result = []
+    for i in range(len(items)):
+        rest = items[:i] + items[i + 1:]
+        for p in permutations(rest):
+            result.append([items[i]] + p)
+    return result
 </code></pre>
         </div>
         

@@ -274,6 +274,40 @@ def two_sum(nums, target):
 
 print(two_sum([2, 7, 11, 15], 9)) # Output: [0, 1]
 </code></pre>
+            
+<h3>Frequency Count Pattern</h3>
+<p><strong>What it solves:</strong> Count occurrences, validate conditions like “same characters”, or group items by value.</p>
+<p><strong>Time:</strong> <code>O(N)</code> to build the map, <strong>space:</strong> <code>O(N)</code> in worst case.</p>
+<pre><code class="language-python">def frequency_count(nums):
+    freq = {}
+    for x in nums:
+        freq[x] = freq.get(x, 0) + 1
+    return freq
+
+# Input
+nums = [1, 1, 2, 3, 2, 1]
+
+# Output
+print(frequency_count(nums))  # {1: 3, 2: 2, 3: 1}
+</code></pre>
+
+<h3>HashSet Pattern (unique / presence checks)</h3>
+<p><strong>Use HashSet when:</strong> you only care whether an element exists, or you want to remove duplicates quickly.</p>
+<p><strong>Time:</strong> <code>O(N)</code> average, with <code>O(N)</code> extra space.</p>
+<pre><code class="language-python">def contains_duplicate(nums):
+    seen = set()
+    for x in nums:
+        if x in seen:
+            return True
+        seen.add(x)
+    return False
+
+# Input
+nums = [1, 2, 3, 1]
+
+# Output
+print(contains_duplicate(nums))  # True
+</code></pre>
         </div>
         
         <div class="mt-20"></div>

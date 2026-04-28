@@ -147,6 +147,18 @@
         button.setAttribute('title', open ? 'Close sidebar' : 'Open sidebar');
     }
 
+    function ensureAnimatedCakeLogo() {
+        const logoLink = document.querySelector('#ds-nav a[href]');
+        if (!logoLink) return;
+
+        const brandSpans = Array.from(logoLink.querySelectorAll('span'));
+        const cakeSpan = brandSpans.find((span) => (span.textContent || '').trim() === 'Cake');
+        if (!cakeSpan) return;
+
+        cakeSpan.classList.add('ds-logo-cake');
+        cakeSpan.setAttribute('data-text', 'Cake');
+    }
+
     function enhanceTopbar() {
         const navInner = document.querySelector('#ds-nav > div');
         const themeToggle = document.getElementById('theme-toggle');
@@ -169,11 +181,6 @@
         }
 
         logoLink.classList.add('ds-topbar-brand', 'no-underline');
-
-        const pageTitle = document.createElement('span');
-        pageTitle.className = 'ds-page-title';
-        pageTitle.textContent = normalizePageTitle();
-        logoLink.appendChild(pageTitle);
 
         const center = document.createElement('div');
         center.className = 'ds-topbar-center';
@@ -342,6 +349,7 @@
         replaceInvalidIcons();
         rebuildThemeToggle();
         rebuildSidebarToggle();
+        ensureAnimatedCakeLogo();
         enhanceTopbar();
         tagPage();
         restyleLearnHome();

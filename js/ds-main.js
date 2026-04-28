@@ -2,6 +2,44 @@
     const html  = document.documentElement;
     const body  = document.body;
 
+    // Keep topbar logo behavior universal across pages,
+    // even if individual page markup slightly differs.
+    function ensureUniversalTopbarBrand() {
+        const nav = document.getElementById('ds-nav');
+        if (!nav) return;
+
+        const logoLink = nav.querySelector('a[href]');
+        if (!logoLink) return;
+
+        const titleRow = logoLink.querySelector('span[style*="Outfit"], span[class*="tracking-tighter"]');
+        if (!titleRow) return;
+
+        let dataSpan = titleRow.querySelector('span.font-light');
+        let cakeSpan = Array.from(titleRow.querySelectorAll('span'))
+            .find((span) => /cake/i.test((span.textContent || '').trim()));
+
+        // If page markup drifted, reconstruct the expected two-part logo text.
+        if (!cakeSpan) {
+            titleRow.textContent = '';
+
+            dataSpan = document.createElement('span');
+            dataSpan.className = 'font-light text-slate-500';
+            dataSpan.textContent = 'Data';
+
+            cakeSpan = document.createElement('span');
+            cakeSpan.className = 'font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left';
+            cakeSpan.textContent = 'Cake';
+
+            titleRow.appendChild(dataSpan);
+            titleRow.appendChild(cakeSpan);
+        }
+
+        cakeSpan.classList.add('ds-logo-cake');
+        cakeSpan.setAttribute('data-text', (cakeSpan.textContent || 'Cake').trim() || 'Cake');
+    }
+
+    ensureUniversalTopbarBrand();
+
     /* ── Theme ──────────────────────────────────── */
     // Dark mode removed as per user request. Defaulting to light theme.
     html.classList.remove('dark');
@@ -196,6 +234,23 @@
         scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 
+    /* ── Profile Button Expand Label ─────────────── */
+    function initProfileHoverLabel() {
+        const profileBtn = document.getElementById('profile-btn');
+        if (!profileBtn || profileBtn.dataset.profileLabelInit === '1') return;
+
+        profileBtn.dataset.profileLabelInit = '1';
+        profileBtn.classList.add('profile-pill');
+        profileBtn.setAttribute('aria-label', 'Shravan Kumar Tela profile');
+
+        if (!profileBtn.querySelector('.profile-pill-text')) {
+            const label = document.createElement('span');
+            label.className = 'profile-pill-text';
+            label.textContent = 'Shravan Kumar Tela';
+            profileBtn.appendChild(label);
+        }
+    }
+
     /* ── Lucide icons ────────────────────────────── */
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
@@ -261,6 +316,233 @@
         headers.forEach(h => observer.observe(h));
     }
     initTOC();
+
+    /* ── Split Combined Concept Code Blocks ─────── */
+    function splitCombinedCodeExamples() {
+        const isConceptHeader = (line, lang) => {
+            const trimmed = line.trim();
+            if (!trimmed) return false;
+
+            const isComment =
+                (lang === 'sql' && trimmed.startsWith('--')) ||
+                (lang !== 'sql' && trimmed.startsWith('#'));
+            if (!isComment) return false;
+
+            const text = lang === 'sql'
+                ? trimmed.replace(/^--\s?/, '')
+                : trimmed.replace(/^#\s?/, '');
+            if (!text || /^output[:\s]/i.test(text)) return false;
+
+            // Treat only "heading-like" comments as split boundaries.
+            return /:|example|approach|concept|pattern|method|technique|case|vs|complexity|operation|workflow/i.test(text);
+        };
+
+        const parseSections = (code, lang) => {
+            const lines = code.replace(/\r\n/g, '\n').split('\n');
+            const markers = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                if (isConceptHeader(lines[i], lang)) {
+                    const prev = i > 0 ? lines[i - 1].trim() : '';
+                    if (i === 0 || prev === '') {
+                        markers.push(i);
+                    }
+                }
+            }
+
+            if (markers.length < 2) return null;
+
+            const sections = [];
+            for (let m = 0; m < markers.length; m++) {
+                const start = markers[m];
+                const end = m + 1 < markers.length ? markers[m + 1] : lines.length;
+                const chunkLines = lines.slice(start, end);
+                const titleLine = chunkLines[0].trim();
+                const title = lang === 'sql'
+                    ? titleLine.replace(/^--\s?/, '').trim()
+                    : titleLine.replace(/^#\s?/, '').trim();
+                const body = chunkLines.join('\n').trimEnd();
+                if (body) {
+                    sections.push({ title, body });
+                }
+            }
+
+            return sections.length >= 2 ? sections : null;
+        };
+
+        document.querySelectorAll('pre > code[class*="language-"]').forEach((codeEl) => {
+            const pre = codeEl.parentElement;
+            if (!pre || pre.dataset.splitDone === '1') return;
+
+            const languageMatch = codeEl.className.match(/language-([a-z0-9]+)/i);
+            const lang = languageMatch ? languageMatch[1].toLowerCase() : '';
+            if (!['python', 'sql', 'bash', 'powershell'].includes(lang)) return;
+
+            const sections = parseSections(codeEl.textContent || '', lang);
+            if (!sections) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'concept-block-group not-prose my-8';
+
+            sections.forEach((section) => {
+                const block = document.createElement('section');
+                block.className = 'concept-block-item mb-6';
+
+                const title = document.createElement('h4');
+                title.className = 'concept-block-title';
+                title.textContent = section.title;
+
+                const newPre = document.createElement('pre');
+                const newCode = document.createElement('code');
+                newCode.className = codeEl.className;
+                newCode.textContent = section.body;
+                newPre.appendChild(newCode);
+
+                block.appendChild(title);
+                block.appendChild(newPre);
+                wrapper.appendChild(block);
+            });
+
+            pre.replaceWith(wrapper);
+            pre.dataset.splitDone = '1';
+        });
+    }
+
+    /* ── Preserve Main Page Scroll On Browser Back ─ */
+    function preserveScrollOnBackNavigation() {
+        const keyPrefix = 'ds-scroll-pos:';
+        const restoreNextPrefix = 'ds-restore-next:';
+        const selectedLinkPrefix = 'ds-selected-link:';
+        const currentPath = window.location.pathname;
+        const currentKey = keyPrefix + currentPath;
+
+        // Save current page scroll when navigating away via links.
+        document.querySelectorAll('a[href]').forEach((link) => {
+            link.addEventListener('click', () => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || link.target === '_blank') return;
+
+                try {
+                    const target = new URL(link.href, window.location.href);
+                    if (target.origin !== window.location.origin) return;
+                    if (target.pathname === currentPath && !target.hash) return;
+
+                    sessionStorage.setItem(currentKey, String(window.scrollY || window.pageYOffset || 0));
+                    sessionStorage.setItem(selectedLinkPrefix + currentPath, link.href);
+
+                    // If this is a "Back to ..." link, request restore on destination too.
+                    const text = (link.textContent || '').trim().toLowerCase();
+                    if (text.startsWith('back to')) {
+                        sessionStorage.setItem(restoreNextPrefix + target.pathname, '1');
+                    }
+                } catch (e) {
+                    // Ignore invalid URLs.
+                }
+            });
+        });
+
+        const restoreScroll = () => {
+            const saved = sessionStorage.getItem(currentKey);
+            if (!saved) return;
+
+            const navigation = performance.getEntriesByType('navigation')[0];
+            const isBackForward = navigation && navigation.type === 'back_forward';
+            const isMarkedRestore = sessionStorage.getItem(restoreNextPrefix + currentPath) === '1';
+            if (!isBackForward && !isMarkedRestore) return;
+
+            const top = parseInt(saved, 10);
+            if (Number.isNaN(top)) return;
+
+            if (isMarkedRestore) {
+                sessionStorage.removeItem(restoreNextPrefix + currentPath);
+            }
+
+            requestAnimationFrame(() => {
+                window.scrollTo(0, top);
+            });
+        };
+
+        const restoreSelectedLink = () => {
+            const savedHref = sessionStorage.getItem(selectedLinkPrefix + currentPath);
+            if (!savedHref) return;
+
+            let matched = null;
+            document.querySelectorAll('a[href]').forEach((a) => {
+                const href = a.href;
+                if (href === savedHref && !matched) {
+                    matched = a;
+                }
+            });
+            if (!matched) return;
+
+            document.querySelectorAll('.ds-last-selected-link').forEach((el) => {
+                el.classList.remove('ds-last-selected-link');
+            });
+            matched.classList.add('ds-last-selected-link');
+        };
+
+        window.addEventListener('pageshow', restoreScroll);
+        restoreScroll();
+        restoreSelectedLink();
+    }
+
+    /* ── Bottom Breadcrumbs For Subpages ─────────── */
+    function addBottomBreadcrumb() {
+        const path = window.location.pathname.replace(/\\/g, '/');
+        if (!path.includes('/pages/')) return;
+
+        const parts = path.split('/').filter(Boolean);
+        const pagesIdx = parts.indexOf('pages');
+        if (pagesIdx < 0 || pagesIdx + 2 >= parts.length) return; // not deep enough to be a subpage
+
+        const main = document.querySelector('main');
+        const navContainer = document.querySelector('.nav-container');
+        if (!main || main.querySelector('.ds-bottom-breadcrumb')) return;
+
+        const labelize = (segment) => segment
+            .replace(/\.html$/, '')
+            .replace(/---/g, ' / ')
+            .replace(/--/g, ' - ')
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, (c) => c.toUpperCase());
+
+        const breadcrumb = document.createElement('nav');
+        breadcrumb.className = 'ds-bottom-breadcrumb not-prose';
+        breadcrumb.setAttribute('aria-label', 'Breadcrumb');
+
+        const ordered = document.createElement('ol');
+        ordered.className = 'ds-breadcrumb-list';
+
+        const trail = parts.slice(pagesIdx + 1); // after "pages"
+        trail.forEach((segment, index) => {
+            const li = document.createElement('li');
+            const isLast = index === trail.length - 1;
+
+            if (!isLast) {
+                const hrefPath = '/' + parts.slice(0, pagesIdx + 2 + index).join('/') + '.html';
+                const anchor = document.createElement('a');
+                anchor.href = hrefPath.replace('/learn/learn.html', '/learn.html');
+                anchor.textContent = labelize(segment);
+                li.appendChild(anchor);
+            } else {
+                const span = document.createElement('span');
+                span.textContent = labelize(segment).replace(/^\d+\.\s*/, '');
+                span.setAttribute('aria-current', 'page');
+                li.appendChild(span);
+            }
+
+            ordered.appendChild(li);
+        });
+
+        breadcrumb.appendChild(ordered);
+        if (navContainer) main.insertBefore(breadcrumb, navContainer);
+        else main.appendChild(breadcrumb);
+    }
+
+    splitCombinedCodeExamples();
+    preserveScrollOnBackNavigation();
+    addBottomBreadcrumb();
+    initProfileHoverLabel();
 
     // Initial Icon Load
     if (typeof lucide !== 'undefined') lucide.createIcons();
