@@ -263,25 +263,135 @@ graph LR
 </ul>
 
 <h3>Advanced Techniques</h3>
-<ul>
-    <li><strong>Two Pointers:</strong> Using a <code>left</code> and <code>right</code> pointer that move towards each other. Great for reversing arrays.</li>
-    <li><strong>Sliding Window:</strong> Maintaining a "window" of the array and sliding it forward. Perfect for subarray problems.</li>
-    <li><strong>Prefix Sum:</strong> Pre-calculating the cumulative sum up to each index.</li>
-</ul>
+<p>Most array interview questions are variations of a few patterns. If you learn the pattern, you can solve a whole family of problems.</p>
 
-<h3>Python Example: Sliding Window</h3>
-<pre><code class="language-python"># Problem: Find the maximum sum of a contiguous subarray of size K
-def max_sum_subarray(arr, k):
-    window_sum = sum(arr[:k])
-    max_sum = window_sum
-    
-    for i in range(k, len(arr)):
-        window_sum += arr[i] - arr[i - k]
-        max_sum = max(max_sum, window_sum)
-        
-    return max_sum
+<h4>1) Traversal (Single pass)</h4>
+<p><strong>When to use:</strong> You need to compute something over all elements: sum, min/max, counts, frequency of a value, check a condition, build a transformed list.</p>
+<p><strong>Key idea:</strong> Keep a running answer while scanning left → right. This gives you <code>O(N)</code> time and <code>O(1)</code> extra space (usually).</p>
+<pre><code class="language-python">def count_even(nums):
+    count = 0
+    for x in nums:
+        if x % 2 == 0:
+            count += 1
+    return count
 
-print(max_sum_subarray([2, 1, 5, 1, 3, 2], 3)) # Output: 9
+# Input
+nums = [3, 10, 7, 2, 9, 12]
+
+# Output
+print(count_even(nums))  # 3  (10, 2, 12)
+</code></pre>
+
+<h4>2) Two Pointers</h4>
+<p><strong>When to use:</strong> Problems involving pairs, reversing, partitioning, or searching in a sorted array. Common signals: “two numbers”, “closest”, “palindrome-like”, “sorted array”, “remove duplicates in-place”.</p>
+<p><strong>Key idea:</strong> Maintain two indices (often <code>l</code> and <code>r</code>) and move one or both pointers based on a condition. This often converts a nested loop into a single pass.</p>
+<pre><code class="language-python">def two_sum_sorted(nums, target):
+    l, r = 0, len(nums) - 1
+    while l &lt; r:
+        s = nums[l] + nums[r]
+        if s == target:
+            return (l, r)
+        if s &lt; target:
+            l += 1
+        else:
+            r -= 1
+    return None
+
+# Input (sorted array)
+nums = [1, 2, 4, 7, 11, 15]
+target = 15
+
+# Output
+print(two_sum_sorted(nums, target))  # (2, 3) because 4 + 11 = 15
+</code></pre>
+
+<h4>3) Sliding Window</h4>
+<p><strong>When to use:</strong> “subarray/substring”, “contiguous”, “largest/smallest window”, “at most / at least K”, “maximum sum/average of size K”.</p>
+<p><strong>Key idea:</strong> Keep a window <code>[l..r]</code> and update its state when you expand <code>r</code> (add) and shrink <code>l</code> (remove). Avoid recomputing sums/counts from scratch.</p>
+<h5>Fixed-size window: maximum sum of size K</h5>
+<pre><code class="language-python">def max_sum_subarray(nums, k):
+    window_sum = sum(nums[:k])
+    best = window_sum
+
+    for r in range(k, len(nums)):
+        window_sum += nums[r] - nums[r - k]
+        best = max(best, window_sum)
+
+    return best
+
+# Input
+nums = [2, 1, 5, 1, 3, 2]
+k = 3
+
+# Output
+print(max_sum_subarray(nums, k))  # 9  (5 + 1 + 3)
+</code></pre>
+
+<h5>Variable-size window: smallest subarray length with sum ≥ S</h5>
+<pre><code class="language-python">def min_len_subarray_at_least_s(nums, s):
+    l = 0
+    window_sum = 0
+    best = float('inf')
+
+    for r in range(len(nums)):
+        window_sum += nums[r]
+        while window_sum &gt;= s:
+            best = min(best, r - l + 1)
+            window_sum -= nums[l]
+            l += 1
+
+    return 0 if best == float('inf') else best
+
+# Input
+nums = [2, 3, 1, 2, 4, 3]
+s = 7
+
+# Output
+print(min_len_subarray_at_least_s(nums, s))  # 2  ([4, 3])
+</code></pre>
+
+<h4>4) Prefix Sum</h4>
+<p><strong>When to use:</strong> Many “range sum” queries, subarray sum equals K, “sum between i and j” repeatedly, or “count subarrays with property …”.</p>
+<p><strong>Key idea:</strong> Build a prefix array where <code>pref[i]</code> = sum of first <code>i</code> elements. Then range sum becomes:</p>
+<p>\(\text{sum}(l..r) = \text{pref}[r+1] - \text{pref}[l]\)</p>
+<h5>Range sum queries in O(1)</h5>
+<pre><code class="language-python">def build_prefix(nums):
+    pref = [0]
+    for x in nums:
+        pref.append(pref[-1] + x)
+    return pref
+
+def range_sum(pref, l, r):
+    return pref[r + 1] - pref[l]
+
+# Input
+nums = [5, -2, 3, 1, 2]
+pref = build_prefix(nums)
+
+# Output
+print(range_sum(pref, 1, 3))  # 2  (-2 + 3 + 1)
+print(range_sum(pref, 0, 4))  # 9  (sum of all)
+</code></pre>
+
+<h5>Subarray sum equals K (prefix sum + hashmap)</h5>
+<pre><code class="language-python">def count_subarrays_sum_k(nums, k):
+    freq = {0: 1}  # prefix_sum -> count
+    prefix = 0
+    count = 0
+
+    for x in nums:
+        prefix += x
+        count += freq.get(prefix - k, 0)
+        freq[prefix] = freq.get(prefix, 0) + 1
+
+    return count
+
+# Input
+nums = [1, 2, 3, -2, 5, -3, 1]
+k = 3
+
+# Output
+print(count_subarrays_sum_k(nums, k))  # 5
 </code></pre>
         </div>
         

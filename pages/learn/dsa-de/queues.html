@@ -287,8 +287,7 @@ def simulate_printer_queue():
     printer_queue.append("Job 3: Photo.png")
     
     # Dequeue (Remove from front)
-    print("
-Processing jobs:")
+    print("Processing jobs:")
     while printer_queue: # While queue is not empty
         current_job = printer_queue.popleft() # O(1) removal
         print(f"Printing -> {current_job}")
@@ -298,6 +297,43 @@ simulate_printer_queue()
 # Printing -> Job 1: Resume.pdf
 # Printing -> Job 2: Invoice.docx
 # Printing -> Job 3: Photo.png
+</code></pre>
+
+<h3>Python Example: Breadth-First Search (BFS)</h3>
+<p><strong>Why queues:</strong> BFS explores nodes level-by-level. The queue holds the “next layer” to process.</p>
+<p><strong>Complexity:</strong> <code>O(V + E)</code> time for a graph with <code>V</code> vertices and <code>E</code> edges.</p>
+<pre><code class="language-python">from collections import deque
+
+def bfs_levels(graph, start):
+    # graph: dict[node] -> list of neighbors
+    visited = set([start])
+    q = deque([(start, 0)])  # (node, level)
+    levels = {}
+
+    while q:
+        node, level = q.popleft()
+        levels[node] = level
+
+        for nei in graph.get(node, []):
+            if nei not in visited:
+                visited.add(nei)
+                q.append((nei, level + 1))
+
+    return levels
+
+# Input
+graph = {
+    0: [1, 2],
+    1: [3],
+    2: [3, 4],
+    3: [],
+    4: []
+}
+start = 0
+
+# Output
+print(bfs_levels(graph, start))
+    # {0: 0, 1: 1, 2: 1, 3: 2, 4: 2}
 </code></pre>
         </div>
         

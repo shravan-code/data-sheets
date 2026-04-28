@@ -297,6 +297,26 @@ def is_valid_parentheses(s):
 print(is_valid_parentheses("{[()]}")) # Output: True
 print(is_valid_parentheses("{[(])}")) # Output: False
 </code></pre>
+
+<h3>Python Example: Reverse a String (Stack)</h3>
+<p>Use a stack to reverse: push all characters, then pop to rebuild from the top.</p>
+<pre><code class="language-python">def reverse_string_stack(s):
+    stack = []
+    for ch in s:
+        stack.append(ch)  # PUSH
+
+    # Pop in reverse order to rebuild the string.
+    out = []
+    while stack:
+        out.append(stack.pop())  # POP
+    return ''.join(out)
+
+# Input
+s = "stacks"
+
+# Output
+print(reverse_string_stack(s))  # "skcats"
+</code></pre>
         </div>
         
         <div class="mt-20"></div>
