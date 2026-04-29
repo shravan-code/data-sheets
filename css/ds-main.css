@@ -56,8 +56,10 @@ h3,
     transform: translateX(0);
 }
 
-body.sidebar-open #ds-main-content {
-    padding-left: 0 !important;
+@media (max-width: 1023px) {
+    body.sidebar-open #ds-main-content {
+        padding-left: 0 !important;
+    }
 }
 
 /* sidebar nav links */
@@ -567,7 +569,8 @@ pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
 }
 
 @media(min-width:1024px) {
-    body.sidebar-open #ds-main-content {
+    body.sidebar-open #ds-main-content,
+    #ds-main-content {
         padding-left: 15rem !important;
     }
 
