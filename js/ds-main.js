@@ -493,9 +493,9 @@
         if (!path.includes('/pages/')) return;
 
         // Exclude index-level pages that have no valid parent to link to
-        const noBreadcrumbPages = ['/pages/de-architectures.html', '/pages/databricks.html'];
+        const noBreadcrumbPages = ['/pages/de-architectures.html', '/pages/databricks.html', '/pages/portfolio.html'];
         if (noBreadcrumbPages.some(p => path.endsWith(p))) return;
-        if (path.includes('/pages/databricks/')) return;
+        if (path.includes('/pages/databricks/') || path.includes('/pages/my-portfolio/')) return;
 
         const parts = path.split('/').filter(Boolean);
         const pagesIdx = parts.indexOf('pages');
