@@ -293,9 +293,10 @@
                 e.preventDefault();
                 const target = document.getElementById(header.id);
                 if (target) {
-                    const navHeight = 100;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+                    const offset = window.innerHeight / 2;
                     window.scrollTo({
-                        top: target.getBoundingClientRect().top + window.pageYOffset - navHeight,
+                        top: targetPosition - offset,
                         behavior: 'smooth'
                     });
                     history.pushState(null, null, '#' + header.id);

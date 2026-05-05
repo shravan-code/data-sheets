@@ -513,6 +513,21 @@
             link.href = `#${header.id}`;
             link.textContent = header.textContent;
             link.className = header.tagName.toLowerCase() === 'h3' ? 'toc-link toc-h3' : 'toc-link';
+            
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.getElementById(header.id);
+                if (target) {
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+                    const offset = window.innerHeight / 2;
+                    window.scrollTo({
+                        top: targetPosition - offset,
+                        behavior: 'smooth'
+                    });
+                    history.pushState(null, null, '#' + header.id);
+                }
+            });
+
             li.appendChild(link);
             toc.appendChild(li);
         });
