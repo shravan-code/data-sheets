@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Strings — All Methods — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    
+    <link rel="stylesheet" href="../../css/ds-main.css?v=1777291472">
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+            </button>
+
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                <div class="flex items-center">
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                    </span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-3 ml-2">
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                    Strings
+                </span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <a href="../portfolio.html" id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<!-- SIDEBAR -->
+<aside id="ds-sidebar"
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
+
+    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+
+    <div class="py-5 px-3 flex flex-col h-full">
+        <div class="flex-1">
+
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+                <a href="../sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+                <a href="../bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+                <a href="../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
+                <a href="../spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+                <a href="../flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+                <a href="../kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+                <a href="../dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+                <a href="../pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+                <a href="../numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+                <a href="../airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
+                <a href="../aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+                <a href="../gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+                <a href="../azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+                <a href="../snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+                <a href="../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
+                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
+                <a href="../system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+                <a href="../pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+                <a href="../de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6 hidden">
+                
+            </div>
+        </div>
+
+        </div>
+    </div>
+</aside>
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+    
+    
+
+    
+
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html#strings--all-methods" class="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors mb-6 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    Back to Python
+                </a>
+
+                <header class="mb-12">
+                    <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-[1px] bg-slate-300"></span>
+                        Section 1: Foundations
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                        Strings — All Methods
+                    </h1>
+                </header>
+
+                <article class="prose dark:prose-invert max-w-none pb-20">
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">Strings in Python are immutable sequences of Unicode characters. They have a rich set of methods for manipulation.</p>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>String Creation & Slicing</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Strings can be created with single, double, or triple quotes. Slicing uses [start:stop:step].</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>s = 'Hello, World!'
+print(s[0])       # H
+print(s[-1])      # !
+print(s[0:5])     # Hello
+print(s[7:])      # World!
+print(s[:5])      # Hello
+print(s[::2])     # Hlo ol!
+print(s[::-1])    # !dlroW ,olleH (reversed)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">H
+!
+Hello
+World!
+Hello
+Hlo ol!
+!dlroW ,olleH</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Case Methods: upper & lower</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Convert the entire string to uppercase or lowercase. Useful for case-insensitive comparisons or normalizing user input.</p>
+<pre class="language-python"><code>s = 'hello WORLD'
+print(s.upper())        # HELLO WORLD
+print(s.lower())        # hello world</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Case Methods: capitalize & title</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">capitalize() uppers only the first character; title() uppers the first character of each word. Perfect for formatting names or headings.</p>
+<pre class="language-python"><code>s = 'hello world'
+print(s.capitalize())   # Hello world
+print(s.title())        # Hello World</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Search: find & index</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Locate a substring. find() returns -1 if missing, whereas index() raises an error. Use find() when absence is expected, and index() when it should be present.</p>
+<pre class="language-python"><code>s = 'hello world'
+print(s.find('world'))   # 6
+print(s.find('xyz'))     # -1
+print(s.index('world'))  # 6</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Search: count</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Count non-overlapping occurrences of a substring. Useful for basic frequency analysis.</p>
+<pre class="language-python"><code>s = 'banana'
+print(s.count('a'))      # 3
+print(s.count('na'))     # 2</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Search: startswith & endswith</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Check if a string starts or ends with a specific prefix/suffix. Faster and more readable than manual slicing.</p>
+<pre class="language-python"><code>filename = 'data.csv'
+print(filename.startswith('data')) # True
+print(filename.endswith('.csv'))   # True</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Check Methods: isalpha & isdigit</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Validate if string contains only letters or only digits. Critical for input validation (e.g., age vs name).</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>print('Python'.isalpha()) # True
+print('12345'.isdigit())  # True
+print('Python3'.isalpha()) # False (has digit)</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">True
+True
+False</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Modify: strip, lstrip, rstrip</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Remove leading/trailing whitespace or specific characters. Essential for cleaning data from files or user input.</p>
+<pre class="language-python"><code>s = '  clean me  '
+print(repr(s.strip()))    # 'clean me'
+print('***hi***'.strip('*')) # hi</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Modify: replace</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Replace all occurrences of a substring with another. Useful for template filling or correcting data.</p>
+<pre class="language-python"><code>s = 'hello world'
+print(s.replace('world', 'Python')) # hello Python
+print('1,2,3'.replace(',', ';'))    # 1;2;3</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Split & Join</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">split() converts a string into a list; join() merges a list back into a string. The foundation of text processing in Python.</p>
+<pre class="language-python"><code>s = 'apple,banana,cherry'
+lst = s.split(',')
+print(lst)                # ['apple', 'banana', 'cherry']
+
+# join
+print(' -&gt; '.join(lst))   # apple -&gt; banana -&gt; cherry</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Alignment: center, ljust, rjust</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Pad strings with spaces or characters to a fixed width. Essential for creating aligned tables or reports in text-based interfaces.</p>
+<pre class="language-python"><code>s = 'hi'
+print(s.center(10))        #     hi    
+print(s.ljust(10, '.'))    # hi........
+print(s.rjust(10, '.'))    # ........hi</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Alignment: zfill</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Pad numeric strings with leading zeros. Primarily used for formatting IDs, serial numbers, or fixed-width numerical data.</p>
+<pre class="language-python"><code>print('42'.zfill(5))       # 00042
+print('-42'.zfill(5))      # -0042</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>String Formatting: f-strings</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">The modern and fastest way to embed expressions in string literals. Introduced in Python 3.6.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>name, price = 'Widget', 19.99
+print(f'{name} costs ${price:.2f}')
+print(f'2 + 2 = {2 + 2}')</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">Widget costs $19.99
+2 + 2 = 4</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>String Formatting: .format()</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">A powerful formatting method that preceded f-strings. Still useful for reusable templates.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>tpl = 'ID: {id}, Status: {st}'
+print(tpl.format(id=101, st='Active'))</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">ID: 101, Status: Active</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Partitioning</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">split into exactly 3 parts: (before, separator, after). Safer than split() when you only need to divide at the first occurrence.</p>
+<pre class="language-python"><code>s = 'user@example.com'
+print(s.partition('@'))    # ('user', '@', 'example.com')</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Translate & Maketrans</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Efficiently map multiple characters at once. Perfect for complex character replacements or deletions.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>table = str.maketrans('aeiou', '12345')
+print('hello world'.translate(table))</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">h2ll4 w4rld</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-16">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">
+<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>Encode/Decode</h2>
+<p class="text-slate-600 dark:text-slate-400 mb-6">Convert between str and bytes.</p>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-python"><code>s = 'hello'
+b = s.encode('utf-8')      # str -&gt; bytes
+print(b)                   # b'hello'
+print(type(b))             # bytes
+
+decoded = b.decode('utf-8')  # bytes -&gt; str
+print(decoded)               # hello
+
+# Unicode example
+u = 'caf\u00e9'  # café
+print(u.encode('utf-8'))   # b'caf\xc3\xa9'</code></pre>
+<div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+<pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-indigo-600 font-mono text-sm leading-relaxed">b'hello'
+&lt;class 'bytes'&gt;
+hello
+b'caf\xc3\xa9'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-24 p-10 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-900/10 dark:to-slate-900 border border-indigo-100 dark:border-indigo-900/30 rounded-[40px]">
+<h2 class="text-3xl font-black text-indigo-700 dark:text-indigo-400 mt-0 mb-10 flex items-center gap-3 font-display tracking-tight">
+<i data-lucide="help-circle" class="w-8 h-8"></i> Interview Mastery</h2>
+<div class="mb-10 last:mb-0 group">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 transition-colors">Q: Why is string concatenation in a loop bad? What's the alternative?</h3>
+<div class="flex gap-4">
+<div class="w-1 bg-indigo-200 dark:bg-indigo-800 rounded-full"></div>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">A: Strings are immutable, so each `s += x` creates a new string object — O(n²) total. Use `''.join(list_of_strings)` which is O(n). Example: `result = ''.join(str(i) for i in range(1000))`.</p>
+</div>
+</div>
+<div class="mb-10 last:mb-0 group">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 transition-colors">Q: What's the difference between find() and index()?</h3>
+<div class="flex gap-4">
+<div class="w-1 bg-indigo-200 dark:bg-indigo-800 rounded-full"></div>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">A: `find()` returns -1 if substring not found. `index()` raises a `ValueError`. Use `find()` when absence is a valid case; use `index()` when absence means a bug.</p>
+</div>
+</div>
+<div class="mb-10 last:mb-0 group">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 transition-colors">Q: How do f-strings differ from .format()?</h3>
+<div class="flex gap-4">
+<div class="w-1 bg-indigo-200 dark:bg-indigo-800 rounded-full"></div>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">A: f-strings (3.6+) are evaluated at runtime and generally faster. They support expressions inline: `f'{2+2}'`. `.format()` is more flexible for templates stored as strings since f-strings must be defined inline. f-strings also support `=` for debugging: `f'{var=}'`.</p>
+</div>
+</div>
+</div>
+                </article>
+
+                <div class="nav-container">
+                    
+            <a href="operators.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">Operators</span>
+            </a>
+                    
+            <a href="conditionals.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">Conditionals</span>
+            </a>
+                </div>
+            </main>
+        </div>
+
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list"></ul>
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>lucide.createIcons();</script>
+    <script src="../../../js/ds-main.js?v=1777291472" defer></script>
+</body>
+</html>

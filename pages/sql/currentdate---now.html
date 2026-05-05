@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>CURRENT_DATE / NOW — SQL Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    
+    <style>
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            border-radius: 0.75rem !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+        }
+    </style>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777291474">
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+            </button>
+
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                <div class="flex items-center">
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                    </span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-3 ml-2">
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                    CURRENT_DATE / NOW
+                </span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <a href="../portfolio.html" id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<!-- SIDEBAR -->
+<aside id="ds-sidebar"
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
+
+    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+
+    <div class="py-5 px-3 flex flex-col h-full">
+        <div class="flex-1">
+
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+                <a href="../sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+                <a href="../bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+                <a href="../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
+                <a href="../spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+                <a href="../flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+                <a href="../kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+                <a href="../dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+                <a href="../pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+                <a href="../numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+                <a href="../airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
+                <a href="../aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+                <a href="../gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+                <a href="../azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+                <a href="../snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+                <a href="../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
+                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
+                <a href="../system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+                <a href="../pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+                <a href="../de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6">
+                
+        <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="list" class="w-3 h-3 text-white"></i>
+            </span>
+            SQL Guide
+        </div>
+        <nav class="pl-2">
+            <a href="what-is-sql-and-relational-databases.html" class="sb-link">What is SQL & Relational Databases</a><a href="sql-vs-nosql.html" class="sb-link">SQL vs NoSQL</a><a href="rdbms.html" class="sb-link">RDBMS</a><a href="sql-data-types.html" class="sb-link">SQL Data Types</a><a href="sql-execution-order.html" class="sb-link">SQL Execution Order</a><a href="create.html" class="sb-link">CREATE</a><a href="alter.html" class="sb-link">ALTER</a><a href="drop.html" class="sb-link">DROP</a><a href="truncate.html" class="sb-link">TRUNCATE</a><a href="rename.html" class="sb-link">RENAME</a><a href="insert.html" class="sb-link">INSERT</a><a href="update.html" class="sb-link">UPDATE</a><a href="delete.html" class="sb-link">DELETE</a><a href="merge---upsert.html" class="sb-link">MERGE / UPSERT</a><a href="select.html" class="sb-link">SELECT</a><a href="where.html" class="sb-link">WHERE</a><a href="distinct.html" class="sb-link">DISTINCT</a><a href="order-by.html" class="sb-link">ORDER BY</a><a href="limit---offset.html" class="sb-link">LIMIT / OFFSET</a><a href="fetch.html" class="sb-link">FETCH</a><a href="grant.html" class="sb-link">GRANT</a><a href="revoke.html" class="sb-link">REVOKE</a><a href="acid-properties.html" class="sb-link">ACID Properties</a><a href="commit.html" class="sb-link">COMMIT</a><a href="rollback.html" class="sb-link">ROLLBACK</a><a href="savepoint.html" class="sb-link">SAVEPOINT</a><a href="and---or---not.html" class="sb-link">AND / OR / NOT</a><a href="in---not-in.html" class="sb-link">IN / NOT IN</a><a href="between.html" class="sb-link">BETWEEN</a><a href="like---ilike.html" class="sb-link">LIKE / ILIKE</a><a href="is-null---is-not-null.html" class="sb-link">IS NULL / IS NOT NULL</a><a href="case-when.html" class="sb-link">CASE WHEN</a><a href="exists---not-exists.html" class="sb-link">EXISTS / NOT EXISTS</a><a href="inner-join.html" class="sb-link">INNER JOIN</a><a href="left-join.html" class="sb-link">LEFT JOIN</a><a href="right-join.html" class="sb-link">RIGHT JOIN</a><a href="full-outer-join.html" class="sb-link">FULL OUTER JOIN</a><a href="cross-join.html" class="sb-link">CROSS JOIN</a><a href="self-join.html" class="sb-link">SELF JOIN</a><a href="natural-join.html" class="sb-link">NATURAL JOIN</a><a href="multiple-joins.html" class="sb-link">Multiple Joins</a><a href="count-sum-avg-min-max.html" class="sb-link">COUNT, SUM, AVG, MIN, MAX</a><a href="group-by.html" class="sb-link">GROUP BY</a><a href="having.html" class="sb-link">HAVING</a><a href="rollup.html" class="sb-link">ROLLUP</a><a href="cube.html" class="sb-link">CUBE</a><a href="grouping-sets.html" class="sb-link">GROUPING SETS</a><a href="scalar-subquery.html" class="sb-link">Scalar Subquery</a><a href="row-subquery.html" class="sb-link">Row Subquery</a><a href="table-subquery.html" class="sb-link">Table Subquery</a><a href="correlated-subquery.html" class="sb-link">Correlated Subquery</a><a href="nested-subquery.html" class="sb-link">Nested Subquery</a><a href="subquery-in-select-where-from-having.html" class="sb-link">Subquery in SELECT, WHERE, FROM, HAVING</a><a href="basic-cte.html" class="sb-link">Basic CTE</a><a href="multiple-ctes.html" class="sb-link">Multiple CTEs</a><a href="recursive-cte.html" class="sb-link">Recursive CTE</a><a href="cte-vs-subquery-vs-temp-table.html" class="sb-link">CTE vs Subquery vs Temp Table</a><a href="rownumber.html" class="sb-link">ROW_NUMBER</a><a href="rank.html" class="sb-link">RANK</a><a href="denserank.html" class="sb-link">DENSE_RANK</a><a href="ntile.html" class="sb-link">NTILE</a><a href="lag.html" class="sb-link">LAG</a><a href="lead.html" class="sb-link">LEAD</a><a href="firstvalue.html" class="sb-link">FIRST_VALUE</a><a href="lastvalue.html" class="sb-link">LAST_VALUE</a><a href="nthvalue.html" class="sb-link">NTH_VALUE</a><a href="sum---avg---count-as-window-functions.html" class="sb-link">SUM / AVG / COUNT as Window Functions</a><a href="partition-by.html" class="sb-link">PARTITION BY</a><a href="frame-clauses-rows-vs-range.html" class="sb-link">Frame Clauses (ROWS vs RANGE)</a><a href="union.html" class="sb-link">UNION</a><a href="union-all.html" class="sb-link">UNION ALL</a><a href="intersect.html" class="sb-link">INTERSECT</a><a href="except---minus.html" class="sb-link">EXCEPT / MINUS</a><a href="concat.html" class="sb-link">CONCAT / ||</a><a href="substring.html" class="sb-link">SUBSTRING</a><a href="length---charlength.html" class="sb-link">LENGTH / CHAR_LENGTH</a><a href="upper---lower.html" class="sb-link">UPPER / LOWER</a><a href="trim---ltrim---rtrim.html" class="sb-link">TRIM / LTRIM / RTRIM</a><a href="replace.html" class="sb-link">REPLACE</a><a href="position---locate.html" class="sb-link">POSITION / LOCATE</a><a href="splitpart.html" class="sb-link">SPLIT_PART</a><a href="regexpmatch---regexpreplace.html" class="sb-link">REGEXP_MATCH / REGEXP_REPLACE</a><a href="format.html" class="sb-link">FORMAT</a><a href="round.html" class="sb-link">ROUND</a><a href="ceil---floor.html" class="sb-link">CEIL / FLOOR</a><a href="abs.html" class="sb-link">ABS</a><a href="mod.html" class="sb-link">MOD</a><a href="power.html" class="sb-link">POWER</a><a href="sqrt.html" class="sb-link">SQRT</a><a href="random.html" class="sb-link">RANDOM</a><a href="currentdate---now.html" class="sb-link active">CURRENT_DATE / NOW</a><a href="datepart---extract.html" class="sb-link">DATE_PART / EXTRACT</a><a href="datetrunc.html" class="sb-link">DATE_TRUNC</a><a href="age.html" class="sb-link">AGE</a><a href="dateadd---datesub---interval.html" class="sb-link">DATE_ADD / DATE_SUB / INTERVAL</a><a href="todate---totimestamp.html" class="sb-link">TO_DATE / TO_TIMESTAMP</a><a href="datediff.html" class="sb-link">DATEDIFF</a><a href="timezone-handling.html" class="sb-link">TIMEZONE handling</a><a href="case-when.html" class="sb-link">CASE WHEN</a><a href="coalesce.html" class="sb-link">COALESCE</a><a href="nullif.html" class="sb-link">NULLIF</a><a href="iif.html" class="sb-link">IIF</a><a href="cast---convert.html" class="sb-link">CAST / CONVERT</a><a href="trycast.html" class="sb-link">TRY_CAST</a><a href="what-is-an-index.html" class="sb-link">What is an Index</a><a href="b-tree-index.html" class="sb-link">B-Tree Index</a><a href="hash-index.html" class="sb-link">Hash Index</a><a href="composite-index.html" class="sb-link">Composite Index</a><a href="partial-index.html" class="sb-link">Partial Index</a><a href="covering-index.html" class="sb-link">Covering Index</a><a href="unique-index.html" class="sb-link">Unique Index</a><a href="when-to-use---avoid-indexes.html" class="sb-link">When to use / avoid Indexes</a><a href="index-maintenance.html" class="sb-link">Index Maintenance</a><a href="primary-key.html" class="sb-link">PRIMARY KEY</a><a href="foreign-key.html" class="sb-link">FOREIGN KEY</a><a href="unique.html" class="sb-link">UNIQUE</a><a href="not-null.html" class="sb-link">NOT NULL</a><a href="check.html" class="sb-link">CHECK</a><a href="default.html" class="sb-link">DEFAULT</a><a href="composite-constraints.html" class="sb-link">Composite Constraints</a><a href="simple-view.html" class="sb-link">Simple View</a><a href="complex-view.html" class="sb-link">Complex View</a><a href="materialized-view.html" class="sb-link">Materialized View</a><a href="updatable-view.html" class="sb-link">Updatable View</a><a href="view-vs-cte-vs-temp-table.html" class="sb-link">View vs CTE vs Temp Table</a><a href="stored-procedures.html" class="sb-link">Stored Procedures</a><a href="user-defined-functions-udf.html" class="sb-link">User Defined Functions (UDF)</a><a href="scalar-functions.html" class="sb-link">Scalar Functions</a><a href="table-valued-functions.html" class="sb-link">Table-Valued Functions</a><a href="triggers.html" class="sb-link">Triggers</a><a href="differences-between-procedure-and-function.html" class="sb-link">Differences between Procedure and Function</a><a href="acid-properties.html" class="sb-link">ACID Properties</a><a href="transaction-isolation-levels.html" class="sb-link">Transaction Isolation Levels</a><a href="deadlocks.html" class="sb-link">Deadlocks</a><a href="locks-row-table-shared-exclusive.html" class="sb-link">Locks (Row, Table, Shared, Exclusive)</a><a href="optimistic-vs-pessimistic-locking.html" class="sb-link">Optimistic vs Pessimistic Locking</a><a href="mvcc-multi-version-concurrency-control.html" class="sb-link">MVCC (Multi-Version Concurrency Control)</a><a href="explain---explain-analyze.html" class="sb-link">EXPLAIN / EXPLAIN ANALYZE</a><a href="query-execution-plan.html" class="sb-link">Query Execution Plan</a><a href="avoiding-full-table-scans.html" class="sb-link">Avoiding Full Table Scans</a><a href="join-optimization.html" class="sb-link">JOIN Optimization</a><a href="partition-pruning.html" class="sb-link">Partition Pruning</a><a href="n1-problem.html" class="sb-link">N+1 Problem</a><a href="statistics-and-vacuuming.html" class="sb-link">Statistics & Vacuuming</a><a href="normalization.html" class="sb-link">Normalization</a><a href="denormalization.html" class="sb-link">Denormalization</a><a href="star-schema.html" class="sb-link">Star Schema</a><a href="snowflake-schema.html" class="sb-link">Snowflake Schema</a><a href="data-vault.html" class="sb-link">Data Vault</a><a href="slowly-changing-dimensions-scd-types.html" class="sb-link">Slowly Changing Dimensions (SCD Types)</a><a href="surrogate-vs-natural-keys.html" class="sb-link">Surrogate vs Natural Keys</a><a href="pivoting-and-unpivoting.html" class="sb-link">Pivoting & Unpivoting</a><a href="json-in-sql.html" class="sb-link">JSON in SQL</a><a href="array-data-types.html" class="sb-link">Array Data Types</a><a href="full-text-search.html" class="sb-link">Full Text Search</a><a href="lateral-joins.html" class="sb-link">Lateral Joins</a><a href="temporary-tables.html" class="sb-link">Temporary Tables</a><a href="table-partitioning.html" class="sb-link">Table Partitioning</a><a href="incremental-loads.html" class="sb-link">Incremental Loads</a><a href="cdc-change-data-capture.html" class="sb-link">CDC (Change Data Capture)</a><a href="idempotent-queries.html" class="sb-link">Idempotent Queries</a><a href="upsert-patterns.html" class="sb-link">Upsert Patterns</a><a href="data-deduplication.html" class="sb-link">Data Deduplication</a><a href="date-dimension-table.html" class="sb-link">Date Dimension Table</a><a href="elt-with-sql.html" class="sb-link">ELT with SQL</a><a href="postgresql.html" class="sb-link">PostgreSQL</a><a href="mysql.html" class="sb-link">MySQL</a><a href="sql-server-t-sql.html" class="sb-link">SQL Server (T-SQL)</a><a href="bigquery-sql.html" class="sb-link">BigQuery SQL</a><a href="snowflake-sql.html" class="sb-link">Snowflake SQL</a><a href="spark-sql.html" class="sb-link">Spark SQL</a><a href="redshift-sql.html" class="sb-link">Redshift SQL</a><a href="presto---trino-sql.html" class="sb-link">Presto / Trino SQL</a><a href="syntax-cheatsheet.html" class="sb-link">Syntax Cheatsheet</a><a href="top-50-conceptual-interview-questions.html" class="sb-link">Top 50 Conceptual Interview Questions</a><a href="top-50-technical-coding-questions.html" class="sb-link">Top 50 Technical Coding Questions</a>
+        </nav>
+        
+            </div>
+        </div>
+
+        </div>
+    </div>
+</aside>
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+            <a href="../sql.html#currentdate---now" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to SQL
+            </a>
+            <header class="mb-12">
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-[1px] bg-slate-300"></span>
+                    Section 16: Date & Time Functions
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                    CURRENT_DATE / NOW
+                </h1>
+            </header>
+
+            <article class="prose dark:prose-invert max-w-none pb-20">
+                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Syntax Pattern</h3>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-sql"><code>SELECT CURRENT_DATE;          -- 2024-01-15
+SELECT NOW();                 -- 2024-01-15 14:30:00.123456
+SELECT CURRENT_TIMESTAMP;    -- Same as NOW()</code></pre>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+                    <pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-blue-600 font-mono text-sm leading-relaxed">Execution result varies based on data.</code></pre>
+                </div>
+</div></div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Handling dates with CURRENT_DATE / NOW</h3>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-sql"><code>SELECT 
+  created_at, 
+  CURRENT_DATE / NOW(created_at) as date_info 
+FROM logs;</code></pre>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+                    <pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-blue-600 font-mono text-sm leading-relaxed">Returns the date/time component or interval.</code></pre>
+                </div>
+</div></div>
+<div class="my-12 p-8 bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 text-indigo-100 font-black uppercase tracking-widest text-[10px] mb-4"><i data-lucide="zap" class="w-4 h-4"></i> Pro Tips & Tricks</div>
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Always verify your logic with a small dataset first</li>
+<li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Use EXPLAIN to see how the database handles your query</li>
+</ul></div>
+<i data-lucide="sparkles" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
+</div>
+            </article>
+
+            <div class="nav-container">
+                
+            <a href="random.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">RANDOM</span>
+            </a>
+                
+            <a href="datepart---extract.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">DATE_PART / EXTRACT</span>
+            </a>
+            </div>
+        </main>
+</div>
+
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list"></ul>
+            
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script>lucide.createIcons();</script>
+<script src="../../../js/ds-main.js?v=1777291474" defer></script>
+</body>
+</html>

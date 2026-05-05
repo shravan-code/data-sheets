@@ -1,0 +1,486 @@
+{
+  "title": "Databricks Complete Guide",
+  "version": "1.0",
+  "description": "A detailed Databricks learning guide covering fundamentals, workspace, clusters, DBFS, Delta Lake, Unity Catalog, SQL, DLT, Workflows, CI/CD, MLflow, AI, performance, security, cloud deployments, ingestion, administration, advanced patterns, integrations, and interview preparation.",
+  "format": "json",
+  "icons": {
+    "fundamentals": "book-open",
+    "workspace": "layout-dashboard",
+    "clusters": "server",
+    "dbfs": "folder-tree",
+    "delta_lake": "database",
+    "unity_catalog": "shield-check",
+    "sql": "table-2",
+    "dlt": "workflow",
+    "workflows": "git-branch",
+    "cicd": "rocket",
+    "mlflow": "line-chart",
+    "ml_ai": "brain-circuit",
+    "performance": "gauge",
+    "security": "lock",
+    "aws": "cloud",
+    "azure": "cloud-cog",
+    "ingestion": "download-cloud",
+    "administration": "settings",
+    "patterns": "layers-3",
+    "integrations": "plug",
+    "interview": "messages-square"
+  },
+  "diagrams": [
+    {
+      "title": "Databricks Lakehouse Architecture",
+      "type": "mermaid",
+      "diagram": "flowchart LR\n  Sources[Data Sources: Apps, DBs, Files, Streams] --> Ingest[Auto Loader, COPY INTO, Kafka, DLT]\n  Ingest --> Bronze[Bronze Delta Tables: Raw]\n  Bronze --> Silver[Silver Delta Tables: Cleaned]\n  Silver --> Gold[Gold Delta Tables: Business Aggregates]\n  Gold --> BI[Databricks SQL, Power BI, Tableau]\n  Gold --> ML[Mosaic AI, MLflow, Model Serving]\n  UC[Unity Catalog: Governance, Lineage, Permissions] -. governs .-> Bronze\n  UC -. governs .-> Silver\n  UC -. governs .-> Gold"
+    },
+    {
+      "title": "Control Plane vs Data Plane",
+      "type": "mermaid",
+      "diagram": "flowchart TB\n  CP[Databricks Control Plane: UI, APIs, Jobs Scheduler, Cluster Manager, Notebooks] --> DP[Customer Data Plane: Spark Clusters, SQL Warehouses, VPC/VNet, Storage Access]\n  DP --> Storage[(S3 / ADLS / GCS)]\n  DP --> Logs[(Audit and Compute Logs)]\n  Users[Users, Service Principals, CI/CD] --> CP"
+    },
+    {
+      "title": "Delta Transaction Log",
+      "type": "mermaid",
+      "diagram": "sequenceDiagram\n  participant Writer\n  participant DeltaLog as _delta_log\n  participant DataFiles as Parquet Files\n  Writer->>DataFiles: write new parquet files\n  Writer->>DeltaLog: commit JSON action atomically\n  Reader->>DeltaLog: read latest table version\n  Reader->>DataFiles: scan only active files"
+    }
+  ],
+  "sections": [
+    {
+      "id": 1,
+      "slug": "fundamentals",
+      "title": "Fundamentals",
+      "icon": "book-open",
+      "topics": ["What is Databricks", "Databricks vs Apache Spark", "Databricks Architecture Overview", "Control Plane vs Data Plane", "Databricks Lakehouse Platform", "Databricks vs Snowflake vs BigQuery", "Databricks Editions (Community, Standard, Premium, Enterprise)", "Databricks on AWS vs Azure vs GCP"],
+      "detailed_explanation": "Databricks is a managed lakehouse platform built around Apache Spark, Delta Lake, Unity Catalog, MLflow, Databricks SQL, Workflows, and Mosaic AI. Apache Spark is the distributed execution engine; Databricks packages Spark with managed clusters, optimized runtimes, notebooks, jobs, governance, SQL warehouses, Delta Lake reliability, and enterprise security. The control plane hosts workspace UI, APIs, scheduling, notebooks, metadata services, and cluster orchestration. The data plane is where compute runs and where data is accessed in the customer cloud account or Databricks-managed serverless plane. The Lakehouse combines low-cost object storage with warehouse-like ACID transactions, governance, BI, streaming, and ML on the same data. Snowflake is warehouse-first with strong SQL and managed storage, BigQuery is serverless warehouse-first on GCP, while Databricks is stronger for open lakehouse, Spark, ML, streaming, and engineering-heavy workloads.",
+      "examples": [
+        {"title": "Lakehouse mental model", "code": "Raw files -> Bronze Delta -> Silver Delta -> Gold Delta -> BI/ML/AI", "explanation": "Bronze keeps source fidelity, Silver standardizes quality, and Gold optimizes business consumption."},
+        {"title": "Spark vs Databricks", "code": "spark.read.parquet('/mnt/raw').write.format('delta').saveAsTable('main.sales.bronze_orders')", "explanation": "Spark executes the distributed read/write; Databricks adds managed runtime, catalog, table registration, security, job scheduling, and optimization."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Platform breadth can be overwhelming.", "solution": "Learn in layers: Spark basics, Delta Lake, Unity Catalog, Workflows, SQL, then ML/AI."},
+        {"drawback": "Costs can grow if clusters stay running.", "solution": "Use job clusters, auto-termination, pools, serverless SQL, budgets, tags, and cluster policies."}
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "workspace-ui",
+      "title": "Workspace & UI",
+      "icon": "layout-dashboard",
+      "topics": ["Workspace Overview", "Notebooks", "Notebook Cell Types (Python, SQL, Scala, R, Markdown)", "Notebook Magic Commands (%python, %sql, %scala, %sh, %md, %run, %fs)", "Notebook Widgets", "Notebook Versioning & Git Integration", "Repos (Databricks Git Repos)", "Workspace Folders & Permissions", "Databricks CLI", "Databricks REST API"],
+      "detailed_explanation": "The workspace is the collaborative UI for notebooks, repos, queries, dashboards, workflows, experiments, models, and admin settings. Notebooks support multiple languages and magic commands so teams can combine PySpark, SQL, shell commands, markdown documentation, filesystem operations, and notebook reuse. Widgets parameterize notebooks for jobs and ad-hoc runs. Repos integrate Git providers and should be used for production code instead of relying only on workspace notebook revision history. CLI and REST APIs automate workspace operations, jobs, clusters, permissions, repos, secrets, and deployments.",
+      "examples": [
+        {"title": "Notebook widgets", "code": "dbutils.widgets.text('run_date', '2026-04-29')\nrun_date = dbutils.widgets.get('run_date')", "explanation": "Jobs can pass parameters into notebooks through widgets."},
+        {"title": "Magic commands", "code": "%sql\nSELECT current_catalog(), current_schema();\n\n%fs\nls /Volumes/main/raw/landing", "explanation": "Cells can switch languages or access utilities without leaving the notebook."},
+        {"title": "REST API job run", "code": "POST /api/2.1/jobs/run-now {\"job_id\":123,\"notebook_params\":{\"run_date\":\"2026-04-29\"}}", "explanation": "External orchestrators can trigger Databricks jobs through REST APIs."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Notebook-only development can become hard to test and review.", "solution": "Move reusable code into Python packages, use Repos, pull requests, unit tests, and Databricks Asset Bundles."},
+        {"drawback": "Workspace permissions can become inconsistent.", "solution": "Manage access by groups and automate permissions through Terraform or bundles."}
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "clusters",
+      "title": "Clusters",
+      "icon": "server",
+      "topics": ["Cluster Types (All-Purpose, Job, SQL Warehouse)", "Cluster Modes (Standard, High Concurrency, Single Node)", "Cluster Configuration (DBR Version, Node Types, Auto-scaling)", "Databricks Runtime (DBR)", "Databricks Runtime for ML", "Databricks Runtime for Genomics", "Photon Runtime", "Spot Instances & On-Demand Instances", "Cluster Policies", "Cluster Pools (Instance Pools)", "Auto-termination", "Init Scripts", "Cluster Libraries (PyPI, Maven, DBFS, Wheel)", "Cluster Access Modes (Single User, Shared, No Isolation)"],
+      "detailed_explanation": "Clusters provide compute for notebooks and jobs. All-purpose clusters support interactive work, job clusters are created for automated runs and terminate after completion, and SQL warehouses serve BI and SQL workloads. DBR packages Apache Spark with Databricks optimizations and connectors; ML Runtime includes ML libraries; Photon is a native vectorized engine for fast SQL and DataFrame workloads. Cluster policies enforce approved DBR versions, node types, auto-termination, tags, and security modes. Pools reduce startup latency by keeping idle instances ready. Access modes define how identity and isolation work with Unity Catalog.",
+      "examples": [
+        {"title": "Recommended job cluster", "code": "Use job cluster + latest LTS DBR + autoscaling 2-8 workers + auto-termination + required cost tags", "explanation": "Job clusters isolate production runs and avoid idle interactive cost."},
+        {"title": "Library install", "code": "%pip install great_expectations==0.18.22", "explanation": "Notebook-scoped libraries are reproducible when declared at the top of notebooks or packaged in wheels."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Long-running interactive clusters waste money.", "solution": "Set short auto-termination, use job clusters, enforce policies, and monitor usage tables."},
+        {"drawback": "Spot instances may be interrupted.", "solution": "Use spot for fault-tolerant ETL with on-demand fallback; avoid for strict SLA jobs unless checkpointed."}
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "dbfs",
+      "title": "Databricks File System (DBFS)",
+      "icon": "folder-tree",
+      "topics": ["What is DBFS", "DBFS vs Cloud Storage (S3, ADLS, GCS)", "DBFS Paths & Mount Points", "Mounting External Storage", "dbutils.fs Commands", "DBFS Root vs External Locations", "FileStore", "DBFS Deprecation in Unity Catalog Context"],
+      "detailed_explanation": "DBFS is a Databricks abstraction over object storage exposed through paths such as dbfs:/ and /dbfs. Historically, mounts mapped external cloud storage into DBFS. In modern Unity Catalog environments, external locations, storage credentials, and volumes are preferred because they provide centralized governance, lineage, auditing, and fine-grained access. DBFS root is workspace-scoped and should not be used for governed production data. FileStore is useful for small static assets and downloads but not production data engineering storage.",
+      "examples": [
+        {"title": "List files", "code": "dbutils.fs.ls('dbfs:/FileStore')", "explanation": "dbutils.fs exposes filesystem operations inside notebooks."},
+        {"title": "Preferred UC path", "code": "SELECT * FROM csv.`/Volumes/main/raw/landing/orders/`;", "explanation": "Volumes provide governed file access under Unity Catalog."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "DBFS mounts can hide actual cloud permissions and complicate governance.", "solution": "Use Unity Catalog external locations and volumes for new workloads."},
+        {"drawback": "DBFS root is not ideal for production data.", "solution": "Store production datasets in cloud object storage governed by Unity Catalog."}
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "delta-lake",
+      "title": "Delta Lake",
+      "icon": "database",
+      "topics": ["Delta Lake Overview", "Delta Table Creation", "Delta Table Properties", "ACID Transactions on Delta", "Delta Transaction Log (_delta_log)", "Reading & Writing Delta Tables", "MERGE (Upsert) Operations", "UPDATE & DELETE on Delta", "Schema Enforcement & Evolution", "Time Travel (VERSION AS OF, TIMESTAMP AS OF)", "RESTORE Command", "OPTIMIZE Command", "ZORDER Clustering", "VACUUM Command", "Delta Table History (DESCRIBE HISTORY)", "Change Data Feed (CDF)", "Delta Table Constraints (NOT NULL, CHECK)", "Deletion Vectors", "Liquid Clustering", "Delta Sharing"],
+      "detailed_explanation": "Delta Lake is an open table format that adds ACID transactions, scalable metadata, schema enforcement, time travel, deletes, updates, merges, change data feed, and performance optimizations to data lakes. A Delta table stores data as Parquet files plus a _delta_log transaction log. Each commit records added files, removed files, metadata, protocol versions, and operation metrics. Readers use the transaction log to construct a consistent table snapshot. MERGE supports upserts and CDC pipelines. OPTIMIZE compacts files, ZORDER co-locates related data for skipping, Liquid Clustering provides adaptive clustering without fixed partitions, VACUUM removes obsolete files after retention, and CDF exposes row-level changes to downstream consumers.",
+      "examples": [
+        {"title": "Create table", "code": "CREATE TABLE main.sales.orders (order_id BIGINT, customer_id BIGINT, amount DECIMAL(12,2), order_ts TIMESTAMP) USING DELTA;", "explanation": "Delta is the default table format for reliable lakehouse tables."},
+        {"title": "MERGE upsert", "code": "MERGE INTO main.sales.orders t USING updates s ON t.order_id = s.order_id WHEN MATCHED THEN UPDATE SET * WHEN NOT MATCHED THEN INSERT *;", "explanation": "MERGE is the standard pattern for CDC and incremental synchronization."},
+        {"title": "Time travel", "code": "SELECT * FROM main.sales.orders VERSION AS OF 12;", "explanation": "Time travel reads an older snapshot as long as retained files still exist."},
+        {"title": "Optimize", "code": "OPTIMIZE main.sales.orders ZORDER BY (customer_id, order_ts);", "explanation": "Compaction and data skipping improve query performance."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Small files slow reads and metadata operations.", "solution": "Use optimized writes, auto compaction, OPTIMIZE, and appropriate trigger intervals."},
+        {"drawback": "Aggressive VACUUM can break time travel or streaming readers.", "solution": "Keep retention aligned with recovery, audit, and streaming lag requirements."},
+        {"drawback": "Over-partitioning creates tiny files.", "solution": "Partition only by low-cardinality, commonly filtered columns; prefer Liquid Clustering for evolving workloads."}
+      ]
+    },
+    {
+      "id": 6,
+      "slug": "unity-catalog",
+      "title": "Unity Catalog",
+      "icon": "shield-check",
+      "topics": ["What is Unity Catalog", "Unity Catalog Architecture", "Metastore", "Catalogs, Schemas, Tables Hierarchy", "External Locations & Storage Credentials", "Unity Catalog vs Hive Metastore", "Table Types (Managed vs External)", "Views & Materialized Views", "Volumes (UC Volumes)", "Privileges & Permission Model", "Row & Column Level Security", "Attribute-Based Access Control (ABAC)", "Data Lineage in Unity Catalog", "Auditing & Audit Logs", "Unity Catalog Tags", "System Tables", "Delta Sharing with Unity Catalog", "Unity Catalog CLI & REST API"],
+      "detailed_explanation": "Unity Catalog is Databricks' centralized governance layer for data and AI assets. It organizes assets as catalog.schema.object and governs tables, views, volumes, functions, models, and external locations. A metastore is attached to workspaces and provides cross-workspace metadata. Storage credentials represent cloud identities; external locations bind those credentials to cloud paths. Managed tables are fully managed by Databricks under managed storage, while external tables reference existing cloud paths. Unity Catalog improves on the legacy Hive metastore with centralized permissions, lineage, auditability, row filters, column masks, tags, system tables, model governance, and Delta Sharing.",
+      "examples": [
+        {"title": "Grant access", "code": "GRANT SELECT ON TABLE main.sales.orders TO `analysts`;", "explanation": "Permissions are granted to users, groups, or service principals."},
+        {"title": "External location", "code": "CREATE EXTERNAL LOCATION raw_landing URL 'abfss://raw@acct.dfs.core.windows.net/landing' WITH (STORAGE CREDENTIAL raw_cred);", "explanation": "External locations govern cloud storage access without DBFS mounts."},
+        {"title": "Column mask", "code": "ALTER TABLE main.hr.employees ALTER COLUMN ssn SET MASK ssn_mask;", "explanation": "Column-level security protects sensitive attributes."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Migration from Hive metastore requires planning.", "solution": "Inventory tables, classify managed/external assets, migrate by domain, validate permissions, and retire mounts."},
+        {"drawback": "Fine-grained permissions can become complex.", "solution": "Use groups, naming standards, data domains, tags, and least-privilege templates."}
+      ]
+    },
+    {
+      "id": 7,
+      "slug": "databricks-sql",
+      "title": "Databricks SQL",
+      "icon": "table-2",
+      "topics": ["Databricks SQL Overview", "SQL Warehouses (Classic vs Serverless)", "SQL Warehouse Sizing & Scaling", "Query Editor", "Dashboards", "Alerts", "Query History & Performance", "SQL Query Federation", "Databricks SQL with Unity Catalog", "Result Caching", "Query Profiles", "Photon Engine for SQL"],
+      "detailed_explanation": "Databricks SQL provides warehouse-style querying, dashboards, alerts, and BI connectivity on lakehouse data. SQL warehouses are compute resources optimized for SQL, with serverless warehouses reducing operational overhead and improving startup latency. Query profiles expose execution plans, scan sizes, shuffle, spills, pruning, and bottlenecks. Result caching avoids recomputation for repeated queries. Query federation lets Databricks query external systems while Unity Catalog provides governance over registered connections and objects.",
+      "examples": [
+        {"title": "Dashboard query", "code": "SELECT date(order_ts) AS order_date, sum(amount) AS revenue FROM main.sales.orders GROUP BY 1 ORDER BY 1;", "explanation": "SQL dashboards often use Gold tables or views with business-ready metrics."},
+        {"title": "Alert", "code": "Alert when SELECT count(*) FROM main.quality.failed_expectations WHERE run_date = current_date() returns > 0", "explanation": "Alerts notify teams when SQL conditions are met."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Poorly modeled raw tables make dashboards slow.", "solution": "Create Gold aggregates, use Photon, optimize tables, and inspect query profiles."},
+        {"drawback": "Over-sized warehouses waste cost.", "solution": "Right-size warehouses, enable auto-stop, and separate BI from ETL workloads."}
+      ]
+    },
+    {
+      "id": 8,
+      "slug": "delta-live-tables",
+      "title": "Delta Live Tables (DLT)",
+      "icon": "workflow",
+      "topics": ["What is Delta Live Tables", "DLT Pipeline Architecture", "Streaming Tables vs Materialized Views", "@dlt.table Decorator", "@dlt.view Decorator", "Expectations (Data Quality Rules)", "expect vs expect_or_drop vs expect_or_fail", "DLT Pipeline Modes (Triggered vs Continuous)", "DLT with CDC (APPLY CHANGES INTO)", "DLT Enhanced Autoscaling", "DLT Monitoring & Event Log", "DLT Pipeline Settings & Configuration", "DLT with Unity Catalog"],
+      "detailed_explanation": "Delta Live Tables is a declarative framework for building reliable batch and streaming pipelines. Developers define tables, views, dependencies, and expectations; Databricks manages orchestration, incremental execution, retries, lineage, quality metrics, and monitoring. Streaming tables process continuously or incrementally from streaming sources, while materialized views maintain derived results. Expectations define data quality rules and can record violations, drop bad rows, or fail the pipeline. APPLY CHANGES INTO simplifies CDC and SCD Type 1/2 logic.",
+      "examples": [
+        {"title": "DLT table", "code": "import dlt\nfrom pyspark.sql.functions import col\n\n@dlt.table\ndef silver_orders():\n    return dlt.read_stream('bronze_orders').filter(col('amount') > 0)", "explanation": "DLT infers dependencies and builds the pipeline graph."},
+        {"title": "Expectation", "code": "@dlt.expect_or_drop('valid_amount', 'amount > 0')", "explanation": "Invalid rows are dropped while metrics are recorded."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "DLT can feel less flexible than hand-written jobs.", "solution": "Use DLT for table pipelines and keep external orchestration or custom services for non-table workflows."},
+        {"drawback": "Continuous pipelines cost more when data is sporadic.", "solution": "Use triggered mode for batch-like workloads and continuous only for low-latency needs."}
+      ]
+    },
+    {
+      "id": 9,
+      "slug": "workflows-jobs",
+      "title": "Databricks Workflows (Jobs)",
+      "icon": "git-branch",
+      "topics": ["What are Databricks Jobs", "Job Tasks (Notebook, Python, JAR, Spark Submit, SQL, dbt, Delta Live Tables)", "Multi-Task Jobs (DAG of Tasks)", "Job Scheduling (Cron, Manual, API Trigger, File Arrival)", "Job Clusters vs Existing Clusters", "Task Dependencies", "Conditional Tasks", "Job Parameters & Widgets", "Job Retries & Alerts", "Job Run History & Monitoring", "Repair & Re-run Failed Jobs", "Databricks Asset Bundles (DABs)", "Orchestrating with Airflow + Databricks"],
+      "detailed_explanation": "Workflows orchestrate production workloads as jobs composed of tasks. Tasks can run notebooks, Python wheels, Spark submit commands, JARs, SQL queries, dbt commands, DLT pipelines, or other jobs. Multi-task jobs form DAGs with dependencies and conditional branches. Jobs can be scheduled by cron, triggered manually, triggered through APIs, or launched when files arrive. Job clusters are preferred for production isolation and cost control; existing clusters are useful for interactive or shared dev runs. Repair runs rerun only failed tasks when possible.",
+      "examples": [
+        {"title": "DAG pattern", "code": "ingest_orders -> validate_orders -> transform_orders -> refresh_dashboard", "explanation": "Each task is independently observable and retriable."},
+        {"title": "Airflow trigger", "code": "DatabricksRunNowOperator(job_id=123, notebook_params={'run_date': '{{ ds }}'})", "explanation": "Airflow can orchestrate Databricks while Databricks runs Spark compute."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Large monolithic notebooks are hard to repair.", "solution": "Break jobs into small tasks with clear inputs, outputs, and dependencies."},
+        {"drawback": "Using existing clusters can mix workloads.", "solution": "Use job clusters for production and enforce tags and policies."}
+      ]
+    },
+    {
+      "id": 10,
+      "slug": "repos-cicd",
+      "title": "Databricks Repos & CI/CD",
+      "icon": "rocket",
+      "topics": ["Databricks Repos Overview", "Git Integration (GitHub, GitLab, Bitbucket, Azure DevOps)", "Branch Management in Repos", "CI/CD with Databricks (GitHub Actions, Azure DevOps, Jenkins)", "Databricks Asset Bundles (DABs)", "Deployment with DABs", "Testing Notebooks & Pipelines", "Code Promotion (Dev -> Staging -> Prod)", "Databricks CLI for CI/CD", "Remote State & Terraform with Databricks"],
+      "detailed_explanation": "Repos connect Databricks workspaces to Git repositories for collaborative development. Production deployment should use CI/CD rather than manual workspace edits. Databricks Asset Bundles define jobs, pipelines, permissions, variables, and artifacts as code. CI systems validate code, run tests, package wheels, deploy bundles to dev/staging/prod, and trigger smoke tests. Terraform manages platform resources such as workspaces, groups, service principals, metastores, grants, cluster policies, and SQL warehouses, often with remote state.",
+      "examples": [
+        {"title": "Bundle deploy", "code": "databricks bundle validate -t prod\ndatabricks bundle deploy -t prod", "explanation": "DABs promote the same definition across environments with target-specific variables."},
+        {"title": "Promotion flow", "code": "feature branch -> pull request -> unit tests -> deploy dev -> integration tests -> deploy staging -> approval -> deploy prod", "explanation": "Use Git as the source of truth."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Manual notebook edits bypass review.", "solution": "Require Git branches and deployments from CI for production paths."},
+        {"drawback": "Environment drift causes failures.", "solution": "Manage infrastructure and permissions through Terraform and bundles."}
+      ]
+    },
+    {
+      "id": 11,
+      "slug": "mlflow",
+      "title": "Databricks MLflow",
+      "icon": "line-chart",
+      "topics": ["MLflow Overview", "MLflow Tracking", "Logging Metrics, Params, Artifacts", "MLflow Experiments", "MLflow Runs", "MLflow Models (Model Flavors)", "MLflow Model Registry", "Model Stages (Staging, Production, Archived)", "Model Versioning", "MLflow Projects", "Auto-logging", "MLflow with Unity Catalog (UC Model Registry)", "MLflow REST API"],
+      "detailed_explanation": "MLflow manages the machine learning lifecycle: experiment tracking, reproducible runs, model packaging, model registry, deployment metadata, and APIs. Tracking records parameters, metrics, artifacts, source versions, and model files. Model flavors package models for frameworks such as scikit-learn, PyTorch, Spark ML, TensorFlow, and custom pyfunc. Unity Catalog Model Registry provides centralized governance, lineage, permissions, aliases, and cross-workspace discovery for models.",
+      "examples": [
+        {"title": "Track a run", "code": "import mlflow\nwith mlflow.start_run():\n    mlflow.log_param('max_depth', 6)\n    mlflow.log_metric('rmse', 12.4)\n    mlflow.sklearn.log_model(model, 'model')", "explanation": "Each experiment run stores metrics, parameters, and artifacts for comparison."},
+        {"title": "Register model", "code": "mlflow.register_model('runs:/<run_id>/model', 'main.ml.customer_churn')", "explanation": "UC model names follow catalog.schema.model."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Untracked notebooks make experiments unreproducible.", "solution": "Log code version, data version, parameters, metrics, and model artifacts every run."},
+        {"drawback": "Legacy stage-based registry can be less governed.", "solution": "Use Unity Catalog models with aliases, permissions, and lineage."}
+      ]
+    },
+    {
+      "id": 12,
+      "slug": "ml-ai",
+      "title": "Databricks ML & AI",
+      "icon": "brain-circuit",
+      "topics": ["Databricks ML Runtime", "Feature Store", "Feature Tables & Lookups", "AutoML", "Hyperparameter Tuning (Hyperopt)", "Distributed Training (Horovod, TorchDistributor, SparkTorchDistributor)", "LLM Fine-tuning on Databricks", "Model Serving (Databricks Model Serving)", "Vector Search", "AI Playground", "Foundation Model APIs", "DBRX (Databricks LLM)", "Mosaic AI (Databricks AI)"],
+      "detailed_explanation": "Databricks ML Runtime includes optimized libraries for machine learning. Feature Store manages reusable features, offline training lookups, and online serving consistency. AutoML generates baseline models and notebooks. Hyperopt performs distributed hyperparameter search. TorchDistributor and related tools support distributed deep learning. Mosaic AI adds model serving, vector search, foundation model APIs, AI Playground, LLM fine-tuning workflows, and governance for AI assets. DBRX is Databricks' open large language model family.",
+      "examples": [
+        {"title": "Feature lookup concept", "code": "training_set = fe.create_training_set(df, feature_lookups=[FeatureLookup(table_name='main.ml.customer_features', lookup_key='customer_id')], label='churn')", "explanation": "Feature lookups join training labels with governed reusable features."},
+        {"title": "Vector search use case", "code": "Embed documents -> store vectors -> similarity search -> retrieve context -> call LLM", "explanation": "Vector Search powers retrieval augmented generation on enterprise data."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "ML workloads can require specialized GPU capacity.", "solution": "Plan quotas, use pools where appropriate, and separate ETL clusters from training clusters."},
+        {"drawback": "Feature skew between training and serving hurts model quality.", "solution": "Use Feature Store and shared feature computation definitions."}
+      ]
+    },
+    {
+      "id": 13,
+      "slug": "performance-optimization",
+      "title": "Performance Optimization",
+      "icon": "gauge",
+      "topics": ["Photon Engine Deep Dive", "Adaptive Query Execution (AQE)", "Dynamic Partition Pruning", "Delta Cache (Disk Cache)", "IO Cache", "Predicate Pushdown & Column Pruning", "Z-Ordering vs Liquid Clustering", "Bloom Filters", "Skew Handling", "Broadcast Joins", "Shuffle Optimization", "Caching Strategies (cache(), persist())", "Cluster Sizing Best Practices", "Partitioning Best Practices"],
+      "detailed_explanation": "Performance optimization starts with reading less data, shuffling less data, and using the right compute. Photon accelerates SQL/DataFrame workloads through native vectorized execution. AQE adjusts query plans at runtime, including join strategy and shuffle partitions. Dynamic partition pruning avoids scanning irrelevant partitions. Predicate pushdown and column pruning reduce I/O. Delta caching and IO cache improve repeated reads. ZORDER improves data skipping for selected columns, while Liquid Clustering adapts layout as query patterns evolve. Broadcast joins avoid shuffles when one side is small. Skew handling, salting, repartitioning, and AQE mitigate hot keys.",
+      "examples": [
+        {"title": "Broadcast join", "code": "from pyspark.sql.functions import broadcast\nresult = fact.join(broadcast(dim), 'product_id')", "explanation": "Broadcast small dimensions to avoid shuffling a large fact table."},
+        {"title": "Partitioning rule", "code": "Partition by event_date, not by user_id", "explanation": "Good partition columns are low/medium cardinality and frequently filtered."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Caching everything can exhaust memory.", "solution": "Cache only reused expensive DataFrames and unpersist after use."},
+        {"drawback": "Too many shuffle partitions add overhead; too few cause large tasks.", "solution": "Use AQE and tune spark.sql.shuffle.partitions for workload size."},
+        {"drawback": "Partitioning by high-cardinality columns creates many tiny directories.", "solution": "Use date partitions plus clustering or ZORDER."}
+      ]
+    },
+    {
+      "id": 14,
+      "slug": "security",
+      "title": "Databricks Security",
+      "icon": "lock",
+      "topics": ["Workspace Security", "Network Security (VNet Injection, Private Link, IP Access Lists)", "Identity & Access Management", "Unity Catalog Security Model", "Secrets Management (Databricks Secret Scopes)", "Azure Key Vault / AWS Secrets Manager Integration", "Encryption (At Rest, In Transit)", "Compliance (SOC2, HIPAA, FedRAMP)", "Data Exfiltration Prevention", "Secure Cluster Connectivity (No Public IP)", "Customer-Managed Keys (CMK)"],
+      "detailed_explanation": "Security spans identity, network, compute, storage, governance, secrets, audit, and compliance. Users and service principals should authenticate through cloud identity providers and SCIM-provisioned groups. Unity Catalog centralizes data permissions. Private Link, VNet/VPC injection, no-public-IP clusters, IP access lists, and secure cluster connectivity reduce network exposure. Secret scopes integrate with cloud secret managers. Data is encrypted at rest and in transit, with customer-managed keys available for stricter requirements. Audit logs and system tables support monitoring and investigations.",
+      "examples": [
+        {"title": "Secret usage", "code": "password = dbutils.secrets.get(scope='prod-secrets', key='jdbc-password')", "explanation": "Secrets should never be hardcoded in notebooks or jobs."},
+        {"title": "Least privilege", "code": "GRANT USE CATALOG ON CATALOG main TO `data-engineers`;\nGRANT SELECT ON SCHEMA main.gold TO `analysts`;", "explanation": "Grant only required privileges at the right hierarchy level."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Broad workspace admin access increases risk.", "solution": "Separate account admins, workspace admins, metastore admins, and data owners."},
+        {"drawback": "Secrets in notebooks leak through output or Git.", "solution": "Use secret scopes, output redaction, reviews, and scanning."}
+      ]
+    },
+    {
+      "id": 15,
+      "slug": "databricks-on-aws",
+      "title": "Databricks on AWS",
+      "icon": "cloud",
+      "topics": ["Databricks on AWS Architecture", "VPC Configuration", "IAM Roles & Instance Profiles", "S3 Integration & Access", "AWS Glue Catalog Integration", "AWS Lake Formation Integration", "Cross-Account IAM", "Databricks on AWS Pricing", "AWS PrivateLink for Databricks", "Databricks + Kinesis", "Databricks + Redshift"],
+      "detailed_explanation": "On AWS, Databricks commonly deploys compute into a customer VPC and accesses S3 through IAM roles, instance profiles, storage credentials, and external locations. Cross-account roles allow Databricks to provision or manage resources depending on deployment mode. AWS Glue can be integrated for legacy catalog use, though Unity Catalog is preferred. Lake Formation may be used in broader AWS governance strategies. PrivateLink enables private connectivity to control plane services. Kinesis and MSK support streaming ingestion, and Redshift can be queried or loaded for warehouse interoperability.",
+      "examples": [
+        {"title": "S3 external location", "code": "CREATE EXTERNAL LOCATION s3_raw URL 's3://company-raw/landing/' WITH (STORAGE CREDENTIAL aws_raw_role);", "explanation": "Unity Catalog maps governed storage access to AWS IAM."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "IAM trust policies can be misconfigured.", "solution": "Use least-privilege roles, external IDs, Terraform modules, and validation tests."},
+        {"drawback": "S3 eventual/listing behavior and small files can affect ingestion.", "solution": "Use Auto Loader notifications, checkpoints, and compaction."}
+      ]
+    },
+    {
+      "id": 16,
+      "slug": "databricks-on-azure",
+      "title": "Databricks on Azure",
+      "icon": "cloud-cog",
+      "topics": ["Databricks on Azure Architecture", "Azure VNet Injection", "Azure Active Directory Integration", "ADLS Gen2 Integration", "Azure Key Vault Integration", "Azure DevOps Integration", "Azure Data Factory + Databricks", "Azure Synapse + Databricks", "Azure Monitor Integration", "Databricks on Azure Pricing", "Azure Private Link for Databricks"],
+      "detailed_explanation": "Azure Databricks integrates with Microsoft Entra ID, ADLS Gen2, Azure Key Vault, Azure DevOps, Data Factory, Synapse, Azure Monitor, VNets, and Private Link. VNet injection places compute in a customer-managed network. Managed identities and service principals access ADLS through Unity Catalog storage credentials and external locations. Azure Data Factory can orchestrate Databricks notebooks and jobs, while Azure DevOps can implement CI/CD for bundles and Terraform.",
+      "examples": [
+        {"title": "ADLS external location", "code": "CREATE EXTERNAL LOCATION adls_raw URL 'abfss://raw@storageacct.dfs.core.windows.net/landing/' WITH (STORAGE CREDENTIAL adls_mi_cred);", "explanation": "Use managed identity-backed storage credentials for governed ADLS access."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Networking with Private Link and firewalls can block storage access.", "solution": "Validate DNS, private endpoints, NSGs, route tables, and storage firewall rules."},
+        {"drawback": "AAD group sync issues cause access gaps.", "solution": "Use SCIM provisioning and group-based grants."}
+      ]
+    },
+    {
+      "id": 17,
+      "slug": "data-ingestion",
+      "title": "Data Ingestion on Databricks",
+      "icon": "download-cloud",
+      "topics": ["Auto Loader (cloudFiles)", "Auto Loader Schema Inference & Evolution", "Auto Loader File Notification vs Directory Listing Mode", "Structured Streaming Ingestion", "Kafka Integration", "Delta Live Tables for Ingestion", "COPY INTO Command", "Databricks Ingest (Partner Connect)", "Third-Party Connectors (Fivetran, Airbyte)"],
+      "detailed_explanation": "Databricks supports batch and streaming ingestion from files, queues, event streams, databases, and partner connectors. Auto Loader incrementally discovers new cloud files using directory listing or file notification mode and stores progress in checkpoints. It supports schema inference and evolution. Structured Streaming ingests from Kafka, Kinesis, Event Hubs, files, and Delta sources. COPY INTO is a simple idempotent SQL command for incremental file loads. DLT adds declarative ingestion, quality rules, monitoring, and CDC support. Partner Connect simplifies tools such as Fivetran and Airbyte.",
+      "examples": [
+        {"title": "Auto Loader", "code": "df = (spark.readStream.format('cloudFiles').option('cloudFiles.format','json').option('cloudFiles.schemaLocation','/chk/schema/orders').load('/Volumes/main/raw/orders'))", "explanation": "Auto Loader tracks discovered files and schema metadata."},
+        {"title": "COPY INTO", "code": "COPY INTO main.bronze.orders FROM '/Volumes/main/raw/orders' FILEFORMAT = JSON COPY_OPTIONS ('mergeSchema' = 'true');", "explanation": "COPY INTO is good for simple incremental file ingestion."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Directory listing is slower at very large file counts.", "solution": "Use file notification mode for high-scale ingestion."},
+        {"drawback": "Schema drift can break pipelines.", "solution": "Use schema evolution intentionally, rescue columns, contracts, and data quality checks."}
+      ]
+    },
+    {
+      "id": 18,
+      "slug": "administration",
+      "title": "Databricks Administration",
+      "icon": "settings",
+      "topics": ["Account Console vs Workspace Admin", "User & Group Management", "Service Principals", "Workspace Settings", "Cluster Policies Administration", "Instance Pools Administration", "IP Access Lists", "Audit Logs", "System Tables for Monitoring", "Usage & Cost Monitoring", "Databricks Usage Dashboard", "Chargeback & Cost Allocation", "Support Tiers"],
+      "detailed_explanation": "Account admins manage account-level constructs such as workspaces, metastores, identity federation, groups, service principals, billing, and account settings. Workspace admins manage workspace-level settings, cluster policies, SQL warehouses, jobs, permissions, secrets, and users depending on configuration. Administration should automate identity provisioning, cluster policies, budgets, tagging, IP access lists, audit log delivery, system table monitoring, and chargeback dashboards. Service principals should own production jobs and CI/CD deployments instead of personal users.",
+      "examples": [
+        {"title": "Cost tagging", "code": "required_tags = {'cost_center':'finance', 'env':'prod', 'owner':'data-platform'}", "explanation": "Cluster policies can require tags for chargeback."},
+        {"title": "Usage monitoring", "code": "SELECT sku_name, usage_date, sum(usage_quantity) FROM system.billing.usage GROUP BY 1,2;", "explanation": "System tables expose billing and operational metadata."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Uncontrolled cluster creation increases risk and cost.", "solution": "Use cluster policies, pool policies, budgets, alerts, and group-based entitlements."},
+        {"drawback": "Personal access tokens owned by users can break automation.", "solution": "Use service principals and OAuth/workload identity where available."}
+      ]
+    },
+    {
+      "id": 19,
+      "slug": "advanced-patterns",
+      "title": "Advanced Databricks Patterns",
+      "icon": "layers-3",
+      "topics": ["Medallion Architecture on Databricks", "Streaming + Batch Unified Pipeline", "Multi-Hop Pipeline with DLT", "CDC Pipeline with Debezium + Kafka + Databricks", "SCD Type 2 on Delta Lake", "Data Sharing with Delta Sharing", "Federated Query Pattern", "Multi-Workspace Architecture", "Cross-Cloud Data Sharing", "Databricks for Data Mesh"],
+      "detailed_explanation": "Advanced lakehouse design uses reusable patterns. Medallion architecture separates raw, cleaned, and curated data. Streaming and batch can share Delta tables and Structured Streaming APIs. Multi-hop DLT pipelines make dependencies and quality visible. CDC pipelines often use Debezium to Kafka, then Auto Loader or Structured Streaming to Delta MERGE/APPLY CHANGES. SCD Type 2 tracks historical dimension changes with effective dates and current flags. Delta Sharing enables governed sharing without copying data. Data mesh designs map catalogs and workspaces to domains, with central platform guardrails and domain-owned data products.",
+      "examples": [
+        {"title": "SCD Type 2 merge idea", "code": "Expire current row when business attributes changed; insert new row with effective_from, effective_to, is_current", "explanation": "Delta MERGE supports reliable dimension history."},
+        {"title": "Data mesh mapping", "code": "catalog = domain, schema = product, table = dataset", "explanation": "Unity Catalog hierarchy can represent domain ownership."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Too many workspaces fragment governance.", "solution": "Use account-level identity federation, shared metastores, standard catalogs, and automation."},
+        {"drawback": "CDC ordering and duplicates can corrupt state.", "solution": "Use sequence columns, deduplication, idempotent MERGE, checkpoints, and quarantine tables."}
+      ]
+    },
+    {
+      "id": 20,
+      "slug": "integrations",
+      "title": "Databricks Integrations",
+      "icon": "plug",
+      "topics": ["Databricks + dbt", "Databricks + Airflow", "Databricks + Great Expectations", "Databricks + Tableau / Power BI", "Databricks + MLflow + Kubeflow", "Databricks + Terraform", "Databricks + Fivetran / Airbyte", "Databricks + Snowflake", "Databricks + Kafka / MSK", "Databricks + Power Automate"],
+      "detailed_explanation": "Databricks integrates with transformation, orchestration, data quality, BI, MLOps, infrastructure, ingestion, warehouse, streaming, and automation tools. dbt can build SQL models on Databricks SQL or clusters. Airflow can orchestrate Databricks jobs. Great Expectations validates data quality. Tableau and Power BI connect to SQL warehouses. Terraform provisions platform resources. Fivetran and Airbyte ingest SaaS and database data. Kafka/MSK/Event Hubs support streaming. Snowflake integration supports migration, federation, or hybrid architecture. Power Automate can trigger business workflows from alerts or APIs.",
+      "examples": [
+        {"title": "dbt model", "code": "{{ config(materialized='incremental', file_format='delta') }}\nselect * from {{ ref('silver_orders') }}", "explanation": "dbt can manage SQL transformations on Delta tables."},
+        {"title": "Terraform provider", "code": "resource \"databricks_cluster_policy\" \"job_policy\" { name = \"Job Cluster Policy\" }", "explanation": "Use Terraform for repeatable admin configuration."}
+      ],
+      "drawbacks_and_solutions": [
+        {"drawback": "Tool overlap can duplicate orchestration or transformation logic.", "solution": "Define clear ownership: ingestion, transformation, orchestration, quality, serving."},
+        {"drawback": "BI users can overload raw tables.", "solution": "Expose certified Gold views through SQL warehouses."}
+      ]
+    },
+    {
+      "id": 21,
+      "slug": "interview-preparation",
+      "title": "Interview Preparation",
+      "icon": "messages-square",
+      "topics": ["Top Databricks Conceptual Interview Questions", "Top Databricks Delta Lake Interview Questions", "Databricks Performance Tuning Questions", "Databricks Architecture Design Questions", "Databricks MLOps Interview Questions", "Real-World Scenario Questions"],
+      "detailed_explanation": "Interview preparation should combine definitions, architecture tradeoffs, SQL and PySpark examples, Delta Lake internals, Unity Catalog governance, production operations, performance tuning, cost control, and real-world scenario design. Strong answers explain not only what a feature is, but when to use it, when not to use it, common failure modes, and how to operate it safely in production.",
+      "study_strategy": ["Explain Databricks in one minute using lakehouse, Spark, Delta, UC, SQL, Workflows, and MLflow.", "Practice drawing control plane/data plane, medallion architecture, DLT, and CDC diagrams.", "Memorize Delta operations: MERGE, OPTIMIZE, VACUUM, DESCRIBE HISTORY, RESTORE, CDF.", "Prepare stories about cost optimization, small files, skew, governance, and CI/CD."],
+      "drawbacks_and_solutions": [
+        {"drawback": "Candidates often memorize features without tradeoffs.", "solution": "For each feature, learn use case, drawback, mitigation, and example."}
+      ]
+    }
+  ],
+  "top_100_interview_questions": [
+    {"id": 1, "category": "Conceptual", "question": "What is Databricks?", "answer": "Databricks is a managed lakehouse platform for data engineering, analytics, BI, machine learning, and AI. It combines Apache Spark, Delta Lake, Unity Catalog, SQL warehouses, Workflows, MLflow, and Mosaic AI on cloud object storage."},
+    {"id": 2, "category": "Conceptual", "question": "How is Databricks different from Apache Spark?", "answer": "Spark is the distributed processing engine. Databricks is a managed platform around Spark with optimized runtimes, notebooks, clusters, jobs, SQL, Delta Lake, governance, security, and operational tooling."},
+    {"id": 3, "category": "Architecture", "question": "Explain control plane and data plane.", "answer": "The control plane contains Databricks-managed services such as UI, APIs, metadata, and orchestration. The data plane runs compute and accesses customer data in the cloud environment or a governed serverless environment."},
+    {"id": 4, "category": "Architecture", "question": "What is the Databricks Lakehouse?", "answer": "It is an architecture that combines data lake flexibility and low-cost storage with warehouse features such as ACID transactions, governance, SQL performance, BI, streaming, and ML on shared data."},
+    {"id": 5, "category": "Comparison", "question": "Databricks vs Snowflake?", "answer": "Snowflake is warehouse-first and highly managed for SQL analytics. Databricks is lakehouse-first and stronger for Spark, open formats, streaming, ML, and engineering workloads. Many enterprises use both."},
+    {"id": 6, "category": "Comparison", "question": "Databricks vs BigQuery?", "answer": "BigQuery is a serverless GCP warehouse optimized for SQL analytics. Databricks is multi-cloud and provides lakehouse engineering, Spark, Delta, streaming, MLflow, and AI capabilities."},
+    {"id": 7, "category": "Workspace", "question": "What are Databricks notebooks?", "answer": "Collaborative documents containing executable cells for Python, SQL, Scala, R, shell, markdown, and utilities. They are useful for exploration, jobs, and documentation, but production logic should be version controlled."},
+    {"id": 8, "category": "Workspace", "question": "What are notebook magic commands?", "answer": "Magic commands switch cell behavior. Examples include %python, %sql, %scala, %r, %sh, %md, %fs, and %run."},
+    {"id": 9, "category": "Workspace", "question": "What are widgets used for?", "answer": "Widgets parameterize notebooks. Jobs can pass values such as run_date, environment, source path, or table name into notebooks."},
+    {"id": 10, "category": "Workspace", "question": "Why use Databricks Repos?", "answer": "Repos connect notebooks and code to Git providers, enabling branch-based development, pull requests, collaboration, and CI/CD-friendly workflows."},
+    {"id": 11, "category": "Clusters", "question": "What is an all-purpose cluster?", "answer": "An interactive cluster used by users for notebooks and exploration. It is convenient but can be costly if left running."},
+    {"id": 12, "category": "Clusters", "question": "What is a job cluster?", "answer": "A cluster created for a job run and terminated when the run completes. It improves isolation, reproducibility, and cost control for production workloads."},
+    {"id": 13, "category": "Clusters", "question": "What is a SQL warehouse?", "answer": "A compute resource optimized for Databricks SQL queries, dashboards, alerts, and BI connections."},
+    {"id": 14, "category": "Clusters", "question": "What is Databricks Runtime?", "answer": "A packaged runtime containing Apache Spark, Databricks optimizations, connectors, libraries, and security features. LTS versions are preferred for production stability."},
+    {"id": 15, "category": "Clusters", "question": "What is Photon?", "answer": "Photon is Databricks' native vectorized execution engine that accelerates many SQL and DataFrame workloads."},
+    {"id": 16, "category": "Clusters", "question": "What are cluster policies?", "answer": "Administrative rules that constrain cluster creation, such as allowed node types, DBR versions, auto-termination, tags, and security settings."},
+    {"id": 17, "category": "Clusters", "question": "What are cluster pools?", "answer": "Pools keep idle cloud instances ready so clusters start faster. They can reduce startup latency but must be sized carefully to avoid idle cost."},
+    {"id": 18, "category": "Clusters", "question": "When would you use spot instances?", "answer": "Use spot instances for fault-tolerant ETL to reduce cost, with on-demand fallback and checkpointing. Avoid relying only on spot for strict SLA jobs."},
+    {"id": 19, "category": "DBFS", "question": "What is DBFS?", "answer": "DBFS is a Databricks filesystem abstraction over object storage. Modern Unity Catalog workloads should prefer external locations and volumes over DBFS mounts."},
+    {"id": 20, "category": "DBFS", "question": "Why are DBFS mounts discouraged in Unity Catalog environments?", "answer": "Mounts bypass centralized UC governance patterns and can obscure storage permissions. External locations and volumes provide better auditing, lineage, and access control."},
+    {"id": 21, "category": "Delta Lake", "question": "What is Delta Lake?", "answer": "Delta Lake is an open table format that adds ACID transactions, schema enforcement, time travel, scalable metadata, and DML operations to data lakes."},
+    {"id": 22, "category": "Delta Lake", "question": "What is _delta_log?", "answer": "It is the transaction log directory for a Delta table. It records commits, added files, removed files, metadata, protocol changes, and operation metrics."},
+    {"id": 23, "category": "Delta Lake", "question": "How does Delta provide ACID transactions?", "answer": "Writers create data files and atomically commit actions to the transaction log. Readers use a consistent snapshot from the log, preventing partial reads."},
+    {"id": 24, "category": "Delta Lake", "question": "What is Delta MERGE used for?", "answer": "MERGE performs upserts and conditional changes, commonly used for CDC, deduplication, and dimension updates."},
+    {"id": 25, "category": "Delta Lake", "question": "What is schema enforcement?", "answer": "Delta validates writes against the table schema and rejects incompatible data unless schema evolution is explicitly enabled."},
+    {"id": 26, "category": "Delta Lake", "question": "What is schema evolution?", "answer": "Schema evolution allows controlled schema changes such as adding columns during writes or merges."},
+    {"id": 27, "category": "Delta Lake", "question": "What is time travel?", "answer": "Time travel lets users query older table snapshots by version or timestamp, useful for debugging, audit, and recovery."},
+    {"id": 28, "category": "Delta Lake", "question": "What does RESTORE do?", "answer": "RESTORE reverts a Delta table to an earlier version or timestamp by creating a new commit that restores the previous state."},
+    {"id": 29, "category": "Delta Lake", "question": "What does OPTIMIZE do?", "answer": "OPTIMIZE compacts many small files into larger files to improve read performance and reduce metadata overhead."},
+    {"id": 30, "category": "Delta Lake", "question": "What is ZORDER?", "answer": "ZORDER co-locates related column values in files to improve data skipping for selective queries."},
+    {"id": 31, "category": "Delta Lake", "question": "What is Liquid Clustering?", "answer": "Liquid Clustering is a flexible Delta layout optimization that clusters data without fixed partition boundaries and can adapt to changing query patterns."},
+    {"id": 32, "category": "Delta Lake", "question": "What does VACUUM do?", "answer": "VACUUM removes obsolete data files no longer referenced by the Delta log after the retention period."},
+    {"id": 33, "category": "Delta Lake", "question": "What is Change Data Feed?", "answer": "CDF exposes row-level changes between Delta versions so downstream pipelines can process inserts, updates, and deletes incrementally."},
+    {"id": 34, "category": "Delta Lake", "question": "What are deletion vectors?", "answer": "Deletion vectors mark deleted rows without immediately rewriting entire data files, improving performance for some DELETE, UPDATE, and MERGE operations."},
+    {"id": 35, "category": "Delta Lake", "question": "What is Delta Sharing?", "answer": "Delta Sharing is an open protocol for securely sharing live data across organizations and platforms without copying it."},
+    {"id": 36, "category": "Unity Catalog", "question": "What is Unity Catalog?", "answer": "Unity Catalog is Databricks' centralized governance layer for data and AI assets, covering permissions, lineage, audit, discovery, and sharing."},
+    {"id": 37, "category": "Unity Catalog", "question": "What is a metastore?", "answer": "A metastore stores metadata and governance configuration for catalogs, schemas, tables, volumes, functions, and models. It can be attached to one or more workspaces."},
+    {"id": 38, "category": "Unity Catalog", "question": "Explain catalog.schema.table.", "answer": "Catalog is the top-level container, schema groups related objects within a catalog, and table/view/function/model is the actual governed object."},
+    {"id": 39, "category": "Unity Catalog", "question": "Managed vs external table?", "answer": "Managed tables store data in Databricks-managed storage locations. External tables reference data at external cloud paths controlled by the customer."},
+    {"id": 40, "category": "Unity Catalog", "question": "What are external locations?", "answer": "External locations bind a cloud storage path to a storage credential so Unity Catalog can govern access to files and external tables."},
+    {"id": 41, "category": "Unity Catalog", "question": "Unity Catalog vs Hive Metastore?", "answer": "Unity Catalog provides centralized cross-workspace governance, lineage, audit, fine-grained permissions, and non-table asset governance. Hive metastore is legacy and workspace-scoped."},
+    {"id": 42, "category": "Unity Catalog", "question": "What are UC volumes?", "answer": "Volumes are governed file storage objects under Unity Catalog, useful for files, ML artifacts, libraries, and semi-structured landing zones."},
+    {"id": 43, "category": "Unity Catalog", "question": "How do row and column level security work?", "answer": "Row filters restrict visible rows and column masks transform sensitive values based on identity or policies."},
+    {"id": 44, "category": "Unity Catalog", "question": "What are system tables?", "answer": "System tables expose operational metadata such as billing usage, audit logs, lineage, query history, and access events for monitoring and governance."},
+    {"id": 45, "category": "Databricks SQL", "question": "What is Databricks SQL?", "answer": "A SQL analytics experience with query editor, dashboards, alerts, SQL warehouses, history, query profiles, and BI integration on lakehouse data."},
+    {"id": 46, "category": "Databricks SQL", "question": "Classic vs serverless SQL warehouse?", "answer": "Classic warehouses use customer-managed compute configuration. Serverless warehouses are Databricks-managed, start faster, scale more easily, and reduce operational burden."},
+    {"id": 47, "category": "Databricks SQL", "question": "What is result caching?", "answer": "Result caching reuses previous query results when data and query conditions permit, reducing latency and compute cost."},
+    {"id": 48, "category": "Databricks SQL", "question": "What is a query profile?", "answer": "A query profile shows execution stages, scan size, rows, shuffle, spills, joins, and bottlenecks for performance tuning."},
+    {"id": 49, "category": "DLT", "question": "What is Delta Live Tables?", "answer": "DLT is a declarative pipeline framework for batch and streaming Delta pipelines with managed orchestration, quality rules, lineage, autoscaling, and monitoring."},
+    {"id": 50, "category": "DLT", "question": "DLT streaming table vs materialized view?", "answer": "Streaming tables process incremental streaming data. Materialized views maintain derived results from upstream tables or queries."},
+    {"id": 51, "category": "DLT", "question": "What are DLT expectations?", "answer": "Expectations are data quality rules that can record violations, drop invalid rows, or fail the pipeline."},
+    {"id": 52, "category": "DLT", "question": "expect vs expect_or_drop vs expect_or_fail?", "answer": "expect records metrics only, expect_or_drop removes invalid rows, and expect_or_fail stops the pipeline on invalid data."},
+    {"id": 53, "category": "DLT", "question": "Triggered vs continuous DLT?", "answer": "Triggered runs process available data and stop. Continuous mode keeps running for low-latency streaming."},
+    {"id": 54, "category": "DLT", "question": "What is APPLY CHANGES INTO?", "answer": "A DLT CDC operation that applies ordered changes to a target table and can implement SCD Type 1 or Type 2."},
+    {"id": 55, "category": "Workflows", "question": "What are Databricks Jobs?", "answer": "Jobs are scheduled or triggered production workloads composed of notebook, Python, JAR, Spark submit, SQL, dbt, DLT, or pipeline tasks."},
+    {"id": 56, "category": "Workflows", "question": "What is a multi-task job?", "answer": "A job represented as a DAG of tasks with dependencies, parameters, retries, alerts, and run history."},
+    {"id": 57, "category": "Workflows", "question": "Job cluster vs existing cluster?", "answer": "Job clusters are created for each run and are preferred for production isolation. Existing clusters are reused and fit interactive or development scenarios."},
+    {"id": 58, "category": "Workflows", "question": "What is job repair?", "answer": "Repair reruns failed or skipped tasks in a multi-task job instead of rerunning the entire workflow."},
+    {"id": 59, "category": "CI/CD", "question": "What are Databricks Asset Bundles?", "answer": "DABs define Databricks jobs, pipelines, artifacts, variables, and permissions as code for validation and deployment across environments."},
+    {"id": 60, "category": "CI/CD", "question": "How do you promote code from dev to prod?", "answer": "Use Git branches, pull requests, automated tests, bundle validation, environment-specific variables, approvals, and service-principal deployments."},
+    {"id": 61, "category": "CI/CD", "question": "How do you test notebooks?", "answer": "Move logic into importable modules, write unit tests, run integration notebooks against test data, and validate jobs or DLT pipelines in dev."},
+    {"id": 62, "category": "MLflow", "question": "What is MLflow Tracking?", "answer": "It records experiment runs, parameters, metrics, artifacts, source information, and models for comparison and reproducibility."},
+    {"id": 63, "category": "MLflow", "question": "What are MLflow model flavors?", "answer": "Flavors define how a model is saved and loaded for frameworks such as sklearn, Spark ML, PyTorch, TensorFlow, and pyfunc."},
+    {"id": 64, "category": "MLflow", "question": "What is the UC Model Registry?", "answer": "A Unity Catalog-governed model registry with permissions, aliases, lineage, and cross-workspace discovery."},
+    {"id": 65, "category": "ML/AI", "question": "What is Feature Store?", "answer": "A system for creating, discovering, reusing, and serving machine learning features consistently for training and inference."},
+    {"id": 66, "category": "ML/AI", "question": "What is Databricks AutoML?", "answer": "AutoML generates baseline models and notebooks for classification, regression, and forecasting, accelerating experimentation."},
+    {"id": 67, "category": "ML/AI", "question": "What is Model Serving?", "answer": "Managed serving endpoints for deploying models and foundation model APIs with scalable inference."},
+    {"id": 68, "category": "ML/AI", "question": "What is Vector Search?", "answer": "A Databricks capability for indexing embeddings and performing similarity search, commonly used in RAG applications."},
+    {"id": 69, "category": "Performance", "question": "How do you solve the small file problem?", "answer": "Use optimized writes, auto compaction, appropriate streaming triggers, repartitioning, and OPTIMIZE to compact files."},
+    {"id": 70, "category": "Performance", "question": "What is predicate pushdown?", "answer": "The engine pushes filters to the data source or file reader so irrelevant rows or row groups are skipped early."},
+    {"id": 71, "category": "Performance", "question": "What is column pruning?", "answer": "Reading only required columns from columnar formats such as Parquet instead of scanning full rows."},
+    {"id": 72, "category": "Performance", "question": "What is Dynamic Partition Pruning?", "answer": "A runtime optimization that prunes partitions of a large table based on values from another side of a join."},
+    {"id": 73, "category": "Performance", "question": "What is AQE?", "answer": "Adaptive Query Execution changes Spark query plans at runtime using observed statistics, such as switching join strategy or coalescing shuffle partitions."},
+    {"id": 74, "category": "Performance", "question": "How do you handle data skew?", "answer": "Identify hot keys, use AQE skew handling, salting, broadcast joins, pre-aggregation, or repartitioning."},
+    {"id": 75, "category": "Performance", "question": "When should you broadcast join?", "answer": "When one table is small enough to fit in executor memory, broadcasting avoids shuffling the large table."},
+    {"id": 76, "category": "Performance", "question": "cache() vs persist()?", "answer": "cache() stores using the default storage level. persist() lets you choose storage levels such as memory, disk, or serialized."},
+    {"id": 77, "category": "Security", "question": "How should secrets be managed?", "answer": "Use Databricks secret scopes backed by Databricks, Azure Key Vault, or cloud secret managers. Never hardcode secrets in notebooks or Git."},
+    {"id": 78, "category": "Security", "question": "What is Secure Cluster Connectivity?", "answer": "A network configuration where clusters do not need public IPs and communicate securely with Databricks services."},
+    {"id": 79, "category": "Security", "question": "What are CMKs?", "answer": "Customer-managed keys let organizations control encryption keys for supported Databricks storage or managed services."},
+    {"id": 80, "category": "Security", "question": "How do you prevent data exfiltration?", "answer": "Use Unity Catalog, private networking, storage firewall rules, cluster policies, restricted init scripts, IP access lists, audit logs, and least privilege."},
+    {"id": 81, "category": "AWS", "question": "How does Databricks access S3?", "answer": "Through IAM roles, instance profiles, storage credentials, and Unity Catalog external locations."},
+    {"id": 82, "category": "AWS", "question": "What is AWS PrivateLink for Databricks?", "answer": "A private connectivity option that keeps traffic between customer networks and Databricks services off the public internet."},
+    {"id": 83, "category": "Azure", "question": "How does Azure Databricks integrate with ADLS Gen2?", "answer": "Through managed identities or service principals represented as Unity Catalog storage credentials and external locations."},
+    {"id": 84, "category": "Azure", "question": "What is VNet injection?", "answer": "Deploying Databricks compute into a customer-managed Azure VNet for network control, routing, and security integration."},
+    {"id": 85, "category": "Ingestion", "question": "What is Auto Loader?", "answer": "Auto Loader incrementally and efficiently ingests new cloud files using cloudFiles with checkpointing, schema inference, and schema evolution."},
+    {"id": 86, "category": "Ingestion", "question": "Directory listing vs file notification mode?", "answer": "Directory listing scans storage paths for new files. File notification uses cloud events and queues, scaling better for high file counts."},
+    {"id": 87, "category": "Ingestion", "question": "What is COPY INTO?", "answer": "A SQL command for idempotently loading new files from cloud storage into Delta tables."},
+    {"id": 88, "category": "Ingestion", "question": "How do you ingest Kafka data?", "answer": "Use Structured Streaming with the Kafka source, parse key/value payloads, checkpoint progress, and write to Delta tables."},
+    {"id": 89, "category": "Administration", "question": "Account console vs workspace admin?", "answer": "Account console manages account-level identity, workspaces, billing, and metastores. Workspace admins manage workspace settings and resources."},
+    {"id": 90, "category": "Administration", "question": "Why use service principals?", "answer": "They provide non-human identities for jobs, automation, and CI/CD, avoiding dependency on personal user accounts."},
+    {"id": 91, "category": "Administration", "question": "How do you monitor Databricks cost?", "answer": "Use billing system tables, usage dashboards, cluster tags, budgets, job cost attribution, and warehouse monitoring."},
+    {"id": 92, "category": "Administration", "question": "What should cluster policies enforce?", "answer": "Allowed node types, DBR versions, auto-termination, tags, access mode, init scripts, and maximum worker counts."},
+    {"id": 93, "category": "Architecture", "question": "Explain medallion architecture.", "answer": "Bronze stores raw ingested data, Silver stores cleaned and conformed data, and Gold stores curated business-ready aggregates or dimensions."},
+    {"id": 94, "category": "Architecture", "question": "How would you build a CDC pipeline?", "answer": "Capture changes with Debezium or native CDC, stream to Kafka, ingest with Structured Streaming or DLT, deduplicate by key and sequence, and MERGE/APPLY CHANGES into Delta."},
+    {"id": 95, "category": "Architecture", "question": "How do you implement SCD Type 2 in Delta?", "answer": "Use MERGE to expire current records when attributes change and insert new records with effective dates, end dates, and current flags."},
+    {"id": 96, "category": "Architecture", "question": "How would you design multi-workspace Databricks?", "answer": "Separate dev/stage/prod or domains, use shared account identity, Unity Catalog metastores, automated permissions, network standards, and CI/CD promotion."},
+    {"id": 97, "category": "Integrations", "question": "How does dbt work with Databricks?", "answer": "dbt runs SQL transformations against Databricks SQL warehouses or clusters and materializes models as Delta tables or views."},
+    {"id": 98, "category": "Integrations", "question": "How does Airflow integrate with Databricks?", "answer": "Airflow uses Databricks operators or REST APIs to submit jobs, trigger runs, pass parameters, and monitor completion."},
+    {"id": 99, "category": "Scenario", "question": "A job is slow after data grew 10x. What do you check?", "answer": "Check query profile/Spark UI, input size, file counts, skew, shuffle, spills, partitioning, cluster size, Photon eligibility, data skipping, and recent schema or code changes."},
+    {"id": 100, "category": "Scenario", "question": "A Delta table has many small files. What is your solution?", "answer": "Enable optimized writes and auto compaction, tune ingestion trigger sizes, periodically run OPTIMIZE, avoid over-partitioning, and consider Liquid Clustering or ZORDER for query patterns."}
+  ]
+}

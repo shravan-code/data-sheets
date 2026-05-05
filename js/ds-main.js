@@ -293,9 +293,10 @@
                 e.preventDefault();
                 const target = document.getElementById(header.id);
                 if (target) {
-                    const navHeight = 100;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+                    const offset = window.innerHeight / 2;
                     window.scrollTo({
-                        top: target.getBoundingClientRect().top + window.pageYOffset - navHeight,
+                        top: targetPosition - offset,
                         behavior: 'smooth'
                     });
                     history.pushState(null, null, '#' + header.id);
@@ -492,8 +493,9 @@
         if (!path.includes('/pages/')) return;
 
         // Exclude index-level pages that have no valid parent to link to
-        const noBreadcrumbPages = ['/pages/learn/de-architectures.html'];
+        const noBreadcrumbPages = ['/pages/de-architectures.html', '/pages/databricks.html'];
         if (noBreadcrumbPages.some(p => path.endsWith(p))) return;
+        if (path.includes('/pages/databricks/')) return;
 
         const parts = path.split('/').filter(Boolean);
         const pagesIdx = parts.indexOf('pages');
@@ -525,7 +527,7 @@
             if (!isLast) {
                 const hrefPath = '/' + parts.slice(0, pagesIdx + 2 + index).join('/') + '.html';
                 const anchor = document.createElement('a');
-                anchor.href = hrefPath.replace('/learn/learn.html', '/learn.html');
+                anchor.href = hrefPath;
                 anchor.textContent = labelize(segment);
                 li.appendChild(anchor);
             } else {
