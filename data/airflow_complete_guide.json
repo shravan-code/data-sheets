@@ -1,0 +1,2274 @@
+{
+  "guide": {
+    "title": "Complete Apache Airflow Guide for Data Engineers",
+    "version": "1.0",
+    "total_sections": 23,
+    "sections_overview": [
+      {
+        "id": 1,
+        "title": "Fundamentals",
+        "item_count": 4
+      },
+      {
+        "id": 2,
+        "title": "Installation & Setup",
+        "item_count": 3
+      },
+      {
+        "id": 3,
+        "title": "DAGs",
+        "item_count": 5
+      },
+      {
+        "id": 4,
+        "title": "Operators",
+        "item_count": 6
+      },
+      {
+        "id": 5,
+        "title": "TaskFlow API",
+        "item_count": 4
+      },
+      {
+        "id": 6,
+        "title": "Sensors",
+        "item_count": 5
+      },
+      {
+        "id": 7,
+        "title": "XCom (Cross-Communication)",
+        "item_count": 4
+      },
+      {
+        "id": 8,
+        "title": "Connections & Hooks",
+        "item_count": 4
+      },
+      {
+        "id": 9,
+        "title": "Variables & Templating",
+        "item_count": 3
+      },
+      {
+        "id": 10,
+        "title": "Executors",
+        "item_count": 5
+      },
+      {
+        "id": 11,
+        "title": "Task Dependencies & Control Flow",
+        "item_count": 4
+      },
+      {
+        "id": 12,
+        "title": "SubDAGs & Task Groups",
+        "item_count": 3
+      },
+      {
+        "id": 13,
+        "title": "Dynamic DAGs & Dynamic Task Mapping",
+        "item_count": 2
+      },
+      {
+        "id": 14,
+        "title": "Pools & Queues",
+        "item_count": 3
+      },
+      {
+        "id": 15,
+        "title": "SLAs, Alerts & Monitoring",
+        "item_count": 3
+      },
+      {
+        "id": 16,
+        "title": "Security",
+        "item_count": 3
+      },
+      {
+        "id": 17,
+        "title": "Testing & CI/CD",
+        "item_count": 3
+      },
+      {
+        "id": 18,
+        "title": "Performance & Scaling",
+        "item_count": 3
+      },
+      {
+        "id": 19,
+        "title": "Airflow on Kubernetes",
+        "item_count": 2
+      },
+      {
+        "id": 20,
+        "title": "Cloud-Managed Airflow",
+        "item_count": 4
+      },
+      {
+        "id": 21,
+        "title": "Integrations",
+        "item_count": 3
+      },
+      {
+        "id": 22,
+        "title": "Advanced Patterns",
+        "item_count": 3
+      },
+      {
+        "id": 23,
+        "title": "Interview Preparation — Top 50 Questions",
+        "item_count": 50
+      }
+    ],
+    "sections": [
+      {
+        "id": 1,
+        "title": "Fundamentals",
+        "topics": [
+          {
+            "name": "What is Apache Airflow",
+            "explanation": "Apache Airflow is an open-source platform for programmatically authoring, scheduling, and monitoring workflows. Created at Airbnb in 2014 by Maxime Beauchemin, donated to Apache Software Foundation in 2016, became a top-level Apache project in 2019. Workflows are defined as Python code — making them version-controllable, testable, and maintainable. Airflow is NOT a data streaming tool — it orchestrates tasks, not processes data in motion.",
+            "key_features": [
+              "Workflows as Code (Python DAGs)",
+              "Rich UI for monitoring and managing pipelines",
+              "Extensible with operators, hooks, sensors",
+              "Built-in retry, alerting, and SLA tracking",
+              "Scalable from single machine to thousands of workers",
+              "Strong ecosystem of provider packages (AWS, GCP, Azure, Snowflake, dbt...)"
+            ],
+            "what_airflow_is_not": [
+              "Not a data streaming tool (use Kafka/Flink for that)",
+              "Not a data transformation tool (use Spark/dbt for that)",
+              "Not suitable for sub-minute scheduling (overhead per task run)",
+              "Not a replacement for event-driven architectures"
+            ],
+            "example": {
+              "simple_dag": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\nwith DAG('my_first_dag', start_date=datetime(2024,1,1), schedule='@daily') as dag:\n    def extract(): print('Extracting data...')\n    def load():    print('Loading data...')\n    t1 = PythonOperator(task_id='extract', python_callable=extract)\n    t2 = PythonOperator(task_id='load',    python_callable=load)\n    t1 >> t2"
+            }
+          },
+          {
+            "name": "Why Airflow (vs Cron, Luigi, Oozie)",
+            "comparison_table": [
+              {
+                "feature": "Workflow Definition",
+                "cron": "Shell scripts + crontab",
+                "luigi": "Python classes",
+                "oozie": "XML",
+                "airflow": "Python DAGs"
+              },
+              {
+                "feature": "UI & Monitoring",
+                "cron": "None",
+                "luigi": "Basic web UI",
+                "oozie": "Basic Hue integration",
+                "airflow": "Rich UI with DAG graph, logs, history"
+              },
+              {
+                "feature": "Dependency Management",
+                "cron": "Manual scripting",
+                "luigi": "Task dependencies",
+                "oozie": "Coordinator jobs",
+                "airflow": "Native DAG dependencies"
+              },
+              {
+                "feature": "Retry Logic",
+                "cron": "Manual",
+                "luigi": "Basic",
+                "oozie": "Basic",
+                "airflow": "Built-in with backoff"
+              },
+              {
+                "feature": "Scalability",
+                "cron": "Single machine",
+                "luigi": "Limited",
+                "oozie": "Hadoop-only",
+                "airflow": "Celery/K8s — thousands of workers"
+              },
+              {
+                "feature": "Ecosystem",
+                "cron": "None",
+                "luigi": "Small",
+                "oozie": "Hadoop ecosystem",
+                "airflow": "100+ provider packages"
+              }
+            ],
+            "why_airflow_wins": [
+              "Workflows as Python — version control, testing, reuse",
+              "Dynamic DAGs — generate pipelines programmatically",
+              "Excellent UI — visualize pipelines, debug failures",
+              "Massive ecosystem — AWS, GCP, Azure, Spark, dbt all built-in",
+              "Active community — most popular orchestrator in data engineering"
+            ]
+          },
+          {
+            "name": "Airflow Architecture Components",
+            "components": [
+              {
+                "component": "Webserver",
+                "role": "Serves the Airflow UI. Reads DAG metadata from the database. Does NOT execute tasks.",
+                "port": "8080 (default)"
+              },
+              {
+                "component": "Scheduler",
+                "role": "Heart of Airflow. Parses DAG files, schedules task instances, submits them to the executor. Runs continuously.",
+                "key_settings": [
+                  "scheduler_heartbeat_sec",
+                  "min_file_process_interval",
+                  "dag_dir_list_interval"
+                ]
+              },
+              {
+                "component": "Executor",
+                "role": "Determines HOW tasks are executed. Pluggable — Sequential, Local, Celery, Kubernetes.",
+                "types": [
+                  "SequentialExecutor",
+                  "LocalExecutor",
+                  "CeleryExecutor",
+                  "KubernetesExecutor"
+                ]
+              },
+              {
+                "component": "Metadata Database",
+                "role": "Stores DAG definitions, task instances, connections, variables, XComs, logs metadata. PostgreSQL or MySQL recommended for production.",
+                "supported": [
+                  "SQLite (dev only)",
+                  "PostgreSQL (recommended)",
+                  "MySQL"
+                ]
+              },
+              {
+                "component": "DAG Directory",
+                "role": "Folder containing Python DAG files. Scheduler parses this directory periodically.",
+                "default": "$AIRFLOW_HOME/dags/"
+              },
+              {
+                "component": "Workers (Celery/K8s)",
+                "role": "Actual execution of tasks. In CeleryExecutor: Celery workers. In KubernetesExecutor: individual pods.",
+                "note": "Not needed for SequentialExecutor or LocalExecutor"
+              },
+              {
+                "component": "Message Broker (Celery)",
+                "role": "Queue for task messages between scheduler and workers.",
+                "tools": [
+                  "Redis",
+                  "RabbitMQ"
+                ]
+              },
+              {
+                "component": "Triggerer",
+                "role": "Runs deferrable operators asynchronously. Single thread handles thousands of deferred tasks.",
+                "introduced": "Airflow 2.2"
+              }
+            ],
+            "architecture_diagram": {
+              "flow": "DAG Files → Scheduler (parse) → Metadata DB (store) → Executor → Workers (execute) → Metadata DB (update status) → Webserver (display)"
+            }
+          },
+          {
+            "name": "Airflow vs Other Orchestrators",
+            "comparison_table": [
+              {
+                "feature": "Workflow Definition",
+                "airflow": "Python DAGs (imperative)",
+                "prefect": "Python flows/tasks (imperative)",
+                "dagster": "Assets & ops (declarative assets)",
+                "luigi": "Python classes (imperative)"
+              },
+              {
+                "feature": "Primary Abstraction",
+                "airflow": "DAG of Tasks",
+                "prefect": "Flow of Tasks",
+                "dagster": "Software-Defined Assets",
+                "luigi": "Task with targets"
+              },
+              {
+                "feature": "Dynamic Workflows",
+                "airflow": "Dynamic Task Mapping (.expand())",
+                "prefect": "Native (just Python loops)",
+                "dagster": "Dynamic graphs",
+                "luigi": "Limited"
+              },
+              {
+                "feature": "Data Awareness",
+                "airflow": "Datasets (Airflow 2.4+)",
+                "prefect": "Strong data passing",
+                "dagster": "First-class (assets = data)",
+                "luigi": "Target-based"
+              },
+              {
+                "feature": "Deployment Model",
+                "airflow": "Self-hosted or managed (MWAA, Composer, Astronomer)",
+                "prefect": "Prefect Cloud or self-hosted server",
+                "dagster": "Self-hosted or Dagster Cloud",
+                "luigi": "Self-hosted"
+              },
+              {
+                "feature": "Learning Curve",
+                "airflow": "Medium-High",
+                "prefect": "Low-Medium",
+                "dagster": "Medium-High (asset model new)",
+                "luigi": "Medium"
+              },
+              {
+                "feature": "Community & Ecosystem",
+                "airflow": "Largest (de facto standard)",
+                "prefect": "Growing fast",
+                "dagster": "Growing (modern data teams)",
+                "luigi": "Declining"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Installation & Setup",
+        "topics": [
+          {
+            "name": "Local Installation (pip)",
+            "explanation": "Install Airflow locally using pip with constraint files to ensure compatible package versions.",
+            "steps": [
+              {
+                "step": "1. Create virtual environment",
+                "command": "python -m venv airflow_venv\nsource airflow_venv/bin/activate  # Linux/Mac\nairflow_venv\\Scripts\\activate      # Windows"
+              },
+              {
+                "step": "2. Set AIRFLOW_HOME",
+                "command": "export AIRFLOW_HOME=~/airflow"
+              },
+              {
+                "step": "3. Install Airflow with constraints",
+                "command": "AIRFLOW_VERSION=2.8.0\nPYTHON_VERSION=3.11\nCONSTRAINT_URL=\"https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt\"\npip install \"apache-airflow==${AIRFLOW_VERSION}\" --constraint \"${CONSTRAINT_URL}\""
+              },
+              {
+                "step": "4. Initialize database",
+                "command": "airflow db init"
+              },
+              {
+                "step": "5. Create admin user",
+                "command": "airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
+              },
+              {
+                "step": "6. Start webserver & scheduler",
+                "command": "airflow webserver --port 8080 &\nairflow scheduler &"
+              }
+            ],
+            "install_with_extras": "pip install \"apache-airflow[postgres,amazon,google,slack,celery]==${AIRFLOW_VERSION}\" --constraint \"${CONSTRAINT_URL}\""
+          },
+          {
+            "name": "Docker Compose Setup",
+            "explanation": "The official Airflow Docker Compose setup is the fastest way to get a production-like environment running locally.",
+            "steps": [
+              {
+                "step": "1. Download official docker-compose.yaml",
+                "command": "curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.8.0/docker-compose.yaml'"
+              },
+              {
+                "step": "2. Create required directories",
+                "command": "mkdir -p ./dags ./logs ./plugins ./config\necho -e \"AIRFLOW_UID=$(id -u)\" > .env"
+              },
+              {
+                "step": "3. Initialize database",
+                "command": "docker compose up airflow-init"
+              },
+              {
+                "step": "4. Start all services",
+                "command": "docker compose up -d"
+              }
+            ],
+            "services_started": [
+              "airflow-webserver (port 8080)",
+              "airflow-scheduler",
+              "airflow-worker (Celery)",
+              "airflow-triggerer",
+              "postgres (metadata DB)",
+              "redis (Celery broker)",
+              "flower (Celery monitoring, port 5555)"
+            ],
+            "custom_dockerfile": "FROM apache/airflow:2.8.0\nUSER root\nRUN apt-get update && apt-get install -y --no-install-recommends vim\nUSER airflow\nRUN pip install apache-airflow-providers-snowflake apache-airflow-providers-dbt-cloud"
+          },
+          {
+            "name": "Airflow Configuration (airflow.cfg)",
+            "key_configs": [
+              {
+                "section": "[core]",
+                "settings": [
+                  {
+                    "key": "dags_folder",
+                    "default": "$AIRFLOW_HOME/dags",
+                    "description": "Where Airflow looks for DAG files"
+                  },
+                  {
+                    "key": "executor",
+                    "default": "SequentialExecutor",
+                    "description": "Which executor to use"
+                  },
+                  {
+                    "key": "parallelism",
+                    "default": "32",
+                    "description": "Max tasks running across all DAGs"
+                  },
+                  {
+                    "key": "max_active_tasks_per_dag",
+                    "default": "16",
+                    "description": "Max concurrent tasks per DAG"
+                  },
+                  {
+                    "key": "max_active_runs_per_dag",
+                    "default": "16",
+                    "description": "Max concurrent DAG runs per DAG"
+                  },
+                  {
+                    "key": "load_examples",
+                    "default": "True",
+                    "description": "Load example DAGs (set False in prod)"
+                  }
+                ]
+              },
+              {
+                "section": "[scheduler]",
+                "settings": [
+                  {
+                    "key": "min_file_process_interval",
+                    "default": "30",
+                    "description": "How often to re-parse each DAG file (seconds)"
+                  },
+                  {
+                    "key": "dag_dir_list_interval",
+                    "default": "300",
+                    "description": "How often to scan DAG folder for new files"
+                  },
+                  {
+                    "key": "scheduler_heartbeat_sec",
+                    "default": "5",
+                    "description": "Scheduler heartbeat frequency"
+                  },
+                  {
+                    "key": "num_runs",
+                    "default": "-1",
+                    "description": "Number of scheduler runs (-1 = infinite)"
+                  }
+                ]
+              },
+              {
+                "section": "[webserver]",
+                "settings": [
+                  {
+                    "key": "base_url",
+                    "default": "http://localhost:8080",
+                    "description": "Base URL for web UI"
+                  },
+                  {
+                    "key": "web_server_port",
+                    "default": "8080",
+                    "description": "Webserver port"
+                  },
+                  {
+                    "key": "secret_key",
+                    "default": "auto-generated",
+                    "description": "Flask secret key — MUST change in production"
+                  }
+                ]
+              },
+              {
+                "section": "[database]",
+                "settings": [
+                  {
+                    "key": "sql_alchemy_conn",
+                    "default": "sqlite:///$AIRFLOW_HOME/airflow.db",
+                    "description": "Database connection string. Use PostgreSQL in production: postgresql+psycopg2://user:pass@host/airflow"
+                  }
+                ]
+              },
+              {
+                "section": "[celery]",
+                "settings": [
+                  {
+                    "key": "broker_url",
+                    "default": "redis://redis:6379/0",
+                    "description": "Celery message broker"
+                  },
+                  {
+                    "key": "result_backend",
+                    "default": "db+postgresql://user:pass@host/airflow",
+                    "description": "Celery result backend"
+                  },
+                  {
+                    "key": "worker_concurrency",
+                    "default": "16",
+                    "description": "Number of tasks per Celery worker"
+                  }
+                ]
+              }
+            ],
+            "environment_variable_override": "Any config can be overridden via environment variable: AIRFLOW__SECTION__KEY\nExample: AIRFLOW__CORE__EXECUTOR=LocalExecutor\n         AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://user:pass@localhost/airflow"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "DAGs",
+        "topics": [
+          {
+            "name": "What is a DAG",
+            "explanation": "A DAG (Directed Acyclic Graph) is a collection of tasks organized with dependencies and relationships that define how they should run. Directed: edges have direction (task A must run before task B). Acyclic: no cycles — task cannot depend on itself directly or indirectly. Graph: nodes are tasks, edges are dependencies.",
+            "dag_properties": [
+              "dag_id: Unique identifier (string)",
+              "schedule: When the DAG runs (cron, timedelta, @daily, Dataset)",
+              "start_date: When the DAG's schedule begins",
+              "end_date: Optional — when the DAG's schedule ends",
+              "catchup: Whether to backfill missed runs (default: True)",
+              "max_active_runs: Max concurrent runs of this DAG",
+              "tags: List of string tags for filtering in UI",
+              "default_args: Default arguments applied to all tasks in DAG"
+            ],
+            "example": {
+              "full_dag": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime, timedelta\n\ndefault_args = {\n    'owner': 'data-team',\n    'retries': 3,\n    'retry_delay': timedelta(minutes=5),\n    'email': ['alerts@company.com'],\n    'email_on_failure': True,\n    'email_on_retry': False\n}\n\nwith DAG(\n    dag_id='sales_pipeline',\n    description='Daily sales ETL pipeline',\n    schedule='0 2 * * *',       # 2am daily\n    start_date=datetime(2024, 1, 1),\n    catchup=False,\n    max_active_runs=1,\n    tags=['sales', 'etl', 'daily'],\n    default_args=default_args\n) as dag:\n    extract = BashOperator(task_id='extract', bash_command='python /scripts/extract.py')\n    transform = PythonOperator(task_id='transform', python_callable=transform_fn)\n    load = PythonOperator(task_id='load', python_callable=load_fn)\n    extract >> transform >> load"
+            }
+          },
+          {
+            "name": "DAG Scheduling",
+            "explanation": "Airflow uses execution_date (logical date) — the start of the scheduled interval, NOT the actual run time. A DAG with schedule='@daily' and start_date=2024-01-01 will have its first run at 2024-01-02 00:00 covering the interval 2024-01-01.",
+            "schedule_formats": [
+              {
+                "format": "Cron string",
+                "examples": [
+                  "'0 2 * * *' — 2am daily",
+                  "'0 */6 * * *' — every 6 hours",
+                  "'0 9 * * 1' — 9am every Monday"
+                ]
+              },
+              {
+                "format": "Preset strings",
+                "examples": [
+                  "'@hourly'",
+                  "'@daily'",
+                  "'@weekly'",
+                  "'@monthly'",
+                  "'@yearly'",
+                  "'@once'",
+                  "None — no schedule, manual only"
+                ]
+              },
+              {
+                "format": "timedelta",
+                "examples": [
+                  "schedule=timedelta(hours=6)",
+                  "schedule=timedelta(days=1)"
+                ]
+              },
+              {
+                "format": "Dataset (Airflow 2.4+)",
+                "examples": [
+                  "schedule=[my_dataset] — run when dataset is updated"
+                ]
+              }
+            ],
+            "cron_cheatsheet": {
+              "format": "minute hour day_of_month month day_of_week",
+              "examples": [
+                {
+                  "cron": "0 * * * *",
+                  "meaning": "Every hour at :00"
+                },
+                {
+                  "cron": "0 2 * * *",
+                  "meaning": "2:00 AM every day"
+                },
+                {
+                  "cron": "0 2 * * 1",
+                  "meaning": "2:00 AM every Monday"
+                },
+                {
+                  "cron": "0 2 1 * *",
+                  "meaning": "2:00 AM on 1st of every month"
+                },
+                {
+                  "cron": "*/15 * * * *",
+                  "meaning": "Every 15 minutes"
+                },
+                {
+                  "cron": "0 9-17 * * 1-5",
+                  "meaning": "Every hour 9am-5pm weekdays"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Catchup & Backfill",
+            "explanation": "Catchup: when a DAG is unpaused or start_date is in the past, Airflow schedules all missed runs. Backfill: manually trigger historical runs for a date range.",
+            "catchup_example": {
+              "scenario": "DAG with start_date=2024-01-01, schedule=@daily, catchup=True, activated on 2024-01-10",
+              "result": "Airflow immediately schedules 9 missed runs: Jan 1 through Jan 9",
+              "disable": "catchup=False in DAG definition — only run from current date forward"
+            },
+            "backfill_command": "airflow dags backfill \\\n  --start-date 2024-01-01 \\\n  --end-date 2024-01-31 \\\n  sales_pipeline",
+            "drawbacks": [
+              "catchup=True can create hundreds of unexpected runs when activating old DAGs",
+              "Backfill runs share the same pool/concurrency limits as regular runs"
+            ],
+            "solutions": [
+              "Always set catchup=False for new DAGs unless backfill is intentional",
+              "Set max_active_runs=1 to prevent parallel execution of backfill and live runs"
+            ]
+          },
+          {
+            "name": "DAG Decorators (@dag)",
+            "explanation": "The @dag decorator from the TaskFlow API provides a cleaner, more Pythonic way to define DAGs.",
+            "example": {
+              "traditional": "with DAG('my_dag', schedule='@daily', start_date=datetime(2024,1,1)) as dag:\n    task1 = PythonOperator(task_id='task1', python_callable=fn1)\n    task2 = PythonOperator(task_id='task2', python_callable=fn2)\n    task1 >> task2",
+              "decorator_style": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef my_dag():\n    @task\n    def extract(): return {'rows': 1000}\n\n    @task\n    def transform(data): return data['rows'] * 2\n\n    @task\n    def load(result): print(f'Loading {result} rows')\n\n    data = extract()\n    result = transform(data)\n    load(result)\n\nmy_dag()  # Instantiate the DAG"
+            }
+          },
+          {
+            "name": "DAG Best Practices",
+            "practices": [
+              {
+                "practice": "Set catchup=False",
+                "reason": "Prevents unexpected backfill runs on activation"
+              },
+              {
+                "practice": "Set max_active_runs=1",
+                "reason": "Prevents concurrent DAG runs for idempotent pipelines"
+              },
+              {
+                "practice": "Use default_args for retries",
+                "reason": "Consistent retry behavior across all tasks"
+              },
+              {
+                "practice": "Keep DAG files lightweight",
+                "reason": "Scheduler parses DAG files every 30s — heavy imports slow everything"
+              },
+              {
+                "practice": "No dynamic imports in DAG file",
+                "reason": "DB calls or API calls at parse time crash the scheduler"
+              },
+              {
+                "practice": "Use tags",
+                "reason": "Filter and organize DAGs in UI"
+              },
+              {
+                "practice": "Idempotent tasks",
+                "reason": "Safe retries and backfills"
+              },
+              {
+                "practice": "Short, focused tasks",
+                "reason": "Better visibility, easier retry on failure"
+              },
+              {
+                "practice": "Use constants for dates",
+                "reason": "Avoid datetime.now() in start_date — use a fixed date"
+              },
+              {
+                "practice": "Version your DAGs",
+                "reason": "Use Git + CI/CD for deployment"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Operators",
+        "topics": [
+          {
+            "name": "PythonOperator",
+            "explanation": "Executes a Python callable. Most commonly used operator. The callable can accept context variables via op_kwargs or **context.",
+            "example": {
+              "basic": "from airflow.operators.python import PythonOperator\n\ndef process_data(date, **context):\n    execution_date = context['ds']  # '2024-01-15'\n    print(f'Processing data for {date} on {execution_date}')\n    return {'rows_processed': 1000}\n\nprocess_task = PythonOperator(\n    task_id='process_data',\n    python_callable=process_data,\n    op_kwargs={'date': '{{ ds }}'},  # Jinja templated\n    dag=dag\n)",
+              "with_context": "def my_func(**context):\n    ti = context['ti']               # TaskInstance\n    ds = context['ds']               # execution date string: '2024-01-15'\n    ds_nodash = context['ds_nodash'] # '20240115'\n    prev_ds = context['prev_ds']     # previous execution date\n    next_ds = context['next_ds']     # next execution date\n    params = context['params']       # DAG/task params\n    print(f'Run ID: {context[\"run_id\"]}')"
+            }
+          },
+          {
+            "name": "BashOperator",
+            "explanation": "Executes a bash command or script. Useful for running shell scripts, CLI tools, Python scripts as subprocesses.",
+            "example": {
+              "basic": "from airflow.operators.bash import BashOperator\n\nrun_script = BashOperator(\n    task_id='run_etl_script',\n    bash_command='python /opt/scripts/etl.py --date {{ ds }} --env prod',\n    env={'DB_HOST': 'localhost', 'DB_PORT': '5432'},\n    cwd='/opt/scripts'\n)",
+              "multiline": "run_sql = BashOperator(\n    task_id='run_sql',\n    bash_command=\"\"\"\n        psql -h $DB_HOST -U $DB_USER -d mydb -c \\\n        \"INSERT INTO summary SELECT date, SUM(amount) FROM orders WHERE date='{{ ds }}' GROUP BY date\"\n    \"\"\"\n)"
+            },
+            "drawbacks": [
+              "Environment differs from developer machine — PATH, env vars may be missing",
+              "Exit code != 0 raises AirflowException — scripts must handle errors and exit codes"
+            ]
+          },
+          {
+            "name": "BranchPythonOperator",
+            "explanation": "Executes a Python callable that RETURNS a task_id (or list of task_ids) to run next. All other downstream branches are skipped.",
+            "example": {
+              "code": "from airflow.operators.python import BranchPythonOperator\nfrom airflow.operators.empty import EmptyOperator\n\ndef choose_branch(**context):\n    day_of_week = context['execution_date'].weekday()  # 0=Mon, 6=Sun\n    if day_of_week == 0:  # Monday\n        return 'weekly_report'\n    elif day_of_week == 6:  # Sunday\n        return ['sunday_cleanup', 'send_weekly_summary']  # multiple branches\n    else:\n        return 'daily_report'\n\nbranch = BranchPythonOperator(\n    task_id='check_day',\n    python_callable=choose_branch\n)\ndaily_report  = EmptyOperator(task_id='daily_report')\nweekly_report = EmptyOperator(task_id='weekly_report')\nsunday_cleanup= EmptyOperator(task_id='sunday_cleanup')\nsend_summary  = EmptyOperator(task_id='send_weekly_summary')\n\nbranch >> [daily_report, weekly_report, sunday_cleanup, send_summary]",
+              "note": "Skipped tasks show in UI with grey color. Tasks downstream of skipped tasks are also skipped unless trigger_rule is set to 'none_failed_min_one_success'."
+            }
+          },
+          {
+            "name": "ShortCircuitOperator",
+            "explanation": "Executes a Python callable. If it returns False, all downstream tasks are SKIPPED. If True, pipeline continues normally.",
+            "example": {
+              "code": "from airflow.operators.python import ShortCircuitOperator\n\ndef check_data_exists(**context):\n    import boto3\n    s3 = boto3.client('s3')\n    try:\n        s3.head_object(Bucket='my-bucket', Key=f\"data/{context['ds']}/orders.csv\")\n        return True   # File exists — continue\n    except:\n        return False  # File missing — skip all downstream tasks\n\ncheck_file = ShortCircuitOperator(\n    task_id='check_file_exists',\n    python_callable=check_data_exists,\n    ignore_downstream_trigger_rules=True  # skip ALL downstream\n)",
+              "use_case": "Skip pipeline when no new data arrived. Skip weekend runs in a daily pipeline."
+            }
+          },
+          {
+            "name": "TriggerDagRunOperator",
+            "explanation": "Triggers another DAG from within a DAG. Useful for parent-child DAG patterns or event-driven DAG triggering.",
+            "example": {
+              "code": "from airflow.operators.trigger_dagrun import TriggerDagRunOperator\n\ntrigger_child = TriggerDagRunOperator(\n    task_id='trigger_reporting_dag',\n    trigger_dag_id='reporting_pipeline',\n    conf={'parent_run_id': '{{ run_id }}', 'date': '{{ ds }}'},\n    wait_for_completion=True,   # Wait for child DAG to finish\n    poke_interval=30,           # Check every 30 seconds\n    reset_dag_run=True          # Re-run if child already ran for this date\n)"
+            }
+          },
+          {
+            "name": "Custom Operators",
+            "explanation": "Create custom operators by extending BaseOperator and implementing the execute() method.",
+            "example": {
+              "code": "from airflow.models import BaseOperator\nfrom airflow.utils.decorators import apply_defaults\nfrom typing import Any\n\nclass SnowflakeToS3Operator(BaseOperator):\n    \"\"\"\n    Custom operator: exports Snowflake query results to S3 as Parquet\n    \"\"\"\n    template_fields = ('sql', 's3_key')  # These fields support Jinja templating\n\n    def __init__(\n        self,\n        sql: str,\n        s3_bucket: str,\n        s3_key: str,\n        snowflake_conn_id: str = 'snowflake_default',\n        aws_conn_id: str = 'aws_default',\n        **kwargs\n    ):\n        super().__init__(**kwargs)\n        self.sql = sql\n        self.s3_bucket = s3_bucket\n        self.s3_key = s3_key\n        self.snowflake_conn_id = snowflake_conn_id\n        self.aws_conn_id = aws_conn_id\n\n    def execute(self, context: Any):\n        from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook\n        from airflow.providers.amazon.aws.hooks.s3 import S3Hook\n        import pandas as pd\n\n        self.log.info(f'Running query: {self.sql}')\n        sf_hook = SnowflakeHook(snowflake_conn_id=self.snowflake_conn_id)\n        df = sf_hook.get_pandas_df(self.sql)\n\n        s3_hook = S3Hook(aws_conn_id=self.aws_conn_id)\n        local_path = f'/tmp/export_{context[\"ds_nodash\"]}.parquet'\n        df.to_parquet(local_path, index=False)\n        s3_hook.load_file(local_path, self.s3_key, self.s3_bucket, replace=True)\n        self.log.info(f'Exported {len(df)} rows to s3://{self.s3_bucket}/{self.s3_key}')\n        return len(df)\n\n# Usage:\nexport_task = SnowflakeToS3Operator(\n    task_id='export_daily_sales',\n    sql=\"SELECT * FROM sales WHERE date = '{{ ds }}'\",\n    s3_bucket='my-data-lake',\n    s3_key='exports/sales/{{ ds_nodash }}/sales.parquet'\n)"
+            }
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "TaskFlow API",
+        "topics": [
+          {
+            "name": "@task Decorator",
+            "explanation": "The @task decorator wraps a Python function as an Airflow task automatically. Return values are automatically pushed to XCom. Input arguments from other @task functions are automatically pulled from XCom.",
+            "example": {
+              "full_pipeline": "from airflow.decorators import dag, task\nfrom datetime import datetime\nimport requests\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef etl_pipeline():\n\n    @task\n    def extract(date: str) -> dict:\n        \"\"\"Extract data from API\"\"\"\n        response = requests.get(f'https://api.example.com/orders?date={date}')\n        return response.json()  # Automatically pushed to XCom\n\n    @task\n    def transform(raw_data: dict) -> list:\n        \"\"\"Clean and transform data\"\"\"\n        orders = raw_data['orders']\n        return [\n            {\n                'order_id': o['id'],\n                'amount': float(o['total']),\n                'status': o['status'].lower()\n            }\n            for o in orders if o['status'] != 'cancelled'\n        ]\n\n    @task\n    def load(clean_orders: list) -> int:\n        \"\"\"Load to database\"\"\"\n        # Insert into DB...\n        return len(clean_orders)\n\n    @task\n    def notify(row_count: int):\n        print(f'Pipeline complete: {row_count} orders loaded')\n\n    raw = extract('{{ ds }}')\n    clean = transform(raw)\n    count = load(clean)\n    notify(count)\n\netl_pipeline()"
+            }
+          },
+          {
+            "name": "@task.branch",
+            "explanation": "Branching equivalent in TaskFlow API. Return the task_id(s) to execute.",
+            "example": {
+              "code": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef branching_pipeline():\n\n    @task.branch\n    def check_day(**context) -> str:\n        day = context['execution_date'].weekday()\n        return 'run_weekly' if day == 0 else 'run_daily'\n\n    @task\n    def run_daily(): print('Running daily job')\n\n    @task\n    def run_weekly(): print('Running weekly job')\n\n    @task(trigger_rule='none_failed_min_one_success')\n    def complete(): print('All done')\n\n    branch = check_day()\n    daily = run_daily()\n    weekly = run_weekly()\n    branch >> [daily, weekly] >> complete()\n\nbranching_pipeline()"
+            }
+          },
+          {
+            "name": "TaskFlow vs Traditional Operators",
+            "comparison_table": [
+              {
+                "feature": "Syntax",
+                "taskflow": "Pythonic — @task decorator on function",
+                "traditional": "Explicit PythonOperator(task_id=..., python_callable=...)"
+              },
+              {
+                "feature": "XCom passing",
+                "taskflow": "Automatic — return value = XCom push, arg = XCom pull",
+                "traditional": "Manual — ti.xcom_push() / ti.xcom_pull()"
+              },
+              {
+                "feature": "Dependencies",
+                "taskflow": "Implicit from function calls",
+                "traditional": "Explicit >> operator"
+              },
+              {
+                "feature": "Readability",
+                "taskflow": "Cleaner for Python-heavy DAGs",
+                "traditional": "More explicit — better for complex dependency graphs"
+              },
+              {
+                "feature": "Non-Python operators",
+                "taskflow": "Cannot use for BashOperator, Sensors etc.",
+                "traditional": "Required for non-Python operators"
+              },
+              {
+                "feature": "When to use",
+                "taskflow": "Python-centric pipelines, data passing between tasks",
+                "traditional": "When using non-Python operators or complex DAG structures"
+              }
+            ]
+          },
+          {
+            "name": "Mixed TaskFlow and Traditional Operators",
+            "explanation": "TaskFlow and traditional operators can be freely mixed in the same DAG.",
+            "example": {
+              "code": "from airflow.decorators import dag, task\nfrom airflow.operators.bash import BashOperator\nfrom airflow.providers.amazon.aws.sensors.s3 import S3KeySensor\nfrom datetime import datetime\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef mixed_pipeline():\n\n    # Traditional sensor\n    wait_for_file = S3KeySensor(\n        task_id='wait_for_file',\n        bucket_name='my-bucket',\n        bucket_key='data/{{ ds }}/orders.csv',\n        aws_conn_id='aws_default'\n    )\n\n    # Traditional bash operator\n    validate = BashOperator(\n        task_id='validate_file',\n        bash_command='python /scripts/validate.py --date {{ ds }}'\n    )\n\n    # TaskFlow tasks\n    @task\n    def transform(**context):\n        return {'date': context['ds'], 'rows': 1000}\n\n    @task\n    def load(data: dict):\n        print(f\"Loading {data['rows']} rows for {data['date']}\")\n\n    # Mix dependencies\n    data = transform()\n    wait_for_file >> validate >> data\n    load(data)\n\nmixed_pipeline()"
+            }
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Sensors",
+        "topics": [
+          {
+            "name": "What are Sensors",
+            "explanation": "Sensors are special operators that wait for a condition to be true before proceeding. They periodically check the condition (poke) until it's met or times out. Common use: wait for a file to arrive, an API to return data, an external task to complete.",
+            "base_sensor_params": [
+              {
+                "param": "poke_interval",
+                "default": "60",
+                "description": "Seconds between condition checks"
+              },
+              {
+                "param": "timeout",
+                "default": "604800",
+                "description": "Max seconds to wait before failing (7 days default)"
+              },
+              {
+                "param": "mode",
+                "default": "'poke'",
+                "description": "'poke' (holds worker slot) or 'reschedule' (releases slot between checks)"
+              },
+              {
+                "param": "soft_fail",
+                "default": "False",
+                "description": "If True, mark task as SKIPPED instead of FAILED on timeout"
+              },
+              {
+                "param": "exponential_backoff",
+                "default": "False",
+                "description": "Exponentially increase poke_interval on each check"
+              }
+            ]
+          },
+          {
+            "name": "Poke vs Reschedule Mode",
+            "explanation": "Critical performance difference. Poke mode holds the worker slot for the entire wait duration. Reschedule mode releases the worker slot between checks — much more efficient for long waits.",
+            "comparison": {
+              "poke_mode": {
+                "behavior": "Sensor runs continuously, sleeping between checks. Holds a worker slot the ENTIRE time.",
+                "use_when": "Short waits (< 5 minutes). High poke frequency needed.",
+                "drawback": "With 10 sensors poking for 2 hours each = 10 worker slots blocked for 2 hours"
+              },
+              "reschedule_mode": {
+                "behavior": "Sensor checks condition, then RELEASES the worker slot until next check time. Scheduler re-queues it.",
+                "use_when": "Long waits (> 5 minutes). Default for most production sensors.",
+                "benefit": "10 sensors in reschedule mode use near-zero worker slots between checks"
+              }
+            },
+            "example": "from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor\n\n# BAD for long waits — holds worker slot\nwait_poke = S3KeySensor(\n    task_id='wait_poke',\n    mode='poke',           # Holds worker for entire wait\n    poke_interval=60,\n    timeout=3600\n)\n\n# GOOD for long waits — releases worker between checks\nwait_reschedule = S3KeySensor(\n    task_id='wait_reschedule',\n    mode='reschedule',     # Releases worker between checks\n    poke_interval=300,     # Check every 5 minutes\n    timeout=7200           # Max 2 hours\n)"
+          },
+          {
+            "name": "S3KeySensor",
+            "explanation": "Waits for a file (key) to exist in an S3 bucket.",
+            "example": {
+              "single_file": "from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor\n\nwait_for_orders = S3KeySensor(\n    task_id='wait_for_orders',\n    bucket_name='my-data-lake',\n    bucket_key='raw/orders/{{ ds }}/orders.csv',\n    aws_conn_id='aws_default',\n    mode='reschedule',\n    poke_interval=300,\n    timeout=7200\n)",
+              "wildcard": "wait_any_file = S3KeySensor(\n    task_id='wait_any_parquet',\n    bucket_name='my-data-lake',\n    bucket_key='raw/orders/{{ ds }}/*.parquet',\n    wildcard_match=True,   # Use glob pattern\n    mode='reschedule'\n)"
+            }
+          },
+          {
+            "name": "ExternalTaskSensor",
+            "explanation": "Waits for a task or entire DAG in another (or same) DAG to complete successfully. The most common way to create cross-DAG dependencies.",
+            "example": {
+              "code": "from airflow.sensors.external_task import ExternalTaskSensor\nfrom datetime import timedelta\n\n# Wait for 'extract' task in 'upstream_pipeline' DAG\nwait_upstream = ExternalTaskSensor(\n    task_id='wait_for_upstream',\n    external_dag_id='upstream_pipeline',\n    external_task_id='extract',        # None = wait for entire DAG\n    execution_delta=timedelta(hours=1),# upstream runs 1 hour before this DAG\n    mode='reschedule',\n    poke_interval=60,\n    timeout=3600,\n    check_existence=True               # Fail fast if upstream DAG doesn't exist\n)",
+              "execution_date_fn": "# Custom function for non-standard schedule alignments\nwait_upstream = ExternalTaskSensor(\n    task_id='wait_for_upstream',\n    external_dag_id='hourly_pipeline',\n    execution_date_fn=lambda dt: dt.replace(hour=0, minute=0)  # Always wait for midnight run\n)"
+            },
+            "drawbacks": [
+              "Tight coupling between DAGs by dag_id string",
+              "Hard to detect if upstream DAG was renamed or deleted (check_existence helps)",
+              "execution_delta must be carefully calibrated"
+            ]
+          },
+          {
+            "name": "Custom Sensors",
+            "explanation": "Create custom sensors by extending BaseSensorOperator and implementing the poke() method. Return True when condition is met.",
+            "example": {
+              "code": "from airflow.sensors.base import BaseSensorOperator\nfrom typing import Any\n\nclass TableRowCountSensor(BaseSensorOperator):\n    \"\"\"\n    Waits until a database table has at least min_rows rows for a given date.\n    \"\"\"\n    template_fields = ('date', 'table_name')\n\n    def __init__(\n        self,\n        table_name: str,\n        date: str,\n        min_rows: int = 1,\n        postgres_conn_id: str = 'postgres_default',\n        **kwargs\n    ):\n        super().__init__(**kwargs)\n        self.table_name = table_name\n        self.date = date\n        self.min_rows = min_rows\n        self.postgres_conn_id = postgres_conn_id\n\n    def poke(self, context: Any) -> bool:\n        from airflow.providers.postgres.hooks.postgres import PostgresHook\n        hook = PostgresHook(postgres_conn_id=self.postgres_conn_id)\n        sql = f\"SELECT COUNT(*) FROM {self.table_name} WHERE date = '{self.date}'\"\n        count = hook.get_first(sql)[0]\n        self.log.info(f'Row count for {self.date}: {count} (need {self.min_rows})')\n        return count >= self.min_rows\n\n# Usage:\nwait_for_data = TableRowCountSensor(\n    task_id='wait_for_orders',\n    table_name='orders',\n    date='{{ ds }}',\n    min_rows=100,\n    mode='reschedule',\n    poke_interval=120\n)"
+            }
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "XCom (Cross-Communication)",
+        "topics": [
+          {
+            "name": "What is XCom",
+            "explanation": "XCom (Cross-Communication) allows tasks to exchange small amounts of data. Data is stored in Airflow's metadata database. When a task pushes a value, it's stored with a key and the task's identity. Other tasks can pull it by specifying the source task_id and key.",
+            "xcom_limits": {
+              "sqlite": "2GB (impractical)",
+              "postgresql": "1GB per value (impractical for large data)",
+              "recommendation": "XCom is designed for SMALL data: IDs, counts, file paths, status flags. NOT for DataFrames, large datasets.",
+              "rule_of_thumb": "If value > 1KB, store data externally (S3, DB) and pass the reference path via XCom"
+            }
+          },
+          {
+            "name": "XCom Push & Pull",
+            "explanation": "Push: store value in XCom. Pull: retrieve value from XCom.",
+            "example": {
+              "traditional_push_pull": "def extract(**context):\n    data_path = 's3://bucket/data/{{ ds }}/orders.parquet'\n    # Method 1: Return value (auto-pushed with key='return_value')\n    return data_path\n\n    # Method 2: Explicit push with custom key\n    # context['ti'].xcom_push(key='orders_path', value=data_path)\n\ndef transform(**context):\n    ti = context['ti']\n    # Pull return value from previous task\n    path = ti.xcom_pull(task_ids='extract')\n    # Pull specific key\n    # path = ti.xcom_pull(task_ids='extract', key='orders_path')\n    print(f'Processing file: {path}')",
+              "multiple_pulls": "def report(**context):\n    ti = context['ti']\n    # Pull from multiple tasks\n    extract_count = ti.xcom_pull(task_ids='extract', key='row_count')\n    load_count    = ti.xcom_pull(task_ids='load',    key='return_value')\n    print(f'Extracted: {extract_count}, Loaded: {load_count}')",
+              "in_template": "# XCom can be accessed in Jinja templates\nrun_sql = BashOperator(\n    task_id='use_xcom',\n    bash_command=\"echo Processing file: {{ ti.xcom_pull(task_ids='extract') }}\"\n)"
+            }
+          },
+          {
+            "name": "Custom XCom Backends",
+            "explanation": "For larger data, use a custom XCom backend that stores data in S3/GCS instead of the metadata DB.",
+            "example": {
+              "s3_backend": "# airflow.cfg:\n# [core]\n# xcom_backend = airflow.providers.amazon.aws.xcom_backends.s3.S3XComBackend\n\n# Or environment variable:\n# AIRFLOW__CORE__XCOM_BACKEND=airflow.providers.amazon.aws.xcom_backends.s3.S3XComBackend\n# AIRFLOW__AWS__XCOM_S3_BUCKET=my-airflow-xcom-bucket",
+              "custom_backend": "from airflow.models.xcom import BaseXCom\nimport json, boto3\n\nclass S3XComBackend(BaseXCom):\n    PREFIX = 's3://my-bucket/xcom/'\n\n    @staticmethod\n    def serialize_value(value, **kwargs):\n        if isinstance(value, (dict, list)) and len(str(value)) > 1000:\n            key = f\"xcom/{kwargs.get('dag_id')}/{kwargs.get('task_id')}/{kwargs.get('run_id')}.json\"\n            boto3.client('s3').put_object(Bucket='my-bucket', Key=key, Body=json.dumps(value))\n            return BaseXCom.serialize_value(f's3://my-bucket/{key}')\n        return BaseXCom.serialize_value(value)"
+            }
+          },
+          {
+            "name": "XCom Best Practices",
+            "practices": [
+              "Pass file paths or S3 URIs, not file contents",
+              "Pass record counts, status codes, metadata — not actual datasets",
+              "Use TaskFlow API for automatic XCom management",
+              "Set xcom_push=False on operators that produce large return values you don't need",
+              "Clean up old XCom entries: airflow db clean --clean-before-timestamp 2024-01-01",
+              "For large data transfer: write to S3/GCS, pass the path via XCom"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Connections & Hooks",
+        "topics": [
+          {
+            "name": "What are Connections",
+            "explanation": "Connections store credentials and connection details for external systems (databases, APIs, cloud services). Stored encrypted in the metadata DB using Fernet encryption. Referenced by conn_id in operators and hooks.",
+            "connection_fields": [
+              "Conn Id: Unique identifier (e.g., 'postgres_default', 'aws_default')",
+              "Conn Type: Type of connection (postgres, mysql, http, aws, etc.)",
+              "Host: Server hostname or URL",
+              "Schema: Database name",
+              "Login: Username",
+              "Password: Password (encrypted)",
+              "Port: Port number",
+              "Extra: JSON with additional config (e.g., role, warehouse for Snowflake)"
+            ]
+          },
+          {
+            "name": "Managing Connections",
+            "methods": [
+              {
+                "method": "UI",
+                "description": "Admin → Connections → Add Connection. Easiest for development.",
+                "drawback": "Not version-controlled, not suitable for production"
+              },
+              {
+                "method": "Environment Variables",
+                "description": "AIRFLOW_CONN_{CONN_ID}=connection_uri",
+                "example": "AIRFLOW_CONN_POSTGRES_DEFAULT='postgresql://user:pass@localhost:5432/mydb'\nAIRFLOW_CONN_AWS_DEFAULT='{\"conn_type\": \"aws\", \"extra\": {\"aws_access_key_id\": \"KEY\", \"aws_secret_access_key\": \"SECRET\", \"region_name\": \"us-east-1\"}}'",
+                "benefit": "Version-controlled via .env files or K8s secrets"
+              },
+              {
+                "method": "CLI",
+                "description": "airflow connections add command",
+                "example": "airflow connections add 'postgres_dwh' \\\n  --conn-type 'postgres' \\\n  --conn-host 'mydb.us-east-1.rds.amazonaws.com' \\\n  --conn-schema 'analytics' \\\n  --conn-login 'airflow' \\\n  --conn-password 'secret' \\\n  --conn-port '5432'"
+              },
+              {
+                "method": "Secrets Backend",
+                "description": "Store connections in AWS Secrets Manager, HashiCorp Vault, or GCP Secret Manager. Best for production.",
+                "config": "# airflow.cfg:\n[secrets]\nbackend = airflow.providers.amazon.aws.secrets.secrets_manager.SecretsManagerBackend\nbackend_kwargs = {\"connections_prefix\": \"airflow/connections\", \"variables_prefix\": \"airflow/variables\"}"
+              }
+            ]
+          },
+          {
+            "name": "What are Hooks",
+            "explanation": "Hooks are interfaces to external platforms and databases, built on top of Connections. They abstract the authentication and communication details. Operators use Hooks internally.",
+            "example": {
+              "postgres_hook": "from airflow.providers.postgres.hooks.postgres import PostgresHook\n\ndef run_query(**context):\n    hook = PostgresHook(postgres_conn_id='postgres_dwh')\n\n    # Execute SQL\n    hook.run('INSERT INTO audit_log VALUES (%(date)s, %(count)s)',\n             parameters={'date': context['ds'], 'count': 100})\n\n    # Get results as list of tuples\n    rows = hook.get_records('SELECT id, name FROM customers LIMIT 10')\n\n    # Get first row\n    row = hook.get_first('SELECT COUNT(*) FROM orders')\n\n    # Get pandas DataFrame\n    df = hook.get_pandas_df('SELECT * FROM orders WHERE date = %(date)s',\n                            parameters={'date': context['ds']})\n    return len(df)",
+              "s3_hook": "from airflow.providers.amazon.aws.hooks.s3 import S3Hook\n\ndef upload_to_s3(**context):\n    hook = S3Hook(aws_conn_id='aws_default')\n\n    # Upload file\n    hook.load_file(\n        filename='/tmp/orders.parquet',\n        key=f\"data/{context['ds']}/orders.parquet\",\n        bucket_name='my-data-lake',\n        replace=True\n    )\n\n    # Check if key exists\n    exists = hook.check_for_key('data/2024-01-15/orders.parquet', 'my-data-lake')\n\n    # List keys\n    keys = hook.list_keys(bucket_name='my-data-lake', prefix='data/2024-01-15/')\n    return keys"
+            }
+          },
+          {
+            "name": "Custom Hooks",
+            "explanation": "Create custom hooks by extending BaseHook for any external system not covered by existing providers.",
+            "example": {
+              "code": "from airflow.hooks.base import BaseHook\nimport requests\n\nclass SlackWebhookHook(BaseHook):\n    def __init__(self, slack_conn_id: str = 'slack_default'):\n        super().__init__()\n        self.slack_conn_id = slack_conn_id\n        self._conn = None\n\n    def get_conn(self):\n        if self._conn is None:\n            conn = self.get_connection(self.slack_conn_id)\n            self._conn = conn.password  # Webhook URL stored in password field\n        return self._conn\n\n    def send_message(self, message: str, channel: str = '#data-alerts'):\n        webhook_url = self.get_conn()\n        payload = {'text': message, 'channel': channel}\n        response = requests.post(webhook_url, json=payload)\n        response.raise_for_status()\n        return response.status_code"
+            }
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Variables & Templating",
+        "topics": [
+          {
+            "name": "Airflow Variables",
+            "explanation": "Variables are key-value pairs stored in Airflow's metadata DB. Used for configuration values that change between environments (dev/staging/prod). Unlike connections, variables store simple config, not credentials.",
+            "example": {
+              "setting_variables": "# Via UI: Admin → Variables → Add\n# Via CLI:\nairflow variables set s3_bucket 'my-data-lake-prod'\nairflow variables set max_retries '3'\nairflow variables set config '{\"env\": \"prod\", \"region\": \"us-east-1\"}'  # JSON",
+              "reading_in_dag": "from airflow.models import Variable\n\n# Single variable\nbucket = Variable.get('s3_bucket')  # 'my-data-lake-prod'\n\n# With default (doesn't fail if missing)\nbucket = Variable.get('s3_bucket', default_var='fallback-bucket')\n\n# JSON variable (auto-deserializes)\nconfig = Variable.get('config', deserialize_json=True)\nenv = config['env']  # 'prod'",
+              "in_jinja_template": "run_script = BashOperator(\n    task_id='run',\n    bash_command='python script.py --bucket {{ var.value.s3_bucket }} --date {{ ds }}'\n    # Or JSON: {{ var.json.config.env }}\n)"
+            },
+            "drawbacks": [
+              "Variable.get() at DAG parse time causes extra DB queries on every scheduler heartbeat",
+              "Hardcoding variable names as strings is fragile"
+            ],
+            "solutions": [
+              "Access Variables inside tasks (inside callables), not at DAG parse time",
+              "Use os.environ for environment-specific config to avoid DB queries at parse",
+              "Use Jinja templating {{ var.value.key }} which is evaluated at task execution, not parse time"
+            ]
+          },
+          {
+            "name": "Jinja Templating",
+            "explanation": "Airflow uses Jinja2 templating to dynamically inject values into task parameters. Templates are rendered at task execution time (not DAG parse time).",
+            "built_in_variables": [
+              {
+                "variable": "{{ ds }}",
+                "value": "'2024-01-15' (execution date as YYYY-MM-DD)"
+              },
+              {
+                "variable": "{{ ds_nodash }}",
+                "value": "'20240115'"
+              },
+              {
+                "variable": "{{ ts }}",
+                "value": "'2024-01-15T00:00:00+00:00' (ISO timestamp)"
+              },
+              {
+                "variable": "{{ ts_nodash }}",
+                "value": "'20240115T000000'"
+              },
+              {
+                "variable": "{{ prev_ds }}",
+                "value": "Previous execution date"
+              },
+              {
+                "variable": "{{ next_ds }}",
+                "value": "Next execution date"
+              },
+              {
+                "variable": "{{ dag.dag_id }}",
+                "value": "'sales_pipeline'"
+              },
+              {
+                "variable": "{{ task.task_id }}",
+                "value": "'extract'"
+              },
+              {
+                "variable": "{{ run_id }}",
+                "value": "'scheduled__2024-01-15T00:00:00+00:00'"
+              },
+              {
+                "variable": "{{ data_interval_start }}",
+                "value": "Start of data interval (pendulum datetime)"
+              },
+              {
+                "variable": "{{ data_interval_end }}",
+                "value": "End of data interval"
+              },
+              {
+                "variable": "{{ var.value.my_var }}",
+                "value": "Airflow Variable value"
+              },
+              {
+                "variable": "{{ var.json.my_var.key }}",
+                "value": "JSON Variable field"
+              },
+              {
+                "variable": "{{ conn.my_conn.host }}",
+                "value": "Connection field"
+              },
+              {
+                "variable": "{{ ti.xcom_pull('task_id') }}",
+                "value": "XCom value from task"
+              }
+            ],
+            "example": {
+              "code": "# Template fields are rendered at task execution\nextract = BashOperator(\n    task_id='extract',\n    bash_command='''\n        python extract.py \\\n          --date {{ ds }} \\\n          --prev-date {{ prev_ds }} \\\n          --bucket {{ var.value.s3_bucket }} \\\n          --env {{ var.json.config.env }} \\\n          --run-id {{ run_id }}\n    '''\n)\n\n# Making custom fields templateable in custom operators:\nclass MyOperator(BaseOperator):\n    template_fields = ('sql', 'output_path')  # These fields support Jinja\n    sql: str\n    output_path: str"
+            }
+          },
+          {
+            "name": "Macros",
+            "explanation": "Macros are functions and objects available in Jinja templates. Airflow provides built-in macros and you can register custom ones.",
+            "built_in_macros": [
+              {
+                "macro": "{{ macros.datetime }}",
+                "description": "Python datetime class"
+              },
+              {
+                "macro": "{{ macros.timedelta(days=7) }}",
+                "description": "timedelta object"
+              },
+              {
+                "macro": "{{ macros.dateutil.parser.parse() }}",
+                "description": "dateutil parser"
+              },
+              {
+                "macro": "{{ macros.ds_add(ds, 7) }}",
+                "description": "Add N days to date string"
+              },
+              {
+                "macro": "{{ macros.ds_format(ds, '%Y-%m-%d', '%Y/%m/%d') }}",
+                "description": "Reformat date string"
+              }
+            ],
+            "example": "# Get date 7 days ago:\nbash_command = 'python script.py --start {{ macros.ds_add(ds, -7) }} --end {{ ds }}'\n\n# Get first day of month:\nbash_command = \"python script.py --month {{ ds[:7] }}-01\"\n\n# Custom macro registered in DAG:\nmy_dag = DAG(\n    'my_dag',\n    user_defined_macros={\n        'my_function': lambda x: x.upper(),\n        'env': 'production'\n    }\n)\n# Usage: {{ my_function(ds) }}  → '2024-01-15'"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Executors",
+        "topics": [
+          {
+            "name": "SequentialExecutor",
+            "explanation": "Runs one task at a time sequentially. Uses SQLite as backend. Only for local development and testing — NEVER for production.",
+            "config": "executor = SequentialExecutor",
+            "limitations": [
+              "Single task at a time — no parallelism",
+              "SQLite backend only",
+              "Cannot scale"
+            ],
+            "use_case": "Local development, CI/CD testing with simple DAGs"
+          },
+          {
+            "name": "LocalExecutor",
+            "explanation": "Runs tasks in parallel using Python multiprocessing on the same machine as the scheduler. Simple, no external dependencies. Good for small-medium workloads.",
+            "config": "executor = LocalExecutor\nsql_alchemy_conn = postgresql+psycopg2://user:pass@localhost/airflow",
+            "parallelism": "Limited by machine's CPU and memory",
+            "best_for": "Single server deployments, small teams, up to ~50 concurrent tasks",
+            "drawbacks": [
+              "Single point of failure",
+              "Limited by one machine's resources"
+            ],
+            "solutions": [
+              "Use CeleryExecutor or KubernetesExecutor for horizontal scaling"
+            ]
+          },
+          {
+            "name": "CeleryExecutor",
+            "explanation": "Distributes tasks across multiple worker machines using Celery task queue. Most popular for production medium-to-large scale deployments.",
+            "architecture": {
+              "components": [
+                "Scheduler: queues task messages to broker",
+                "Broker (Redis/RabbitMQ): message queue between scheduler and workers",
+                "Workers: pull tasks from broker and execute",
+                "Result backend (DB/Redis): stores task results"
+              ],
+              "scaling": "Add/remove worker machines dynamically. Each worker can run multiple tasks in parallel."
+            },
+            "config": "executor = CeleryExecutor\nbroker_url = redis://redis:6379/0\nresult_backend = db+postgresql://user:pass@postgres/airflow\nworker_concurrency = 16",
+            "commands": {
+              "start_worker": "airflow celery worker",
+              "scale_workers": "# Start N additional workers:\nfor i in {1..5}; do airflow celery worker -D; done",
+              "monitor": "airflow celery flower  # Web UI for Celery monitoring at :5555"
+            },
+            "drawbacks": [
+              "Additional infrastructure (Redis/RabbitMQ)",
+              "All workers need same DAG code and dependencies installed",
+              "Worker environments can drift over time"
+            ],
+            "solutions": [
+              "Use Docker containers for workers — guaranteed consistent environment",
+              "Git-sync DAGs to all workers",
+              "Use KubernetesExecutor if environment isolation is critical"
+            ]
+          },
+          {
+            "name": "KubernetesExecutor",
+            "explanation": "Launches each task as a separate Kubernetes Pod. Full environment isolation per task. No idle workers. Tasks start from scratch for each run.",
+            "architecture": {
+              "flow": "Scheduler → Kubernetes API → Pod created → Task runs → Pod terminated → Status reported to metadata DB"
+            },
+            "config": "executor = KubernetesExecutor\n[kubernetes]\nnamespace = airflow\nworker_container_repository = my-registry/airflow\nworker_container_tag = 2.8.0\npod_template_file = /opt/airflow/pod_template.yaml",
+            "pod_template_example": "apiVersion: v1\nkind: Pod\nspec:\n  containers:\n    - name: base\n      image: my-registry/airflow:2.8.0\n      resources:\n        requests:\n          memory: '2Gi'\n          cpu: '500m'\n        limits:\n          memory: '4Gi'\n          cpu: '2000m'\n      env:\n        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN\n          valueFrom:\n            secretKeyRef:\n              name: airflow-secrets\n              key: sql-alchemy-conn",
+            "advantages": [
+              "Perfect environment isolation per task",
+              "No idle workers — zero cost when no tasks running",
+              "Custom resource requests per task",
+              "Easy dependency management (custom Docker images per task)"
+            ],
+            "drawbacks": [
+              "Pod startup overhead (30-60 seconds) — not suitable for sub-minute tasks",
+              "Kubernetes expertise required",
+              "Higher complexity than CeleryExecutor"
+            ]
+          },
+          {
+            "name": "Executor Comparison",
+            "comparison_table": [
+              {
+                "feature": "Parallelism",
+                "sequential": "None",
+                "local": "Multi-process",
+                "celery": "Multi-machine",
+                "kubernetes": "Per-pod"
+              },
+              {
+                "feature": "Setup complexity",
+                "sequential": "None",
+                "local": "Low",
+                "celery": "Medium",
+                "kubernetes": "High"
+              },
+              {
+                "feature": "Scale",
+                "sequential": "1 task",
+                "local": "1 machine",
+                "celery": "Many machines",
+                "kubernetes": "Cluster"
+              },
+              {
+                "feature": "Task isolation",
+                "sequential": "Process",
+                "local": "Process",
+                "celery": "Process",
+                "kubernetes": "Full container"
+              },
+              {
+                "feature": "Cold start",
+                "sequential": "Fast",
+                "local": "Fast",
+                "celery": "Fast (workers up)",
+                "kubernetes": "Slow (pod start)"
+              },
+              {
+                "feature": "Cost at idle",
+                "sequential": "Low",
+                "local": "Low",
+                "celery": "Workers idle",
+                "kubernetes": "Zero"
+              },
+              {
+                "feature": "Best for",
+                "sequential": "Dev only",
+                "local": "Small prod",
+                "celery": "Medium-large prod",
+                "kubernetes": "Large prod/cloud native"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Task Dependencies & Control Flow",
+        "topics": [
+          {
+            "name": "Bitshift Operators & Dependency Methods",
+            "explanation": "Define task execution order using >> (downstream) and << (upstream) operators, or explicit methods.",
+            "example": {
+              "bitshift": "# >> means 'then'\nextract >> transform >> load\n\n# << means 'after'\nload << transform << extract\n\n# Multiple dependencies:\nextract >> [transform_a, transform_b] >> load\n\n# Fan-in:\n[transform_a, transform_b] >> load",
+              "explicit_methods": "# Equivalent to extract >> transform:\ntransform.set_upstream(extract)\nextract.set_downstream(transform)\n\n# Chain helper:\nfrom airflow.models.baseoperator import chain\nchain(extract, transform, load)\n\n# Cross downstream:\nfrom airflow.models.baseoperator import cross_downstream\ncross_downstream([a, b], [c, d])  # a>>c, a>>d, b>>c, b>>d"
+            }
+          },
+          {
+            "name": "Trigger Rules",
+            "explanation": "Trigger rules define WHEN a task should run based on its upstream tasks' states. Default is 'all_success' — task runs only when all upstream tasks succeed.",
+            "trigger_rules": [
+              {
+                "rule": "all_success (default)",
+                "description": "Run when ALL upstream tasks succeed",
+                "use_case": "Normal pipeline flow"
+              },
+              {
+                "rule": "all_failed",
+                "description": "Run when ALL upstream tasks have failed",
+                "use_case": "Cleanup or alerting on total failure"
+              },
+              {
+                "rule": "all_done",
+                "description": "Run when ALL upstream tasks are done (any state: success, failed, skipped)",
+                "use_case": "Final cleanup task that runs regardless of outcome"
+              },
+              {
+                "rule": "one_success",
+                "description": "Run when AT LEAST ONE upstream task succeeds",
+                "use_case": "Run as soon as any parallel branch completes"
+              },
+              {
+                "rule": "one_failed",
+                "description": "Run when AT LEAST ONE upstream task fails",
+                "use_case": "Alert as soon as any task fails"
+              },
+              {
+                "rule": "none_failed",
+                "description": "Run when no upstream task has failed or upstream_failed (skipped is OK)",
+                "use_case": "After branching — run when branch was skipped but not failed"
+              },
+              {
+                "rule": "none_failed_min_one_success",
+                "description": "Run when no failures AND at least one success (handles branches)",
+                "use_case": "Merge point after BranchPythonOperator"
+              },
+              {
+                "rule": "none_skipped",
+                "description": "Run when no upstream task was skipped",
+                "use_case": "Ensure all branches executed"
+              }
+            ],
+            "branch_example": "branch_task = BranchPythonOperator(...)\npath_a = PythonOperator(task_id='path_a', ...)\npath_b = PythonOperator(task_id='path_b', ...)\n\n# Final task uses none_failed_min_one_success to handle skipped branches\nfinal = PythonOperator(\n    task_id='final',\n    trigger_rule='none_failed_min_one_success',\n    python_callable=finalize\n)\n\nbranch_task >> [path_a, path_b] >> final"
+          },
+          {
+            "name": "Depends on Past",
+            "explanation": "When depends_on_past=True, a task instance will only run if the previous run of the same task succeeded (or was skipped). Ensures sequential processing of dated data.",
+            "example": {
+              "code": "process_data = PythonOperator(\n    task_id='process_data',\n    python_callable=process,\n    depends_on_past=True   # Won't run if yesterday's run failed\n)",
+              "use_case": "Incremental loads where today's data depends on yesterday's being processed correctly",
+              "drawback": "Can cause pipeline to halt entirely if one day fails — all future days wait",
+              "solution": "Fix the failing run and mark it as success, or clear it for retry"
+            }
+          },
+          {
+            "name": "Wait for Downstream",
+            "explanation": "When wait_for_downstream=True on a task, it waits for the downstream tasks of the PREVIOUS run to complete before this run starts. Ensures downstream tasks of the previous interval are done.",
+            "use_case": "When a load task writes partitioned data and downstream reporting needs previous partition complete before this run's extract starts"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "SubDAGs & Task Groups",
+        "topics": [
+          {
+            "name": "TaskGroups",
+            "explanation": "TaskGroups visually group related tasks in the Airflow UI without creating a separate DAG. They are the modern replacement for SubDAGs. TaskGroups are purely visual — they don't change execution behavior. They collapse in the UI for cleaner DAG graphs.",
+            "example": {
+              "code": "from airflow.utils.task_group import TaskGroup\nfrom airflow.operators.python import PythonOperator\nfrom airflow.decorators import dag\nfrom datetime import datetime\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef grouped_pipeline():\n\n    with TaskGroup('extract_group', tooltip='All extraction tasks') as extract_grp:\n        extract_orders   = PythonOperator(task_id='extract_orders',   python_callable=lambda: None)\n        extract_customers= PythonOperator(task_id='extract_customers', python_callable=lambda: None)\n        extract_products = PythonOperator(task_id='extract_products',  python_callable=lambda: None)\n        [extract_orders, extract_customers, extract_products]  # run in parallel\n\n    with TaskGroup('transform_group') as transform_grp:\n        clean_orders   = PythonOperator(task_id='clean_orders',   python_callable=lambda: None)\n        clean_customers= PythonOperator(task_id='clean_customers', python_callable=lambda: None)\n        join_data      = PythonOperator(task_id='join_data',       python_callable=lambda: None)\n        [clean_orders, clean_customers] >> join_data\n\n    with TaskGroup('load_group') as load_grp:\n        load_warehouse = PythonOperator(task_id='load_warehouse', python_callable=lambda: None)\n        load_datamart  = PythonOperator(task_id='load_datamart',  python_callable=lambda: None)\n\n    extract_grp >> transform_grp >> load_grp\n\ngrouped_pipeline()"
+            },
+            "nested_task_groups": {
+              "code": "with TaskGroup('etl') as etl:\n    with TaskGroup('extract', parent_group=etl) as extract:\n        t1 = EmptyOperator(task_id='orders')\n        t2 = EmptyOperator(task_id='products')\n    with TaskGroup('load', parent_group=etl) as load:\n        t3 = EmptyOperator(task_id='to_warehouse')\n    extract >> load"
+            }
+          },
+          {
+            "name": "SubDAGs (legacy)",
+            "explanation": "SubDAGs create a child DAG that appears as a single task in the parent DAG. Deprecated in Airflow 2.x — TaskGroups are the modern replacement.",
+            "why_deprecated": [
+              "SubDAGs use SubDagOperator which spawns a separate scheduler run",
+              "Causes deadlocks with CeleryExecutor (child tasks use parent's pool slots)",
+              "Complex to debug — two separate DAG UIs",
+              "Performance overhead of spawning child scheduler"
+            ],
+            "migration": "Replace SubDAGOperator with TaskGroup — same visual grouping, better performance, no deadlocks"
+          },
+          {
+            "name": "SubDAG vs TaskGroup",
+            "comparison_table": [
+              {
+                "feature": "Airflow version",
+                "subdag": "Legacy (deprecated 2.x)",
+                "taskgroup": "Recommended (2.x+)"
+              },
+              {
+                "feature": "Implementation",
+                "subdag": "Separate DAG object",
+                "taskgroup": "Visual grouping only"
+              },
+              {
+                "feature": "UI representation",
+                "subdag": "Clickable into sub-DAG",
+                "taskgroup": "Collapsible group in same DAG"
+              },
+              {
+                "feature": "Deadlock risk",
+                "subdag": "Yes (pool slot issues)",
+                "taskgroup": "None"
+              },
+              {
+                "feature": "Performance",
+                "subdag": "Overhead (child scheduler)",
+                "taskgroup": "No overhead"
+              },
+              {
+                "feature": "Complexity",
+                "subdag": "High",
+                "taskgroup": "Low"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Dynamic DAGs & Dynamic Task Mapping",
+        "topics": [
+          {
+            "name": "Dynamic DAG Generation",
+            "explanation": "Generate multiple DAGs programmatically from a config file, database, or list. Each generated DAG is a full DAG object registered with Airflow.",
+            "example": {
+              "from_config": "# config/clients.yaml:\n# clients:\n#   - name: acme_corp\n#     schedule: '0 2 * * *'\n#     s3_bucket: acme-data\n#   - name: globex\n#     schedule: '0 4 * * *'\n#     s3_bucket: globex-data\n\nimport yaml\nfrom airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\nwith open('/opt/airflow/config/clients.yaml') as f:\n    clients = yaml.safe_load(f)['clients']\n\nfor client in clients:\n    dag_id = f\"ingest_{client['name']}\"\n\n    with DAG(\n        dag_id=dag_id,\n        schedule=client['schedule'],\n        start_date=datetime(2024, 1, 1),\n        catchup=False,\n        tags=['client-ingestion', client['name']]\n    ) as dag:\n\n        def extract(bucket=client['s3_bucket'], **ctx):\n            print(f'Extracting from s3://{bucket}/{ctx[\"ds\"]}')\n\n        def load(client_name=client['name'], **ctx):\n            print(f'Loading data for client: {client_name}')\n\n        t1 = PythonOperator(task_id='extract', python_callable=extract)\n        t2 = PythonOperator(task_id='load',    python_callable=load)\n        t1 >> t2\n\n    globals()[dag_id] = dag  # Register each DAG globally"
+            },
+            "drawbacks": [
+              "Too many generated DAGs slow down the Airflow scheduler (file parsing overhead)",
+              "Hard to debug when generated DAG logic is wrong",
+              "Scheduler must re-parse config file on every heartbeat"
+            ],
+            "solutions": [
+              "Limit to < 500 dynamically generated DAGs",
+              "Cache config reads outside the DAG loop",
+              "Use Dynamic Task Mapping instead if all DAGs share same structure"
+            ]
+          },
+          {
+            "name": "Dynamic Task Mapping (.expand())",
+            "explanation": "Dynamic Task Mapping (Airflow 2.3+) creates multiple instances of the same task at runtime based on a list of inputs. No need to know the number of tasks at DAG write time. Each mapped task instance runs independently.",
+            "example": {
+              "basic_expand": "from airflow.decorators import dag, task\nfrom datetime import datetime\n\n@dag(schedule='@daily', start_date=datetime(2024,1,1), catchup=False)\ndef dynamic_mapping_pipeline():\n\n    @task\n    def get_tables() -> list:\n        # Returns list at runtime — could come from DB or API\n        return ['orders', 'customers', 'products', 'inventory']\n\n    @task\n    def process_table(table_name: str) -> dict:\n        print(f'Processing table: {table_name}')\n        return {'table': table_name, 'rows': 1000}\n\n    @task\n    def summarize(results: list):\n        print(f'All tables processed: {results}')\n\n    tables = get_tables()\n    # Creates one task instance per table at runtime\n    results = process_table.expand(table_name=tables)\n    summarize(results)  # receives list of all results\n\ndynamic_mapping_pipeline()",
+              "expand_kwargs": "# expand_kwargs: pass multiple args per task instance\n@task\ndef ingest(source: str, destination: str, date: str):\n    print(f'Ingesting {source} → {destination} for {date}')\n\n# Each dict = one task instance\ningest.expand_kwargs([\n    {'source': 's3://bucket/orders',   'destination': 'orders_table',   'date': '{{ ds }}'},\n    {'source': 's3://bucket/products', 'destination': 'products_table', 'date': '{{ ds }}'},\n    {'source': 's3://bucket/events',   'destination': 'events_table',   'date': '{{ ds }}'}\n])",
+              "partial_expand": "# partial() for fixed args, expand() for variable args\n@task\ndef load(data: dict, target_db: str, schema: str):\n    print(f'Loading to {target_db}.{schema}')\n\n# Fix target_db and schema, vary data\nload.partial(target_db='prod_warehouse', schema='public').expand(data=results)"
+            },
+            "drawbacks": [
+              "Mapped task count not known until runtime — UI shows [N mapped tasks] until run",
+              "All mapped task instances share the same pool slot settings",
+              "Cannot currently mix expand() with manual task instances easily"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Pools & Queues",
+        "topics": [
+          {
+            "name": "What are Pools",
+            "explanation": "Pools limit the number of concurrently running tasks that can access a shared resource. When a task is assigned to a pool, it uses one slot. When the pool is full, tasks queue until a slot is released. Prevents overloading databases, APIs, or other limited resources.",
+            "example": {
+              "create_pool": "# Via UI: Admin → Pools → Add Pool\n# Via CLI:\nairflow pools set snowflake_pool 5 'Max 5 concurrent Snowflake tasks'\nairflow pools set postgres_pool 3 'Max 3 concurrent Postgres tasks'\nairflow pools list",
+              "assign_task": "from airflow.operators.python import PythonOperator\n\n# Task uses 1 slot from snowflake_pool\nquery_snowflake = PythonOperator(\n    task_id='query_snowflake',\n    python_callable=run_query,\n    pool='snowflake_pool',         # Assigned pool\n    pool_slots=1                   # Number of slots this task uses (default 1)\n)\n\n# Heavy task uses 2 slots\nheavy_task = PythonOperator(\n    task_id='heavy_snowflake_job',\n    python_callable=run_heavy_query,\n    pool='snowflake_pool',\n    pool_slots=2                   # Takes 2 of the 5 available slots\n)"
+            },
+            "use_cases": [
+              "Limit concurrent connections to a database",
+              "Rate limit API calls to external services",
+              "Prevent too many Spark jobs submitting simultaneously",
+              "Control resource usage during business hours vs off-hours"
+            ],
+            "drawbacks": [
+              "Pool exhaustion causes tasks to queue indefinitely without clear error",
+              "Wrong pool_slots assignment can block other tasks"
+            ],
+            "solutions": [
+              "Monitor pool utilization via Airflow UI (Admin → Pools) or Prometheus metrics",
+              "Set task timeout to prevent tasks holding slots indefinitely",
+              "Alert on pool queue depth via custom metrics"
+            ]
+          },
+          {
+            "name": "Priority Weights",
+            "explanation": "When multiple tasks are queued, priority_weight determines which runs first. Higher weight = higher priority. Used with WeightRule to compute effective priority.",
+            "example": {
+              "code": "# Critical revenue pipeline runs first\nrevenue_task = PythonOperator(\n    task_id='revenue_report',\n    python_callable=compute_revenue,\n    priority_weight=100,            # High priority\n    weight_rule='absolute'          # Use this task's weight only\n)\n\n# Low priority background job\ncleanup_task = PythonOperator(\n    task_id='cleanup_old_files',\n    python_callable=cleanup,\n    priority_weight=1               # Low priority\n)",
+              "weight_rules": {
+                "downstream": "Default. Weight = own weight + sum of all downstream task weights. Tasks closer to the end of pipeline get higher priority.",
+                "upstream": "Weight = own weight + sum of all upstream task weights",
+                "absolute": "Weight = exactly the value set. No propagation."
+              }
+            }
+          },
+          {
+            "name": "Concurrency Settings",
+            "explanation": "Multiple layered settings control how many tasks run simultaneously.",
+            "settings": [
+              {
+                "setting": "parallelism (airflow.cfg)",
+                "description": "Global max tasks running across ALL DAGs simultaneously",
+                "default": "32",
+                "scope": "Global"
+              },
+              {
+                "setting": "max_active_tasks_per_dag (airflow.cfg)",
+                "description": "Max concurrent tasks for any single DAG",
+                "default": "16",
+                "scope": "Per DAG (global default)"
+              },
+              {
+                "setting": "max_active_runs_per_dag (airflow.cfg)",
+                "description": "Max concurrent DAG runs for any single DAG",
+                "default": "16",
+                "scope": "Per DAG (global default)"
+              },
+              {
+                "setting": "max_active_tasks (DAG parameter)",
+                "description": "Override max_active_tasks_per_dag for a specific DAG",
+                "example": "DAG('my_dag', max_active_tasks=5)",
+                "scope": "Specific DAG"
+              },
+              {
+                "setting": "max_active_runs (DAG parameter)",
+                "description": "Override max_active_runs_per_dag for a specific DAG",
+                "example": "DAG('my_dag', max_active_runs=1)",
+                "scope": "Specific DAG"
+              },
+              {
+                "setting": "pool slots",
+                "description": "Controls concurrency for specific resource pools",
+                "scope": "Per resource pool"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "SLAs, Alerts & Monitoring",
+        "topics": [
+          {
+            "name": "SLA Miss Callbacks",
+            "explanation": "SLAs define expected task/DAG completion time. If a task hasn't finished within its SLA, Airflow triggers the sla_miss_callback and sends email alerts.",
+            "example": {
+              "code": "from airflow import DAG\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime, timedelta\n\ndef sla_miss_alert(dag, task_list, blocking_task_list, slas, blocking_tis):\n    \"\"\"Called when SLA is missed\"\"\"\n    message = f\"SLA MISSED in DAG: {dag.dag_id}\\n\"\n    message += f\"Missed tasks: {[t.task_id for t in task_list]}\\n\"\n    message += f\"Blocking tasks: {[t.task_id for t in blocking_task_list]}\"\n    # Send to Slack/PagerDuty\n    send_slack_alert(message)\n    print(message)\n\nwith DAG(\n    'critical_pipeline',\n    schedule='0 6 * * *',\n    start_date=datetime(2024,1,1),\n    sla_miss_callback=sla_miss_alert,    # Called on SLA miss\n    default_args={\n        'sla': timedelta(hours=2)         # Each task must complete within 2 hours\n    }\n) as dag:\n    extract = PythonOperator(\n        task_id='extract',\n        python_callable=extract_fn,\n        sla=timedelta(hours=1)            # Override: this task must finish in 1 hour\n    )"
+            },
+            "drawbacks": [
+              "SLA is measured from DAG start time (execution_date), not task start time",
+              "SLA emails are sent only once — not repeatedly if task is still running",
+              "SLA miss does NOT stop the task — it just alerts"
+            ]
+          },
+          {
+            "name": "Failure & Success Callbacks",
+            "explanation": "Callbacks triggered on specific task state changes. Applied at task or DAG level.",
+            "example": {
+              "task_callbacks": "import requests\n\ndef on_failure(context):\n    dag_id  = context['dag'].dag_id\n    task_id = context['task_instance'].task_id\n    exec_dt = context['ds']\n    log_url = context['task_instance'].log_url\n    exception = context.get('exception')\n\n    message = (\n        f\":red_circle: *TASK FAILED*\\n\"\n        f\"DAG: `{dag_id}` | Task: `{task_id}`\\n\"\n        f\"Date: {exec_dt}\\n\"\n        f\"Error: {exception}\\n\"\n        f\"Logs: {log_url}\"\n    )\n    requests.post(\n        'https://hooks.slack.com/services/XXX/YYY/ZZZ',\n        json={'text': message}\n    )\n\ndef on_success(context):\n    print(f\"Task {context['task_instance'].task_id} succeeded!\")\n\ndef on_retry(context):\n    attempt = context['task_instance'].try_number\n    print(f\"Retry attempt {attempt}\")\n\n# Apply to specific task\nrisky_task = PythonOperator(\n    task_id='risky_task',\n    python_callable=fn,\n    on_failure_callback=on_failure,\n    on_success_callback=on_success,\n    on_retry_callback=on_retry\n)\n\n# Apply to all tasks via default_args\ndefault_args = {\n    'on_failure_callback': on_failure,\n    'retries': 3,\n    'retry_delay': timedelta(minutes=5)\n}"
+            }
+          },
+          {
+            "name": "Airflow Metrics (Prometheus & StatsD)",
+            "explanation": "Airflow emits metrics via StatsD. Use prometheus-statsd-exporter to convert to Prometheus format, then visualize in Grafana.",
+            "key_metrics": [
+              {
+                "metric": "airflow.dag_processing.total_parse_time",
+                "description": "Time to parse all DAG files"
+              },
+              {
+                "metric": "airflow.dagrun.duration.success.<dag_id>",
+                "description": "DAG run duration for successful runs"
+              },
+              {
+                "metric": "airflow.dagrun.duration.failed.<dag_id>",
+                "description": "DAG run duration for failed runs"
+              },
+              {
+                "metric": "airflow.executor.open_slots",
+                "description": "Available executor slots"
+              },
+              {
+                "metric": "airflow.executor.queued_tasks",
+                "description": "Tasks queued waiting for executor"
+              },
+              {
+                "metric": "airflow.executor.running_tasks",
+                "description": "Currently running tasks"
+              },
+              {
+                "metric": "airflow.pool.open_slots.<pool>",
+                "description": "Available slots in a pool"
+              },
+              {
+                "metric": "airflow.pool.queued_slots.<pool>",
+                "description": "Tasks queued in a pool"
+              },
+              {
+                "metric": "airflow.scheduler.tasks.killed_externally",
+                "description": "Tasks killed (OOM, timeout)"
+              },
+              {
+                "metric": "airflow.ti.failures",
+                "description": "Task instance failures counter"
+              }
+            ],
+            "config": "# airflow.cfg:\n[metrics]\nstatsd_on = True\nstatsd_host = statsd-host\nstatsd_port = 8125\nstatsd_prefix = airflow"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "title": "Security",
+        "topics": [
+          {
+            "name": "Role-Based Access Control (RBAC)",
+            "explanation": "Airflow uses Flask-AppBuilder RBAC to control who can see and do what in the UI. Roles have permissions on resources.",
+            "built_in_roles": [
+              {
+                "role": "Admin",
+                "permissions": "Full access to everything"
+              },
+              {
+                "role": "Op",
+                "permissions": "Can view, trigger, and clear DAGs. Cannot manage users."
+              },
+              {
+                "role": "User",
+                "permissions": "Can view and trigger DAGs. No admin actions."
+              },
+              {
+                "role": "Viewer",
+                "permissions": "Read-only. Can view DAGs and task logs."
+              },
+              {
+                "role": "Public",
+                "permissions": "No permissions (anonymous users)"
+              }
+            ],
+            "example": {
+              "create_user": "airflow users create \\\n  --username john \\\n  --password securepass \\\n  --firstname John \\\n  --lastname Doe \\\n  --role User \\\n  --email john@company.com",
+              "custom_role": "# Create custom role via UI: Security → List Roles → Add\n# Or via Python:\nfrom airflow.www.security import AirflowSecurityManager\n# Custom role: can only view specific DAG\n# Grant: can_read on DAG[sales_pipeline]"
+            }
+          },
+          {
+            "name": "Secrets Backend",
+            "explanation": "Store connections and variables in external secret managers (AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager) instead of Airflow's metadata DB.",
+            "aws_secrets_manager": {
+              "config": "# airflow.cfg:\n[secrets]\nbackend = airflow.providers.amazon.aws.secrets.secrets_manager.SecretsManagerBackend\nbackend_kwargs = {\n  \"connections_prefix\": \"airflow/connections\",\n  \"variables_prefix\": \"airflow/variables\",\n  \"profile_name\": null\n}",
+              "store_connection": "# AWS CLI: store connection\naws secretsmanager create-secret \\\n  --name airflow/connections/postgres_dwh \\\n  --secret-string '{\"conn_type\": \"postgresql\", \"host\": \"mydb.rds.amazonaws.com\", \"schema\": \"analytics\", \"login\": \"airflow\", \"password\": \"secret\", \"port\": 5432}'",
+              "store_variable": "aws secretsmanager create-secret \\\n  --name airflow/variables/s3_bucket \\\n  --secret-string 'my-data-lake-prod'"
+            },
+            "vault_config": "# HashiCorp Vault:\n[secrets]\nbackend = airflow.providers.hashicorp.secrets.vault.VaultBackend\nbackend_kwargs = {\n  \"connections_path\": \"connections\",\n  \"variables_path\": \"variables\",\n  \"mount_point\": \"airflow\",\n  \"url\": \"http://vault:8200\"\n}",
+            "search_path": "Airflow searches for secrets in order: 1) Secrets backend, 2) Environment variables, 3) Metadata DB"
+          },
+          {
+            "name": "Fernet Encryption",
+            "explanation": "Airflow uses Fernet symmetric encryption to encrypt connection passwords and variable values stored in the metadata DB.",
+            "setup": "# Generate a Fernet key:\npython -c \"from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())\"\n# Output: 'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='\n\n# Set in airflow.cfg:\n[core]\nfernet_key = ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg=\n\n# Or environment variable:\nexport AIRFLOW__CORE__FERNET_KEY='ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='",
+            "key_rotation": "# Rotate key without losing old encrypted data:\nairflow rotate-fernet-key  # Re-encrypts all connections/variables with new key",
+            "drawbacks": [
+              "If Fernet key is lost, all encrypted connections/variables are unrecoverable",
+              "Same key across all Airflow instances — must be securely distributed"
+            ],
+            "solutions": [
+              "Store Fernet key in AWS Secrets Manager or Vault",
+              "Rotate keys periodically and immediately after team member departure"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "title": "Testing & CI/CD",
+        "topics": [
+          {
+            "name": "Unit Testing DAGs",
+            "explanation": "Test DAG structure, task count, dependencies, and default args without executing tasks.",
+            "example": {
+              "structure_tests": "import pytest\nfrom airflow.models import DagBag\n\n@pytest.fixture\ndef dag_bag():\n    return DagBag(dag_folder='dags/', include_examples=False)\n\ndef test_dag_loads_without_errors(dag_bag):\n    assert len(dag_bag.import_errors) == 0, f'DAG import errors: {dag_bag.import_errors}'\n\ndef test_sales_pipeline_exists(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    assert dag is not None\n\ndef test_sales_pipeline_task_count(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    assert len(dag.tasks) == 5\n\ndef test_sales_pipeline_schedule(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    assert str(dag.schedule_interval) == '0 2 * * *'\n\ndef test_no_catchup(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    assert dag.catchup == False\n\ndef test_task_dependencies(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    extract   = dag.get_task('extract')\n    transform = dag.get_task('transform')\n    load      = dag.get_task('load')\n    assert transform.task_id in [t.task_id for t in extract.downstream_list]\n    assert load.task_id      in [t.task_id for t in transform.downstream_list]\n\ndef test_retries_configured(dag_bag):\n    dag = dag_bag.get_dag('sales_pipeline')\n    for task in dag.tasks:\n        assert task.retries >= 1, f'Task {task.task_id} has no retries configured'"
+            }
+          },
+          {
+            "name": "Testing Operators & Callables",
+            "explanation": "Test the actual Python callable functions independently from Airflow infrastructure.",
+            "example": {
+              "code": "import pytest\nfrom unittest.mock import MagicMock, patch\nfrom dags.sales_pipeline import extract_orders, transform_orders, load_orders\n\nclass TestExtractOrders:\n    def test_extract_returns_dataframe(self):\n        mock_context = {'ds': '2024-01-15', 'ti': MagicMock()}\n        with patch('dags.sales_pipeline.PostgresHook') as mock_hook:\n            mock_hook.return_value.get_pandas_df.return_value = pd.DataFrame(\n                {'order_id': [1,2,3], 'amount': [100, 200, 300]}\n            )\n            result = extract_orders(**mock_context)\n        assert result == 3  # row count returned\n\n    def test_extract_handles_empty_data(self):\n        mock_context = {'ds': '2024-01-15', 'ti': MagicMock()}\n        with patch('dags.sales_pipeline.PostgresHook') as mock_hook:\n            mock_hook.return_value.get_pandas_df.return_value = pd.DataFrame()\n            result = extract_orders(**mock_context)\n        assert result == 0\n\nclass TestTransformOrders:\n    def test_removes_cancelled_orders(self):\n        data = [\n            {'order_id': 1, 'status': 'completed', 'amount': 100},\n            {'order_id': 2, 'status': 'cancelled',  'amount': 50},\n            {'order_id': 3, 'status': 'shipped',    'amount': 200},\n        ]\n        result = transform_orders(data)\n        assert len(result) == 2\n        assert all(o['status'] != 'cancelled' for o in result)"
+            }
+          },
+          {
+            "name": "CI/CD Pipeline for DAGs",
+            "explanation": "Automate testing and deployment of Airflow DAGs using GitHub Actions or GitLab CI.",
+            "github_actions": {
+              "workflow": "name: Airflow DAG CI/CD\n\non:\n  push:\n    branches: [main, develop]\n  pull_request:\n    branches: [main]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n\n      - name: Set up Python\n        uses: actions/setup-python@v4\n        with:\n          python-version: '3.11'\n\n      - name: Install dependencies\n        run: |\n          pip install apache-airflow==2.8.0\n          pip install pytest pytest-airflow\n\n      - name: Lint DAGs\n        run: flake8 dags/ --max-line-length=120\n\n      - name: Validate DAG syntax\n        run: |\n          export AIRFLOW_HOME=/tmp/airflow\n          airflow db init\n          python -c \"from airflow.models import DagBag; d = DagBag('dags/'); assert len(d.import_errors) == 0\"\n\n      - name: Run unit tests\n        run: pytest tests/ -v --tb=short\n\n  deploy:\n    needs: test\n    if: github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n    steps:\n      - name: Sync DAGs to S3 (MWAA)\n        run: aws s3 sync dags/ s3://my-mwaa-bucket/dags/ --delete"
+            },
+            "deployment_strategies": [
+              {
+                "strategy": "Git-sync sidecar",
+                "description": "Kubernetes sidecar container clones DAG repo every N seconds",
+                "config": "# values.yaml for Helm:\ngitSync:\n  enabled: true\n  repo: https://github.com/myorg/airflow-dags\n  branch: main\n  subPath: dags\n  period: 60s"
+              },
+              {
+                "strategy": "S3 sync (MWAA)",
+                "description": "CI/CD syncs DAG files to S3 bucket, MWAA auto-detects changes",
+                "command": "aws s3 sync dags/ s3://mwaa-bucket/dags/"
+              },
+              {
+                "strategy": "Baked Docker image",
+                "description": "DAG files baked into Docker image. Rolling deploy on new image.",
+                "dockerfile": "FROM apache/airflow:2.8.0\nCOPY dags/ $AIRFLOW_HOME/dags/"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 18,
+        "title": "Performance & Scaling",
+        "topics": [
+          {
+            "name": "Airflow Scheduler Tuning",
+            "explanation": "The scheduler is the most critical component. Poor scheduler performance causes DAGs to start late or tasks to queue indefinitely.",
+            "key_settings": [
+              {
+                "setting": "scheduler.min_file_process_interval",
+                "default": "30",
+                "recommendation": "60-300 for large DAG counts. Lower = faster pickup of new DAGs but more CPU.",
+                "description": "How often each DAG file is re-parsed"
+              },
+              {
+                "setting": "scheduler.dag_dir_list_interval",
+                "default": "300",
+                "recommendation": "300 for production. Lower only when deploying DAGs frequently.",
+                "description": "How often to scan for new DAG files"
+              },
+              {
+                "setting": "scheduler.parsing_processes",
+                "default": "2",
+                "recommendation": "Number of CPU cores - 1",
+                "description": "Parallel DAG file parsers"
+              },
+              {
+                "setting": "scheduler.max_tis_per_query",
+                "default": "512",
+                "recommendation": "Reduce to 256 if DB queries are slow",
+                "description": "Max task instances per scheduler DB query"
+              }
+            ],
+            "scheduler_ha": {
+              "description": "Run multiple schedulers for high availability (Airflow 2.0+)",
+              "config": "# Start 2 schedulers — only one is active at a time (leader election):\nairflow scheduler &\nairflow scheduler &",
+              "requirement": "Requires PostgreSQL or MySQL (not SQLite)"
+            }
+          },
+          {
+            "name": "Reducing DAG Parse Time",
+            "explanation": "Scheduler parses every DAG file periodically. Heavy imports, DB calls, or API calls at parse time slow down the scheduler significantly.",
+            "bad_practices": {
+              "code": "# BAD: DB call at parse time — runs on every scheduler heartbeat\nfrom airflow import DAG\nfrom myapp.db import get_client_list  # Imports DB connection at parse time\n\nclients = get_client_list()  # DB query executed on every file parse!\nfor client in clients:\n    with DAG(f'dag_{client}', ...) as dag:\n        pass"
+            },
+            "good_practices": {
+              "code": "# GOOD: Read from static config file, not DB\nimport yaml\nwith open('/opt/airflow/config/clients.yaml') as f:\n    clients = yaml.safe_load(f)['clients']\n\n# OR: Use lazy imports inside callables\nfor client in clients:\n    def process(client_name=client, **ctx):\n        from myapp.db import get_client  # Import inside callable — not at parse time\n        return get_client(client_name)"
+            },
+            "other_tips": [
+              "Use top-level code only for DAG structure definition",
+              "Move heavy logic into operators/callables",
+              "Use .airflowignore to exclude non-DAG Python files from scanning",
+              "Set core.min_serialized_dag_update_interval to reduce DB writes",
+              "Profile parse time: airflow dags report"
+            ]
+          },
+          {
+            "name": "Parallelism & Concurrency Settings",
+            "optimization_example": {
+              "scenario": "50 concurrent tasks needed, CeleryExecutor with 5 workers",
+              "config": "[core]\nparallelism = 50                    # Global max tasks\nmax_active_tasks_per_dag = 20       # Per DAG max\n\n[celery]\nworker_concurrency = 10             # 10 tasks per worker x 5 workers = 50 total\n\n# In specific DAGs:\nDAG('high_priority', max_active_tasks=30, max_active_runs=2)\nDAG('low_priority',  max_active_tasks=5,  max_active_runs=1)"
+            }
+          }
+        ]
+      },
+      {
+        "id": 19,
+        "title": "Airflow on Kubernetes",
+        "topics": [
+          {
+            "name": "KubernetesPodOperator",
+            "explanation": "Runs a task in a dedicated Kubernetes Pod using any Docker image. Full environment isolation. Can use different images per task — perfect for tasks with conflicting dependencies.",
+            "example": {
+              "basic": "from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator\nfrom kubernetes.client import models as k8s\n\nrun_spark_job = KubernetesPodOperator(\n    task_id='run_spark_job',\n    name='spark-etl-pod',\n    namespace='airflow',\n    image='apache/spark:3.5.0',\n    cmds=['spark-submit'],\n    arguments=[\n        '--master', 'k8s://https://kubernetes.default.svc',\n        '--class', 'com.myorg.ETLJob',\n        's3://my-bucket/jobs/etl.jar',\n        '--date', '{{ ds }}'\n    ],\n    env_vars=[\n        k8s.V1EnvVar(name='S3_BUCKET',  value='my-data-lake'),\n        k8s.V1EnvVar(name='EXEC_DATE',  value='{{ ds }}')\n    ],\n    resources=k8s.V1ResourceRequirements(\n        requests={'memory': '4Gi', 'cpu': '2'},\n        limits  ={'memory': '8Gi', 'cpu': '4'}\n    ),\n    is_delete_operator_pod=True,   # Clean up pod after completion\n    get_logs=True,                 # Stream pod logs to Airflow task logs\n    do_xcom_push=False,\n    startup_timeout_seconds=300\n)",
+              "with_secrets": "from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator\nfrom kubernetes.client import models as k8s\n\nrun_dbt = KubernetesPodOperator(\n    task_id='run_dbt_models',\n    image='my-registry/dbt:1.7.0',\n    cmds=['dbt', 'run', '--select', 'tag:daily'],\n    env_from=[\n        k8s.V1EnvFromSource(\n            secret_ref=k8s.V1SecretEnvSource(name='dbt-secrets')\n        )\n    ],\n    volume_mounts=[\n        k8s.V1VolumeMount(\n            name='dbt-profiles',\n            mount_path='/root/.dbt'\n        )\n    ],\n    volumes=[\n        k8s.V1Volume(\n            name='dbt-profiles',\n            config_map=k8s.V1ConfigMapVolumeSource(name='dbt-profiles-cm')\n        )\n    ]\n)"
+            },
+            "advantages": [
+              "Any Docker image — complete dependency isolation",
+              "Pod resource requests/limits per task",
+              "Kubernetes RBAC for task-level security",
+              "Leverage Kubernetes for pod scheduling (node selectors, tolerations)"
+            ],
+            "drawbacks": [
+              "Pod startup overhead (30-60 seconds)",
+              "Pod failures may not report errors cleanly",
+              "Image pull latency for large images"
+            ]
+          },
+          {
+            "name": "Airflow Helm Chart Configuration",
+            "explanation": "Deploy Airflow on Kubernetes using the official Helm chart from Apache Airflow.",
+            "commands": "# Add Airflow Helm repo:\nhelm repo add apache-airflow https://airflow.apache.org\nhelm repo update\n\n# Install with custom values:\nhelm install airflow apache-airflow/airflow \\\n  --namespace airflow \\\n  --create-namespace \\\n  --values values.yaml",
+            "key_values_yaml": "# values.yaml\nexecutor: KubernetesExecutor\n\nscheduler:\n  replicas: 2      # HA schedulers\n\nwebserver:\n  replicas: 2\n  service:\n    type: LoadBalancer\n\ndata:\n  metadataConnection:\n    user: airflow\n    pass: airflow\n    host: postgres-host\n    db: airflow\n    port: 5432\n\ndags:\n  gitSync:\n    enabled: true\n    repo: https://github.com/myorg/airflow-dags\n    branch: main\n    subPath: dags\n\nlogs:\n  persistence:\n    enabled: true\n    storageClassName: gp3\n    size: 50Gi\n\nextraEnv:\n  - name: AIRFLOW__CORE__FERNET_KEY\n    valueFrom:\n      secretKeyRef:\n        name: airflow-fernet-key\n        key: fernet-key"
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "title": "Cloud-Managed Airflow",
+        "topics": [
+          {
+            "name": "Amazon MWAA",
+            "explanation": "Amazon Managed Workflows for Apache Airflow. Fully managed Airflow on AWS. Integrates natively with S3 (DAGs and logs), Secrets Manager, VPC, and IAM.",
+            "setup": {
+              "dag_deployment": "Upload DAGs to S3: aws s3 sync dags/ s3://my-mwaa-bucket/dags/",
+              "requirements": "Upload requirements.txt to S3 for custom packages",
+              "environment_variables": "Set via MWAA environment → Airflow configuration options",
+              "connections": "Use Secrets Manager backend or AWS Connections (IAM-based)"
+            },
+            "drawbacks": [
+              "15-30 minute update time when changing requirements.txt or config",
+              "Limited Airflow version support (lags behind open-source)",
+              "Limited plugin support",
+              "Higher cost than self-managed for high workloads"
+            ],
+            "best_for": "Teams wanting zero infrastructure management, AWS-native shop"
+          },
+          {
+            "name": "Google Cloud Composer",
+            "explanation": "Managed Airflow on GCP built on Google Kubernetes Engine. Deep GCP integration (BigQuery, GCS, Dataflow, Dataproc).",
+            "composer2_features": [
+              "Auto-scaling worker pods",
+              "Separate environments per team",
+              "Workload Identity for GCP service auth",
+              "Private IP support"
+            ],
+            "drawbacks": [
+              "Expensive for small workloads",
+              "Long environment creation/update times (20-40 minutes)",
+              "GCP-specific provider packages pre-installed may conflict"
+            ]
+          },
+          {
+            "name": "Astronomer",
+            "explanation": "Commercial Airflow platform built by Astro (the company that created Airflow). Available as SaaS (Astro Cloud) or self-hosted (Astro Software).",
+            "features": [
+              "Faster deploys than MWAA/Composer (code push in seconds)",
+              "Astro CLI for local dev and deployment",
+              "Workspace/deployment isolation",
+              "Built-in CI/CD with Astro CLI",
+              "Hybrid execution (run tasks in your cloud, control plane managed)",
+              "Airflow 2.x always up-to-date"
+            ],
+            "astro_cli": "# Init project:\nastro dev init\n# Run locally:\nastro dev start\n# Deploy:\nastro deploy"
+          },
+          {
+            "name": "Managed Airflow Comparison",
+            "comparison_table": [
+              {
+                "feature": "Cloud",
+                "mwaa": "AWS",
+                "composer": "GCP",
+                "astronomer": "Any cloud"
+              },
+              {
+                "feature": "Deploy speed",
+                "mwaa": "15-30 min",
+                "composer": "20-40 min",
+                "astronomer": "< 1 min"
+              },
+              {
+                "feature": "Airflow version",
+                "mwaa": "Lags 1-2 ver",
+                "composer": "Lags 1-2 ver",
+                "astronomer": "Latest"
+              },
+              {
+                "feature": "Cost model",
+                "mwaa": "Per-env flat",
+                "composer": "Per-env flat",
+                "astronomer": "Worker-hours"
+              },
+              {
+                "feature": "Best for",
+                "mwaa": "AWS-native",
+                "composer": "GCP-native",
+                "astronomer": "Multi-cloud/enterprise"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "title": "Integrations",
+        "topics": [
+          {
+            "name": "Airflow + dbt",
+            "explanation": "Run dbt models from Airflow. Two approaches: DbtRunOperator from airflow-dbt-python library, or BashOperator running dbt CLI commands.",
+            "example": {
+              "bash_approach": "from airflow.operators.bash import BashOperator\n\n# Run all daily tagged models\ndbt_run = BashOperator(\n    task_id='dbt_run_daily',\n    bash_command='''\n        cd /opt/dbt/my_project && \\\n        dbt run \\\n          --profiles-dir /opt/dbt/profiles \\\n          --target prod \\\n          --select tag:daily \\\n          --vars '{\"execution_date\": \"{{ ds }}\"}'\n    '''\n)\n\ndbt_test = BashOperator(\n    task_id='dbt_test',\n    bash_command='cd /opt/dbt/my_project && dbt test --select tag:daily'\n)\n\ndbt_run >> dbt_test",
+              "dbt_cloud_operator": "from airflow.providers.dbt.cloud.operators.dbt import DbtCloudRunJobOperator\n\nrun_dbt_cloud = DbtCloudRunJobOperator(\n    task_id='run_dbt_cloud_job',\n    dbt_cloud_conn_id='dbt_cloud_default',\n    job_id=12345,\n    wait_for_termination=True,\n    additional_run_config={\n        'steps_override': ['dbt run --select tag:daily']\n    }\n)"
+            }
+          },
+          {
+            "name": "Airflow + Spark",
+            "explanation": "Submit Spark jobs from Airflow using SparkSubmitOperator or EMR/Dataproc operators.",
+            "example": {
+              "spark_submit": "from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator\n\nrun_spark = SparkSubmitOperator(\n    task_id='run_etl_spark',\n    conn_id='spark_default',\n    application='s3://my-bucket/jars/etl.jar',\n    name='daily_etl',\n    conf={\n        'spark.executor.memory': '4g',\n        'spark.executor.cores': '2',\n        'spark.executor.instances': '10',\n        'spark.sql.shuffle.partitions': '200'\n    },\n    application_args=['--date', '{{ ds }}', '--env', 'prod'],\n    driver_memory='2g',\n    executor_memory='4g',\n    num_executors=10,\n    jars='s3://my-bucket/jars/dependencies.jar'\n)",
+              "databricks": "from airflow.providers.databricks.operators.databricks import DatabricksRunNowOperator\n\nrun_notebook = DatabricksRunNowOperator(\n    task_id='run_databricks_job',\n    databricks_conn_id='databricks_default',\n    job_id=12345,\n    notebook_params={'execution_date': '{{ ds }}'}\n)"
+            }
+          },
+          {
+            "name": "Airflow + Snowflake",
+            "example": {
+              "code": "from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator\nfrom airflow.providers.snowflake.hooks.snowflake import SnowflakeHook\n\n# Run SQL in Snowflake\nload_to_snowflake = SnowflakeOperator(\n    task_id='load_daily_sales',\n    sql='''\n        INSERT INTO analytics.gold.daily_sales\n        SELECT date, region, SUM(amount) as revenue\n        FROM analytics.silver.orders\n        WHERE date = '{{ ds }}'\n        GROUP BY date, region;\n    ''',\n    snowflake_conn_id='snowflake_default',\n    warehouse='TRANSFORM_WH',\n    database='ANALYTICS',\n    schema='GOLD',\n    role='TRANSFORMER'\n)\n\n# Use Hook for more control\ndef run_snowflake_query(**context):\n    hook = SnowflakeHook(snowflake_conn_id='snowflake_default')\n    results = hook.get_pandas_df(\n        f\"SELECT * FROM orders WHERE date = '{context['ds']}'\"\n    )\n    return len(results)"
+            }
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "title": "Advanced Patterns",
+        "topics": [
+          {
+            "name": "Data-Aware Scheduling (Datasets)",
+            "explanation": "Airflow 2.4+ allows scheduling DAGs based on dataset updates rather than time. When a DAG produces a dataset, downstream DAGs are triggered automatically.",
+            "example": {
+              "code": "from airflow import DAG, Dataset\nfrom airflow.operators.python import PythonOperator\nfrom datetime import datetime\n\n# Define datasets (logical data assets)\norders_dataset   = Dataset('s3://my-lake/silver/orders/')\ncustomers_dataset= Dataset('s3://my-lake/silver/customers/')\n\n# Producer DAG: declares it produces the dataset\nwith DAG('ingest_orders', schedule='@hourly', start_date=datetime(2024,1,1)) as producer:\n    ingest = PythonOperator(\n        task_id='ingest_orders',\n        python_callable=ingest_fn,\n        outlets=[orders_dataset]   # Marks dataset as updated when task completes\n    )\n\n# Consumer DAG: runs when BOTH datasets are updated\nwith DAG(\n    'reporting_dag',\n    schedule=[orders_dataset, customers_dataset],  # Triggered by data, not time\n    start_date=datetime(2024,1,1)\n) as consumer:\n    report = PythonOperator(task_id='build_report', python_callable=report_fn)"
+            },
+            "benefits": [
+              "True data-driven orchestration — no polling or ExternalTaskSensor needed",
+              "Clear producer-consumer relationships visible in UI",
+              "DAG runs when data is ready, not on a fixed schedule"
+            ],
+            "drawbacks": [
+              "Dataset-triggered DAGs don't run if no data update occurs (no time-based fallback)",
+              "Dataset URI is just a string — no actual data validation at scheduling time"
+            ]
+          },
+          {
+            "name": "Deferrable Operators",
+            "explanation": "Deferrable operators suspend execution (releasing the worker slot) while waiting for an external event, then resume when the event fires. The Triggerer component handles the async waiting using asyncio. Massive resource savings for long-polling tasks.",
+            "comparison": {
+              "traditional_sensor": "Holds worker slot for entire wait (poke mode) or releases + re-queues (reschedule mode — still creates many short tasks)",
+              "deferrable_operator": "Suspends to Triggerer (single async thread) — zero worker slots used during entire wait"
+            },
+            "example": {
+              "code": "# Traditional S3 sensor uses reschedule mode — creates many task runs\n# Deferrable sensor waits with zero worker slot usage:\nfrom airflow.providers.amazon.aws.sensors.s3 import S3KeySensorAsync\n\nwait_for_file = S3KeySensorAsync(\n    task_id='wait_for_daily_file',\n    bucket_name='my-bucket',\n    bucket_key='data/{{ ds }}/orders.csv',\n    aws_conn_id='aws_default'\n    # No mode= needed — async by default\n)",
+              "custom_deferrable": "from airflow.triggers.base import BaseTrigger, TriggerEvent\nfrom airflow.models import BaseOperator\nfrom airflow.exceptions import TaskDeferred\nimport asyncio\n\nclass MyDeferrableTrigger(BaseTrigger):\n    def __init__(self, url: str):\n        self.url = url\n\n    async def run(self):\n        import aiohttp\n        while True:\n            async with aiohttp.ClientSession() as session:\n                async with session.get(self.url) as resp:\n                    data = await resp.json()\n                    if data['status'] == 'ready':\n                        yield TriggerEvent({'data': data})\n                        return\n            await asyncio.sleep(30)\n\nclass WaitForAPIOperator(BaseOperator):\n    def execute(self, context):\n        raise TaskDeferred(\n            trigger=MyDeferrableTrigger(url='https://api.example.com/status'),\n            method_name='execute_complete'\n        )\n\n    def execute_complete(self, context, event):\n        return event['data']"
+            }
+          },
+          {
+            "name": "Airflow REST API",
+            "explanation": "Airflow 2.0+ exposes a stable REST API for triggering DAGs, querying task statuses, managing connections, and more.",
+            "examples": {
+              "trigger_dag": "import requests\n\nresponse = requests.post(\n    'http://airflow-host:8080/api/v1/dags/sales_pipeline/dagRuns',\n    json={\n        'dag_run_id': 'manual_run_20240115',\n        'conf': {'date': '2024-01-15', 'env': 'prod'}\n    },\n    auth=('admin', 'password')\n)\nprint(response.json())",
+              "get_dag_run_status": "response = requests.get(\n    'http://airflow-host:8080/api/v1/dags/sales_pipeline/dagRuns/manual_run_20240115',\n    auth=('admin', 'password')\n)\nstatus = response.json()['state']  # 'success', 'running', 'failed'",
+              "list_task_instances": "response = requests.get(\n    'http://airflow-host:8080/api/v1/dags/sales_pipeline/dagRuns/manual_run_20240115/taskInstances',\n    auth=('admin', 'password')\n)\nfor ti in response.json()['task_instances']:\n    print(f\"{ti['task_id']}: {ti['state']}\")"
+            }
+          }
+        ]
+      },
+      {
+        "id": 23,
+        "title": "Interview Preparation — Top 50 Questions",
+        "questions": [
+          {
+            "q_no": 1,
+            "question": "What is Apache Airflow and what problem does it solve?",
+            "answer": "Apache Airflow is an open-source workflow orchestration platform that allows you to programmatically author, schedule, and monitor data pipelines as Python code (DAGs). It solves the problem of managing complex, multi-step pipelines that have dependencies, need retries, require scheduling, and must be monitored — replacing fragile cron jobs and shell scripts with a maintainable, version-controlled, observable system.",
+            "drawbacks": "Airflow is NOT a streaming tool. It has overhead per task run, making it unsuitable for sub-minute scheduling. Can become complex at very large scale.",
+            "solutions": "Use Airflow for orchestration only. Delegate actual data processing to Spark, dbt, or SQL. Use Kafka/Flink for streaming."
+          },
+          {
+            "q_no": 2,
+            "question": "Explain Airflow's core architecture components.",
+            "answer": "Airflow has five core components: (1) Webserver — serves the UI, reads metadata DB, does NOT run tasks. (2) Scheduler — parses DAG files, creates task instances, submits them to the executor. (3) Executor — determines HOW tasks run (Sequential, Local, Celery, Kubernetes). (4) Metadata Database — stores all state: DAG runs, task instances, connections, variables, XComs. (5) Workers — actually execute tasks (Celery workers or K8s pods). The Triggerer (Airflow 2.2+) handles deferrable operators asynchronously.",
+            "drawbacks": "Scheduler is a single point of failure in Airflow <2.0.",
+            "solutions": "Airflow 2.0+ supports multiple schedulers for HA. Use PostgreSQL as metadata DB (not SQLite) for production."
+          },
+          {
+            "q_no": 3,
+            "question": "What is a DAG in Airflow? How is it different from a pipeline?",
+            "answer": "A DAG (Directed Acyclic Graph) is a collection of tasks with dependency relationships. Directed: tasks have direction (A runs before B). Acyclic: no circular dependencies. Graph: tasks are nodes, dependencies are edges. A pipeline is a general concept; a DAG is Airflow's specific implementation. Every Airflow workflow is defined as a Python DAG object.",
+            "drawbacks": "DAGs are parsed periodically by the scheduler — heavy code at module level slows scheduler.",
+            "solutions": "Keep DAG file lightweight. Move business logic inside task callables, not at DAG parse time."
+          },
+          {
+            "q_no": 4,
+            "question": "What is the difference between execution_date and the actual run time in Airflow?",
+            "answer": "execution_date (now called logical_date in Airflow 2.2+) is the START of the scheduled interval, not when the task actually runs. A DAG with schedule='@daily' and start_date=2024-01-01 has its first execution_date of 2024-01-01, but it actually RUNS at 2024-01-02 00:00 (end of the interval). This is because Airflow assumes the data for a period is available AFTER the period ends.",
+            "drawbacks": "This 'one interval behind' behavior confuses many new Airflow users.",
+            "solutions": "Use {{ data_interval_start }} and {{ data_interval_end }} macros for clarity. Set catchup=False to avoid confusion during initial setup."
+          },
+          {
+            "q_no": 5,
+            "question": "What is catchup and when should you use or disable it?",
+            "answer": "Catchup controls whether Airflow schedules all missed DAG runs since start_date when a DAG is unpaused. If catchup=True and start_date=2024-01-01 and the DAG is activated on 2024-01-10, Airflow immediately schedules 9 past runs. Use catchup=True for historical backfilling. Use catchup=False (recommended default) when you only want future runs.",
+            "drawbacks": "catchup=True can flood the scheduler with hundreds of runs on first activation.",
+            "solutions": "Always set catchup=False by default. Use airflow dags backfill command for intentional historical reprocessing."
+          },
+          {
+            "q_no": 6,
+            "question": "Explain the difference between PythonOperator, BashOperator, and BranchPythonOperator.",
+            "answer": "PythonOperator: executes a Python callable function. Most flexible, best for Python logic. BashOperator: executes a bash command or script. Good for CLI tools, shell scripts, calling external programs. BranchPythonOperator: executes a Python callable that RETURNS a task_id (or list of task_ids) to run next — all other downstream branches are skipped. Used for conditional pipeline routing.",
+            "drawbacks": "BashOperator runs in a subprocess — environment variables and PATH may differ from expectation.",
+            "solutions": "Use env parameter in BashOperator to set required environment variables explicitly."
+          },
+          {
+            "q_no": 7,
+            "question": "What is XCom and what are its limitations?",
+            "answer": "XCom (Cross-Communication) allows tasks to share small amounts of data by pushing to and pulling from Airflow's metadata database. Return values from tasks are automatically XCom-pushed. Other tasks pull with ti.xcom_pull(task_ids='source_task'). Limitations: XCom is stored in the metadata DB — not designed for large data. PostgreSQL limit is 1GB per value but practically should be < 1KB (IDs, paths, counts). Large XComs bloat the metadata DB and cause performance issues.",
+            "drawbacks": "Storing large data (DataFrames, files) in XCom bloats the metadata DB and slows Airflow.",
+            "solutions": "Store large data in S3/GCS/database and pass only the file path via XCom. Use custom XCom backends (S3XComBackend) for larger payloads."
+          },
+          {
+            "q_no": 8,
+            "question": "What are trigger rules? Name the most commonly used ones.",
+            "answer": "Trigger rules define when a task should run based on upstream task states. Default is all_success (run only when all upstream succeed). Key ones: all_success (default), all_failed (run when all upstream fail), all_done (run regardless of upstream state — good for cleanup), one_success (run when at least one upstream succeeds), none_failed (run when no upstream failed — skipped is OK), none_failed_min_one_success (best for branch merging points).",
+            "drawbacks": "Using wrong trigger rule after BranchPythonOperator causes tasks to be unexpectedly skipped or failed.",
+            "solutions": "Always use none_failed_min_one_success for merge points after branching DAGs."
+          },
+          {
+            "q_no": 9,
+            "question": "What is the difference between poke mode and reschedule mode in sensors?",
+            "answer": "Poke mode: the sensor runs continuously on a worker, sleeping between checks. It holds the worker slot for the ENTIRE wait duration. Reschedule mode: the sensor checks the condition, then RELEASES the worker slot until the next check time. The scheduler re-queues it at the next poke interval. Reschedule mode is far more efficient for long waits — 10 sensors waiting 2 hours use 10 worker slots in poke mode but near-zero slots in reschedule mode.",
+            "drawbacks": "Poke mode with many long-running sensors exhausts worker slots, blocking other tasks.",
+            "solutions": "Default to mode='reschedule' for all sensors with poke_interval >= 60 seconds. Only use poke for very short waits (< 5 minutes)."
+          },
+          {
+            "q_no": 10,
+            "question": "What is the TaskFlow API and how does it differ from traditional operators?",
+            "answer": "The TaskFlow API (@task decorator) is a modern Pythonic way to define Airflow tasks. It automatically handles XCom push/pull — return values are auto-pushed, function arguments auto-pull from XCom. Dependencies are inferred from function call chains. Traditional operators require explicit PythonOperator instantiation, manual XCom management, and >> dependency syntax. TaskFlow is cleaner for Python-heavy DAGs; traditional operators are still needed for non-Python operators (BashOperator, S3KeySensor, etc.).",
+            "drawbacks": "TaskFlow cannot be used for non-Python operators. Complex dependency graphs can be less explicit.",
+            "solutions": "Mix TaskFlow (@task decorated functions) with traditional operators in the same DAG."
+          },
+          {
+            "q_no": 11,
+            "question": "Compare SequentialExecutor, LocalExecutor, CeleryExecutor, and KubernetesExecutor.",
+            "answer": "SequentialExecutor: one task at a time, SQLite only, dev/testing only. LocalExecutor: parallel tasks using multiprocessing on one machine, requires PostgreSQL/MySQL, good for small prod. CeleryExecutor: distributes tasks across multiple worker machines via Redis/RabbitMQ queue, most popular for medium-large prod, horizontal scaling. KubernetesExecutor: each task in its own K8s pod, full environment isolation, zero idle cost, best for cloud-native large scale but has pod startup overhead (30-60s).",
+            "drawbacks": "CeleryExecutor: all workers need same code/deps installed, idle workers cost money. KubernetesExecutor: pod startup latency.",
+            "solutions": "CeleryExecutor: use Docker + git-sync for consistent worker environments. KubernetesExecutor: use for tasks > 2 minutes to amortize pod startup cost."
+          },
+          {
+            "q_no": 12,
+            "question": "How do you pass data between tasks in Airflow?",
+            "answer": "Three approaches: (1) XCom — small data (IDs, paths, counts) stored in metadata DB. Push via return or ti.xcom_push(). Pull via ti.xcom_pull(). (2) TaskFlow API — automatic XCom via function return values and argument injection. (3) External storage — write large data to S3/database, pass the path/reference via XCom. Third approach is recommended for any data > 1KB.",
+            "drawbacks": "XCom for large data bloats metadata DB, causes performance issues, and risks hitting DB size limits.",
+            "solutions": "Use S3/GCS for data storage. XCom only the file path: ti.xcom_push(key='path', value='s3://bucket/data.parquet')"
+          },
+          {
+            "q_no": 13,
+            "question": "What are Airflow Connections and how are they managed securely?",
+            "answer": "Connections store external system credentials (host, port, login, password, schema) identified by conn_id. They're stored encrypted (Fernet) in the metadata DB. Secure management approaches: (1) Secrets Backend — store in AWS Secrets Manager, HashiCorp Vault, or GCP Secret Manager. (2) Environment variables — AIRFLOW_CONN_{CONN_ID}=uri. (3) Never store in plain text or commit to Git.",
+            "drawbacks": "Default metadata DB storage — credentials accessible to anyone with DB access.",
+            "solutions": "Configure secrets backend (Vault/Secrets Manager) for production. Rotate Fernet key periodically."
+          },
+          {
+            "q_no": 14,
+            "question": "What is the Scheduler and what happens if it goes down?",
+            "answer": "The Scheduler is the heartbeat of Airflow — it parses DAG files, creates DAGRuns, schedules task instances, and submits them to the executor. If the scheduler goes down, no new tasks are scheduled or submitted. Running tasks continue (they're on workers), but new tasks won't start. Airflow 2.0+ supports multiple schedulers (HA) — secondary scheduler takes over if primary dies.",
+            "drawbacks": "Single scheduler is a SPOF in older Airflow. High DAG count slows scheduler parse cycle.",
+            "solutions": "Run 2+ schedulers (Airflow 2.0+). Reduce DAG file parse time. Use PostgreSQL as metadata DB. Monitor scheduler heartbeat."
+          },
+          {
+            "q_no": 15,
+            "question": "What is depends_on_past and when would you use it?",
+            "answer": "depends_on_past=True means a task instance will only run if the PREVIOUS run of the same task succeeded. Useful for incremental processing where today's run must not start if yesterday's failed — for example, an incremental database load where each day builds on the previous.",
+            "drawbacks": "If one day fails and is not fixed, ALL future runs of that task are blocked indefinitely.",
+            "solutions": "Monitor for depends_on_past blocks. Fix failing runs and mark as success, or clear them for retry. Add alerting on long-queued task instances."
+          },
+          {
+            "q_no": 16,
+            "question": "How do you implement branching in Airflow?",
+            "answer": "Use BranchPythonOperator or @task.branch. The callable returns the task_id (or list of task_ids) to execute next. All other branches are SKIPPED. At the merge point after branching, use trigger_rule='none_failed_min_one_success' so the merge task runs when at least one branch succeeds and none failed (handles skipped branches correctly).",
+            "drawbacks": "Without correct trigger_rule at merge point, the merge task may be skipped even if a branch succeeded.",
+            "solutions": "Always set trigger_rule='none_failed_min_one_success' on tasks immediately after a branch convergence point."
+          },
+          {
+            "q_no": 17,
+            "question": "What are Pools in Airflow and when would you use them?",
+            "answer": "Pools limit the number of concurrently running tasks accessing a shared resource. Each pool has a fixed number of slots. Tasks in a pool use one slot (or more with pool_slots parameter) while running. When pool is full, tasks queue. Use pools to: limit concurrent DB connections, rate-limit API calls, prevent resource overload on shared systems.",
+            "drawbacks": "Pool exhaustion silently queues tasks — without monitoring, you may not notice tasks waiting for slots.",
+            "solutions": "Monitor pool utilization via Airflow metrics (airflow.pool.queued_slots). Alert when queued slots > threshold. Set task timeout to prevent tasks holding slots indefinitely."
+          },
+          {
+            "q_no": 18,
+            "question": "How do you dynamically generate DAGs in Airflow?",
+            "answer": "Dynamically generate DAGs by writing Python code that creates DAG objects in a loop and registers them in globals(). Common pattern: read a config file (YAML/JSON) or list, create one DAG per item, assign each to globals()[dag_id]. Airflow discovers all DAG objects in the global namespace at parse time.",
+            "drawbacks": "Too many dynamic DAGs (> 500) slow down scheduler parsing. Config read at parse time (DB query, API call) runs on every heartbeat.",
+            "solutions": "Read from static config file, not DB/API. Limit dynamic DAG count. Consider Dynamic Task Mapping (.expand()) as an alternative for same-structure pipelines."
+          },
+          {
+            "q_no": 19,
+            "question": "What is Dynamic Task Mapping (.expand()) and how does it differ from dynamic DAGs?",
+            "answer": "Dynamic Task Mapping (.expand()) creates multiple instances of the SAME task at runtime based on a list of inputs — no need to know task count at write time. Dynamic DAGs create multiple separate DAG objects at parse time. Use .expand() when: same pipeline structure, different inputs (files, tables, clients). Use dynamic DAGs when: fundamentally different schedules or structures per item.",
+            "drawbacks": "Mapped task count not known until runtime — UI shows placeholder until first run.",
+            "solutions": "Monitor mapped task instances in UI under the parent task. Set pool limits to prevent mapped tasks from overwhelming resources."
+          },
+          {
+            "q_no": 20,
+            "question": "How do you implement SLA monitoring in Airflow?",
+            "answer": "Set sla parameter on tasks or in default_args (timedelta). Set sla_miss_callback on the DAG. The callback fires when a task hasn't completed within its SLA window (measured from DAG execution_date). The callback receives the list of missed tasks and blocking tasks — use it to send Slack/PagerDuty alerts.",
+            "drawbacks": "SLA miss does NOT stop the task. SLA email sent only once. SLA measured from execution_date not task start time.",
+            "solutions": "Use callbacks to send rich alerts to Slack/PagerDuty. Combine SLA with task-level on_failure_callback for comprehensive monitoring."
+          },
+          {
+            "q_no": 21,
+            "question": "What is a Hook in Airflow? How is it different from an Operator?",
+            "answer": "A Hook is an interface to an external system (PostgresHook, S3Hook, SnowflakeHook). It handles authentication and connection details using a conn_id. An Operator defines a TASK — what work to do. Operators internally use Hooks to connect to external systems. You use Hooks directly when you need more control inside a PythonOperator or custom operator than a pre-built operator provides.",
+            "drawbacks": "None significant. Hooks are the correct abstraction for connection management.",
+            "solutions": "Prefer Hooks inside custom operators over hardcoding credentials. Always use conn_id pattern."
+          },
+          {
+            "q_no": 22,
+            "question": "How do you test Airflow DAGs?",
+            "answer": "Three levels: (1) Structure tests — use DagBag to load DAGs and assert task count, schedule, dependencies, retries, catchup settings. (2) Unit tests — test Python callables independently with mock connections/hooks (unittest.mock). (3) Integration tests — run actual DAG in a test environment with test database. CI/CD: run structure + unit tests on every PR, validate DAG syntax (DagBag import errors = 0).",
+            "drawbacks": "Full integration tests are slow and require external systems.",
+            "solutions": "Run structure + unit tests in CI. Reserve integration tests for staging environment before prod deployment."
+          },
+          {
+            "q_no": 23,
+            "question": "What causes DAG parsing to be slow and how do you fix it?",
+            "answer": "Slow DAG parsing causes: (1) Database queries or API calls at module level (run on every parse cycle). (2) Heavy library imports at top of DAG file. (3) Too many DAG files. (4) Complex DAG structure with thousands of tasks. Fixes: Move all heavy logic inside callable functions. Cache config reads from static files. Use .airflowignore to exclude non-DAG files. Increase min_file_process_interval to parse less frequently. Profile with airflow dags report.",
+            "drawbacks": "Slow parsing causes scheduler lag — tasks start late even if all workers are available.",
+            "solutions": "Keep DAG file < 1 second to parse. Test parse time: time python dags/my_dag.py"
+          },
+          {
+            "q_no": 24,
+            "question": "What is the ExternalTaskSensor and what are its limitations?",
+            "answer": "ExternalTaskSensor waits for a task (or entire DAG) in ANOTHER DAG to reach a specific state (success by default). Used for cross-DAG dependencies. It matches execution dates using execution_delta or execution_date_fn. Limitations: tightly couples two DAGs by string dag_id/task_id. Requires exact schedule alignment or careful execution_delta configuration. Sensor holds worker slot (use reschedule mode).",
+            "drawbacks": "If upstream DAG is renamed, sensor fails. Misaligned schedules cause sensor to wait forever.",
+            "solutions": "Use check_existence=True to fail fast on missing upstream DAG. Always use mode='reschedule'. Consider Datasets (Airflow 2.4+) for a cleaner data-driven dependency model."
+          },
+          {
+            "q_no": 25,
+            "question": "What are deferrable operators and how do they save resources?",
+            "answer": "Deferrable operators (Airflow 2.2+) suspend execution and release the worker slot while waiting for an external event. The Triggerer component handles async waiting using asyncio. Traditional sensors in reschedule mode still create scheduler work (re-queue every N seconds). Deferrable operators: zero worker slots + minimal Triggerer resources during wait. One Triggerer can handle thousands of deferred tasks concurrently.",
+            "drawbacks": "Requires Triggerer component running. Not all operators have deferrable versions yet.",
+            "solutions": "Use *Async variants (S3KeySensorAsync, HttpSensorAsync) where available. Ensure Triggerer is deployed (included in Helm chart and Docker Compose by default in 2.x)."
+          },
+          {
+            "q_no": 26,
+            "question": "How do you handle secrets and credentials securely in Airflow?",
+            "answer": "Three-tier approach: (1) Secrets Backend — configure AWS Secrets Manager, HashiCorp Vault, or GCP Secret Manager as the secrets backend. Airflow fetches credentials at runtime, never stores in metadata DB. (2) Environment variables — AIRFLOW_CONN_{CONN_ID} for connections, AIRFLOW__CORE__FERNET_KEY for encryption. Inject via Kubernetes Secrets or Docker secrets. (3) Never hardcode credentials in DAG files or commit to Git.",
+            "drawbacks": "Metadata DB stores encrypted connections — risk if DB is compromised and Fernet key is exposed.",
+            "solutions": "Use secrets backend (Vault/Secrets Manager) so credentials never touch Airflow's DB. Rotate Fernet key regularly. Use least-privilege IAM roles instead of static credentials where possible."
+          },
+          {
+            "q_no": 27,
+            "question": "What is Jinja templating in Airflow and what are template_fields?",
+            "answer": "Jinja templating lets you inject dynamic values (execution date, variables, XCom values, connections) into task parameters using {{ }} syntax. Templates are rendered at TASK EXECUTION time, not DAG parse time. template_fields is a tuple of attribute names on an operator that support Jinja rendering. Built-in macros: {{ ds }}, {{ ts }}, {{ run_id }}, {{ var.value.key }}, {{ ti.xcom_pull('task_id') }}.",
+            "drawbacks": "Templates evaluated at execution time — syntax errors only caught at runtime, not parse time.",
+            "solutions": "Test template rendering: airflow tasks render dag_id task_id execution_date. Add template syntax validation to CI pipeline."
+          },
+          {
+            "q_no": 28,
+            "question": "What is the difference between SubDAGs and TaskGroups?",
+            "answer": "SubDAGs (deprecated): create a child DAG object that appears as a single task in the parent. Uses SubDagOperator which spawns a separate scheduler process. Causes deadlocks with CeleryExecutor (child tasks use parent pool slots). TaskGroups (recommended): purely visual grouping in the same DAG. No separate scheduler, no deadlock risk, no performance overhead. Both provide visual organization in the UI — TaskGroups do it better.",
+            "drawbacks": "SubDAGs: deadlocks, complex debugging, scheduler overhead. TaskGroups: no equivalent drill-down UI as SubDAGs had.",
+            "solutions": "Migrate all SubDAGs to TaskGroups. TaskGroups collapse/expand in UI and have no operational downsides."
+          },
+          {
+            "q_no": 29,
+            "question": "How do you implement retry logic in Airflow?",
+            "answer": "Set retries (number of retry attempts) and retry_delay (timedelta between retries) in default_args or per-task. Optional: retry_exponential_backoff=True for exponential backoff. on_retry_callback for alerting on each retry. Retries create new task instance attempts (visible in UI). The task is marked as success if any retry succeeds.",
+            "drawbacks": "Retries can mask underlying systemic issues if retry count is too high.",
+            "solutions": "Set reasonable retries (2-3). Use retry_exponential_backoff=True to avoid hammering recovering systems. Alert on retry via on_retry_callback. Investigate root cause when retries occur frequently."
+          },
+          {
+            "q_no": 30,
+            "question": "What is the Airflow metadata database and what is stored in it?",
+            "answer": "The metadata database is the central state store for Airflow. It stores: DAG definitions and structure, DAGRun records (scheduled/manual runs), TaskInstance records (state, start/end time, log location), XCom values, Connections (encrypted), Variables (encrypted), Pools and slot counts, User accounts and RBAC roles, SLA miss records. PostgreSQL is recommended for production (SQLite for dev only).",
+            "drawbacks": "Metadata DB becomes a bottleneck and SPOF. Large XComs and log metadata bloat the DB over time.",
+            "solutions": "Use PostgreSQL with connection pooling (PgBouncer). Schedule regular DB cleanup: airflow db clean. Store logs externally (S3) not in DB. Use remote logging."
+          },
+          {
+            "q_no": 31,
+            "question": "How does Airflow handle task failures? What happens to downstream tasks?",
+            "answer": "When a task fails: (1) If retries > 0, task is retried after retry_delay. (2) If all retries exhausted, task is marked FAILED. (3) All downstream tasks that depend on this task are marked UPSTREAM_FAILED (shown in UI). (4) on_failure_callback fires on each failure. (5) DAGRun is marked FAILED. Downstream tasks are NOT marked FAILED — they're UPSTREAM_FAILED, which is distinct. You can manually mark failed tasks as success to unblock downstream.",
+            "drawbacks": "UPSTREAM_FAILED downstream tasks can be misleading — they didn't fail, they just couldn't run.",
+            "solutions": "Use clear task (mark for re-run) to retry failed pipelines. Use trigger_rule='all_done' for cleanup tasks that should run even on failure."
+          },
+          {
+            "q_no": 32,
+            "question": "How do you implement CI/CD for Airflow DAGs?",
+            "answer": "CI pipeline: (1) On PR: lint (flake8/black), run DAG structure tests (DagBag), run unit tests (pytest). (2) On merge to main: sync DAGs to target environment (S3 for MWAA, git-sync for K8s, Docker image for custom). CD strategies: git-sync sidecar (K8s pulls from Git repo), S3 sync (MWAA), Astro CLI deploy (Astronomer), baked Docker image with rolling deploy.",
+            "drawbacks": "Forgetting to test DAGs before deploying can break production pipelines silently.",
+            "solutions": "Make CI mandatory (block PR merge without passing tests). Include DAG import validation: assert len(DagBag().import_errors) == 0."
+          },
+          {
+            "q_no": 33,
+            "question": "What is the KubernetesPodOperator and when would you use it?",
+            "answer": "KubernetesPodOperator launches a Kubernetes Pod to execute a task using any Docker image. Used when: a task needs different Python/library version than the Airflow base image, task needs heavy resources (GPU, large memory), complete environment isolation is required (different dependencies per task team). The pod is created on task start and deleted on completion.",
+            "drawbacks": "Pod startup overhead (30-60 seconds). Pod scheduling failures may not report errors cleanly to Airflow.",
+            "solutions": "Not suitable for tasks < 2 minutes (overhead > execution time). Pre-pull images on nodes. Set startup_timeout_seconds appropriately. Always set is_delete_operator_pod=True to clean up."
+          },
+          {
+            "q_no": 34,
+            "question": "What are Datasets in Airflow and how do they enable data-aware scheduling?",
+            "answer": "Datasets (Airflow 2.4+) are logical representations of data assets (S3 paths, database tables). Producer tasks declare outlets=[my_dataset] — when they complete, the dataset is marked updated. Consumer DAGs declare schedule=[my_dataset] — they run when the dataset is updated. This enables true data-driven orchestration: downstream DAGs trigger on data availability, not time.",
+            "drawbacks": "Dataset URI is just a string — no actual data validation. Consumer DAG won't run if producer never updates the dataset (no time-based fallback by default).",
+            "solutions": "Combine with time-based schedule fallback for critical pipelines. Use meaningful URIs that match actual data locations."
+          },
+          {
+            "q_no": 35,
+            "question": "How do you monitor Airflow in production?",
+            "answer": "Four monitoring layers: (1) Airflow UI — DAG/task status, task logs, SLA misses. (2) StatsD/Prometheus metrics — executor slots, queued tasks, scheduler heartbeat, parse times. (3) External alerting — Slack/PagerDuty via on_failure_callback and sla_miss_callback. (4) Log aggregation — ship Airflow logs to CloudWatch/ELK for analysis. Key metrics to alert: scheduler heartbeat gap > 30s, executor queued tasks > threshold, pool queued slots > 0 sustained.",
+            "drawbacks": "Out-of-box monitoring is limited. No built-in Slack/PagerDuty integration.",
+            "solutions": "Deploy prometheus-statsd-exporter + Grafana dashboards. Implement on_failure_callback on all production DAGs."
+          },
+          {
+            "q_no": 36,
+            "question": "How would you design a daily ETL pipeline in Airflow?",
+            "answer": "Design: (1) Set schedule='0 2 * * *', catchup=False, max_active_runs=1. (2) S3KeySensor or ExternalTaskSensor to wait for source data. (3) PythonOperator/KubernetesPodOperator for extraction to raw S3. (4) SparkSubmitOperator or DatabricksRunNowOperator for transformation. (5) SnowflakeOperator for loading. (6) Data quality checks (Great Expectations). (7) Notification task on success. Use depends_on_past=False, retries=3, retry_delay=5min, on_failure_callback for Slack alerts.",
+            "drawbacks": "Hard dependencies between tasks mean one failure blocks entire pipeline.",
+            "solutions": "Add data quality gates between layers. Use ShortCircuitOperator to skip downstream if source data is empty. Implement idempotent tasks for safe reruns."
+          },
+          {
+            "q_no": 37,
+            "question": "What is the Triggerer and how does it work?",
+            "answer": "The Triggerer is an Airflow component (2.2+) that manages deferrable operators. When a task raises TaskDeferred exception, it moves to DEFERRED state and registers a Trigger with the Triggerer. The Triggerer runs all triggers asynchronously using Python asyncio in a single thread. When a trigger fires (e.g., S3 file appears), the Triggerer marks the task for resumption and the scheduler re-queues it to a worker. One Triggerer handles thousands of deferred tasks with minimal resource usage.",
+            "drawbacks": "Triggerer is a new component — must be deployed separately. Not all operators have deferrable versions.",
+            "solutions": "Include Triggerer in all Airflow deployments (it's in official Helm chart). Migrate to *Async sensor variants where available."
+          },
+          {
+            "q_no": 38,
+            "question": "What is Amazon MWAA and how does it differ from self-managed Airflow?",
+            "answer": "Amazon MWAA (Managed Workflows for Apache Airflow) is a fully managed Airflow service on AWS. AWS handles infrastructure, scaling, patching, and HA. DAGs deployed via S3 sync. Connections via Secrets Manager. Differences: MWAA lags behind Airflow versions (1-2 releases), takes 15-30 minutes to update requirements.txt, limited executor customization, higher cost than self-managed at scale. Benefits: zero infrastructure management, AWS IAM integration, native S3/Glue/Redshift connectivity.",
+            "drawbacks": "Slow update cycles, limited to AWS, higher per-task cost at high scale.",
+            "solutions": "Use MWAA for AWS-native teams wanting zero ops overhead. Use Astronomer or self-managed K8s for more control."
+          },
+          {
+            "q_no": 39,
+            "question": "How do you handle idempotency in Airflow tasks?",
+            "answer": "Idempotent tasks produce the same result whether run once or multiple times. Implement by: (1) UPSERT instead of INSERT for DB writes. (2) Write to deterministic S3 paths (date-based) that overwrite on rerun. (3) DELETE + INSERT for partition-based tables. (4) Use execution_date in output paths to isolate each run. (5) Check if output already exists before processing.",
+            "drawbacks": "Non-idempotent tasks cause duplicate data on manual reruns or backfills.",
+            "solutions": "Design every task to be safely re-runnable. Test idempotency by triggering the same DAG run twice and verifying identical output."
+          },
+          {
+            "q_no": 40,
+            "question": "What is the difference between max_active_runs and max_active_tasks in Airflow?",
+            "answer": "max_active_runs: maximum number of CONCURRENT DAG RUNS (entire DAG executions). E.g., max_active_runs=1 ensures only one run of a DAG executes at a time — new runs queue until current finishes. max_active_tasks: maximum number of CONCURRENT TASKS within a single DAG run. E.g., max_active_tasks=5 means at most 5 tasks from this DAG run at the same time. Both are set at DAG level and can be set globally in airflow.cfg.",
+            "drawbacks": "Setting max_active_runs=1 means slow DAG runs block all future scheduled runs from starting.",
+            "solutions": "Set max_active_runs=1 for pipelines that process partitioned data (prevents race conditions). Set higher for independent parallel pipelines."
+          },
+          {
+            "q_no": 41,
+            "question": "How do you implement alerting in Airflow?",
+            "answer": "Multiple levels: (1) Task level — on_failure_callback, on_retry_callback, on_success_callback per task or in default_args. (2) DAG level — sla_miss_callback for SLA violations. (3) Email alerts — email_on_failure=True, email_on_retry=True in default_args with SMTP configured. (4) Slack — implement callback that posts to Slack webhook. (5) PagerDuty — callback that creates PagerDuty incident. (6) Metrics — Prometheus alerts on executor slot exhaustion, scheduler heartbeat.",
+            "drawbacks": "Email alerts from Airflow require SMTP server configuration. Callback errors can silently fail.",
+            "solutions": "Wrap callback bodies in try/except. Test callbacks in staging. Use multiple alert channels (Slack primary + email backup)."
+          },
+          {
+            "q_no": 42,
+            "question": "What is Fernet encryption in Airflow?",
+            "answer": "Fernet is symmetric encryption used by Airflow to encrypt Connection passwords and Variable values before storing in the metadata DB. Generated key: python -c \"from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())\". Set via AIRFLOW__CORE__FERNET_KEY environment variable or airflow.cfg. Without a Fernet key, Airflow stores credentials in plaintext in the DB.",
+            "drawbacks": "If Fernet key is lost, all encrypted connections/variables are unrecoverable. Same key must be distributed to all Airflow instances.",
+            "solutions": "Store Fernet key in AWS Secrets Manager or Vault. Rotate periodically with airflow rotate-fernet-key. Never commit to Git."
+          },
+          {
+            "q_no": 43,
+            "question": "Explain how Airflow Connections work with Hooks and Operators.",
+            "answer": "Connections store external system credentials (host, port, login, password, extra JSON). Hooks use a conn_id to fetch the Connection and establish the actual connection (e.g., PostgresHook gets conn → creates psycopg2 connection). Operators use Hooks internally to interact with external systems. Users interact with Connections (set them up once), write code using Operators/Hooks (reference conn_id). This abstraction means changing credentials only requires updating the Connection, not code.",
+            "drawbacks": "conn_id strings hardcoded in DAG code couple DAGs to specific connection names.",
+            "solutions": "Standardize conn_id naming conventions. Use environment-specific conn_ids or override via environment variables per deployment."
+          },
+          {
+            "q_no": 44,
+            "question": "How do you scale Airflow for high-volume production workloads?",
+            "answer": "Scaling approach: (1) Executor: use CeleryExecutor (horizontal worker scaling) or KubernetesExecutor (pod-per-task). (2) Scheduler: run 2+ schedulers for HA (Airflow 2.0+). (3) Metadata DB: use PostgreSQL with PgBouncer connection pooling. (4) Reduce parse time: optimize DAG files, increase min_file_process_interval. (5) Pools: prevent resource overload. (6) Task concurrency tuning: set parallelism, worker_concurrency, max_active_tasks.",
+            "drawbacks": "Scaling metadata DB is often the true bottleneck — all workers read/write DB constantly.",
+            "solutions": "Add PgBouncer in front of PostgreSQL. Schedule DB cleanup regularly. Consider remote logging (S3) to reduce DB writes."
+          },
+          {
+            "q_no": 45,
+            "question": "What is git-sync and how is it used for DAG deployment?",
+            "answer": "Git-sync is a Kubernetes sidecar container that continuously clones/pulls a Git repository to a shared volume. In Airflow K8s deployments, git-sync runs alongside the scheduler and webserver, pulling DAG files from Git every N seconds. Airflow reads DAGs from the shared volume. New DAG commits appear in Airflow within seconds of git push.",
+            "drawbacks": "DAG updates take N seconds (sync interval) to appear — not truly instant. Syntax errors in any DAG file block the entire directory parse.",
+            "solutions": "Run DAG validation in CI before merging. Set git-sync period to 30-60 seconds for reasonable freshness. Combine with CI/CD for validation before auto-deploy."
+          },
+          {
+            "q_no": 46,
+            "question": "How do you integrate Airflow with dbt?",
+            "answer": "Three approaches: (1) BashOperator running dbt CLI commands directly (simplest, dbt installed in Airflow env). (2) KubernetesPodOperator running dbt in a dedicated dbt Docker image (clean environment isolation). (3) DbtCloudRunJobOperator from apache-airflow-providers-dbt-cloud (trigger dbt Cloud jobs via API, wait for completion). For granular task-level visibility, use cosmos (Astronomer's dbt-airflow integration) which creates one Airflow task per dbt model.",
+            "drawbacks": "BashOperator approach: dbt must be installed in Airflow environment — dependency conflicts possible. dbt Cloud approach: requires dbt Cloud subscription.",
+            "solutions": "Use KubernetesPodOperator with dbt image for clean isolation. Use Astronomer Cosmos for per-model task visibility and dependency mapping in Airflow UI."
+          },
+          {
+            "q_no": 47,
+            "question": "What are the common causes of Airflow performance issues?",
+            "answer": "Top causes: (1) Slow DAG parsing — DB/API calls at module level, heavy imports. (2) Metadata DB bottleneck — too many task instances, XCom bloat, insufficient DB resources. (3) Executor slot exhaustion — parallelism set too low, pool exhaustion. (4) Scheduler lag — too many DAG files, slow parse interval. (5) Worker OOM — tasks requesting too much memory on shared workers. (6) Too many short tasks — scheduler/DB overhead per task exceeds execution time.",
+            "drawbacks": "Performance issues compound — slow scheduler causes cascading delays across all pipelines.",
+            "solutions": "Profile DAG parse time. Schedule DB cleanup. Use PgBouncer. Monitor StatsD metrics. Batch very short tasks into fewer larger tasks."
+          },
+          {
+            "q_no": 48,
+            "question": "What are Airflow Variables and what are their performance implications?",
+            "answer": "Variables are key-value pairs stored in the metadata DB. Problem: Variable.get() at DAG parse time (module level) executes a DB query on EVERY scheduler parse cycle (every 30 seconds by default). With 100 DAG files each calling Variable.get() = 100+ DB queries every 30 seconds just for variable reads.",
+            "drawbacks": "Variable.get() at module/parse level creates excessive DB load and slows the scheduler significantly.",
+            "solutions": "Access Variables INSIDE task callables (not at module level). Use Jinja templates {{ var.value.key }} which evaluate at execution time. Cache Variable values in os.environ if needed at startup."
+          },
+          {
+            "q_no": 49,
+            "question": "How would you debug a task that is stuck in 'running' state?",
+            "answer": "Debugging steps: (1) Check task logs in UI for last log output — process may be hanging or waiting. (2) Check worker machine/pod — is the process still running? (ps aux | grep airflow). (3) Check for DB locks if task is doing DB operations. (4) Check network connectivity from worker to external systems. (5) If process died externally (OOM kill, node restart), task stays 'running' in DB — use airflow tasks clear to reset. (6) Check zombie task detection: scheduler should detect and fail orphaned tasks.",
+            "drawbacks": "Zombie tasks (worker died but task shows running) block downstream and use phantom pool slots.",
+            "solutions": "Set task execution_timeout on long-running tasks. Enable zombie task detection (scheduler.zombie_threshold_in_seconds). Use process supervision (supervisord, K8s restartPolicy) to restart crashed workers."
+          },
+          {
+            "q_no": 50,
+            "question": "Design a real-world data platform orchestration using Airflow.",
+            "answer": "Architecture for a daily analytics platform: (1) S3KeySensor waits for vendor files to arrive in S3 (reschedule mode, poke every 5 min, timeout 4 hours). (2) KubernetesPodOperator runs Spark job to ingest raw data to Bronze Delta layer. (3) DatabricksRunNowOperator triggers dbt/Databricks job for Silver layer transformation. (4) SnowflakeOperator runs aggregation SQL for Gold layer. (5) Great Expectations task for data quality validation. (6) ShortCircuitOperator skips downstream if quality fails. (7) TriggerDagRunOperator triggers reporting DAG. (8) SlackOperator sends success notification. All tasks: retries=3, retry_delay=5min, on_failure_callback=slack_alert, pool='compute_pool' (limit 10 concurrent jobs), max_active_runs=1.",
+            "drawbacks": "Multi-system orchestration creates many failure points and tightly couples Airflow to each system's availability.",
+            "solutions": "Implement circuit-breaker pattern via ShortCircuitOperator. Use idempotent writes at every layer. Store intermediate results with execution_date in path for isolation. Add observability at each layer with Great Expectations."
+          }
+        ]
+      }
+    ]
+  }
+}

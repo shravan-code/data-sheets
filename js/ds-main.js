@@ -492,9 +492,9 @@
         if (!path.includes('/pages/')) return;
 
         // Exclude index-level pages that have no valid parent to link to
-        const noBreadcrumbPages = ['/pages/learn/de-architectures.html', '/pages/learn/databricks.html'];
+        const noBreadcrumbPages = ['/pages/de-architectures.html', '/pages/databricks.html'];
         if (noBreadcrumbPages.some(p => path.endsWith(p))) return;
-        if (path.includes('/pages/learn/databricks/')) return;
+        if (path.includes('/pages/databricks/')) return;
 
         const parts = path.split('/').filter(Boolean);
         const pagesIdx = parts.indexOf('pages');
@@ -526,7 +526,7 @@
             if (!isLast) {
                 const hrefPath = '/' + parts.slice(0, pagesIdx + 2 + index).join('/') + '.html';
                 const anchor = document.createElement('a');
-                anchor.href = hrefPath.replace('/learn/learn.html', '/learn.html');
+                anchor.href = hrefPath;
                 anchor.textContent = labelize(segment);
                 li.appendChild(anchor);
             } else {

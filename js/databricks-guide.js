@@ -82,7 +82,7 @@
         return (examples || []).map((example, idx) => `
             <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-5 shadow-sm hover:shadow-md transition-all">
                 <div class="flex items-start gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center flex-shrink-0 text-sm font-black">${idx + 1}</div>
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF3621] to-[#FF5722] text-white flex items-center justify-center flex-shrink-0 text-sm font-black">${idx + 1}</div>
                     <div>
                         <h4 class="font-bold text-slate-900 dark:text-white text-base">${escapeHtml(example.title)}</h4>
                         <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-1">${escapeHtml(example.explanation)}</p>
@@ -123,9 +123,9 @@
     function renderInterviewQuestions(questions) {
         const categories = [...new Set(questions.map(q => q.category))];
         const catColors = {
-            'Conceptual': 'from-blue-500 to-indigo-600',
-            'Architecture': 'from-violet-500 to-purple-600',
-            'Comparison': 'from-cyan-500 to-blue-600',
+            'Conceptual': 'from-[#FF5722] to-[#F97316]',
+            'Architecture': 'from-[#FF3621] to-[#FF5722]',
+            'Comparison': 'from-[#FF3621] to-[#FF5722]',
             'Workspace': 'from-emerald-500 to-teal-600',
             'Clusters': 'from-orange-500 to-red-600',
             'DBFS': 'from-amber-500 to-yellow-600',
@@ -135,7 +135,7 @@
             'DLT': 'from-purple-500 to-violet-600',
             'Workflows': 'from-teal-500 to-emerald-600',
             'CI/CD': 'from-green-500 to-lime-600',
-            'MLflow': 'from-fuchsia-500 to-pink-600',
+            'MLflow': 'from-[#F97316] to-[#FF3621]',
             'ML/AI': 'from-violet-500 to-fuchsia-600',
             'Performance': 'from-amber-500 to-orange-600',
             'Security': 'from-red-500 to-rose-600',
@@ -143,7 +143,7 @@
             'Azure': 'from-blue-400 to-cyan-500',
             'Ingestion': 'from-green-500 to-emerald-600',
             'Administration': 'from-slate-500 to-gray-600',
-            'Scenario': 'from-indigo-500 to-violet-600',
+            'Scenario': 'from-[#F97316] to-[#FF3621]',
             'Integrations': 'from-pink-500 to-rose-600',
         };
         const catIcons = {
@@ -163,7 +163,7 @@
         return `
             <section class="space-y-6">
                 <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF3621] to-[#FF5722] text-white flex items-center justify-center">
                         <i data-lucide="award" class="w-6 h-6"></i>
                     </div>
                     <div>
@@ -207,7 +207,7 @@
     function renderTopicPills(topics) {
         const icons = ['book-open', 'database', 'server', 'shield', 'workflow', 'zap', 'brain', 'code', 'lock', 'cloud', 'git-branch', 'table-2'];
         return (topics || []).map((topic, i) => `
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-100 dark:border-cyan-900 text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 transition-colors cursor-default">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 text-xs font-semibold text-[#FF3621] dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/50 transition-colors cursor-default">
                 <i data-lucide="${icons[i % icons.length]}" class="w-3 h-3"></i>${escapeHtml(topic)}
             </span>
         `).join('');
@@ -352,12 +352,12 @@
             return `
                 <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-5 shadow-sm hover:shadow-md transition-all">
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF3621] to-[#FF5722] text-white flex items-center justify-center flex-shrink-0">
                             <i data-lucide="${escapeHtml(icon)}" class="w-5 h-5"></i>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="text-[10px] font-black tracking-widest uppercase text-cyan-600 dark:text-cyan-400">Topic ${String(index + 1).padStart(2, '0')}</span>
+                                <span class="text-[10px] font-black tracking-widest uppercase text-[#FF3621] dark:text-orange-400">Topic ${String(index + 1).padStart(2, '0')}</span>
                             </div>
                             <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-3">${escapeHtml(topic)}</h3>
                             <div class="space-y-3">
@@ -415,17 +415,17 @@
     function renderFlowChart(section) {
         const steps = flowSteps(section);
         const gradients = [
-            'from-cyan-500 to-blue-600',
-            'from-blue-500 to-indigo-600',
-            'from-indigo-500 to-violet-600',
-            'from-violet-500 to-purple-600',
-            'from-purple-500 to-fuchsia-600',
-            'from-fuchsia-500 to-pink-600',
+            'from-[#FF3621] to-[#FF5722]',
+            'from-[#FF5722] to-[#F97316]',
+            'from-[#F97316] to-[#FF3621]',
+            'from-[#FF3621] to-[#FF5722]',
+            'from-[#FF5722] to-[#F97316]',
+            'from-[#F97316] to-[#FF3621]',
         ];
         return `
             <section class="rounded-2xl border border-slate-200 bg-white p-6 mb-8 shadow-sm">
                 <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center"><i data-lucide="workflow" class="w-5 h-5"></i></div>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF3621] to-[#FF5722] text-white flex items-center justify-center"><i data-lucide="workflow" class="w-5 h-5"></i></div>
                     <div><h2 class="font-display font-bold text-xl text-slate-900">How It Flows</h2><p class="text-xs text-slate-500">A simple mental model for this section.</p></div>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -445,30 +445,30 @@
 
     function renderSectionArticle(section) {
         return `
-            <article class="prose dark:prose-invert max-w-none bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
-                <div class="flex items-start gap-4 mb-6">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-cyan-500/20">
-                        <i data-lucide="${escapeHtml(section.icon || 'book-open')}" class="w-7 h-7"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1">Section ${section.id}</p>
-                        <h1 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white transition-colors">${escapeHtml(section.title)}</h1>
-                    </div>
+            <header class="mb-12">
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-[1px] bg-slate-300"></span>
+                    Databricks &mdash; Section ${section.id}
                 </div>
-                <div class="rounded-xl bg-gradient-to-r from-cyan-50/80 to-blue-50/50 dark:from-cyan-950/30 dark:to-blue-950/20 border border-cyan-100 dark:border-cyan-900/50 p-5 mb-6">
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                    ${escapeHtml(section.title)}
+                </h1>
+            </header>
+            <article class="prose dark:prose-invert max-w-none pb-8">
+                <div class="rounded-xl bg-orange-50/80 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/50 p-5 mb-8">
                     <p class="text-slate-600 dark:text-slate-300 text-sm leading-7 mb-0">${escapeHtml(section.detailed_explanation)}</p>
                 </div>
                 ${renderFlowChart(section)}
-                <div class="rounded-2xl bg-gradient-to-r from-violet-50/70 to-purple-50/50 dark:from-violet-950/20 dark:to-purple-950/20 border border-violet-100 dark:border-violet-900/70 p-5 mb-6">
+                <div class="rounded-2xl bg-gradient-to-r from-orange-50/70 to-amber-50/50 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/70 p-5 mb-6">
                     <div class="flex items-center gap-2 mb-3">
-                        <i data-lucide="map" class="w-4 h-4 text-violet-600 dark:text-violet-400"></i>
+                        <i data-lucide="map" class="w-4 h-4 text-[#FF3621] dark:text-orange-400"></i>
                         <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">Learning Map</h2>
                     </div>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-7 mb-4">Read this page as a guided path: understand the idea, see why it matters in production, then connect it to the examples and tradeoffs.</p>
                     <div class="flex flex-wrap gap-2">${renderTopicPills(section.topics)}</div>
                 </div>
                 <div class="flex items-center gap-2 mb-4">
-                    <i data-lucide="book-open" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                    <i data-lucide="book-open" class="w-5 h-5 text-[#FF3621] dark:text-orange-400"></i>
                     <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-0">Topics Explained</h2>
                 </div>
                 <div class="grid grid-cols-1 gap-4 mb-8">${renderTopicDetails(section)}</div>
@@ -482,14 +482,23 @@
                 ${(section.drawbacks_and_solutions || []).length ? `
                     <div class="flex items-center gap-2 mb-4">
                         <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
-                        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-0">Challenges & Solutions</h2>
+                        <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-0">Challenges &amp; Solutions</h2>
                     </div>
                     <div class="grid grid-cols-1 gap-3 mb-8">${renderDrawbacks(section.drawbacks_and_solutions)}</div>
                 ` : ''}
+                <div class="my-12 p-8 bg-gradient-to-br from-[#FF3621] via-[#FF5722] to-[#F97316] rounded-3xl text-white shadow-xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 text-orange-100 font-black uppercase tracking-widest text-[10px] mb-4"><i data-lucide="zap" class="w-4 h-4"></i> Pro Tips &amp; Tricks</div>
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Profile before you optimize &mdash; use Spark UI and query profiles to find the real bottleneck.</li>
+                            <li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Use job clusters in production with auto-termination to control DBU costs at scale.</li>
+                        </ul>
+                    </div>
+                    <i data-lucide="sparkles" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
+                </div>
             </article>
         `;
     }
-
     function populateToc(root) {
         const toc = document.querySelector('.toc-list');
         if (!toc) return;
@@ -536,10 +545,10 @@
     }
 
     const accentClasses = {
-        blue:     { bg: 'bg-blue-50', border: 'border-blue-100', text: 'text-blue-700', ring: 'ring-blue-300', pill: 'bg-blue-50 text-blue-700 border-blue-100', card: 'bg-blue-50/60', hover: 'text-blue-700', numBg: 'bg-blue-100', numText: 'text-blue-700', gradient: 'from-blue-500 to-indigo-600' },
-        violet:   { bg: 'bg-violet-50', border: 'border-violet-100', text: 'text-violet-700', ring: 'ring-violet-300', pill: 'bg-violet-50 text-violet-700 border-violet-100', card: 'bg-violet-50/60', hover: 'text-violet-700', numBg: 'bg-violet-100', numText: 'text-violet-700', gradient: 'from-violet-500 to-purple-600' },
+        blue:     { bg: 'bg-blue-50', border: 'border-blue-100', text: 'text-blue-700', ring: 'ring-blue-300', pill: 'bg-blue-50 text-blue-700 border-blue-100', card: 'bg-blue-50/60', hover: 'text-blue-700', numBg: 'bg-blue-100', numText: 'text-blue-700', gradient: 'from-[#FF5722] to-[#F97316]' },
+        violet:   { bg: 'bg-violet-50', border: 'border-violet-100', text: 'text-violet-700', ring: 'ring-violet-300', pill: 'bg-violet-50 text-violet-700 border-violet-100', card: 'bg-violet-50/60', hover: 'text-violet-700', numBg: 'bg-violet-100', numText: 'text-violet-700', gradient: 'from-[#FF3621] to-[#FF5722]' },
         amber:    { bg: 'bg-amber-50', border: 'border-amber-100', text: 'text-amber-700', ring: 'ring-amber-300', pill: 'bg-amber-50 text-amber-700 border-amber-100', card: 'bg-amber-50/60', hover: 'text-amber-700', numBg: 'bg-amber-100', numText: 'text-amber-700', gradient: 'from-amber-500 to-orange-600' },
-        cyan:     { bg: 'bg-cyan-50', border: 'border-cyan-100', text: 'text-cyan-700', ring: 'ring-cyan-300', pill: 'bg-cyan-50 text-cyan-700 border-cyan-100', card: 'bg-cyan-50/60', hover: 'text-cyan-700', numBg: 'bg-cyan-100', numText: 'text-cyan-700', gradient: 'from-cyan-500 to-blue-600' },
+        cyan:     { bg: 'bg-cyan-50', border: 'border-cyan-100', text: 'text-cyan-700', ring: 'ring-cyan-300', pill: 'bg-cyan-50 text-cyan-700 border-cyan-100', card: 'bg-cyan-50/60', hover: 'text-cyan-700', numBg: 'bg-cyan-100', numText: 'text-cyan-700', gradient: 'from-[#FF3621] to-[#FF5722]' },
         emerald:  { bg: 'bg-emerald-50', border: 'border-emerald-100', text: 'text-emerald-700', ring: 'ring-emerald-300', pill: 'bg-emerald-50 text-emerald-700 border-emerald-100', card: 'bg-emerald-50/60', hover: 'text-emerald-700', numBg: 'bg-emerald-100', numText: 'text-emerald-700', gradient: 'from-emerald-500 to-teal-600' },
         sky:      { bg: 'bg-sky-50', border: 'border-sky-100', text: 'text-sky-700', ring: 'ring-sky-300', pill: 'bg-sky-50 text-sky-700 border-sky-100', card: 'bg-sky-50/60', hover: 'text-sky-700', numBg: 'bg-sky-100', numText: 'text-sky-700', gradient: 'from-sky-500 to-blue-600' },
         rose:     { bg: 'bg-rose-50', border: 'border-rose-100', text: 'text-rose-700', ring: 'ring-rose-300', pill: 'bg-rose-50 text-rose-700 border-rose-100', card: 'bg-rose-50/60', hover: 'text-rose-700', numBg: 'bg-rose-100', numText: 'text-rose-700', gradient: 'from-rose-500 to-pink-600' },
@@ -637,18 +646,18 @@
             return;
         }
 
-        document.title = `${section.title} — Databricks — Data Cake`;
+        document.title = `${section.title} â€” Databricks â€” Data Cake`;
         const previous = sections[sections.indexOf(section) - 1];
         const next = sections[sections.indexOf(section) + 1];
 
         root.innerHTML = `
-            <a href="${escapeHtml(indexHref)}" data-databricks-back="${escapeHtml(section.slug)}" class="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm mb-8 no-underline transition-colors duration-200"><i data-lucide="arrow-left" class="w-4 h-4"></i>Back to Databricks Topics</a>
+            <a href="${escapeHtml(indexHref)}" data-databricks-back="${escapeHtml(section.slug)}" class="inline-flex items-center gap-2 text-sm font-medium text-[#FF3621] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors mb-6 group no-underline"><i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>Back to Databricks</a>
             ${renderSectionArticle(section)}
             ${section.slug === 'interview-preparation' ? renderInterviewQuestions(guide.top_100_interview_questions || []) : ''}
-            <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                ${previous ? `<a href="${escapeHtml(previous.slug)}.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 no-underline hover:border-cyan-200 transition-colors"><span class="text-xs font-bold uppercase text-slate-400">Previous</span><span class="block font-bold text-slate-800 dark:text-slate-100 mt-1">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
-                ${next ? `<a href="${escapeHtml(next.slug)}.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 no-underline hover:border-cyan-200 transition-colors sm:text-right"><span class="text-xs font-bold uppercase text-slate-400">Next</span><span class="block font-bold text-slate-800 dark:text-slate-100 mt-1">${escapeHtml(next.title)}</span></a>` : '<div></div>'}
-            </nav>
+            <div class="nav-container">
+                ${previous ? `<a href="${escapeHtml(previous.slug)}.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
+                ${next ? `<a href="${escapeHtml(next.slug)}.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">${escapeHtml(next.title)}</span></a>` : '<div></div>'}
+            </div>
         `;
 
         const backLink = root.querySelector('[data-databricks-back]');

@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11. Performance & Scalability — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1777291468">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+            </button>
+
+            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                <div class="flex items-center">
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
+                    </span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-3 ml-2">
+                <div class="h-4 w-[1px] bg-slate-200"></div>
+                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
+                    11. Performance & Scalability
+                </span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <a href="../../portfolio.html" id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<!-- SIDEBAR -->
+<aside id="ds-sidebar"
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
+
+    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+
+    <div class="py-5 px-3 flex flex-col h-full">
+        <div class="flex-1">
+
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../../python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+                <a href="../../sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+                <a href="../../bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+                <a href="../../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="../../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
+                <a href="../../spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+                <a href="../../flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+                <a href="../../kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+                <a href="../../dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+                <a href="../../pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+                <a href="../../numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+                <a href="../../airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="../../regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
+                <a href="../../aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+                <a href="../../gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+                <a href="../../azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+                <a href="../../snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+                <a href="../../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
+                <a href="../../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+                <a href="../../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+                <a href="../../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+                <a href="../../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
+                <a href="../../system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+                <a href="../../pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+                <a href="../../de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="../../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="../../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="../../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="../../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="../../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="../../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6">
+                
+        <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="list" class="w-3 h-3 text-white"></i>
+            </span>
+            Fundamentals
+        </div>
+        <nav class="pl-2">
+            <a href="core-concepts.html" class="sb-link ">1. Core Concepts</a><a href="pipeline-basics.html" class="sb-link ">2. Data Pipeline Basics</a><a href="data-storage.html" class="sb-link ">3. Data Storage</a><a href="data-modelling.html" class="sb-link ">4. Data Modelling</a><a href="ingestion-patterns.html" class="sb-link ">5. Data Ingestion Patterns</a><a href="processing-concepts.html" class="sb-link ">6. Data Processing Concepts</a><a href="streaming-concepts.html" class="sb-link ">7. Streaming Concepts</a><a href="data-quality.html" class="sb-link ">8. Data Quality</a><a href="governance.html" class="sb-link ">9. Data Governance & Observability</a><a href="architecture-patterns.html" class="sb-link ">10. Pipeline Architecture Patterns</a><a href="performance-scalability.html" class="sb-link active">11. Performance & Scalability</a><a href="devops.html" class="sb-link ">12. DevOps for DE</a>
+        </nav>
+        
+            </div>
+        </div>
+
+        </div>
+    </div>
+</aside>
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">11. Performance & Scalability</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Scaling strategies, CAP theorem, and optimization techniques.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Horizontal vs Vertical Scaling</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6 not-prose">
+    <div class="p-5 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
+        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="arrow-up" class="w-5 h-5 text-blue-500"></i> Vertical Scaling (Scale Up)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Adding more RAM and CPU to a single machine. Easy to do (no code changes), but hits a physical limit and gets extremely expensive.</p>
+    </div>
+    <div class="p-5 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
+        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="arrow-right-left" class="w-5 h-5 text-green-500"></i> Horizontal Scaling (Scale Out)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Adding more cheap machines to the cluster. Infinite scalability, but requires distributed computing software (Spark/Hadoop) to manage.</p>
+    </div>
+</div>
+
+<h2>CAP Theorem</h2>
+<p>In a distributed data system, you can only guarantee TWO of the following three properties simultaneously:</p>
+<ul>
+    <li><strong>Consistency (C):</strong> Every read receives the most recent write.</li>
+    <li><strong>Availability (A):</strong> Every request receives a non-error response (system is always up).</li>
+    <li><strong>Partition Tolerance (P):</strong> The system continues to operate despite network failures dropping messages between nodes.</li>
+</ul>
+<p>Since network failures (P) are unavoidable, you must choose between CP (consistent but might go offline) and AP (always online but data might be stale for a few seconds).</p>
+
+<h2>Consistency Models</h2>
+<p><strong>Strong Consistency:</strong> Once data is written, all subsequent reads instantly see it (relational DBs).</p>
+<p><strong>Eventual Consistency:</strong> After writing data, it might take a few seconds to propagate across all servers. Reads might return old data briefly (e.g., DynamoDB, Cassandra). Highly available and scalable.</p>
+
+<h2>Caching Strategies</h2>
+<p>Caching stores frequently accessed data in fast RAM (e.g., Redis) rather than slow disks.</p>
+<ul>
+    <li><strong>Read-through:</strong> App asks cache. If miss, cache loads from DB and returns.</li>
+    <li><strong>Write-through:</strong> App writes to cache, cache writes to DB synchronously.</li>
+    <li><strong>Write-behind:</strong> App writes to cache, cache asynchronously writes to DB in batches (fastest, but risky if cache crashes).</li>
+</ul>
+
+<h2>The Small File Problem</h2>
+<p>HDFS and S3 hate millions of tiny 10KB files. They cause massive metadata overhead, making listing and reading agonizingly slow. Big data engines (like Spark) perform best with files around 128MB to 1GB. <br><strong>Solution:</strong> Run periodic compaction jobs that read thousands of tiny streaming files and rewrite them as a few large Parquet files.</p>
+        
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="architecture-patterns.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">10. Pipeline Architecture Patterns</span>
+        </a>
+        
+        <a href="devops.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">12. DevOps for DE</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1777291468" defer></script>
+</body>
+</html>
