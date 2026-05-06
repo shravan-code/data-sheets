@@ -4,41 +4,290 @@
 
     // Keep topbar logo behavior universal across pages,
     // even if individual page markup slightly differs.
-    function ensureUniversalTopbarBrand() {
-        const nav = document.getElementById('ds-nav');
-        if (!nav) return;
+    function normalizeSidebarLinks() {
+        const sidebar = document.getElementById('ds-sidebar');
+        if (!sidebar || sidebar.dataset.normalized) return;
+        sidebar.dataset.normalized = 'true';
 
-        const logoLink = nav.querySelector('a[href]');
-        if (!logoLink) return;
-
-        const titleRow = logoLink.querySelector('span[style*="Outfit"], span[class*="tracking-tighter"]');
-        if (!titleRow) return;
-
-        let dataSpan = titleRow.querySelector('span.font-light');
-        let cakeSpan = Array.from(titleRow.querySelectorAll('span'))
-            .find((span) => /cake/i.test((span.textContent || '').trim()));
-
-        // If page markup drifted, reconstruct the expected two-part logo text.
-        if (!cakeSpan) {
-            titleRow.textContent = '';
-
-            dataSpan = document.createElement('span');
-            dataSpan.className = 'font-light text-slate-500';
-            dataSpan.textContent = 'Data';
-
-            cakeSpan = document.createElement('span');
-            cakeSpan.className = 'font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left';
-            cakeSpan.textContent = 'Cake';
-
-            titleRow.appendChild(dataSpan);
-            titleRow.appendChild(cakeSpan);
+        const path = window.location.pathname.replace(/\\/g, '/');
+        const parts = path.split('/').filter(Boolean);
+        
+        // Find "pages" in the path to determine depth from project root
+        const pagesIdx = parts.indexOf('pages');
+        let depth = 0;
+        if (pagesIdx >= 0) {
+            // If path is /pages/python.html -> parts=['pages','python.html'], pagesIdx=0, length=2, depth=1
+            // If path is /pages/airflow/fundamentals.html -> parts=['pages','airflow','fundamentals.html'], pagesIdx=0, length=3, depth=2
+            depth = parts.length - 1 - pagesIdx;
+        } else if (parts.length > 0 && !path.endsWith('/') && !path.endsWith('index.html')) {
+            // Probably in a subdirectory but not under "pages"
+            depth = parts.length - 1;
         }
 
-        cakeSpan.classList.add('ds-logo-cake');
-        cakeSpan.setAttribute('data-text', (cakeSpan.textContent || 'Cake').trim() || 'Cake');
+        let prefix = '';
+        if (depth === 0) {
+            // We are at root (index.html), links should point into pages/
+            prefix = './pages/';
+        } else if (depth === 1) {
+            // We are in a main page (e.g., pages/python.html), links are sibling
+            prefix = './';
+        } else {
+            // We are in a sub-page (e.g., pages/airflow/fundamentals.html), go up
+            prefix = '../'.repeat(depth - 1);
+        }
+
+        sidebar.querySelectorAll('a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+            
+            // The sidebar HTML contains links authored as if they were in pages/ folder, 
+            // e.g. "./python.html" or "../python.html".
+            // Clean it to get the base path relative to "pages/" directory.
+            // Wait! The HTML files have `href="../python.html"` in subpages and `href="./python.html"` in main pages.
+            // If we remove ALL leading `../` and `./`, we get `python.html` or `roadmaps/data-engineering.html`.
+            let cleanHref = href.replace(/^(\.\.\/|\.\/)+/, '').replace(/^pages\//, '');
+            
+            // Special case: if it links to index.html at root
+            if (cleanHref === 'index.html') {
+                if (depth === 0) {
+                    link.setAttribute('href', './index.html');
+                } else {
+                    link.setAttribute('href', '../'.repeat(depth) + 'index.html');
+                }
+                return;
+            }
+
+            // Re-apply correct relative prefix
+            link.setAttribute('href', prefix + cleanHref);
+        });
     }
 
-    ensureUniversalTopbarBrand();
+    function removeSubpageSidebarTitles() {
+        // Remove #guide-topics wrapper (used by Airflow, Databricks, etc.)
+        const guideTopics = document.getElementById('guide-topics');
+        if (guideTopics) guideTopics.remove();
+
+        // Also remove hardcoded guide nav sections not inside #guide-topics
+        // These are identified by the grey slate styling used for guide navs
+        // (vs blue/emerald/orange/rose/violet for main categories)
+        const sidebar = document.getElementById('ds-sidebar');
+        if (!sidebar) return;
+
+        const cats = sidebar.querySelectorAll('.sb-cat');
+        cats.forEach(cat => {
+            const nav = cat.nextElementSibling;
+            if (!nav || nav.tagName.toLowerCase() !== 'nav') return;
+
+            const links = nav.querySelectorAll('a.sb-link');
+            if (links.length < 3) return;
+
+            // Guide-specific navs use slate/grey colors — main categories use blue/emerald/orange/rose/violet
+            const isGuideCat = 
+                cat.classList.contains('bg-slate-50') ||
+                cat.classList.contains('bg-slate-100') ||
+                cat.classList.contains('bg-gray-50') ||
+                cat.classList.contains('bg-gray-100');
+
+            if (isGuideCat) {
+                cat.remove();
+                nav.remove();
+            }
+        });
+    }
+
+
+    function removeBottomBreadcrumbs() {
+        const selectors = [
+            '.nav-container', 
+            '.bottom-nav', 
+            'nav.mt-16.pt-8',
+            '.pagination-nav'
+        ];
+        selectors.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => el.remove());
+        });
+    }
+
+    // Fix raw JSON objects displayed as text in example/info cards
+    function fixRawJsonInCards() {
+        // Only run on DE architecture pages
+        const main = document.querySelector('main');
+        if (!main) return;
+
+        // Find all small text spans that contain raw JSON
+        main.querySelectorAll('span.text-sm, span.text-xs, p.text-sm, p.text-xs, div.text-sm, div.text-xs').forEach(el => {
+            const text = el.textContent.trim();
+            if (!text.startsWith('{') && !text.startsWith('[')) return;
+            if (!text.includes(':') || !text.includes('"')) return;
+
+            // Don't process if it's already inside a code block or pre
+            if (el.closest('pre') || el.closest('code')) return;
+
+            try {
+                // Try to extract the JSON-like start (it may be truncated with "...")
+                let jsonStr = text.replace(/…$/, '').trim();
+                
+                // Try to complete truncated JSON
+                if (!jsonStr.endsWith('}') && !jsonStr.endsWith(']')) {
+                    // Remove trailing commas
+                    jsonStr = jsonStr.replace(/,\s*$/, '');
+                    
+                    // Count open brackets
+                    const openBraces = (jsonStr.match(/\{/g) || []).length;
+                    const closeBraces = (jsonStr.match(/\}/g) || []).length;
+                    const openBrackets = (jsonStr.match(/\[/g) || []).length;
+                    const closeBrackets = (jsonStr.match(/\]/g) || []).length;
+                    
+                    // Add missing quotes if the last character is a string that wasn't closed
+                    if ((jsonStr.match(/"/g) || []).length % 2 !== 0) {
+                        jsonStr += '"';
+                    }
+                    
+                    for (let i = 0; i < openBrackets - closeBrackets; i++) jsonStr += ']';
+                    for (let i = 0; i < openBraces - closeBraces; i++) jsonStr += '}';
+                }
+                const parsed = JSON.parse(jsonStr);
+                
+                // Build a nice key-value list
+                const container = document.createElement('div');
+                container.className = 'space-y-1.5 mt-2';
+                Object.entries(parsed).forEach(([k, v]) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-start gap-2 bg-white dark:bg-slate-800/50 p-2 rounded border border-slate-100 dark:border-slate-700/50';
+                    const key = document.createElement('span');
+                    key.className = 'text-[10px] font-black uppercase tracking-widest text-slate-400 flex-shrink-0 pt-0.5 w-20';
+                    key.textContent = k;
+                    const val = document.createElement('span');
+                    val.className = 'text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-mono';
+                    val.textContent = Array.isArray(v) ? v.join(', ') : String(v);
+                    if (text.endsWith('…') && typeof v === 'string' && val.textContent === String(v) && k === Object.keys(parsed).pop()) {
+                         val.textContent += '…';
+                    }
+                    row.appendChild(key);
+                    row.appendChild(val);
+                    container.appendChild(row);
+                });
+                
+                // If we succeeded and it has keys, replace the element
+                if (Object.keys(parsed).length > 0) {
+                    el.replaceWith(container);
+                }
+            } catch (e) {
+                // Not valid JSON — leave as-is but style it as a code block
+                const pre = document.createElement('pre');
+                pre.className = 'mt-2 p-3 bg-slate-900 text-slate-100 rounded-lg text-xs font-mono whitespace-pre-wrap break-all border border-slate-700 shadow-sm leading-relaxed';
+                pre.textContent = text;
+                el.replaceWith(pre);
+            }
+        });
+    }
+
+    // Fix raw code snippets (SQL, Cron, Python) in cards
+    function fixCodeSnippetsInCards() {
+        const main = document.querySelector('main');
+        if (!main) return;
+
+        const codePatterns = [
+            /SELECT\s+.*?\s+FROM/i,
+            /0\s+\d+\s+\*\s+\*\s+\*/, // Cron
+            /INSERT\s+INTO/i,
+            /UPDATE\s+.*?\s+SET/i,
+            /import\s+[\w\.]+/,
+            /def\s+\w+\(.*\):/,
+            /spark\.(read|write|sql|conf|table)/i,
+            /df\.(show|select|filter|groupBy|withColumn|write|read)/i,
+            /dbutils\.(fs|secrets|notebook|widgets)/i,
+            /logger\.(info|error|warn|debug)/i,
+            /CREATE\s+(TABLE|VIEW|DATABASE)/i
+        ];
+
+        main.querySelectorAll('span.text-sm, span.text-xs, p.text-sm, p.text-xs, div.text-sm, div.text-xs').forEach(el => {
+            if (el.closest('pre') || el.closest('code') || el.querySelector('pre') || el.querySelector('code')) return;
+            
+            const text = el.textContent.trim();
+            if (codePatterns.some(p => p.test(text))) {
+                const pre = document.createElement('pre');
+                pre.className = 'mt-2 p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono whitespace-pre-wrap break-all border border-slate-700/50 shadow-inner leading-relaxed';
+                pre.textContent = text;
+                el.replaceWith(pre);
+            }
+        });
+    }
+
+    // Fix typography and code block styling on DE Architecture pages
+    function fixDeArchitectureStyling() {
+        const main = document.querySelector('main');
+        if (!main) return;
+        
+        // Only apply if we're on a DE architectures page
+        if (!window.location.pathname.includes('/de-architectures/')) return;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Fix overly tight tracking on large headers with Outfit font */
+            h1.tracking-tighter, h2.tracking-tighter, h3.tracking-tighter, 
+            .tracking-tighter, h1.tracking-tight, h2.tracking-tight, h3.tracking-tight,
+            .tracking-tight {
+                letter-spacing: normal !important;
+            }
+            
+            /* Enhance code block design */
+            pre[class*="language-"] {
+                border-radius: 0.75rem !important;
+                background: #0f172a !important; /* slate-900 */
+                border: 1px solid #1e293b !important; /* slate-800 */
+                margin: 1.5rem 0 !important;
+                padding: 1.25rem !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            }
+            code[class*="language-"], pre[class*="language-"] {
+                color: #e2e8f0 !important; /* slate-200 */
+                text-shadow: none !important;
+                font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace !important;
+                font-size: 0.875rem !important;
+                line-height: 1.6 !important;
+            }
+            
+            /* Add subtle border and background to inline code */
+            :not(pre) > code[class*="language-"], p code, li code {
+                background: #f1f5f9 !important; /* slate-100 */
+                color: #0f172a !important; /* slate-900 */
+                padding: 0.2em 0.4em !important;
+                border-radius: 0.25rem !important;
+                border: 1px solid #e2e8f0 !important; /* slate-200 */
+                font-size: 0.85em !important;
+                white-space: normal !important;
+            }
+            
+            /* Card alignment fixes */
+            .grid > div {
+                display: flex;
+                flex-direction: column;
+            }
+            .grid > div > div:last-child {
+                margin-top: auto;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    normalizeSidebarLinks();
+    removeSubpageSidebarTitles();
+    removeBottomBreadcrumbs();
+    fixRawJsonInCards();
+    fixDeArchitectureStyling();
+
+    // Also run on DOMContentLoaded to catch any deferred content
+    document.addEventListener('DOMContentLoaded', () => {
+        removeSubpageSidebarTitles();
+        normalizeSidebarLinks();
+        fixRawJsonInCards();
+        fixDeArchitectureStyling();
+    });
+
+
+
+
 
     /* ── Theme ──────────────────────────────────── */
     // Dark mode removed as per user request. Defaulting to light theme.
@@ -487,67 +736,11 @@
         restoreSelectedLink();
     }
 
-    /* ── Bottom Breadcrumbs For Subpages ─────────── */
-    function addBottomBreadcrumb() {
-        const path = window.location.pathname.replace(/\\/g, '/');
-        if (!path.includes('/pages/')) return;
-
-        // Exclude index-level pages that have no valid parent to link to
-        const noBreadcrumbPages = ['/pages/de-architectures.html', '/pages/databricks.html', '/pages/portfolio.html'];
-        if (noBreadcrumbPages.some(p => path.endsWith(p))) return;
-        if (path.includes('/pages/databricks/') || path.includes('/pages/my-portfolio/')) return;
-
-        const parts = path.split('/').filter(Boolean);
-        const pagesIdx = parts.indexOf('pages');
-        if (pagesIdx < 0 || pagesIdx + 2 >= parts.length) return; // not deep enough to be a subpage
-
-        const main = document.querySelector('main');
-        const navContainer = document.querySelector('.nav-container');
-        if (!main || main.querySelector('.ds-bottom-breadcrumb')) return;
-
-        const labelize = (segment) => segment
-            .replace(/\.html$/, '')
-            .replace(/---/g, ' / ')
-            .replace(/--/g, ' - ')
-            .replace(/-/g, ' ')
-            .replace(/\b\w/g, (c) => c.toUpperCase());
-
-        const breadcrumb = document.createElement('nav');
-        breadcrumb.className = 'ds-bottom-breadcrumb not-prose';
-        breadcrumb.setAttribute('aria-label', 'Breadcrumb');
-
-        const ordered = document.createElement('ol');
-        ordered.className = 'ds-breadcrumb-list';
-
-        const trail = parts.slice(pagesIdx + 1); // after "pages"
-        trail.forEach((segment, index) => {
-            const li = document.createElement('li');
-            const isLast = index === trail.length - 1;
-
-            if (!isLast) {
-                const hrefPath = '/' + parts.slice(0, pagesIdx + 2 + index).join('/') + '.html';
-                const anchor = document.createElement('a');
-                anchor.href = hrefPath;
-                anchor.textContent = labelize(segment);
-                li.appendChild(anchor);
-            } else {
-                const span = document.createElement('span');
-                span.textContent = labelize(segment).replace(/^\d+\.\s*/, '');
-                span.setAttribute('aria-current', 'page');
-                li.appendChild(span);
-            }
-
-            ordered.appendChild(li);
-        });
-
-        breadcrumb.appendChild(ordered);
-        if (navContainer) main.insertBefore(breadcrumb, navContainer);
-        else main.appendChild(breadcrumb);
-    }
-
+    fixRawJsonInCards();
+    fixCodeSnippetsInCards();
+    normalizeSidebarLinks();
     splitCombinedCodeExamples();
     preserveScrollOnBackNavigation();
-    addBottomBreadcrumb();
     initProfileHoverLabel();
 
     // Initial Icon Load

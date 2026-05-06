@@ -637,22 +637,9 @@
         }
     }
 
-    function ensureSectionSidebar(sections, currentSlug) {
-        const guideNav = document.querySelector('#guide-topics nav');
-        if (guideNav) {
-            guideNav.querySelectorAll('.sb-link').forEach((link) => {
-                const href = link.getAttribute('href');
-                if (href === `${currentSlug}.html`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    }
-
     function renderSection(root, guide) {
         const slug = root.dataset.sectionSlug;
         const sections = guide.sections || [];
-        ensureSectionSidebar(sections, slug);
         const section = sections.find((item) => item.slug === slug);
         const indexHref = root.dataset.indexHref || '../databricks.html';
 
@@ -669,10 +656,6 @@
             <a href="${escapeHtml(indexHref)}" data-databricks-back="${escapeHtml(section.slug)}" class="inline-flex items-center gap-2 text-sm font-medium text-[#FF3621] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors mb-6 group no-underline"><i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>Back to Databricks</a>
             ${renderSectionArticle(section)}
             ${section.slug === 'interview-preparation' ? renderInterviewQuestions(guide.top_100_interview_questions || []) : ''}
-            <div class="nav-container">
-                ${previous ? `<a href="${escapeHtml(previous.slug)}.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
-                ${next ? `<a href="${escapeHtml(next.slug)}.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">${escapeHtml(next.title)}</span></a>` : '<div></div>'}
-            </div>
         `;
 
         const backLink = root.querySelector('[data-databricks-back]');
