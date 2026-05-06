@@ -78,16 +78,18 @@
             ${items.map(it => {
                 let content = '';
                 if (typeof it === 'object' && it !== null) {
-                    if (it.param && it.description) {
-                        content = `<strong>${esc(it.param)}</strong>${it.default ? ` <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded ml-1">def: ${esc(it.default)}</span>` : ''}: ${esc(it.description)}`;
-                    } else if (it.key && it.description) {
-                        content = `<strong>${esc(it.key)}</strong>${it.default ? ` <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded ml-1">def: ${esc(it.default)}</span>` : ''}: ${esc(it.description)}`;
-                    } else if (it.name && it.description) {
-                        content = `<strong>${esc(it.name)}</strong>: ${esc(it.description)}`;
+                    const k1 = it.param || it.key || it.name || it.setting || it.practice || it.strategy || it.metric || it.role || it.format;
+                    const v1 = it.description || it.reason || it.meaning || it.permissions;
+                    
+                    if (k1 && v1) {
+                        content = `<strong>${esc(k1)}</strong>${it.default ? ` <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded ml-1">def: ${esc(it.default)}</span>` : ''}: ${esc(v1)}`;
+                    } else if (k1) {
+                        content = `<strong>${esc(k1)}</strong>`;
+                        if (it.examples) content += `<div class="pl-4 mt-1 border-l-2 border-slate-100 dark:border-slate-800 text-xs text-slate-500">${it.examples.map(ex => `<div>${esc(ex)}</div>`).join('')}</div>`;
                     } else {
-                        const k = Object.keys(it)[0];
-                        if (k && it[k]) {
-                            content = `<strong>${esc(k)}</strong>: ${esc(String(it[k]))}`;
+                        const firstKey = Object.keys(it)[0];
+                        if (firstKey && it[firstKey]) {
+                            content = `<strong>${esc(firstKey.replace(/_/g,' '))}</strong>: ${esc(String(it[firstKey]))}`;
                         } else {
                             content = esc(JSON.stringify(it));
                         }
@@ -120,6 +122,30 @@
                     </tbody>
                 </table>
             </div>`;
+    }
+
+    /* ─────────────── Components renderer ─────────────── */
+    function renderComponents(items) {
+        if (!items || !items.length) return '';
+        return `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                ${items.map(c => {
+                    const name = typeof c === 'string' ? c : (c.component || c.name || '');
+                    const role = typeof c === 'string' ? '' : (c.role || c.description || '');
+                    return `
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30 shadow-sm">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i data-lucide="box" class="w-4 h-4 text-orange-500"></i>
+                                <span class="font-black text-slate-800 dark:text-white text-sm">${esc(name)}</span>
+                            </div>
+                            ${role ? `<p class="text-xs text-slate-600 dark:text-slate-400 leading-5">${esc(role)}</p>` : ''}
+                            ${c.port ? `<div class="mt-2 text-[10px] font-mono text-indigo-500">Port: ${esc(c.port)}</div>` : ''}
+                            ${c.key_settings ? `<div class="mt-2 flex flex-wrap gap-1">${c.key_settings.map(s => `<span class="px-1.5 py-0.5 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 text-[9px] font-mono">${esc(s)}</span>`).join('')}</div>` : ''}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
     }
 
     /* ─────────────── Single topic card ─────────────── */
@@ -162,6 +188,55 @@
         }
         if (t.solutions?.length) body += `<div class="mt-3"><span class="text-xs font-black uppercase tracking-widest text-emerald-500">Solutions</span>${renderList(t.solutions, 'emerald')}</div>`;
         if (t.why_airflow_wins?.length) body += `<div class="mt-3"><span class="text-xs font-black uppercase tracking-widest text-emerald-500">Why Airflow Wins</span>${renderList(t.why_airflow_wins, 'emerald')}</div>`;
+        if (t.data_flow?.length) body += `<div class="mt-3"><span class="text-xs font-black uppercase tracking-widest text-blue-500">Data Flow</span>${renderList(t.data_flow, 'amber')}</div>`;
+
+        // components
+        const comps = t.components || (t.architecture ? t.architecture.components : null);
+        if (comps && comps.length) {
+            body += `<div class="mt-3"><span class="text-xs font-black uppercase tracking-widest text-orange-500">Components</span>${renderComponents(comps)}</div>`;
+        }
+
+        // trigger_rules
+        if (t.trigger_rules?.length) {
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Trigger Rules</span>${renderTable(t.trigger_rules)}</div>`;
+        }
+        
+        // built-in variables / macros
+        if (t.built_in_variables?.length) {
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Built-in Variables</span>${renderTable(t.built_in_variables)}</div>`;
+        }
+        if (t.built_in_macros?.length) {
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Built-in Macros</span>${renderTable(t.built_in_macros)}</div>`;
+        }
+
+        // key_configs / settings / key_metrics / deployment_strategies / key_values
+        if (t.key_configs) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Key Configurations</span>${renderList(t.key_configs)}</div>`;
+        if (t.settings) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Settings</span>${renderList(t.settings)}</div>`;
+        if (t.key_metrics) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Key Metrics</span>${renderList(t.key_metrics)}</div>`;
+        if (t.deployment_strategies) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Deployment Strategies</span>${renderList(t.deployment_strategies)}</div>`;
+        
+        // practices / features / use_cases
+        if (t.practices) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-emerald-500 block mb-2">Best Practices</span>${renderList(t.practices, 'emerald')}</div>`;
+        if (t.features) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-emerald-500 block mb-2">Key Features</span>${renderList(t.features, 'emerald')}</div>`;
+        if (t.composer2_features) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-emerald-500 block mb-2">Composer 2 Features</span>${renderList(t.composer2_features, 'emerald')}</div>`;
+
+        // schedule_formats
+        if (t.schedule_formats) {
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Schedule Formats</span>${renderList(t.schedule_formats)}</div>`;
+        }
+
+        // cron_cheatsheet
+        if (t.cron_cheatsheet) {
+            body += `<div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Cron Cheatsheet (${esc(t.cron_cheatsheet.format)})</span>
+                ${renderTable(t.cron_cheatsheet.examples)}
+            </div>`;
+        }
+
+        // xcom_limits
+        if (t.xcom_limits) {
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-amber-500 block mb-2">XCom Limits</span>${renderList(Object.entries(t.xcom_limits).map(([k,v])=>({key:k, description:v})), 'amber')}</div>`;
+        }
 
         // comparison_table
         if (t.comparison_table?.length) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Comparison</span>${renderTable(t.comparison_table)}</div>`;
@@ -187,15 +262,39 @@
             body += compBody;
         }
 
-        // architecture_diagram (array of strings)
-        if (t.architecture_diagram?.length) {
-            body += `<div class="mt-4 p-4 bg-slate-900 dark:bg-slate-950 rounded-xl border border-slate-700"><span class="text-xs font-black uppercase tracking-widest text-orange-400 block mb-2">Architecture</span><pre class="text-xs text-slate-300 leading-6 overflow-x-auto">${esc(t.architecture_diagram.join('\n'))}</pre></div>`;
+        // architecture_diagram (can be array of strings or object with flow)
+        if (t.architecture_diagram) {
+            let diag = '';
+            if (Array.isArray(t.architecture_diagram)) {
+                diag = t.architecture_diagram.join('\n');
+            } else if (typeof t.architecture_diagram === 'object') {
+                diag = t.architecture_diagram.flow || '';
+            } else if (typeof t.architecture_diagram === 'string') {
+                diag = t.architecture_diagram;
+            }
+
+            if (diag) {
+                body += `<div class="mt-4 p-4 bg-slate-900 dark:bg-slate-950 rounded-xl border border-slate-700"><span class="text-xs font-black uppercase tracking-widest text-orange-400 block mb-2">Architecture</span><pre class="text-xs text-slate-300 leading-6 overflow-x-auto whitespace-pre-wrap font-mono">${esc(diag)}</pre></div>`;
+            }
         }
 
         // nested_task_groups
         if (t.nested_task_groups) {
-            body += `<div class="mt-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-1">Nested Task Groups</span><p class="text-sm text-slate-600 dark:text-slate-300">${esc(t.nested_task_groups)}</p></div>`;
+            const nestedCode = typeof t.nested_task_groups === 'string' ? t.nested_task_groups : (t.nested_task_groups.code || JSON.stringify(t.nested_task_groups));
+            body += `<div class="mt-3"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-1">Nested Task Groups</span>${renderCode(nestedCode)}</div>`;
         }
+
+        // bad_practices / good_practices / optimization_example / commands / key_values_yaml
+        if (t.bad_practices) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-red-500 block mb-2">Bad Practices</span>${renderCode(t.bad_practices.code || t.bad_practices)}</div>`;
+        if (t.good_practices) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-emerald-500 block mb-2">Good Practices</span>${renderCode(t.good_practices.code || t.good_practices)}</div>`;
+        if (t.optimization_example) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-blue-500 block mb-2">Optimization Example</span>${renderCode(t.optimization_example.config || t.optimization_example.code || JSON.stringify(t.optimization_example))}</div>`;
+        if (t.commands) {
+            const cmdStr = typeof t.commands === 'string' ? t.commands : Object.entries(t.commands).map(([k,v]) => `# ${k}\n${v}`).join('\n\n');
+            body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-slate-500 block mb-2">Commands</span>${renderCode(cmdStr)}</div>`;
+        }
+        if (t.key_values_yaml) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-slate-500 block mb-2">values.yaml</span>${renderCode(t.key_values_yaml)}</div>`;
+        if (t.aws_secrets_manager) body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">AWS Secrets Manager</span>${renderCode(t.aws_secrets_manager.config || JSON.stringify(t.aws_secrets_manager))}</div>`;
+        if (t.setup && typeof t.setup === 'object') body += `<div class="mt-4"><span class="text-xs font-black uppercase tracking-widest text-orange-500 block mb-2">Setup</span>${renderList(t.setup)}</div>`;
 
         // methods array (e.g., Managing Connections)
         if (t.methods && Array.isArray(t.methods)) {
@@ -321,16 +420,7 @@
                 </div>
                 <i data-lucide="wind" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
             </div>
-            <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                ${prev && prevSlug ? `<a href="${prevSlug}.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 no-underline hover:border-orange-200 transition-colors group">
-                    <span class="flex items-center gap-1 text-xs font-bold uppercase text-slate-400 mb-1"><i data-lucide="arrow-left" class="w-3 h-3 transition-transform group-hover:-translate-x-1"></i> Previous</span>
-                    <span class="block font-bold text-slate-800 dark:text-slate-100">${esc(prev.title)}</span>
-                </a>` : '<div></div>'}
-                ${next && nextSlug ? `<a href="${nextSlug}.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 no-underline hover:border-orange-200 transition-colors sm:text-right group">
-                    <span class="flex items-center gap-1 text-xs font-bold uppercase text-slate-400 mb-1 sm:justify-end">Next <i data-lucide="arrow-right" class="w-3 h-3 transition-transform group-hover:translate-x-1"></i></span>
-                    <span class="block font-bold text-slate-800 dark:text-slate-100">${esc(next.title)}</span>
-                </a>` : '<div></div>'}
-            </nav>`;
+            </div>`;
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
         populateToc(root);

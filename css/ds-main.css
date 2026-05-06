@@ -1,4 +1,4 @@
-/* DS_SHARED_SIDEBAR_STYLES */
+﻿/* DS_SHARED_SIDEBAR_STYLES */
 body {
     font-family: 'Inter', sans-serif;
 }
@@ -17,7 +17,7 @@ h3,
 
 /* .dark .grid-bg removed - light theme only */
 
-/* ── Sidebar ────────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #ds-sidebar {
     scrollbar-width: thin;
     scrollbar-color: #e2e8f0 transparent;
@@ -489,7 +489,7 @@ a.group:focus-visible .ds-logo-cake::after {
     background: transparent;
 }
 
-/* ── Code Blocks (Adaptive) ────────────────── */
+/* â”€â”€ Code Blocks (Adaptive) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 pre[class*="language-"],
 pre[class*="language-"] code,
 code[class*="language-"] {
@@ -538,7 +538,7 @@ pre[class*="language-"]:hover {
     border: 1px solid #334155 !important;
 }
 
-/* ── Light Theme Prism Highlighting ──────────────── */
+/* â”€â”€ Light Theme Prism Highlighting â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .token.comment, .token.prolog, .token.doctype, .token.cdata { color: #94a3b8; font-style: italic; }
 .token.punctuation { color: #64748b; }
 .token.namespace { opacity: .7; }
@@ -588,7 +588,7 @@ pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
     }
 }
 
-/* ── Navigation Cards (Bottom of Page) ──────────────── */
+/* â”€â”€ Navigation Cards (Bottom of Page) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -679,49 +679,6 @@ pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
     font-weight: 700;
     color: #334155;
     margin: 0 0 .6rem 0;
-}
-
-/* Bottom breadcrumb */
-.ds-bottom-breadcrumb {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-.ds-breadcrumb-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .45rem;
-    padding: 0;
-    margin: 0;
-    font-size: .82rem;
-    color: #64748b;
-}
-
-.ds-breadcrumb-list li {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-}
-
-.ds-breadcrumb-list li:not(:last-child)::after {
-    content: '>';
-    color: #94a3b8;
-}
-
-.ds-breadcrumb-list a {
-    color: #3b82f6;
-    text-decoration: none;
-}
-
-.ds-breadcrumb-list a:hover {
-    text-decoration: underline;
-}
-
-.ds-breadcrumb-list [aria-current="page"] {
-    color: #475569;
-    font-weight: 600;
 }
 
 .nav-card i {
@@ -873,7 +830,7 @@ body.sidebar-open #sidebar-toggle .line:last-child {
     }
 }
 
-/* ── Mobile Layout Overrides ────────────────── */
+/* â”€â”€ Mobile Layout Overrides â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 768px) {
     body {
         overflow-x: hidden;
@@ -1044,4 +1001,16 @@ body.sidebar-open #sidebar-toggle .line:last-child {
         margin: 2rem -1rem !important;
         opacity: 0.1 !important;
     }
+
+/* Prevent flash of subpage sidebar menus before JS removes them */
+#guide-topics {
+    display: none !important;
+}
+
+/* Hide legacy sidebar navigation blocks on subpages to prevent flicker */
+.sb-cat[class*="bg-slate-"]:not(:has(~ nav a[href*="portfolio.html"])) {
+    display: none !important;
+}
+.sb-cat[class*="bg-slate-"]:not(:has(~ nav a[href*="portfolio.html"])) + nav {
+    display: none !important;
 }
