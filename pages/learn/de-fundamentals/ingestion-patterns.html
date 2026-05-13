@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. Data Ingestion Patterns — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688755">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">5. Data Ingestion Patterns</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">CDC, Incremental vs Full Load, API and event-driven patterns.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Full Load vs Incremental Load</h2>
+<div class="bg-slate-100 dark:bg-slate-800/50 p-6 rounded-xl my-6 not-prose">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Full Load (Truncate & Load)</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">The entire source table is extracted and overwrites the destination table. Very simple, highly robust, but slow and expensive for large tables.</p>
+        </div>
+        <div>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Incremental Load (Append/Merge)</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Only extract rows that have been added or updated since the last run (using a `updated_at` watermark column). Fast and cheap, but logic is complex and prone to data drift if deletes occur.</p>
+        </div>
+    </div>
+</div>
+
+<h2>Change Data Capture (CDC)</h2>
+<p>CDC is the ultimate solution for incremental ingestion. Instead of querying the database periodically, a CDC tool (like Debezium) reads the database's internal Write-Ahead Log (WAL or binlog).</p>
+<ul>
+    <li>It captures every single `INSERT`, `UPDATE`, and `DELETE` operation in real-time.</li>
+    <li>It streams these events into Kafka.</li>
+    <li><strong>Advantage:</strong> Near zero impact on the source database performance, and it captures hard deletes natively!</li>
+</ul>
+
+<h2>Event-driven Ingestion</h2>
+<p>Data isn't pulled from a database; instead, the application pushes events (e.g.,"UserClickedButton","OrderPlaced") directly to an event bus (Kafka/Kinesis) the moment they occur. This is the foundation of real-time analytics.</p>
+
+<h2>API-based Ingestion</h2>
+<p>Pulling data from third-party SaaS applications (Salesforce, Zendesk, Stripe) using HTTP requests. Major challenges include handling rate limits, pagination, handling JSON nesting, and authentication (OAuth tokens). Tools like Fivetran and Airbyte dominate this space.</p>
+
+<h2>File-based Ingestion</h2>
+<p>Upstream systems dump CSV or JSON files into an S3 bucket or SFTP server daily. An orchestration tool (Airflow) triggers a job when the file arrives (e.g., using an S3 Sensor) to load it into the warehouse.</p>
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="data-modelling.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">4. Data Modelling</span>
+        </a>
+        
+        <a href="processing-concepts.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">6. Data Processing Concepts</span>
+        </a>
+    </div></main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778688755" defer></script>
+</body>
+</html>

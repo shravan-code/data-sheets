@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Index Maintenance — SQL Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    
+    <style>
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            border-radius: 0.75rem !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+        }
+    </style>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688757">
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+            <a href="../sql.html#i-n-d-e-x--m-a-i-n-t-e-n-a-n-c-e" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to SQL
+            </a>
+            <header class="mb-12">
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-[1px] bg-slate-300"></span>
+                    Section 18: Indexes
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                    Index Maintenance
+                </h1>
+            </header>
+
+            <article class="prose dark:prose-invert max-w-none pb-20">
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">An INDEX is a powerful database object that improves the speed of data retrieval operations. It works like a book's index, allowing the database engine to find rows without scanning the entire table, though it comes with a storage and write-performance cost.</p>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Syntax Pattern</h3>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-sql"><code>-- Check index usage (PostgreSQL):
+SELECT indexname, idx_scan, idx_tup_read FROM pg_stat_user_indexes;
+
+-- Rebuild bloated index:
+REINDEX INDEX idx_employees_salary;
+
+-- Remove unused index:
+DROP INDEX idx_employees_salary;
+
+-- Analyze table statistics:
+ANALYZE employees;
+
+-- VACUUM (PostgreSQL):
+VACUUM ANALYZE employees;</code></pre>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+                    <pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-blue-600 font-mono text-sm leading-relaxed">Execution result varies based on data.</code></pre>
+                </div>
+</div></div>
+<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">Creating a Index Maintenance</h3>
+<div class="my-8 group">
+<div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6">
+<pre class="language-sql"><code>CREATE INDEX MAINTENANCE idx_customer_email 
+ON customers (email);</code></pre>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
+                    <pre class="!m-0 !p-0 !bg-transparent !border-0 !shadow-none !rounded-none"><code class="text-blue-600 font-mono text-sm leading-relaxed">Index created successfully. Read performance on 'email' will improve.</code></pre>
+                </div>
+</div></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
+<div class="p-6 bg-emerald-50/50 border border-emerald-100 rounded-3xl">
+<div class="flex items-center gap-2 text-emerald-700 font-black uppercase tracking-widest text-[10px] mb-4"><i data-lucide="check-circle" class="w-4 h-4"></i> Pros / Advantages</div>
+<ul class="space-y-3">
+<li class="text-sm text-emerald-800 flex items-start gap-2"><span class="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0"></span>Dramatic speedup for SELECT queries</li>
+<li class="text-sm text-emerald-800 flex items-start gap-2"><span class="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0"></span>Enforces uniqueness</li>
+<li class="text-sm text-emerald-800 flex items-start gap-2"><span class="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0"></span>Reduces I/O overhead</li>
+</ul></div>
+<div class="p-6 bg-rose-50/50 border border-rose-100 rounded-3xl">
+<div class="flex items-center gap-2 text-rose-700 font-black uppercase tracking-widest text-[10px] mb-4"><i data-lucide="x-circle" class="w-4 h-4"></i> Cons / Limitations</div>
+<ul class="space-y-3">
+<li class="text-sm text-rose-800 flex items-start gap-2"><span class="mt-1.5 w-1 h-1 rounded-full bg-rose-400 flex-shrink-0"></span>Slows down writes (INSERT/UPDATE/DELETE)</li>
+<li class="text-sm text-rose-800 flex items-start gap-2"><span class="mt-1.5 w-1 h-1 rounded-full bg-rose-400 flex-shrink-0"></span>Takes up additional disk space</li>
+</ul></div>
+</div>
+<div class="my-12 p-8 bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 text-indigo-100 font-black uppercase tracking-widest text-[10px] mb-4"><i data-lucide="zap" class="w-4 h-4"></i> Pro Tips & Tricks</div>
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Only index columns used in WHERE, JOIN, or ORDER BY</li>
+<li class="text-sm text-white/90 flex items-start gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm"><i data-lucide="lightbulb" class="w-4 h-4 text-yellow-300 flex-shrink-0 mt-0.5"></i>Avoid indexing columns with very low cardinality (e.g. Booleans)</li>
+</ul></div>
+<i data-lucide="sparkles" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
+</div>
+<div class="my-16">
+<h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i> Troubleshooting & Common Issues</h3>
+<div class="space-y-4">
+
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    Issue: Index Not Used
+                </div>
+                <div class="p-6 bg-white text-slate-600 text-sm leading-relaxed">
+                    <span class="font-black text-blue-600 mr-2 uppercase text-[10px]">Solution:</span> Check EXPLAIN plan; functions on indexed columns (e.g. WHERE UPPER(name)) prevent index usage.
+                </div>
+            </div>
+</div></div>
+            </article>
+
+            <div class="nav-container">
+                
+            <a href="w-h-e-n--t-o--u-s-e-----a-v-o-i-d--i-n-d-e-x-e-s.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">When to use / avoid Indexes</span>
+            </a>
+                
+            <a href="p-r-i-m-a-r-y--k-e-y.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">PRIMARY KEY</span>
+            </a>
+            </div>
+        </main>
+</div>
+
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list"></ul>
+            
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script>lucide.createIcons();</script>
+<script src="../../../js/ds-main.js?v=1778688757" defer></script>
+</body>
+</html>

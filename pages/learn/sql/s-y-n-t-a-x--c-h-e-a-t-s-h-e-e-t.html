@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Syntax Cheatsheet — SQL Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    
+    <style>
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            border-radius: 0.75rem !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+        }
+    </style>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688757">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+            <a href="../sql.html#s-y-n-t-a-x--c-h-e-a-t-s-h-e-e-t" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to SQL
+            </a>
+            <header class="mb-12">
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-[1px] bg-slate-300"></span>
+                    Section 28: Syntax Cheatsheet
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">
+                    Syntax Cheatsheet
+                </h1>
+            </header>
+
+            <article class="prose dark:prose-invert max-w-none pb-20">
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">Side-by-side syntax reference for PostgreSQL, MySQL, and MS SQL Server</p>
+<h4 class="text-lg font-bold text-slate-800 mb-2 mt-6">Cheatsheet</h4>
+<div class="overflow-x-auto my-4 rounded-xl border border-slate-200 shadow-sm">
+<table class="min-w-full border-collapse text-sm">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr>
+<th class="p-3 text-left font-bold text-slate-700 uppercase tracking-wider text-[10px]">topic</th>
+<th class="p-3 text-left font-bold text-slate-700 uppercase tracking-wider text-[10px]">postgresql</th>
+<th class="p-3 text-left font-bold text-slate-700 uppercase tracking-wider text-[10px]">mysql</th>
+<th class="p-3 text-left font-bold text-slate-700 uppercase tracking-wider text-[10px]">mssql</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 bg-white">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Auto Increment Primary Key</td>
+<td class="p-3 text-slate-600 font-mono text-xs">emp_id SERIAL PRIMARY KEY
+-- or:
+emp_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY</td>
+<td class="p-3 text-slate-600 font-mono text-xs">emp_id INT AUTO_INCREMENT PRIMARY KEY</td>
+<td class="p-3 text-slate-600 font-mono text-xs">emp_id INT IDENTITY(1,1) PRIMARY KEY</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Current Date/Time</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT CURRENT_DATE;       -- date only
+SELECT NOW();              -- with time
+SELECT CURRENT_TIMESTAMP; -- same as NOW()</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT CURDATE();          -- date only
+SELECT NOW();              -- with time
+SELECT SYSDATE();</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT CAST(GETDATE() AS DATE)  -- date only
+SELECT GETDATE();              -- with time
+SELECT GETUTCDATE();           -- UTC</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">String Concatenation</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT 'Hello' || ' ' || 'World';
+SELECT CONCAT('Hello', ' ', 'World');</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT CONCAT('Hello', ' ', 'World');
+-- || works only with PIPES_AS_CONCAT mode</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT 'Hello' + ' ' + 'World';
+SELECT CONCAT('Hello', ' ', 'World');</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Limit Rows</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * FROM t ORDER BY id LIMIT 10 OFFSET 20;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * FROM t ORDER BY id LIMIT 10 OFFSET 20;
+-- or: LIMIT 20, 10</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT TOP 10 * FROM t ORDER BY id;
+-- With offset:
+SELECT * FROM t ORDER BY id OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Upsert / Merge</td>
+<td class="p-3 text-slate-600 font-mono text-xs">INSERT INTO t (id, val) VALUES (1, 'a')
+ON CONFLICT (id) DO UPDATE SET val = EXCLUDED.val;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">INSERT INTO t (id, val) VALUES (1, 'a')
+ON DUPLICATE KEY UPDATE val = VALUES(val);
+-- or:
+REPLACE INTO t (id, val) VALUES (1, 'a');</td>
+<td class="p-3 text-slate-600 font-mono text-xs">MERGE INTO t AS target
+USING (VALUES (1, 'a')) AS src(id, val)
+  ON target.id = src.id
+WHEN MATCHED THEN UPDATE SET val = src.val
+WHEN NOT MATCHED THEN INSERT (id, val) VALUES (src.id, src.val);</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">String to Date</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT TO_DATE('15/01/2024', 'DD/MM/YYYY');
+SELECT '2024-01-15'::DATE;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT STR_TO_DATE('15/01/2024', '%d/%m/%Y');
+SELECT CAST('2024-01-15' AS DATE);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT CONVERT(DATE, '15/01/2024', 103);  -- 103 = DD/MM/YYYY
+SELECT CAST('2024-01-15' AS DATE);</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Date Arithmetic</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT NOW() + INTERVAL '30 days';
+SELECT NOW() - INTERVAL '1 year';
+SELECT '2024-12-31'::DATE - '2024-01-01'::DATE; -- 365</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT DATE_ADD(NOW(), INTERVAL 30 DAY);
+SELECT DATE_SUB(NOW(), INTERVAL 1 YEAR);
+SELECT DATEDIFF('2024-12-31', '2024-01-01'); -- 365</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT DATEADD(DAY, 30, GETDATE());
+SELECT DATEADD(YEAR, -1, GETDATE());
+SELECT DATEDIFF(DAY, '2024-01-01', '2024-12-31'); -- 365</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Conditional / NULL handling</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT COALESCE(phone, 'N/A');
+SELECT NULLIF(count, 0);
+SELECT CASE WHEN x > 0 THEN 'pos' ELSE 'neg' END;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT COALESCE(phone, 'N/A');
+SELECT IFNULL(phone, 'N/A');   -- MySQL alias
+SELECT IF(x > 0, 'pos', 'neg');</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT COALESCE(phone, 'N/A');
+SELECT ISNULL(phone, 'N/A');   -- MSSQL alias
+SELECT IIF(x > 0, 'pos', 'neg');</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Safe Type Casting</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- No built-in TRY_CAST; use regex or custom function:
+SELECT CASE WHEN col ~ '^[0-9]+$' THEN col::INT ELSE NULL END;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- No TRY_CAST; use CAST (throws on error):
+SELECT CAST(col AS UNSIGNED);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT TRY_CAST(col AS INT);     -- NULL on failure
+SELECT TRY_CONVERT(INT, col);  -- NULL on failure</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">String Aggregation</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT dept_id, STRING_AGG(name, ', ' ORDER BY name) AS members FROM employees GROUP BY dept_id;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT dept_id, GROUP_CONCAT(name ORDER BY name SEPARATOR ', ') AS members FROM employees GROUP BY dept_id;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT dept_id, STRING_AGG(name, ', ') WITHIN GROUP (ORDER BY name) AS members FROM employees GROUP BY dept_id;</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Window Functions</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT name, salary, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- Supported since MySQL 8.0:
+SELECT name, salary, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT name, salary, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees;</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Case-Insensitive Search</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * FROM t WHERE name ILIKE 'alice%';   -- ILIKE
+SELECT * FROM t WHERE LOWER(name) LIKE 'alice%';</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- Case-insensitive by default with utf8_general_ci:
+SELECT * FROM t WHERE name LIKE 'alice%';
+SELECT * FROM t WHERE name COLLATE utf8_bin LIKE 'Alice%'; -- case-sensitive</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- Case-insensitive by default with SQL_Latin1_General_CP1_CI_AS:
+SELECT * FROM t WHERE name LIKE 'alice%';
+SELECT * FROM t WHERE name COLLATE Latin1_General_CS_AS LIKE 'Alice%'; -- case-sensitive</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Create Index</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE INDEX idx_name ON employees(name);
+CREATE UNIQUE INDEX idx_email ON employees(email);
+CREATE INDEX idx_partial ON employees(salary) WHERE status = 'active';
+CREATE INDEX CONCURRENTLY idx_big ON big_table(col); -- non-blocking</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE INDEX idx_name ON employees(name);
+CREATE UNIQUE INDEX idx_email ON employees(email);
+ALTER TABLE employees ADD INDEX idx_salary (salary);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE INDEX idx_name ON employees(name);
+CREATE UNIQUE INDEX idx_email ON employees(email);
+CREATE INDEX idx_include ON employees(dept_id) INCLUDE (name, salary); -- covering</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Explain Query Plan</td>
+<td class="p-3 text-slate-600 font-mono text-xs">EXPLAIN SELECT * FROM employees WHERE dept_id = 10;
+EXPLAIN ANALYZE SELECT * FROM employees WHERE dept_id = 10;
+EXPLAIN (FORMAT JSON) SELECT * FROM employees;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">EXPLAIN SELECT * FROM employees WHERE dept_id = 10;
+EXPLAIN FORMAT=JSON SELECT * FROM employees WHERE dept_id = 10;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SET SHOWPLAN_TEXT ON; SELECT * FROM employees WHERE dept_id = 10;
+-- Or: use 'Include Actual Execution Plan' in SSMS</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Truncate Table</td>
+<td class="p-3 text-slate-600 font-mono text-xs">TRUNCATE TABLE employees;
+TRUNCATE TABLE employees RESTART IDENTITY; -- reset sequences
+TRUNCATE TABLE employees CASCADE;          -- cascade to children</td>
+<td class="p-3 text-slate-600 font-mono text-xs">TRUNCATE TABLE employees;  -- auto_increment also resets</td>
+<td class="p-3 text-slate-600 font-mono text-xs">TRUNCATE TABLE employees;  -- IDENTITY also resets
+-- Cannot truncate if FK references exist</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Temporary Tables</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE TEMP TABLE tmp AS SELECT * FROM employees WHERE salary > 70000;
+CREATE TEMPORARY TABLE tmp (id INT, name TEXT);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE TEMPORARY TABLE tmp AS SELECT * FROM employees WHERE salary > 70000;
+-- Dropped when session ends</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * INTO #tmp FROM employees WHERE salary > 70000; -- session temp
+SELECT * INTO ##tmp FROM employees; -- global temp (all sessions)
+CREATE TABLE #tmp (id INT, name NVARCHAR(100));</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Top N Per Group</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * FROM (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees
+) t WHERE rn <= 3;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">-- MySQL 8.0+:
+SELECT * FROM (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees
+) t WHERE rn <= 3;</td>
+<td class="p-3 text-slate-600 font-mono text-xs">SELECT * FROM (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn FROM employees
+) t WHERE rn <= 3;</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="p-3 text-slate-600 font-mono text-xs">Stored Procedure</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE OR REPLACE PROCEDURE proc_name(param1 INT)
+LANGUAGE plpgsql AS $$
+BEGIN
+  UPDATE employees SET salary = salary * 1.1 WHERE dept_id = param1;
+END;
+$$;
+CALL proc_name(10);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">DELIMITER //
+CREATE PROCEDURE proc_name(IN dept INT)
+BEGIN
+  UPDATE employees SET salary = salary * 1.1 WHERE dept_id = dept;
+END //
+DELIMITER ;
+CALL proc_name(10);</td>
+<td class="p-3 text-slate-600 font-mono text-xs">CREATE PROCEDURE proc_name @dept INT AS
+BEGIN
+  UPDATE employees SET salary = salary * 1.1 WHERE dept_id = @dept;
+END;
+EXEC proc_name @dept = 10;</td>
+</tr>
+</tbody></table></div>
+            </article>
+
+            <div class="nav-container">
+                
+            <a href="p-r-e-s-t-o-----t-r-i-n-o--s-q-l.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">Presto / Trino SQL</span>
+            </a>
+                
+            <a href="t-o-p--5-0--c-o-n-c-e-p-t-u-a-l--i-n-t-e-r-v-i-e-w--q-u-e-s-t-i-o-n-s.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">Top 50 Conceptual Interview Questions</span>
+            </a>
+            </div>
+        </main>
+</div>
+
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list"></ul>
+            
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script>lucide.createIcons();</script>
+<script src="../../../js/ds-main.js?v=1778688757" defer></script>
+</body>
+</html>

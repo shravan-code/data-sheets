@@ -26,10 +26,7 @@ def enrich_data():
                         existing_sqls = [e.get('sql', '') for e in topic.get('examples', []) if isinstance(e, dict)]
                         if val not in existing_sqls:
                             if 'examples' not in topic: topic['examples'] = []
-                            topic['examples'].insert(0, {
-                                "description": "Syntax Pattern",
-                                "sql": val,
-                                "output": "Execution result varies based on data."
+                            topic['examples'].insert(0, {"description":"Syntax Pattern","sql": val,"output":"Execution result varies based on data."
                             })
                     del topic[k]
 
@@ -39,7 +36,7 @@ def enrich_data():
                 for e in topic['examples']:
                     if isinstance(e, str):
                         if 'SELECT * FROM table_name' not in e:
-                            new_examples.append({"description": "Usage example", "sql": e, "output": "Query executed."})
+                            new_examples.append({"description":"Usage example","sql": e,"output":"Query executed."})
                     elif isinstance(e, dict):
                         if 'SELECT * FROM table_name' not in e.get('sql', ''):
                             new_examples.append(e)
@@ -56,5 +53,5 @@ def enrich_data():
         json.dump(data, f, indent=2)
     print("Consolidated raw SQL/Code keys into structured examples and cleaned formatting issues.")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     enrich_data()

@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>SQL Mastery — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Master SQL from fundamentals to advanced query optimization for data engineering.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+<link rel="stylesheet" href="../../css/ds-main.css?v=1778688756">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-24 pb-20 px-6 max-w-6xl mx-auto">
+            <!-- HERO -->
+            <header class="mb-20 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border border-blue-100 dark:border-blue-800">
+                    <i data-lucide="database" class="w-3 h-3"></i> SQL Documentation
+                </div>
+                <h1 class="font-display text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-tight">
+                    SQL <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-400 bg-clip-text text-transparent">Mastery</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium">
+                    The bedrock of data engineering. From basic CRUD to advanced window functions and performance tuning.
+                </p>
+            </header>
+
+            <!-- CARD CONTENT -->
+            <div class="space-y-16">
+                
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">1</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Foundations</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/w-h-a-t--i-s--s-q-l--and--r-e-l-a-t-i-o-n-a-l--d-a-t-a-b-a-s-e-s.html" id="w-h-a-t--i-s--s-q-l--and--r-e-l-a-t-i-o-n-a-l--d-a-t-a-b-a-s-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="database" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">What is SQL & Relational Databases</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-q-l--v-s--n-o-s-q-l.html" id="s-q-l--v-s--n-o-s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="database" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQL vs NoSQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-d-b-m-s.html" id="r-d-b-m-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="database" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RDBMS</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-q-l--d-a-t-a--t-y-p-e-s.html" id="s-q-l--d-a-t-a--t-y-p-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="database" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQL Data Types</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-q-l--e-x-e-c-u-t-i-o-n--o-r-d-e-r.html" id="s-q-l--e-x-e-c-u-t-i-o-n--o-r-d-e-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="database" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQL Execution Order</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">2</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Core Language</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/c-r-e-a-t-e.html" id="c-r-e-a-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="plus-square" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CREATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-l-t-e-r.html" id="a-l-t-e-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="plus-square" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ALTER</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-r-o-p.html" id="d-r-o-p" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="plus-square" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DROP</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-r-u-n-c-a-t-e.html" id="t-r-u-n-c-a-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="plus-square" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TRUNCATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-n-a-m-e.html" id="r-e-n-a-m-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="plus-square" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RENAME</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-n-s-e-r-t.html" id="i-n-s-e-r-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">INSERT</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-p-d-a-t-e.html" id="u-p-d-a-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">UPDATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-e-l-e-t-e.html" id="d-e-l-e-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DELETE</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-e-r-g-e-----u-p-s-e-r-t.html" id="m-e-r-g-e-----u-p-s-e-r-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">MERGE / UPSERT</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-e-l-e-c-t.html" id="s-e-l-e-c-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SELECT</span>
+                        </div>
+                    </a>
+                    <a href="sql/w-h-e-r-e.html" id="w-h-e-r-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">WHERE</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-i-s-t-i-n-c-t.html" id="d-i-s-t-i-n-c-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DISTINCT</span>
+                        </div>
+                    </a>
+                    <a href="sql/o-r-d-e-r--b-y.html" id="o-r-d-e-r--b-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ORDER BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-i-m-i-t-----o-f-f-s-e-t.html" id="l-i-m-i-t-----o-f-f-s-e-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LIMIT / OFFSET</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-e-t-c-h.html" id="f-e-t-c-h" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">FETCH</span>
+                        </div>
+                    </a>
+                    <a href="sql/g-r-a-n-t.html" id="g-r-a-n-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">GRANT</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-v-o-k-e.html" id="r-e-v-o-k-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">REVOKE</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-c-i-d--p-r-o-p-e-r-t-i-e-s.html" id="a-c-i-d--p-r-o-p-e-r-t-i-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ACID Properties</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-m-m-i-t.html" id="c-o-m-m-i-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">COMMIT</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-o-l-l-b-a-c-k.html" id="r-o-l-l-b-a-c-k" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ROLLBACK</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-a-v-e-p-o-i-n-t.html" id="s-a-v-e-p-o-i-n-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SAVEPOINT</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">3</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Filtering & Joins</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/a-n-d-----o-r-----n-o-t.html" id="a-n-d-----o-r-----n-o-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">AND / OR / NOT</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-n-----n-o-t--i-n.html" id="i-n-----n-o-t--i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">IN / NOT IN</span>
+                        </div>
+                    </a>
+                    <a href="sql/b-e-t-w-e-e-n.html" id="b-e-t-w-e-e-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">BETWEEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-i-k-e-----i-l-i-k-e.html" id="l-i-k-e-----i-l-i-k-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LIKE / ILIKE</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-s--n-u-l-l-----i-s--n-o-t--n-u-l-l.html" id="i-s--n-u-l-l-----i-s--n-o-t--n-u-l-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">IS NULL / IS NOT NULL</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-a-s-e--w-h-e-n.html" id="c-a-s-e--w-h-e-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CASE WHEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/e-x-i-s-t-s-----n-o-t--e-x-i-s-t-s.html" id="e-x-i-s-t-s-----n-o-t--e-x-i-s-t-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="filter" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">EXISTS / NOT EXISTS</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-n-n-e-r--j-o-i-n.html" id="i-n-n-e-r--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">INNER JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-e-f-t--j-o-i-n.html" id="l-e-f-t--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LEFT JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-i-g-h-t--j-o-i-n.html" id="r-i-g-h-t--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RIGHT JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-u-l-l--o-u-t-e-r--j-o-i-n.html" id="f-u-l-l--o-u-t-e-r--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">FULL OUTER JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-r-o-s-s--j-o-i-n.html" id="c-r-o-s-s--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CROSS JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-e-l-f--j-o-i-n.html" id="s-e-l-f--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SELF JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-a-t-u-r-a-l--j-o-i-n.html" id="n-a-t-u-r-a-l--j-o-i-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">NATURAL JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-u-l-t-i-p-l-e--j-o-i-n-s.html" id="m-u-l-t-i-p-l-e--j-o-i-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Multiple Joins</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">4</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Aggregations & Subqueries</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/c-o-u-n-t---s-u-m---a-v-g---m-i-n---m-a-x.html" id="c-o-u-n-t---s-u-m---a-v-g---m-i-n---m-a-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">COUNT, SUM, AVG, MIN, MAX</span>
+                        </div>
+                    </a>
+                    <a href="sql/g-r-o-u-p--b-y.html" id="g-r-o-u-p--b-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">GROUP BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/h-a-v-i-n-g.html" id="h-a-v-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">HAVING</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-o-l-l-u-p.html" id="r-o-l-l-u-p" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ROLLUP</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-u-b-e.html" id="c-u-b-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CUBE</span>
+                        </div>
+                    </a>
+                    <a href="sql/g-r-o-u-p-i-n-g--s-e-t-s.html" id="g-r-o-u-p-i-n-g--s-e-t-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">GROUPING SETS</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-c-a-l-a-r--s-u-b-q-u-e-r-y.html" id="s-c-a-l-a-r--s-u-b-q-u-e-r-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Scalar Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-o-w--s-u-b-q-u-e-r-y.html" id="r-o-w--s-u-b-q-u-e-r-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Row Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-a-b-l-e--s-u-b-q-u-e-r-y.html" id="t-a-b-l-e--s-u-b-q-u-e-r-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Table Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-r-r-e-l-a-t-e-d--s-u-b-q-u-e-r-y.html" id="c-o-r-r-e-l-a-t-e-d--s-u-b-q-u-e-r-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Correlated Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-e-s-t-e-d--s-u-b-q-u-e-r-y.html" id="n-e-s-t-e-d--s-u-b-q-u-e-r-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Nested Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-u-b-q-u-e-r-y--i-n--s-e-l-e-c-t---w-h-e-r-e---f-r-o-m---h-a-v-i-n-g.html" id="s-u-b-q-u-e-r-y--i-n--s-e-l-e-c-t---w-h-e-r-e---f-r-o-m---h-a-v-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Subquery in SELECT, WHERE, FROM, HAVING</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">5</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Set Ops & Data Types</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/b-a-s-i-c--c-t-e.html" id="b-a-s-i-c--c-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Basic CTE</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-u-l-t-i-p-l-e--c-t-e-s.html" id="m-u-l-t-i-p-l-e--c-t-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Multiple CTEs</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-c-u-r-s-i-v-e--c-t-e.html" id="r-e-c-u-r-s-i-v-e--c-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Recursive CTE</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-t-e--v-s--s-u-b-q-u-e-r-y--v-s--t-e-m-p--t-a-b-l-e.html" id="c-t-e--v-s--s-u-b-q-u-e-r-y--v-s--t-e-m-p--t-a-b-l-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CTE vs Subquery vs Temp Table</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-o-w--n-u-m-b-e-r.html" id="r-o-w--n-u-m-b-e-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ROW_NUMBER</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-a-n-k.html" id="r-a-n-k" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RANK</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-e-n-s-e--r-a-n-k.html" id="d-e-n-s-e--r-a-n-k" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DENSE_RANK</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-t-i-l-e.html" id="n-t-i-l-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">NTILE</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-a-g.html" id="l-a-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LAG</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-e-a-d.html" id="l-e-a-d" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LEAD</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-i-r-s-t--v-a-l-u-e.html" id="f-i-r-s-t--v-a-l-u-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">FIRST_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-a-s-t--v-a-l-u-e.html" id="l-a-s-t--v-a-l-u-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LAST_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-t-h--v-a-l-u-e.html" id="n-t-h--v-a-l-u-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">NTH_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-u-m-----a-v-g-----c-o-u-n-t--a-s--w-i-n-d-o-w--f-u-n-c-t-i-o-n-s.html" id="s-u-m-----a-v-g-----c-o-u-n-t--a-s--w-i-n-d-o-w--f-u-n-c-t-i-o-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SUM / AVG / COUNT as Window Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-a-r-t-i-t-i-o-n--b-y.html" id="p-a-r-t-i-t-i-o-n--b-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">PARTITION BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-r-a-m-e--c-l-a-u-s-e-s---r-o-w-s--v-s--r-a-n-g-e.html" id="f-r-a-m-e--c-l-a-u-s-e-s---r-o-w-s--v-s--r-a-n-g-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="type" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Frame Clauses (ROWS vs RANGE)</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-n-i-o-n.html" id="u-n-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">UNION</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-n-i-o-n--a-l-l.html" id="u-n-i-o-n--a-l-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">UNION ALL</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-n-t-e-r-s-e-c-t.html" id="i-n-t-e-r-s-e-c-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">INTERSECT</span>
+                        </div>
+                    </a>
+                    <a href="sql/e-x-c-e-p-t-----m-i-n-u-s.html" id="e-x-c-e-p-t-----m-i-n-u-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">EXCEPT / MINUS</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">6</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Programming & Logic</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/c-o-n-c-a-t.html" id="c-o-n-c-a-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CONCAT / ||</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-u-b-s-t-r-i-n-g.html" id="s-u-b-s-t-r-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SUBSTRING</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-e-n-g-t-h-----c-h-a-r--l-e-n-g-t-h.html" id="l-e-n-g-t-h-----c-h-a-r--l-e-n-g-t-h" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">LENGTH / CHAR_LENGTH</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-p-p-e-r-----l-o-w-e-r.html" id="u-p-p-e-r-----l-o-w-e-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">UPPER / LOWER</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-r-i-m-----l-t-r-i-m-----r-t-r-i-m.html" id="t-r-i-m-----l-t-r-i-m-----r-t-r-i-m" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TRIM / LTRIM / RTRIM</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-p-l-a-c-e.html" id="r-e-p-l-a-c-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">REPLACE</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-o-s-i-t-i-o-n-----l-o-c-a-t-e.html" id="p-o-s-i-t-i-o-n-----l-o-c-a-t-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">POSITION / LOCATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-p-l-i-t--p-a-r-t.html" id="s-p-l-i-t--p-a-r-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SPLIT_PART</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-g-e-x-p--m-a-t-c-h-----r-e-g-e-x-p--r-e-p-l-a-c-e.html" id="r-e-g-e-x-p--m-a-t-c-h-----r-e-g-e-x-p--r-e-p-l-a-c-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">REGEXP_MATCH / REGEXP_REPLACE</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-o-r-m-a-t.html" id="f-o-r-m-a-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="code" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">FORMAT</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-o-u-n-d.html" id="r-o-u-n-d" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ROUND</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-e-i-l-----f-l-o-o-r.html" id="c-e-i-l-----f-l-o-o-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CEIL / FLOOR</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-b-s.html" id="a-b-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ABS</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-o-d.html" id="m-o-d" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">MOD</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-o-w-e-r.html" id="p-o-w-e-r" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">POWER</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-q-r-t.html" id="s-q-r-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQRT</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-a-n-d-o-m.html" id="r-a-n-d-o-m" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">RANDOM</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-u-r-r-e-n-t--d-a-t-e-----n-o-w.html" id="c-u-r-r-e-n-t--d-a-t-e-----n-o-w" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CURRENT_DATE / NOW</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-e--p-a-r-t-----e-x-t-r-a-c-t.html" id="d-a-t-e--p-a-r-t-----e-x-t-r-a-c-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DATE_PART / EXTRACT</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-e--t-r-u-n-c.html" id="d-a-t-e--t-r-u-n-c" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DATE_TRUNC</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-g-e.html" id="a-g-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">AGE</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-e--a-d-d-----d-a-t-e--s-u-b-----i-n-t-e-r-v-a-l.html" id="d-a-t-e--a-d-d-----d-a-t-e--s-u-b-----i-n-t-e-r-v-a-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DATE_ADD / DATE_SUB / INTERVAL</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-o--d-a-t-e-----t-o--t-i-m-e-s-t-a-m-p.html" id="t-o--d-a-t-e-----t-o--t-i-m-e-s-t-a-m-p" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TO_DATE / TO_TIMESTAMP</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-e-d-i-f-f.html" id="d-a-t-e-d-i-f-f" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DATEDIFF</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-i-m-e-z-o-n-e--h-a-n-d-l-i-n-g.html" id="t-i-m-e-z-o-n-e--h-a-n-d-l-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TIMEZONE handling</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">7</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Advanced Window Functions</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/c-a-s-e--w-h-e-n.html" id="c-a-s-e--w-h-e-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CASE WHEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-a-l-e-s-c-e.html" id="c-o-a-l-e-s-c-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">COALESCE</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-u-l-l-i-f.html" id="n-u-l-l-i-f" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">NULLIF</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-i-f.html" id="i-i-f" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">IIF</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-a-s-t-----c-o-n-v-e-r-t.html" id="c-a-s-t-----c-o-n-v-e-r-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CAST / CONVERT</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-r-y--c-a-s-t.html" id="t-r-y--c-a-s-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="layout" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">TRY_CAST</span>
+                        </div>
+                    </a>
+                    <a href="sql/w-h-a-t--i-s--a-n--i-n-d-e-x.html" id="w-h-a-t--i-s--a-n--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">What is an Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/b---t-r-e-e--i-n-d-e-x.html" id="b---t-r-e-e--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">B-Tree Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/h-a-s-h--i-n-d-e-x.html" id="h-a-s-h--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Hash Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-m-p-o-s-i-t-e--i-n-d-e-x.html" id="c-o-m-p-o-s-i-t-e--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Composite Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-a-r-t-i-a-l--i-n-d-e-x.html" id="p-a-r-t-i-a-l--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Partial Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-v-e-r-i-n-g--i-n-d-e-x.html" id="c-o-v-e-r-i-n-g--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Covering Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-n-i-q-u-e--i-n-d-e-x.html" id="u-n-i-q-u-e--i-n-d-e-x" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Unique Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/w-h-e-n--t-o--u-s-e-----a-v-o-i-d--i-n-d-e-x-e-s.html" id="w-h-e-n--t-o--u-s-e-----a-v-o-i-d--i-n-d-e-x-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">When to use / avoid Indexes</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-n-d-e-x--m-a-i-n-t-e-n-a-n-c-e.html" id="i-n-d-e-x--m-a-i-n-t-e-n-a-n-c-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Index Maintenance</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">8</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Optimization & Internals</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/p-r-i-m-a-r-y--k-e-y.html" id="p-r-i-m-a-r-y--k-e-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">PRIMARY KEY</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-o-r-e-i-g-n--k-e-y.html" id="f-o-r-e-i-g-n--k-e-y" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">FOREIGN KEY</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-n-i-q-u-e.html" id="u-n-i-q-u-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">UNIQUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-o-t--n-u-l-l.html" id="n-o-t--n-u-l-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">NOT NULL</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-h-e-c-k.html" id="c-h-e-c-k" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CHECK</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-e-f-a-u-l-t.html" id="d-e-f-a-u-l-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">DEFAULT</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-m-p-o-s-i-t-e--c-o-n-s-t-r-a-i-n-t-s.html" id="c-o-m-p-o-s-i-t-e--c-o-n-s-t-r-a-i-n-t-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="gauge" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Composite Constraints</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-i-m-p-l-e--v-i-e-w.html" id="s-i-m-p-l-e--v-i-e-w" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Simple View</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-o-m-p-l-e-x--v-i-e-w.html" id="c-o-m-p-l-e-x--v-i-e-w" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Complex View</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-a-t-e-r-i-a-l-i-z-e-d--v-i-e-w.html" id="m-a-t-e-r-i-a-l-i-z-e-d--v-i-e-w" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Materialized View</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-p-d-a-t-a-b-l-e--v-i-e-w.html" id="u-p-d-a-t-a-b-l-e--v-i-e-w" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Updatable View</span>
+                        </div>
+                    </a>
+                    <a href="sql/v-i-e-w--v-s--c-t-e--v-s--t-e-m-p--t-a-b-l-e.html" id="v-i-e-w--v-s--c-t-e--v-s--t-e-m-p--t-a-b-l-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">View vs CTE vs Temp Table</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">9</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Design & Hierarchy</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/s-t-o-r-e-d--p-r-o-c-e-d-u-r-e-s.html" id="s-t-o-r-e-d--p-r-o-c-e-d-u-r-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Stored Procedures</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-s-e-r--d-e-f-i-n-e-d--f-u-n-c-t-i-o-n-s---u-d-f.html" id="u-s-e-r--d-e-f-i-n-e-d--f-u-n-c-t-i-o-n-s---u-d-f" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">User Defined Functions (UDF)</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-c-a-l-a-r--f-u-n-c-t-i-o-n-s.html" id="s-c-a-l-a-r--f-u-n-c-t-i-o-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Scalar Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-a-b-l-e---v-a-l-u-e-d--f-u-n-c-t-i-o-n-s.html" id="t-a-b-l-e---v-a-l-u-e-d--f-u-n-c-t-i-o-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Table-Valued Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-r-i-g-g-e-r-s.html" id="t-r-i-g-g-e-r-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Triggers</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-i-f-f-e-r-e-n-c-e-s--b-e-t-w-e-e-n--p-r-o-c-e-d-u-r-e--a-n-d--f-u-n-c-t-i-o-n.html" id="d-i-f-f-e-r-e-n-c-e-s--b-e-t-w-e-e-n--p-r-o-c-e-d-u-r-e--a-n-d--f-u-n-c-t-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="component" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Differences between Procedure and Function</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-c-i-d--p-r-o-p-e-r-t-i-e-s.html" id="a-c-i-d--p-r-o-p-e-r-t-i-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ACID Properties</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-r-a-n-s-a-c-t-i-o-n--i-s-o-l-a-t-i-o-n--l-e-v-e-l-s.html" id="t-r-a-n-s-a-c-t-i-o-n--i-s-o-l-a-t-i-o-n--l-e-v-e-l-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Transaction Isolation Levels</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-e-a-d-l-o-c-k-s.html" id="d-e-a-d-l-o-c-k-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Deadlocks</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-o-c-k-s---r-o-w---t-a-b-l-e---s-h-a-r-e-d---e-x-c-l-u-s-i-v-e.html" id="l-o-c-k-s---r-o-w---t-a-b-l-e---s-h-a-r-e-d---e-x-c-l-u-s-i-v-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Locks (Row, Table, Shared, Exclusive)</span>
+                        </div>
+                    </a>
+                    <a href="sql/o-p-t-i-m-i-s-t-i-c--v-s--p-e-s-s-i-m-i-s-t-i-c--l-o-c-k-i-n-g.html" id="o-p-t-i-m-i-s-t-i-c--v-s--p-e-s-s-i-m-i-s-t-i-c--l-o-c-k-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Optimistic vs Pessimistic Locking</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-v-c-c---m-u-l-t-i---v-e-r-s-i-o-n--c-o-n-c-u-r-r-e-n-c-y--c-o-n-t-r-o-l.html" id="m-v-c-c---m-u-l-t-i---v-e-r-s-i-o-n--c-o-n-c-u-r-r-e-n-c-y--c-o-n-t-r-o-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="git-branch" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">MVCC (Multi-Version Concurrency Control)</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">10</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">System & Metadata</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/e-x-p-l-a-i-n-----e-x-p-l-a-i-n--a-n-a-l-y-z-e.html" id="e-x-p-l-a-i-n-----e-x-p-l-a-i-n--a-n-a-l-y-z-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">EXPLAIN / EXPLAIN ANALYZE</span>
+                        </div>
+                    </a>
+                    <a href="sql/q-u-e-r-y--e-x-e-c-u-t-i-o-n--p-l-a-n.html" id="q-u-e-r-y--e-x-e-c-u-t-i-o-n--p-l-a-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Query Execution Plan</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-v-o-i-d-i-n-g--f-u-l-l--t-a-b-l-e--s-c-a-n-s.html" id="a-v-o-i-d-i-n-g--f-u-l-l--t-a-b-l-e--s-c-a-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Avoiding Full Table Scans</span>
+                        </div>
+                    </a>
+                    <a href="sql/j-o-i-n--o-p-t-i-m-i-z-a-t-i-o-n.html" id="j-o-i-n--o-p-t-i-m-i-z-a-t-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">JOIN Optimization</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-a-r-t-i-t-i-o-n--p-r-u-n-i-n-g.html" id="p-a-r-t-i-t-i-o-n--p-r-u-n-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Partition Pruning</span>
+                        </div>
+                    </a>
+                    <a href="sql/n--1--p-r-o-b-l-e-m.html" id="n--1--p-r-o-b-l-e-m" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">N+1 Problem</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-t-a-t-i-s-t-i-c-s--and--v-a-c-u-u-m-i-n-g.html" id="s-t-a-t-i-s-t-i-c-s--and--v-a-c-u-u-m-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Statistics & Vacuuming</span>
+                        </div>
+                    </a>
+                    <a href="sql/n-o-r-m-a-l-i-z-a-t-i-o-n.html" id="n-o-r-m-a-l-i-z-a-t-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Normalization</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-e-n-o-r-m-a-l-i-z-a-t-i-o-n.html" id="d-e-n-o-r-m-a-l-i-z-a-t-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Denormalization</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-t-a-r--s-c-h-e-m-a.html" id="s-t-a-r--s-c-h-e-m-a" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Star Schema</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-n-o-w-f-l-a-k-e--s-c-h-e-m-a.html" id="s-n-o-w-f-l-a-k-e--s-c-h-e-m-a" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Snowflake Schema</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-a--v-a-u-l-t.html" id="d-a-t-a--v-a-u-l-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Data Vault</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-l-o-w-l-y--c-h-a-n-g-i-n-g--d-i-m-e-n-s-i-o-n-s---s-c-d--t-y-p-e-s.html" id="s-l-o-w-l-y--c-h-a-n-g-i-n-g--d-i-m-e-n-s-i-o-n-s---s-c-d--t-y-p-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Slowly Changing Dimensions (SCD Types)</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-u-r-r-o-g-a-t-e--v-s--n-a-t-u-r-a-l--k-e-y-s.html" id="s-u-r-r-o-g-a-t-e--v-s--n-a-t-u-r-a-l--k-e-y-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Surrogate vs Natural Keys</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-i-v-o-t-i-n-g--and--u-n-p-i-v-o-t-i-n-g.html" id="p-i-v-o-t-i-n-g--and--u-n-p-i-v-o-t-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Pivoting & Unpivoting</span>
+                        </div>
+                    </a>
+                    <a href="sql/j-s-o-n--i-n--s-q-l.html" id="j-s-o-n--i-n--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">JSON in SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/a-r-r-a-y--d-a-t-a--t-y-p-e-s.html" id="a-r-r-a-y--d-a-t-a--t-y-p-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Array Data Types</span>
+                        </div>
+                    </a>
+                    <a href="sql/f-u-l-l--t-e-x-t--s-e-a-r-c-h.html" id="f-u-l-l--t-e-x-t--s-e-a-r-c-h" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Full Text Search</span>
+                        </div>
+                    </a>
+                    <a href="sql/l-a-t-e-r-a-l--j-o-i-n-s.html" id="l-a-t-e-r-a-l--j-o-i-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Lateral Joins</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-e-m-p-o-r-a-r-y--t-a-b-l-e-s.html" id="t-e-m-p-o-r-a-r-y--t-a-b-l-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Temporary Tables</span>
+                        </div>
+                    </a>
+                    <a href="sql/t-a-b-l-e--p-a-r-t-i-t-i-o-n-i-n-g.html" id="t-a-b-l-e--p-a-r-t-i-t-i-o-n-i-n-g" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Table Partitioning</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <span class="text-xl font-black">11</span>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 dark:text-white font-display tracking-tight">Professional SQL</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                    <a href="sql/i-n-c-r-e-m-e-n-t-a-l--l-o-a-d-s.html" id="i-n-c-r-e-m-e-n-t-a-l--l-o-a-d-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Incremental Loads</span>
+                        </div>
+                    </a>
+                    <a href="sql/c-d-c---c-h-a-n-g-e--d-a-t-a--c-a-p-t-u-r-e.html" id="c-d-c---c-h-a-n-g-e--d-a-t-a--c-a-p-t-u-r-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">CDC (Change Data Capture)</span>
+                        </div>
+                    </a>
+                    <a href="sql/i-d-e-m-p-o-t-e-n-t--q-u-e-r-i-e-s.html" id="i-d-e-m-p-o-t-e-n-t--q-u-e-r-i-e-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Idempotent Queries</span>
+                        </div>
+                    </a>
+                    <a href="sql/u-p-s-e-r-t--p-a-t-t-e-r-n-s.html" id="u-p-s-e-r-t--p-a-t-t-e-r-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Upsert Patterns</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-a--d-e-d-u-p-l-i-c-a-t-i-o-n.html" id="d-a-t-a--d-e-d-u-p-l-i-c-a-t-i-o-n" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Data Deduplication</span>
+                        </div>
+                    </a>
+                    <a href="sql/d-a-t-e--d-i-m-e-n-s-i-o-n--t-a-b-l-e.html" id="d-a-t-e--d-i-m-e-n-s-i-o-n--t-a-b-l-e" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Date Dimension Table</span>
+                        </div>
+                    </a>
+                    <a href="sql/e-l-t--w-i-t-h--s-q-l.html" id="e-l-t--w-i-t-h--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="terminal" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">ELT with SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-o-s-t-g-r-e-s-q-l.html" id="p-o-s-t-g-r-e-s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">PostgreSQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/m-y-s-q-l.html" id="m-y-s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">MySQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-q-l--s-e-r-v-e-r---t---s-q-l.html" id="s-q-l--s-e-r-v-e-r---t---s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">SQL Server (T-SQL)</span>
+                        </div>
+                    </a>
+                    <a href="sql/b-i-g-q-u-e-r-y--s-q-l.html" id="b-i-g-q-u-e-r-y--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">BigQuery SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-n-o-w-f-l-a-k-e--s-q-l.html" id="s-n-o-w-f-l-a-k-e--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Snowflake SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/s-p-a-r-k--s-q-l.html" id="s-p-a-r-k--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Spark SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/r-e-d-s-h-i-f-t--s-q-l.html" id="r-e-d-s-h-i-f-t--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Redshift SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/p-r-e-s-t-o-----t-r-i-n-o--s-q-l.html" id="p-r-e-s-t-o-----t-r-i-n-o--s-q-l" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Presto / Trino SQL</span>
+                        </div>
+                    </a>
+                <a href="sql/s-y-n-t-a-x--c-h-e-a-t-s-h-e-e-t.html" id="s-y-n-t-a-x--c-h-e-a-t-s-h-e-e-t" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                        <i data-lucide="codesandbox" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Syntax Cheatsheet</span>
+                    </div>
+                </a>
+                <a href="sql/t-o-p--5-0--c-o-n-c-e-p-t-u-a-l--i-n-t-e-r-v-i-e-w--q-u-e-s-t-i-o-n-s.html" id="t-o-p--5-0--c-o-n-c-e-p-t-u-a-l--i-n-t-e-r-v-i-e-w--q-u-e-s-t-i-o-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Top 50 Conceptual Interview Questions</span>
+                    </div>
+                </a>
+                <a href="sql/t-o-p--5-0--t-e-c-h-n-i-c-a-l--c-o-d-i-n-g--q-u-e-s-t-i-o-n-s.html" id="t-o-p--5-0--t-e-c-h-n-i-c-a-l--c-o-d-i-n-g--q-u-e-s-t-i-o-n-s" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-blue-700 transition-colors">Top 50 Technical Coding Questions</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+            </div>
+
+            
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+<script src="../../js/ds-main.js?v=1778688756" defer></script>
+</body>
+</html>

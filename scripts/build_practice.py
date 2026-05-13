@@ -4,14 +4,14 @@ import re
 
 def slugify(text):
     s = text.lower()
-    s = s.replace(" ", "-").replace("&", "and").replace("/", "-")
+    s = s.replace("","-").replace("&","and").replace("/","-")
     s = re.sub(r'[^a-z0-9\-]', '', s)
     return s.strip("-")
 
 def build_practice_hub(data):
-    categories_html = ""
+    categories_html =""
     for cat in data["categories"]:
-        exercises_html = ""
+        exercises_html =""
         for ex in cat["exercises"]:
             exercises_html += f"""
             <a href="practice/{ex['slug']}.html" class="flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl transition-all hover:border-{cat['color']}-300 hover:bg-{cat['color']}-50/30 group/ex no-underline">
@@ -72,7 +72,7 @@ def build_practice_hub(data):
 </html>"""
     
     output_path = os.path.join('pages', 'practice.html')
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(output_path,"w", encoding="utf-8") as f:
         f.write(hub_template)
     print(f"Built Practice Hub: {output_path}")
 
@@ -140,21 +140,17 @@ def build_exercise_pages(data):
                 </div>
             </div>
 
-            <footer class="mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 text-center">
-                <button class="px-8 py-3 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-bold rounded-xl hover:scale-105 transition-transform">
-                    Reveal Solution
-                </button>
-            </footer>
+            
         </main>
     </div>
     <script>lucide.createIcons();</script>
 </body>
 </html>"""
-            with open(file_path, "w", encoding="utf-8") as f:
+            with open(file_path,"w", encoding="utf-8") as f:
                 f.write(html)
             print(f"Built Exercise: {file_path}")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     data_file = os.path.join('data', 'practice.json')
     if os.path.exists(data_file):
         with open(data_file, 'r', encoding='utf-8') as f:

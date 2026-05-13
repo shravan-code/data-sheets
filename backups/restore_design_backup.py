@@ -5,7 +5,7 @@ import sys
 # DESIGN BACKUP (THE GOLDEN CONFIG)
 # ---------------------------------------------------------------------------
 
-CSS_BACKUP = """/* DS_SHARED_SIDEBAR_STYLES */
+CSS_BACKUP ="""/* DS_SHARED_SIDEBAR_STYLES */
 body {
     font-family: 'Inter', sans-serif;
 }
@@ -368,10 +368,9 @@ pre[class*="language-"]::-webkit-scrollbar-thumb {
     body.sidebar-open #ds-main-content {
         padding-left: 15rem !important;
     }
-}
-"""
+}"""
 
-JS_BACKUP = """(function() {
+JS_BACKUP ="""(function() {
     const html  = document.documentElement;
     const body  = document.body;
 
@@ -476,8 +475,7 @@ JS_BACKUP = """(function() {
 
     /* ── Lucide icons ────────────────────────────── */
     if (typeof lucide !== 'undefined') lucide.createIcons();
-})();
-"""
+})();"""
 
 # ---------------------------------------------------------------------------
 # RESTORE LOGIC
@@ -494,20 +492,20 @@ def restore():
     # 2. Restore CSS
     print("Restoring css/ds-main.css...")
     os.makedirs("css", exist_ok=True)
-    with open("css/ds-main.css", "w", encoding="utf-8") as f:
+    with open("css/ds-main.css","w", encoding="utf-8") as f:
         f.write(CSS_BACKUP.strip())
 
     # 3. Restore JS
     print("Restoring js/ds-main.js...")
     os.makedirs("js", exist_ok=True)
-    with open("js/ds-main.js", "w", encoding="utf-8") as f:
+    with open("js/ds-main.js","w", encoding="utf-8") as f:
         f.write(JS_BACKUP.strip())
 
     # 4. Trigger full rebuild/patch
     print("Triggering rebuild_all.py to synchronize HTML layouts...")
     try:
         import subprocess
-        result = subprocess.run([sys.executable, "scripts/rebuild_all.py"], capture_output=True, text=True)
+        result = subprocess.run([sys.executable,"scripts/rebuild_all.py"], capture_output=True, text=True)
         if result.returncode == 0:
             print("Successfully synchronized all HTML files.")
         else:
@@ -517,5 +515,5 @@ def restore():
 
     print("\nRestore Complete. The design system is now back to its 'Golden' state.")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     restore()

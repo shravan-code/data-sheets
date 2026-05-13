@@ -1,20 +1,18 @@
 import json
 import os
 
-def render_projects_html(topic_data):
-    """Render projects specifically."""
+def render_projects_html(topic_data):"""Render projects specifically."""
     parts = []
     for project in topic_data.get("projects", []):
         parts.append(f'<div class="mb-16 p-8 bg-emerald-50/20 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 rounded-3xl">')
         parts.append(f'<h2 class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-0">{project["name"]}</h2>')
         parts.append(f'<p class="text-lg text-slate-600 dark:text-slate-400 mb-6">{project["description"]}</p>')
-        code = project["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        code = project["code"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
         parts.append(f'<pre><code class="language-bash">{code}</code></pre>')
         parts.append('</div>')
-    return "\n".join(parts)
+    return"\n".join(parts)
 
-def render_cheatsheet_html(topic_data):
-    """Render the side-by-side cheatsheet."""
+def render_cheatsheet_html(topic_data):"""Render the side-by-side cheatsheet."""
     parts = []
     for cat in topic_data.get("categories", []):
         parts.append(f"<h2>{cat['category']}</h2>")
@@ -35,10 +33,9 @@ def render_cheatsheet_html(topic_data):
             parts.append(f'<td class="border border-slate-200 dark:border-slate-800 p-3 text-blue-500/80"><code>{comp["powershell"]}</code></td>')
             parts.append('</tr>')
         parts.append('</tbody></table></div>')
-    return "\n".join(parts)
+    return"\n".join(parts)
 
-def render_topic_html(topic_data):
-    """Render the detailed content for a topic (subpage)."""
+def render_topic_html(topic_data):"""Render the detailed content for a topic (subpage)."""
     if topic_data["id"] == 16:
         return render_projects_html(topic_data)
     if topic_data["id"] == 17:
@@ -55,8 +52,8 @@ def render_topic_html(topic_data):
         for ex in sub.get("examples", []):
             parts.append(f'<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">{ex["title"]}</h3>')
             
-            raw_code = ex.get("code", "")
-            raw_output = ex.get("output", "")
+            raw_code = ex.get("code","")
+            raw_output = ex.get("output","")
             
             # Check if output is already in comments
             output_in_comments = False
@@ -66,7 +63,7 @@ def render_topic_html(topic_data):
                     # Get all comment parts from code
                     code_comments = [line.split('#', 1)[1].strip() for line in raw_code.split('\n') if '#' in line]
                     # Check if all non-empty output lines are represented in comments
-                    prefixes = ["Output:", "Result:", "->", "=>"]
+                    prefixes = ["Output:","Result:","->","=>"]
                     found_count = 0
                     for o_line in output_lines:
                         matched = False
@@ -83,8 +80,8 @@ def render_topic_html(topic_data):
                     if found_count == len(output_lines):
                         output_in_comments = True
 
-            code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            output = raw_output.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            code = raw_code.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+            output = raw_output.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
             
             if output and not output_in_comments:
                 # Combined Code + Output Card
@@ -105,44 +102,44 @@ def render_topic_html(topic_data):
         
         parts.append(f'</div>')
         
-    return "\n".join(parts)
+    return"\n".join(parts)
 
 def build_bash_hub(topics):
     # Group topics into 11 Phases for the roadmap view
     phases = [
-        {"name": "Shell Foundations", "topic_ids": [1]},
-        {"name": "Variable Mastery", "topic_ids": [2]},
-        {"name": "Input & Output", "topic_ids": [4]},
-        {"name": "Data Structures", "topic_ids": [3]},
-        {"name": "Arithmetic & Logic", "topic_ids": [5]},
-        {"name": "Control Flow", "topic_ids": [6]},
-        {"name": "Reusable Functions", "topic_ids": [7]},
-        {"name": "Text Processing Suite", "topic_ids": [8]},
-        {"name": "Regex Mastery", "topic_ids": [12]},
-        {"name": "System & Robustness", "topic_ids": [9, 10, 11]},
-        {"name": "Advanced & Practical", "topic_ids": [13, 14, 15, 16, 17]}
+        {"name":"Shell Foundations","topic_ids": [1]},
+        {"name":"Variable Mastery","topic_ids": [2]},
+        {"name":"Input & Output","topic_ids": [4]},
+        {"name":"Data Structures","topic_ids": [3]},
+        {"name":"Arithmetic & Logic","topic_ids": [5]},
+        {"name":"Control Flow","topic_ids": [6]},
+        {"name":"Reusable Functions","topic_ids": [7]},
+        {"name":"Text Processing Suite","topic_ids": [8]},
+        {"name":"Regex Mastery","topic_ids": [12]},
+        {"name":"System & Robustness","topic_ids": [9, 10, 11]},
+        {"name":"Advanced & Practical","topic_ids": [13, 14, 15, 16, 17]}
     ]
 
-    phases_html = ""
+    phases_html =""
     for i, phase in enumerate(phases):
         num = i + 1
-        items_html = ""
+        items_html =""
         for tid in phase["topic_ids"]:
             topic = next((t for t in topics if t["id"] == tid), None)
             if not topic: continue
             
             # Simple icon mapping
-            icon = "terminal"
-            if tid in [2, 3]: icon = "variable"
-            if tid == 5: icon = "calculator"
-            if tid == 6: icon = "git-branch"
-            if tid == 7: icon = "command"
-            if tid == 8: icon = "search"
-            if tid == 9: icon = "folder"
-            if tid == 10: icon = "cpu"
-            if tid == 11: icon = "alert-circle"
+            icon ="terminal"
+            if tid in [2, 3]: icon ="variable"
+            if tid == 5: icon ="calculator"
+            if tid == 6: icon ="git-branch"
+            if tid == 7: icon ="command"
+            if tid == 8: icon ="search"
+            if tid == 9: icon ="folder"
+            if tid == 10: icon ="cpu"
+            if tid == 11: icon ="alert-circle"
             
-            slug = topic['topic'].lower().replace(" ", "-").replace("&", "and")
+            slug = topic['topic'].lower().replace("","-").replace("&","and")
             items_html += f"""
             <a href="bash/{slug}.html" class="flex items-center gap-3 p-3 bg-emerald-50/30 dark:bg-slate-900 border border-emerald-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 group/item no-underline">
                 <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
@@ -187,8 +184,7 @@ def build_bash_hub(topics):
                 <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
                     Bash <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Scripting</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
-                    "The language of the cloud. From simple pipes to production-grade automation engines."
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">"The language of the cloud. From simple pipes to production-grade automation engines."
                 </p>
             </header>
 
@@ -197,9 +193,7 @@ def build_bash_hub(topics):
                 {phases_html}
             </div>
 
-            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase">\u00a9 2026 Data Cake \u2022 Linux Mastery</p>
-            </footer>
+            
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -209,7 +203,7 @@ def build_bash_hub(topics):
 
     output_path = os.path.join('pages', 'learn', 'bash.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(output_path,"w", encoding="utf-8") as f:
         f.write(hub_template)
     print(f"Built Bash Hub (Roadmap Style): {output_path}")
 
@@ -219,30 +213,30 @@ def build_bash_subpages(topics):
     # Pre-build sidebar HTML
     sidebar_html = '<div class="toc-title mt-8">Bash Topics</div><ul class="toc-list">'
     for t in topics:
-        slug = t['topic'].lower().replace(" ", "-").replace("&", "and")
+        slug = t['topic'].lower().replace("","-").replace("&","and")
         sidebar_html += f'<li><a href="{slug}.html" class="toc-link">{t["topic"]}</a></li>'
     sidebar_html += '</ul>'
 
     for i, topic in enumerate(topics):
-        slug = topic['topic'].lower().replace(" ", "-").replace("&", "and")
+        slug = topic['topic'].lower().replace("","-").replace("&","and")
         file_path = os.path.join('pages', 'learn', 'bash', f"{slug}.html")
         
         # Navigation
         prev_topic = topics[i-1] if i > 0 else None
         next_topic = topics[i+1] if i < len(topics)-1 else None
         
-        prev_html = ""
+        prev_html =""
         if prev_topic:
-            pslug = prev_topic['topic'].lower().replace(" ", "-").replace("&", "and")
+            pslug = prev_topic['topic'].lower().replace("","-").replace("&","and")
             prev_html = f"""
             <a href="{pslug}.html" class="nav-card prev">
                 <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
                 <span class="nav-title">{prev_topic["topic"]}</span>
             </a>"""
             
-        next_html = ""
+        next_html =""
         if next_topic:
-            nslug = next_topic['topic'].lower().replace(" ", "-").replace("&", "and")
+            nslug = next_topic['topic'].lower().replace("","-").replace("&","and")
             next_html = f"""
             <a href="{nslug}.html" class="nav-card next">
                 <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
@@ -290,7 +284,7 @@ def build_bash_subpages(topics):
         <aside class="toc-container">
             <div class="toc-title">On this page</div>
             <ul class="toc-list"></ul>
-            {active_sidebar}
+            
         </aside>
     </div>
 
@@ -299,14 +293,14 @@ def build_bash_subpages(topics):
 </body>
 </html>"""
         
-        with open(file_path, "w", encoding="utf-8") as f:
+        with open(file_path,"w", encoding="utf-8") as f:
             f.write(html)
     print(f"Built {len(topics)} Bash subpages.")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     data_path = os.path.join('data', 'bash_guide.json')
     if os.path.exists(data_path):
-        with open(data_path, "r", encoding="utf-8") as f:
+        with open(data_path,"r", encoding="utf-8") as f:
             guide = json.load(f)
         
         topics = guide["topics"]

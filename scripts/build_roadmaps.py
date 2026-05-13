@@ -3,69 +3,51 @@ import json
 
 def build_roadmaps():
     roadmaps = [
-        {
-            "id": "data-engineering",
-            "title": "Data Engineering",
-            "subtitle": "Architecting the Future of Data",
-            "description": "A comprehensive path to becoming a professional Data Engineer, covering everything from Linux foundations to advanced Data Mesh architectures.",
-            "color": "indigo",
-            "phases": [
-                {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking Basics"]},
-                {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Database Fundamentals"]},
-                {"name": "Phase 3 — Data Libraries", "items": ["NumPy", "Pandas"]},
-                {"name": "Phase 4 — Core DE Concepts", "items": ["DE Fundamentals", "Data Modeling", "Storage Formats", "Data Quality & Observability", "Data Governance"]},
-                {"name": "Phase 5 — Databases & Storage", "items": ["PostgreSQL", "Redis", "Cassandra", "MongoDB", "DynamoDB"]},
-                {"name": "Phase 6 — Big Data Processing", "items": ["Spark", "Kafka", "Flink"]},
-                {"name": "Phase 7 — Transformation & Orchestration", "items": ["dbt", "Airflow", "Prefect / Dagster"]},
-                {"name": "Phase 8 — Cloud Platforms", "items": ["AWS", "GCP / Azure", "Snowflake", "Databricks"]},
-                {"name": "Phase 9 — Table Formats & Lakehouse", "items": ["Delta Lake", "Apache Iceberg", "Apache Hudi"]},
-                {"name": "Phase 10 — Pipeline & System Design", "items": ["Pipeline Design", "System Design", "DE Architectures"]},
-                {"name": "Phase 11 — DevOps & Infrastructure", "items": ["Docker", "Kubernetes", "Terraform", "GitHub Actions", "Ansible"]},
-                {"name": "Phase 12 — Monitoring & Security", "items": ["Prometheus & Grafana", "OpenTelemetry", "Great Expectations", "IAM & Security", "Secret Management"]},
-                {"name": "Phase 13 — Advanced Topics", "items": ["Data Mesh", "Data Contracts", "Reverse ETL", "PowerShell"]}
+        {"id":"data-engineering","title":"Data Engineering","subtitle":"Architecting the Future of Data","description":"A comprehensive path to becoming a professional Data Engineer, covering everything from Linux foundations to advanced Data Mesh architectures.","color":"indigo","phases": [
+                {"name":"Phase 1 — Programming Foundations","items": ["Python","SQL","Bash","Linux Fundamentals","Networking Basics"]},
+                {"name":"Phase 2 — CS Fundamentals","items": ["DSA","OOP Concepts","Database Fundamentals"]},
+                {"name":"Phase 3 — Data Libraries","items": ["NumPy","Pandas"]},
+                {"name":"Phase 4 — Core DE Concepts","items": ["DE Fundamentals","Data Modeling","Storage Formats","Data Quality & Observability","Data Governance"]},
+                {"name":"Phase 5 — Databases & Storage","items": ["PostgreSQL","Redis","Cassandra","MongoDB","DynamoDB"]},
+                {"name":"Phase 6 — Big Data Processing","items": ["Spark","Kafka","Flink"]},
+                {"name":"Phase 7 — Transformation & Orchestration","items": ["dbt","Airflow","Prefect / Dagster"]},
+                {"name":"Phase 8 — Cloud Platforms","items": ["AWS","GCP / Azure","Snowflake","Databricks"]},
+                {"name":"Phase 9 — Table Formats & Lakehouse","items": ["Delta Lake","Apache Iceberg","Apache Hudi"]},
+                {"name":"Phase 10 — Pipeline & System Design","items": ["Pipeline Design","System Design","DE Architectures"]},
+                {"name":"Phase 11 — DevOps & Infrastructure","items": ["Docker","Kubernetes","Terraform","GitHub Actions","Ansible"]},
+                {"name":"Phase 12 — Monitoring & Security","items": ["Prometheus & Grafana","OpenTelemetry","Great Expectations","IAM & Security","Secret Management"]},
+                {"name":"Phase 13 — Advanced Topics","items": ["Data Mesh","Data Contracts","Reverse ETL","PowerShell"]}
             ]
         },
-        {
-            "id": "ml-engineer",
-            "title": "ML Engineer",
-            "subtitle": "Bridging Science and Scale",
-            "description": "Master the intersection of Software Engineering and Machine Learning to build and deploy production-grade models.",
-            "color": "emerald",
-            "phases": [
-                {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking Basics"]},
-                {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Probability & Statistics", "Linear Algebra", "Calculus"]},
-                {"name": "Phase 3 — Data Libraries", "items": ["NumPy", "Pandas", "Matplotlib & Seaborn", "Scikit-learn"]},
-                {"name": "Phase 4 — Machine Learning Fundamentals", "items": ["Supervised Learning", "Unsupervised Learning", "Model Evaluation & Metrics", "Feature Engineering", "Hyperparameter Tuning", "Cross Validation"]},
-                {"name": "Phase 5 — Deep Learning", "items": ["Neural Networks", "TensorFlow / Keras", "PyTorch", "CNNs", "RNNs & LSTMs", "Transformers"]},
-                {"name": "Phase 6 — Data Engineering for ML", "items": ["Data Pipelines", "Data Versioning (DVC)", "Feature Stores (Feast)", "Data Labeling"]},
-                {"name": "Phase 7 — ML Frameworks & Tools", "items": ["XGBoost / LightGBM / CatBoost", "Hugging Face", "OpenCV", "NLTK / spaCy"]},
-                {"name": "Phase 8 — MLOps", "items": ["MLflow", "Weights & Biases", "Kubeflow", "ZenML / Metaflow", "Model Registry", "Experiment Tracking"]},
-                {"name": "Phase 9 — Model Deployment & Serving", "items": ["FastAPI / Flask", "Docker", "Kubernetes", "BentoML / Triton Inference Server", "REST & gRPC APIs"]},
-                {"name": "Phase 10 — Cloud Platforms for ML", "items": ["AWS SageMaker", "GCP Vertex AI", "Azure ML", "Databricks"]},
-                {"name": "Phase 11 — CI/CD for ML", "items": ["GitHub Actions", "Terraform", "Continuous Training Pipelines", "Model Monitoring & Drift Detection"]},
-                {"name": "Phase 12 — Advanced Topics", "items": ["Distributed Training (Horovod, DeepSpeed)", "Quantization & Pruning", "Responsible AI & Fairness", "A/B Testing & Shadow Deployment", "LLM Fine-tuning"]}
+        {"id":"ml-engineer","title":"ML Engineer","subtitle":"Bridging Science and Scale","description":"Master the intersection of Software Engineering and Machine Learning to build and deploy production-grade models.","color":"emerald","phases": [
+                {"name":"Phase 1 — Programming Foundations","items": ["Python","SQL","Bash","Linux Fundamentals","Networking Basics"]},
+                {"name":"Phase 2 — CS Fundamentals","items": ["DSA","OOP Concepts","Probability & Statistics","Linear Algebra","Calculus"]},
+                {"name":"Phase 3 — Data Libraries","items": ["NumPy","Pandas","Matplotlib & Seaborn","Scikit-learn"]},
+                {"name":"Phase 4 — Machine Learning Fundamentals","items": ["Supervised Learning","Unsupervised Learning","Model Evaluation & Metrics","Feature Engineering","Hyperparameter Tuning","Cross Validation"]},
+                {"name":"Phase 5 — Deep Learning","items": ["Neural Networks","TensorFlow / Keras","PyTorch","CNNs","RNNs & LSTMs","Transformers"]},
+                {"name":"Phase 6 — Data Engineering for ML","items": ["Data Pipelines","Data Versioning (DVC)","Feature Stores (Feast)","Data Labeling"]},
+                {"name":"Phase 7 — ML Frameworks & Tools","items": ["XGBoost / LightGBM / CatBoost","Hugging Face","OpenCV","NLTK / spaCy"]},
+                {"name":"Phase 8 — MLOps","items": ["MLflow","Weights & Biases","Kubeflow","ZenML / Metaflow","Model Registry","Experiment Tracking"]},
+                {"name":"Phase 9 — Model Deployment & Serving","items": ["FastAPI / Flask","Docker","Kubernetes","BentoML / Triton Inference Server","REST & gRPC APIs"]},
+                {"name":"Phase 10 — Cloud Platforms for ML","items": ["AWS SageMaker","GCP Vertex AI","Azure ML","Databricks"]},
+                {"name":"Phase 11 — CI/CD for ML","items": ["GitHub Actions","Terraform","Continuous Training Pipelines","Model Monitoring & Drift Detection"]},
+                {"name":"Phase 12 — Advanced Topics","items": ["Distributed Training (Horovod, DeepSpeed)","Quantization & Pruning","Responsible AI & Fairness","A/B Testing & Shadow Deployment","LLM Fine-tuning"]}
             ]
         },
-        {
-            "id": "ai-engineer",
-            "title": "AI Engineer",
-            "subtitle": "The Generative Frontier",
-            "description": "Focus on Large Language Models, AI Agents, and the modern Generative AI stack for building autonomous systems.",
-            "color": "rose",
-            "phases": [
-                {"name": "Phase 1 — Programming Foundations", "items": ["Python", "SQL", "Bash", "Linux Fundamentals", "Networking & APIs"]},
-                {"name": "Phase 2 — CS Fundamentals", "items": ["DSA", "OOP Concepts", "Probability & Statistics", "Linear Algebra"]},
-                {"name": "Phase 3 — ML & Deep Learning Basics", "items": ["Machine Learning Fundamentals", "Neural Networks", "PyTorch / TensorFlow (basics)", "Scikit-learn"]},
-                {"name": "Phase 4 — NLP & Language Models", "items": ["NLP Fundamentals", "Transformers Architecture", "Hugging Face Ecosystem", "Text Embeddings", "Tokenization", "Attention Mechanisms"]},
-                {"name": "Phase 5 — Large Language Models", "items": ["LLM Architecture (GPT, BERT, T5, LLaMA)", "Prompt Engineering", "Few-shot & Zero-shot Learning", "Retrieval-Augmented Generation (RAG)", "Fine-tuning (LoRA, QLoRA, PEFT)", "LLM Evaluation"]},
-                {"name": "Phase 6 — AI Frameworks & Tools", "items": ["LangChain", "LlamaIndex", "OpenAI API / Anthropic API", "Ollama", "vLLM"]},
-                {"name": "Phase 7 — Vector Databases & Search", "items": ["Pinecone", "Weaviate", "Chroma", "Qdrant", "FAISS", "Semantic Search"]},
-                {"name": "Phase 8 — AI Agents & Orchestration", "items": ["Agent Frameworks (LangGraph, AutoGen, CrewAI)", "Tool Use & Function Calling", "Memory Systems", "Multi-Agent Systems", "Agentic Pipelines"]},
-                {"name": "Phase 9 — Multimodal AI", "items": ["Vision-Language Models (CLIP, LLaVA)", "Image Generation (Stable Diffusion, DALL\u00b7E)", "Speech & Audio (Whisper, TTS)", "Video Understanding"]},
-                {"name": "Phase 10 — Deployment & Serving", "items": ["FastAPI", "Docker", "Kubernetes", "Triton Inference Server", "vLLM / TGI (Text Generation Inference)"]},
-                {"name": "Phase 11 — Cloud Platforms for AI", "items": ["AWS Bedrock", "GCP Vertex AI", "Azure OpenAI Service", "Hugging Face Inference Endpoints"]},
-                {"name": "Phase 12 — MLOps & AI Observability", "items": ["MLflow", "Weights & Biases", "LangSmith / LangFuse", "Prompt Versioning", "Model Monitoring & Drift Detection", "Guardrails & Safety"]},
-                {"name": "Phase 13 — Advanced Topics", "items": ["RLHF & Constitutional AI", "Mixture of Experts (MoE)", "Speculative Decoding", "AI Safety & Alignment", "Responsible AI & Bias Mitigation", "Edge AI & On-device Inference"]}
+        {"id":"ai-engineer","title":"AI Engineer","subtitle":"The Generative Frontier","description":"Focus on Large Language Models, AI Agents, and the modern Generative AI stack for building autonomous systems.","color":"rose","phases": [
+                {"name":"Phase 1 — Programming Foundations","items": ["Python","SQL","Bash","Linux Fundamentals","Networking & APIs"]},
+                {"name":"Phase 2 — CS Fundamentals","items": ["DSA","OOP Concepts","Probability & Statistics","Linear Algebra"]},
+                {"name":"Phase 3 — ML & Deep Learning Basics","items": ["Machine Learning Fundamentals","Neural Networks","PyTorch / TensorFlow (basics)","Scikit-learn"]},
+                {"name":"Phase 4 — NLP & Language Models","items": ["NLP Fundamentals","Transformers Architecture","Hugging Face Ecosystem","Text Embeddings","Tokenization","Attention Mechanisms"]},
+                {"name":"Phase 5 — Large Language Models","items": ["LLM Architecture (GPT, BERT, T5, LLaMA)","Prompt Engineering","Few-shot & Zero-shot Learning","Retrieval-Augmented Generation (RAG)","Fine-tuning (LoRA, QLoRA, PEFT)","LLM Evaluation"]},
+                {"name":"Phase 6 — AI Frameworks & Tools","items": ["LangChain","LlamaIndex","OpenAI API / Anthropic API","Ollama","vLLM"]},
+                {"name":"Phase 7 — Vector Databases & Search","items": ["Pinecone","Weaviate","Chroma","Qdrant","FAISS","Semantic Search"]},
+                {"name":"Phase 8 — AI Agents & Orchestration","items": ["Agent Frameworks (LangGraph, AutoGen, CrewAI)","Tool Use & Function Calling","Memory Systems","Multi-Agent Systems","Agentic Pipelines"]},
+                {"name":"Phase 9 — Multimodal AI","items": ["Vision-Language Models (CLIP, LLaVA)","Image Generation (Stable Diffusion, DALL\u00b7E)","Speech & Audio (Whisper, TTS)","Video Understanding"]},
+                {"name":"Phase 10 — Deployment & Serving","items": ["FastAPI","Docker","Kubernetes","Triton Inference Server","vLLM / TGI (Text Generation Inference)"]},
+                {"name":"Phase 11 — Cloud Platforms for AI","items": ["AWS Bedrock","GCP Vertex AI","Azure OpenAI Service","Hugging Face Inference Endpoints"]},
+                {"name":"Phase 12 — MLOps & AI Observability","items": ["MLflow","Weights & Biases","LangSmith / LangFuse","Prompt Versioning","Model Monitoring & Drift Detection","Guardrails & Safety"]},
+                {"name":"Phase 13 — Advanced Topics","items": ["RLHF & Constitutional AI","Mixture of Experts (MoE)","Speculative Decoding","AI Safety & Alignment","Responsible AI & Bias Mitigation","Edge AI & On-device Inference"]}
             ]
         }
     ]
@@ -74,10 +56,10 @@ def build_roadmaps():
 
     for rm in roadmaps:
         c = rm['color']
-        phases_html = ""
+        phases_html =""
         for i, phase in enumerate(rm['phases']):
             num = i + 1
-            items_html = "".join([f"""
+            items_html ="".join([f"""
                 <div class="flex items-center gap-3 p-3 bg-{c}-50/30 dark:bg-slate-900 border border-{c}-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-{c}-50 dark:hover:bg-{c}-900/20 hover:border-{c}-200 group/item">
                     <div class="w-2 h-2 rounded-full bg-{c}-400 group-hover/item:scale-125 transition-transform"></div>
                     <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover/item:text-{c}-700 transition-colors">{item}</span>
@@ -140,8 +122,7 @@ def build_roadmaps():
                     <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
                         {rm['title']} <span class="bg-gradient-to-r from-{c}-600 to-{c}-400 bg-clip-text text-transparent">Roadmap</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
-                        "{rm['description']}"
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">"{rm['description']}"
                     </p>
                 </div>
             </header>
@@ -151,9 +132,7 @@ def build_roadmaps():
                 {phases_html}
             </div>
 
-            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-medium">\u00a9 2026 Data Cake \u2022 Path to Mastery</p>
-            </footer>
+            
         </main>
     </div>
 </body>
@@ -164,5 +143,5 @@ def build_roadmaps():
             f.write(template)
         print(f"Built Roadmap: {output_path}")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     build_roadmaps()

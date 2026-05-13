@@ -1,0 +1,69 @@
+{
+  "guide": {
+    "title": "dbt (data build tool) Complete Guide",
+    "version": "1.0",
+    "total_sections": 6,
+    "sections": [
+      {
+        "id": 1,
+        "title": "Core Concepts",
+        "topics": [
+          { "title": "What is dbt", "slug": "what-is-dbt", "description": "The transformation layer in the modern data stack — ELT with dbt." },
+          { "title": "dbt Project Structure", "slug": "dbt-project-structure", "description": "dbt_project.yml, profiles.yml, models/, tests/, macros/ directories." },
+          { "title": "dbt vs Traditional ETL", "slug": "dbt-vs-traditional-etl", "description": "Version-controlled SQL transforms vs black-box ETL pipelines." },
+          { "title": "Materializations (table, view, incremental)", "slug": "materializations", "description": "How dbt creates objects in the database — table, view, incremental, ephemeral." }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Models & Sources",
+        "topics": [
+          { "title": "Writing dbt Models", "slug": "writing-dbt-models", "description": "SQL SELECT files as models with Jinja templating and ref() / source()." },
+          { "title": "ref() and source()", "slug": "ref-and-source", "description": "Referencing models with ref() and raw tables with source() for lineage." },
+          { "title": "Incremental Models", "slug": "incremental-models", "description": "Efficiently updating large tables with is_incremental() strategy." },
+          { "title": "Seeds & Snapshots", "slug": "seeds-and-snapshots", "description": "Loading CSV files as tables (seeds) and capturing SCD Type 2 with snapshots." },
+          { "title": "Model Configuration", "slug": "model-configuration", "description": "Setting schema, alias, tags, database, and other model-level configs." }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Testing & Documentation",
+        "topics": [
+          { "title": "Generic Tests (unique, not_null)", "slug": "generic-tests", "description": "Built-in tests: unique, not_null, accepted_values, relationships." },
+          { "title": "Custom & Singular Tests", "slug": "custom-singular-tests", "description": "Writing SQL test assertions and using dbt-utils test packages." },
+          { "title": "dbt Docs & Data Catalog", "slug": "dbt-docs-and-data-catalog", "description": "Generating documentation with dbt docs generate and serving the catalog." },
+          { "title": "Schema.yml Files", "slug": "schema-yml-files", "description": "Defining descriptions, tests, and column metadata in schema.yml." }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Macros & Jinja",
+        "topics": [
+          { "title": "Jinja Templating in dbt", "slug": "jinja-templating-in-dbt", "description": "Using Jinja variables, conditionals, and loops in SQL models." },
+          { "title": "Writing dbt Macros", "slug": "writing-dbt-macros", "description": "Reusable SQL snippets with macros — arguments, dispatch, and overrides." },
+          { "title": "dbt-utils Package", "slug": "dbt-utils-package", "description": "Utility macros from dbt-utils: surrogate_key, star, pivot, and more." },
+          { "title": "Hooks & Operations", "slug": "hooks-and-operations", "description": "Running SQL before/after models with pre-hook, post-hook, and run-operations." }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "dbt Packages & Environments",
+        "topics": [
+          { "title": "packages.yml & dbt Packages", "slug": "packages-yml-and-dbt-packages", "description": "Installing third-party packages from dbt Hub and Git." },
+          { "title": "Environments & Targets", "slug": "environments-and-targets", "description": "Dev, staging, prod targets and managing environment-specific configs." },
+          { "title": "Variables & Environment Variables", "slug": "variables-and-env-vars", "description": "Passing variables to models with var() and env_var()." }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "dbt Cloud & Orchestration",
+        "topics": [
+          { "title": "dbt Cloud Overview", "slug": "dbt-cloud-overview", "description": "Managed dbt Cloud — IDE, jobs, environments, and collaboration features." },
+          { "title": "dbt Cloud Jobs & Scheduling", "slug": "dbt-cloud-jobs-scheduling", "description": "Running dbt on a schedule with dbt Cloud jobs and webhooks." },
+          { "title": "dbt Core CLI", "slug": "dbt-core-cli", "description": "dbt run, test, debug, compile, docs, seed — core CLI commands." },
+          { "title": "Airflow + dbt Integration", "slug": "airflow-dbt-integration", "description": "Orchestrating dbt with Airflow using BashOperator or the dbt Airflow provider." }
+        ]
+      }
+    ]
+  }
+}

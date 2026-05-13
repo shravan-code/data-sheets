@@ -3,24 +3,24 @@ import json
 import re
 
 PART_ICONS = {
-    1: "code",
-    2: "git-merge",
-    3: "layers",
-    4: "command",
-    5: "codesandbox",
-    6: "alert-circle",
-    7: "refresh-cw",
-    8: "wrench",
-    9: "type",
-    10: "list",
-    11: "folder",
-    12: "zap",
-    13: "cpu",
-    14: "test-tube",
-    15: "gauge",
-    16: "component",
-    17: "globe",
-    18: "award",
+    1:"code",
+    2:"git-merge",
+    3:"layers",
+    4:"command",
+    5:"codesandbox",
+    6:"alert-circle",
+    7:"refresh-cw",
+    8:"wrench",
+    9:"type",
+    10:"list",
+    11:"folder",
+    12:"zap",
+    13:"cpu",
+    14:"test-tube",
+    15:"gauge",
+    16:"component",
+    17:"globe",
+    18:"award",
 }
 
 def get_global_sidebar(rel_path):
@@ -141,7 +141,7 @@ def get_global_sidebar(rel_path):
 
 def slugify(text):
     s = text.lower()
-    s = s.replace(" ", "-").replace("&", "and").replace("/", "-")
+    s = s.replace("","-").replace("&","and").replace("/","-")
     s = re.sub(r'[^a-z0-9\-]', '', s)
     return s.strip("-")
 
@@ -149,8 +149,8 @@ def render_topic_content(topic_or_part):
     parts = []
     
     # Description AND Explanation (Don't miss either)
-    desc = topic_or_part.get("description", "")
-    expl = topic_or_part.get("explanation", "")
+    desc = topic_or_part.get("description","")
+    expl = topic_or_part.get("explanation","")
     
     if desc:
         parts.append(f'<p class="text-xl text-slate-600 dark:text-slate-400 mb-6 font-medium">{desc}</p>')
@@ -163,8 +163,8 @@ def render_topic_content(topic_or_part):
         parts.append(f'<h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-3 font-display">')
         parts.append(f'<span class="w-1.5 h-8 bg-indigo-500 rounded-full"></span>{sub["title"]}</h2>')
         
-        sub_desc = sub.get("description", "")
-        sub_expl = sub.get("explanation", "")
+        sub_desc = sub.get("description","")
+        sub_expl = sub.get("explanation","")
         if sub_desc:
             parts.append(f'<p class="text-slate-600 dark:text-slate-400 mb-4">{sub_desc}</p>')
         if sub_expl and sub_expl != sub_desc:
@@ -173,8 +173,8 @@ def render_topic_content(topic_or_part):
         if sub.get("code"):
             # Check if output is already in comments to avoid redundancy
             output_in_comments = False
-            raw_output = sub.get("output", "")
-            raw_code = sub.get("code", "")
+            raw_output = sub.get("output","")
+            raw_code = sub.get("code","")
             if raw_output and raw_code:
                 output_lines = [l.strip() for l in raw_output.split('\n') if l.strip()]
                 if output_lines:
@@ -182,7 +182,7 @@ def render_topic_content(topic_or_part):
                     code_comments = [line.split('#', 1)[1].strip() for line in raw_code.split('\n') if '#' in line]
                     # Check if all non-empty output lines are represented in comments
                     # We look for exact matches or matches after common prefixes (Output:, ->, etc.)
-                    prefixes = ["Output:", "Result:", "->", "=>"]
+                    prefixes = ["Output:","Result:","->","=>"]
                     found_count = 0
                     for o_line in output_lines:
                         matched = False
@@ -199,8 +199,8 @@ def render_topic_content(topic_or_part):
                     if found_count == len(output_lines):
                         output_in_comments = True
 
-            code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            output = raw_output.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            code = raw_code.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+            output = raw_output.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
             
             if output and not output_in_comments:
                 # Combined Code + Output Card
@@ -234,7 +234,7 @@ def render_topic_content(topic_or_part):
         for q in topic_or_part["questions"]:
             parts.append(f'<div class="mb-10 p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-shadow">')
             parts.append(f'<h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-4 flex items-start gap-4 font-display">')
-            parts.append(f'<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-base font-black">{q.get("id", "?")}</span>')
+            parts.append(f'<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-base font-black">{q.get("id","?")}</span>')
             parts.append(f'<span class="pt-1.5">{q["question"]}</span></h3>')
             parts.append(f'<p class="text-slate-600 dark:text-slate-400 leading-relaxed pl-14 text-lg">{q["answer"]}</p>')
             parts.append(f'</div>')
@@ -255,17 +255,17 @@ def render_topic_content(topic_or_part):
             parts.append(f'</div>')
         parts.append('</div>')
         
-    return "\n".join(parts)
+    return"\n".join(parts)
 
 def build_python_hub(data):
     parts_dict = data["content"]
     
     final_parts = []
-    if "guide" in parts_dict and "parts" in parts_dict["guide"]:
+    if"guide" in parts_dict and"parts" in parts_dict["guide"]:
         final_parts.extend(parts_dict["guide"]["parts"])
     
     for key, val in parts_dict.items():
-        if key != "guide" and isinstance(val, dict) and "part" in val:
+        if key !="guide" and isinstance(val, dict) and"part" in val:
             final_parts.append(val)
             
     final_parts.sort(key=lambda x: x["part"])
@@ -279,7 +279,7 @@ def build_python_hub(data):
             all_topics.append(part)
 
     # Pre-build sidebar HTML
-    sidebar_html = """
+    sidebar_html ="""
         <div id="guide-topics" class="mt-6">
             <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
                 <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
@@ -295,35 +295,35 @@ def build_python_hub(data):
 
     # Phase mapping (11 phases)
     phases = [
-        {"name": "Foundations", "part_ids": [1]},
-        {"name": "Control & Iteration", "part_ids": [2]},
-        {"name": "Data Structures", "part_ids": [3]},
-        {"name": "Functional Programming", "part_ids": [4]},
-        {"name": "Object-Oriented Design", "part_ids": [5]},
-        {"name": "Robustness & Iterators", "part_ids": [6, 7]},
-        {"name": "Type System & Internal Tools", "part_ids": [8, 9]},
-        {"name": "System & File Ops", "part_ids": [10, 11]},
-        {"name": "Performance & Concurrency", "part_ids": [12, 15]},
-        {"name": "Internals & Architecture", "part_ids": [13, 16]},
-        {"name": "Testing & Real-World", "part_ids": [14, 17, 18]}
+        {"name":"Foundations","part_ids": [1]},
+        {"name":"Control & Iteration","part_ids": [2]},
+        {"name":"Data Structures","part_ids": [3]},
+        {"name":"Functional Programming","part_ids": [4]},
+        {"name":"Object-Oriented Design","part_ids": [5]},
+        {"name":"Robustness & Iterators","part_ids": [6, 7]},
+        {"name":"Type System & Internal Tools","part_ids": [8, 9]},
+        {"name":"System & File Ops","part_ids": [10, 11]},
+        {"name":"Performance & Concurrency","part_ids": [12, 15]},
+        {"name":"Internals & Architecture","part_ids": [13, 16]},
+        {"name":"Testing & Real-World","part_ids": [14, 17, 18]}
     ]
     
-    phases_html = ""
+    phases_html =""
     for i, phase in enumerate(phases):
         num = i + 1
-        items_html = ""
+        items_html =""
         for pid in phase["part_ids"]:
             part = next((p for p in final_parts if p["part"] == pid), None)
             if not part: continue
             
             # Add Part explanation if it exists
-            part_expl = part.get("explanation", part.get("description", ""))
+            part_expl = part.get("explanation", part.get("description",""))
             if part_expl:
                 items_html += f'<div class="col-span-full mb-4 px-2"><p class="text-sm text-slate-400 italic font-medium tracking-wide opacity-80 uppercase">Part {pid}: {part_expl}</p></div>'
 
             if part.get("topics"):
                 for topic in part["topics"]:
-                    icon = PART_ICONS.get(pid, "code")
+                    icon = PART_ICONS.get(pid,"code")
                     slug = slugify(topic["title"])
                     items_html += f"""
                     <a href="python/{slug}.html" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 hover:border-indigo-200 group/item no-underline shadow-sm hover:shadow-md">
@@ -335,7 +335,7 @@ def build_python_hub(data):
                         </div>
                     </a>"""
             else:
-                icon = PART_ICONS.get(pid, "code")
+                icon = PART_ICONS.get(pid,"code")
                 slug = slugify(part["title"])
                 items_html += f"""
                 <a href="python/{slug}.html" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 hover:border-indigo-200 group/item no-underline shadow-sm hover:shadow-md">
@@ -378,58 +378,15 @@ def build_python_hub(data):
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
     <!-- NAV -->
-    <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
-        <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-            <!-- LEFT: Toggle, Logo and Page Title -->
-            <div class="flex items-center gap-4">
-                <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
-                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                </button>
-
-                <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
-                    <div class="flex items-center">
-                        <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-                            <span class="font-light text-slate-500">Data</span>
-                            <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
-                        </span>
-                    </div>
-                </a>
-
-                <div class="hidden md:flex items-center gap-3 ml-2">
-                    <div class="h-4 w-[1px] bg-slate-200"></div>
-                    <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                        Python Mastery
-                    </span>
-                </div>
-            </div>
-
-            <!-- RIGHT: Profile Icon -->
-            <div class="flex items-center">
-                <a href="../../pages/portfolio.html" id="profile-btn" title="Profile"
-                    class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
+    
 
     <!-- SIDEBAR OVERLAY (mobile) -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
 
     <!-- SIDEBAR -->
-    <aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50 transition-transform duration-300">
-        <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-        <div class="py-5 px-3 flex flex-col h-full">
-            <div class="flex-1">
-                {global_sidebar}
+    
 
-                {sidebar_html}
-            </div>
-        </div>
-    </aside>
-
-    <div id="ds-main-content" class="lg:pl-60 transition-all duration-300">
+    <div id="ds-main-content" class="transition-all duration-300">
         <main class="relative z-10 pt-24 pb-20 px-6 max-w-6xl mx-auto">
             <!-- HERO -->
             <header class="mb-20 text-center">
@@ -449,9 +406,7 @@ def build_python_hub(data):
                 {phases_html}
             </div>
 
-            <footer class="mt-32 py-12 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-bold tracking-widest uppercase text-[10px]">Data Cake Documentation \u2022 2026</p>
-            </footer>
+            
         </main>
     </div>
     <script src="../../js/ds-main.js"></script>
@@ -461,18 +416,18 @@ def build_python_hub(data):
     
     output_path = os.path.join('pages', 'learn', 'python.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(output_path,"w", encoding="utf-8") as f:
         f.write(hub_template)
     print(f"Built Python Hub: {output_path}")
 
 def build_python_subpages(data):
     parts_dict = data["content"]
     final_parts = []
-    if "guide" in parts_dict and "parts" in parts_dict["guide"]:
+    if"guide" in parts_dict and"parts" in parts_dict["guide"]:
         final_parts.extend(parts_dict["guide"]["parts"])
     
     for key, val in parts_dict.items():
-        if key != "guide" and isinstance(val, dict) and "part" in val:
+        if key !="guide" and isinstance(val, dict) and"part" in val:
             final_parts.append(val)
     final_parts.sort(key=lambda x: x["part"])
 
@@ -489,7 +444,7 @@ def build_python_subpages(data):
     os.makedirs(os.path.join('pages', 'learn', 'python'), exist_ok=True)
     
     # Pre-build sidebar HTML
-    sidebar_html = """
+    sidebar_html ="""
         <div class="sb-section sb-cat bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer">
             <span class="w-6 h-6 rounded-md bg-slate-400 flex items-center justify-center flex-shrink-0">
                 <i data-lucide="list" class="w-3 h-3 text-white"></i>
@@ -510,7 +465,7 @@ def build_python_subpages(data):
         prev_topic = all_topics[i-1] if i > 0 else None
         next_topic = all_topics[i+1] if i < len(all_topics)-1 else None
         
-        prev_html = ""
+        prev_html =""
         if prev_topic:
             pslug = slugify(prev_topic['title'])
             prev_html = f"""
@@ -519,7 +474,7 @@ def build_python_subpages(data):
                 <span class="nav-title">{prev_topic["title"]}</span>
             </a>"""
             
-        next_html = ""
+        next_html =""
         if next_topic:
             nslug = slugify(next_topic['title'])
             next_html = f"""
@@ -529,9 +484,9 @@ def build_python_subpages(data):
             </a>"""
             
         # Aggregated content for Interview Master (Part 18) - NO LIMIT
-        if "interview-master" in slug:
+        if"interview-master" in slug:
             aggregated_questions = []
-            if "questions" in topic:
+            if"questions" in topic:
                 aggregated_questions.extend(topic["questions"])
             
             # Gather from ALL other topics in ALL parts
@@ -579,58 +534,13 @@ def build_python_subpages(data):
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
     <!-- NAV -->
-    <nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
-        <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-            <!-- LEFT: Toggle, Logo and Page Title -->
-            <div class="flex items-center gap-4">
-                <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
-                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                    <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                </button>
-
-                <a href="../../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
-                    <div class="flex items-center">
-                        <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-                            <span class="font-light text-slate-500">Data</span>
-                            <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
-                        </span>
-                    </div>
-                </a>
-
-                <div class="hidden md:flex items-center gap-3 ml-2">
-                    <div class="h-4 w-[1px] bg-slate-200"></div>
-                    <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                        {topic['title']}
-                    </span>
-                </div>
-            </div>
-
-            <!-- RIGHT: Profile Icon -->
-            <div class="flex items-center">
-                <a href="../../../pages/portfolio.html" id="profile-btn" title="Profile"
-                    class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
+    
 
     <!-- SIDEBAR OVERLAY (mobile) -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
 
     <!-- SIDEBAR -->
-    <aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50 transition-transform duration-300">
-        <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-        <div class="py-5 px-3 flex flex-col h-full">
-            <div class="flex-1">
-                {get_global_sidebar("../../../")}
-
-                <div id="guide-topics" class="mt-6">
-                    {active_sidebar}
-                </div>
-            </div>
-        </div>
-    </aside>
+    
 
     <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
         <div id="ds-main-content" class="transition-all duration-300 min-w-0">
@@ -674,12 +584,12 @@ def build_python_subpages(data):
 </body>
 </html>"""
         
-        with open(file_path, "w", encoding="utf-8") as f:
+        with open(file_path,"w", encoding="utf-8") as f:
             f.write(html)
             
     print(f"Built {len(all_topics)} Python subpages.")
 
-if __name__ == "__main__":
+if __name__ =="__main__":
     import sys, os, json, re
     data_file = os.path.join('data', 'python_complete_guide.json')
     if os.path.exists(data_file):

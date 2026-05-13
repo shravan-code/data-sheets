@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){
+        const s=localStorage.getItem('ds-theme');
+        const isL = s==='light';
+        if(isL) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        
+        // Immediate Prism theme sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = !isL;
+                d.disabled = isL;
+            }
+        });
+    })();</script>
+    <title>11. Trees — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688755">
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+            <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to DSA
+            </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">11. Trees</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Binary Tree structure, Traversal, BFS and DFS.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            <h2>Understanding Trees</h2>
+<p>A Tree is a hierarchical data structure consisting of nodes. The topmost node is the <strong>Root</strong>.</p>
+
+<div class="my-8">
+<div class="mermaid">
+graph TD
+    A((Root: 10)) --> B((Child: 5))
+    A --> C((Child: 15))
+    B --> D((Leaf: 3))
+    B --> E((Leaf: 7))
+</div>
+</div>
+
+<h3>Core Anatomy</h3>
+<ul>
+    <li><strong>Parent/Child:</strong> A node that points to another is a Parent; the node pointed to is a Child.</li>
+    <li><strong>Leaf:</strong> A node with no children (the"ends" of the tree).</li>
+    <li><strong>Depth/Height:</strong> Measures of how"deep" or"tall" the tree is.</li>
+</ul>
+
+<h3>Tree Traversal</h3>
+<ul>
+    <li><strong>DFS (Inorder):</strong> Visit Left, Root, Right. Used in Binary Search Trees to get sorted data.</li>
+    <li><strong>BFS:</strong> Visit level by level. Used for shortest path in hierarchical structures.</li>
+</ul>
+
+<h3>Python Example: Inorder DFS</h3>
+<pre><code class="language-python">def inorder(root):
+    if not root: return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+</code></pre>
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="recursion.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">10. Recursion</span>
+        </a>
+        
+        <a href="graphs.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">12. Graphs</span>
+        </a>
+    </div></main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778688755" defer></script>
+</body>
+</html>

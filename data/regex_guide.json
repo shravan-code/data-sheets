@@ -1,0 +1,59 @@
+{
+  "guide": {
+    "title": "Regular Expressions Complete Guide",
+    "version": "1.0",
+    "total_sections": 5,
+    "sections": [
+      {
+        "id": 1,
+        "title": "Basic Patterns",
+        "topics": [
+          { "title": "Literals & Metacharacters", "slug": "literals-and-metacharacters", "description": "Matching literal text and the special meaning of . ^ $ * + ? { } [ ] \\ | ( )." },
+          { "title": "Character Classes", "slug": "character-classes", "description": "[abc], [a-z], [^abc] for matching sets of characters." },
+          { "title": "Predefined Character Classes", "slug": "predefined-character-classes", "description": "\\d, \\w, \\s, \\D, \\W, \\S and their Unicode behavior." },
+          { "title": "Alternation with |", "slug": "alternation", "description": "Matching one of several alternatives with the pipe operator." }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Anchors & Quantifiers",
+        "topics": [
+          { "title": "Anchors (^ and $)", "slug": "anchors", "description": "^ for start-of-string, $ for end-of-string, and \\b word boundary." },
+          { "title": "Greedy Quantifiers", "slug": "greedy-quantifiers", "description": "*, +, ?, {n}, {n,m} — greedy matching and backtracking." },
+          { "title": "Lazy (Non-Greedy) Quantifiers", "slug": "lazy-quantifiers", "description": "*?, +?, ?? for minimal matching." },
+          { "title": "Possessive Quantifiers & Atomic Groups", "slug": "possessive-quantifiers", "description": "Preventing backtracking for performance-critical patterns." }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Groups & Lookaheads",
+        "topics": [
+          { "title": "Capturing Groups", "slug": "capturing-groups", "description": "(pattern) for capturing submatches and back-references." },
+          { "title": "Non-Capturing Groups", "slug": "non-capturing-groups", "description": "(?:pattern) for grouping without capturing." },
+          { "title": "Named Groups", "slug": "named-groups", "description": "(?P<name>pattern) and (?P=name) back-references in Python." },
+          { "title": "Lookahead & Lookbehind", "slug": "lookahead-and-lookbehind", "description": "(?=...), (?!...), (?<=...), (?<!...) zero-width assertions." }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Python re Module",
+        "topics": [
+          { "title": "re.match() vs re.search()", "slug": "match-vs-search", "description": "match() anchors to string start; search() scans entire string." },
+          { "title": "re.findall() & re.finditer()", "slug": "findall-and-finditer", "description": "Finding all matches as a list or iterator." },
+          { "title": "re.sub() & re.subn()", "slug": "sub-and-subn", "description": "Substituting patterns with replacement strings or functions." },
+          { "title": "re.compile() & Flags", "slug": "compile-and-flags", "description": "Compiling patterns for reuse and re.IGNORECASE, MULTILINE, DOTALL flags." }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Common Use Cases",
+        "topics": [
+          { "title": "Email & URL Validation", "slug": "email-and-url-validation", "description": "Regex patterns for validating email addresses and URLs." },
+          { "title": "Data Extraction Patterns", "slug": "data-extraction-patterns", "description": "Extracting dates, IPs, phone numbers, and structured data from text." },
+          { "title": "Log Parsing with Regex", "slug": "log-parsing-with-regex", "description": "Parsing structured log lines, timestamps, and error messages." },
+          { "title": "Regex in Pandas & SQL", "slug": "regex-in-pandas-and-sql", "description": "Using regex with str.extract(), str.contains() in Pandas and REGEXP in SQL." }
+        ]
+      }
+    ]
+  }
+}

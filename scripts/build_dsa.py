@@ -6,7 +6,7 @@ subpages = [
         'title': '2. Arrays',
         'icon': 'layout-grid',
         'description': 'Traversal, Two Pointers, Sliding Window, Prefix Sum.',
-        'content': """<h2>Understanding Arrays</h2>
+        'content':"""<h2>Understanding Arrays</h2>
 <p>An Array is the most fundamental data structure. It stores elements in <strong>contiguous memory locations</strong>, meaning they sit right next to each other in your computer's RAM.</p>
 
 <div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
@@ -29,7 +29,7 @@ graph LR
 <h3>Advanced Techniques</h3>
 <ul>
     <li><strong>Two Pointers:</strong> Using a <code>left</code> and <code>right</code> pointer that move towards each other. Great for reversing arrays.</li>
-    <li><strong>Sliding Window:</strong> Maintaining a "window" of the array and sliding it forward. Perfect for subarray problems.</li>
+    <li><strong>Sliding Window:</strong> Maintaining a"window" of the array and sliding it forward. Perfect for subarray problems.</li>
     <li><strong>Prefix Sum:</strong> Pre-calculating the cumulative sum up to each index.</li>
 </ul>
 
@@ -53,12 +53,12 @@ print(max_sum_subarray([2, 1, 5, 1, 3, 2], 3)) # Output: 9
         'title': '8. Binary Search',
         'icon': 'search',
         'description': 'Search on sorted array, find first & last position.',
-        'content': """<h2>Binary Search</h2>
+        'content':"""<h2>Binary Search</h2>
 <p>Binary Search is a remarkably efficient algorithm for finding an item from a <strong>sorted</strong> list of items. It works by repeatedly dividing in half the portion of the list that could contain the item.</p>
 
 <div class="my-8 p-6 bg-slate-100 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
     <h3 class="font-bold mb-2">Requirement: Sorted Data</h3>
-    <p class="text-sm">Binary Search ONLY works if your data is already sorted. If not, the "divide and conquer" logic fails.</p>
+    <p class="text-sm">Binary Search ONLY works if your data is already sorted. If not, the"divide and conquer" logic fails.</p>
 </div>
 
 <h3>Core Concepts</h3>
@@ -84,7 +84,7 @@ print(max_sum_subarray([2, 1, 5, 1, 3, 2], 3)) # Output: 9
         'title': '1. Complexity Analysis',
         'icon': 'bar-chart',
         'description': 'Big O Notation (Time & Space), how to analyze loops & recursion.',
-        'content': """<h2>Understanding Complexity</h2>
+        'content':"""<h2>Understanding Complexity</h2>
 <p>Complexity analysis is the tool we use to measure how well an algorithm scales. As your data grows from 100 rows to 100 million rows, will your code still run in milliseconds, or will it take hours?</p>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
@@ -126,7 +126,7 @@ def print_pairs(arr):
         'title': '12. Graphs',
         'icon': 'share-2',
         'description': 'What is a Graph, BFS, DFS, and Cycle Detection.',
-        'content': """<h2>Understanding Graphs</h2>
+        'content':"""<h2>Understanding Graphs</h2>
 <p>A Graph is a network of <strong>Nodes (Vertices)</strong> connected by <strong>Edges</strong>.</p>
 
 <div class="my-8">
@@ -163,7 +163,7 @@ graph LR
         'title': '4. Hashing',
         'icon': 'hash',
         'description': 'HashMap, HashSet, Frequency Count, Two-Sum Pattern.',
-        'content': """<h2>HashMap & HashSet</h2>
+        'content':"""<h2>HashMap & HashSet</h2>
 <p>A <strong>HashMap</strong> stores Key-Value pairs. It uses a mathematical hashing function to turn a key into an index, allowing for instant <code>O(1)</code> lookups. A <strong>HashSet</strong> is like a HashMap but only stores unique keys.</p>
 
 <div class="my-8">
@@ -201,7 +201,7 @@ print(two_sum([2, 7, 11, 15], 9)) # Output: [0, 1]
         'title': '13. Heap',
         'icon': 'pyramid',
         'description': 'Min Heap & Max Heap concept, Top-K Elements.',
-        'content': """<h2>Understanding Heaps</h2>
+        'content':"""<h2>Understanding Heaps</h2>
 <p>A Heap is a tree-based data structure that satisfies the <strong>Heap Property</strong>. It is primarily used for priority-based tasks.</p>
 
 <div class="my-8">
@@ -219,7 +219,7 @@ graph TD
     <li><strong>Min Heap:</strong> Smallest element is at the Root.</li>
     <li><strong>Max Heap:</strong> Largest element is at the Root.</li>
     <li><strong>Heapify:</strong> The process of rearranging a tree to satisfy the heap property.</li>
-    <li><strong>Extract Min/Max:</strong> Removing the root and "re-heapifying" the tree in O(log N).</li>
+    <li><strong>Extract Min/Max:</strong> Removing the root and"re-heapifying" the tree in O(log N).</li>
 </ul>
 
 <h3>Python Example: Finding Top-K Largest</h3>
@@ -235,8 +235,8 @@ print(k_largest([3, 2, 1, 5, 6, 4], 2)) # [6, 5]
         'title': '7. Linked List',
         'icon': 'link',
         'description': 'Traversal, Reversal, Detect Cycle, Merge Two Sorted Lists.',
-        'content': """<h2>Understanding Linked Lists</h2>
-<p>Unlike arrays where data is stored contiguously, a Linked List is made of independent <strong>Nodes</strong>. Each node is an object that contains data and a "link" (pointer) to the next object.</p>
+        'content':"""<h2>Understanding Linked Lists</h2>
+<p>Unlike arrays where data is stored contiguously, a Linked List is made of independent <strong>Nodes</strong>. Each node is an object that contains data and a"link" (pointer) to the next object.</p>
 
 <div class="my-8">
 <div class="mermaid">
@@ -277,7 +277,7 @@ def reverse_list(head):
         'title': '6. Queues',
         'icon': 'list-ordered',
         'description': 'FIFO principle, enqueue, dequeue, and Breadth-First Search.',
-        'content': """<h2>Understanding Queues</h2>
+        'content':"""<h2>Understanding Queues</h2>
 <p>A Queue is a collection of elements that follows the <strong>FIFO</strong> (First In, First Out) principle. Think of a line at a coffee shop: you join the back of the line and get served from the front.</p>
 
 <div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
@@ -340,7 +340,7 @@ simulate_printer_queue()
         'title': '10. Recursion',
         'icon': 'repeat',
         'description': 'Base case, Recursive case, Divide & Conquer basics.',
-        'content': """<h2>What is Recursion?</h2>
+        'content':"""<h2>What is Recursion?</h2>
 <p>Recursion is a technique where a function <strong>calls itself</strong> to solve smaller versions of the same problem.</p>
 
 <div class="my-8 p-6 bg-slate-100 dark:bg-slate-800/50 rounded-xl not-prose border border-slate-200 dark:border-slate-700">
@@ -368,7 +368,7 @@ simulate_printer_queue()
         'title': '9. Sorting',
         'icon': 'sort-asc',
         'description': 'Bubble, Merge, Quick Sort basics and built-in sort usage.',
-        'content': """<h2>Sorting Algorithms</h2>
+        'content':"""<h2>Sorting Algorithms</h2>
 <p>Sorting is the process of arranging data in a specific order. While production code uses built-in sorts, understanding the concepts is vital.</p>
 
 <div class="overflow-x-auto my-6 not-prose">
@@ -414,7 +414,7 @@ print(nums) # [1, 2, 5, 5, 6, 9]
         'title': '5. Stacks',
         'icon': 'layers',
         'description': 'LIFO principle, push, pop, peek, and valid parentheses problems.',
-        'content': """<h2>Understanding Stacks</h2>
+        'content':"""<h2>Understanding Stacks</h2>
 <p>A Stack is a collection of elements that follows the <strong>LIFO</strong> (Last In, First Out) principle. Think of a stack of plates: you can only add a plate to the top and take a plate from the top.</p>
 
 <div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
@@ -445,7 +445,7 @@ flowchart TD
 </div>
 
 <h3>What problem does it solve?</h3>
-<p>Stacks are perfect for tracking state that needs to be reversed or unwound. They are the core data structure behind the "Undo" button in text editors, browser history (back button), reversing strings, and verifying matching brackets in compilers.</p>
+<p>Stacks are perfect for tracking state that needs to be reversed or unwound. They are the core data structure behind the"Undo" button in text editors, browser history (back button), reversing strings, and verifying matching brackets in compilers.</p>
 
 <h3>Python Example: Valid Parentheses</h3>
 <p>In Python, you can just use a standard list <code>[]</code> as a stack using <code>append()</code> and <code>pop()</code>.</p>
@@ -475,13 +475,13 @@ print(is_valid_parentheses("{[(])}")) # Output: False
         'title': '3. Strings',
         'icon': 'type',
         'description': 'String Manipulation, Palindromes, Anagrams.',
-        'content': """<h2>String Manipulation</h2>
+        'content':"""<h2>String Manipulation</h2>
 <p>A string is essentially an <strong>array of characters</strong>. However, in many modern languages like Python, strings are <strong>immutable</strong>—meaning once they are created, they cannot be changed.</p>
 
 <div class="my-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
     <h3 class="font-bold mb-2">Key Concepts</h3>
     <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-        <li><strong>Immutability:</strong> In Python, <code>s = "Hello"</code> followed by <code>s += "!"</code> actually creates a brand new string in memory.</li>
+        <li><strong>Immutability:</strong> In Python, <code>s ="Hello"</code> followed by <code>s +="!"</code> actually creates a brand new string in memory.</li>
         <li><strong>Slicing:</strong> Extracting parts of a string (e.g., <code>s[1:4]</code>) is a core operation.</li>
         <li><strong>Character Frequency:</strong> Using HashMaps to count occurrences is the most common interview pattern.</li>
     </ul>
@@ -513,7 +513,7 @@ def is_anagram(s1, s2):
         'title': '11. Trees',
         'icon': 'git-merge',
         'description': 'Binary Tree structure, Traversal, BFS and DFS.',
-        'content': """<h2>Understanding Trees</h2>
+        'content':"""<h2>Understanding Trees</h2>
 <p>A Tree is a hierarchical data structure consisting of nodes. The topmost node is the <strong>Root</strong>.</p>
 
 <div class="my-8">
@@ -529,8 +529,8 @@ graph TD
 <h3>Core Anatomy</h3>
 <ul>
     <li><strong>Parent/Child:</strong> A node that points to another is a Parent; the node pointed to is a Child.</li>
-    <li><strong>Leaf:</strong> A node with no children (the "ends" of the tree).</li>
-    <li><strong>Depth/Height:</strong> Measures of how "deep" or "tall" the tree is.</li>
+    <li><strong>Leaf:</strong> A node with no children (the"ends" of the tree).</li>
+    <li><strong>Depth/Height:</strong> Measures of how"deep" or"tall" the tree is.</li>
 </ul>
 
 <h3>Tree Traversal</h3>
@@ -585,8 +585,7 @@ hub_template = '''<!DOCTYPE html>
                     <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
                         DSA <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Roadmap</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
-                        "Master the algorithms and data structures that power modern data platforms. From complexity analysis to graph algorithms and dynamic programming."
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">"Master the algorithms and data structures that power modern data platforms. From complexity analysis to graph algorithms and dynamic programming."
                     </p>
                 </div>
             </header>
@@ -668,7 +667,7 @@ subpage_template = '''<!DOCTYPE html>
 # 1. Build Hub Page
 subpages.sort(key=lambda x: int(x['title'].split('.')[0]))
 
-phases_html = ""
+phases_html =""
 for i, page in enumerate(subpages):
     num = i + 1
     items_html = f"""
@@ -715,8 +714,7 @@ hub_template = '''<!DOCTYPE html>
                 <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
                     DSA <span class="bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent">Mastery</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
-                    "Master the algorithms and data structures that power modern data platforms. From complexity analysis to graph algorithms and dynamic programming."
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">"Master the algorithms and data structures that power modern data platforms. From complexity analysis to graph algorithms and dynamic programming."
                 </p>
             </header>
 
@@ -725,9 +723,7 @@ hub_template = '''<!DOCTYPE html>
                 {phases_html}
             </div>
             
-            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
-                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase text-[10px]">\u00a9 2026 Data Cake \u2022 Algorithm Mastery</p>
-            </footer>
+            
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -736,7 +732,7 @@ hub_template = '''<!DOCTYPE html>
 
 hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
-with open("pages/learn/dsa-de.html", "w", encoding="utf-8") as f:
+with open("pages/learn/dsa-de.html","w", encoding="utf-8") as f:
     f.write(hub_content)
 
 print("Created Hub: pages/learn/dsa-de.html")
@@ -748,7 +744,7 @@ for i, page in enumerate(subpages):
     prev_page = subpages[i-1] if i > 0 else None
     next_page = subpages[i+1] if i < len(subpages)-1 else None
 
-    prev_html = ""
+    prev_html =""
     if prev_page:
         prev_html = f"""
         <a href="{prev_page['id']}.html" class="nav-card prev">
@@ -756,7 +752,7 @@ for i, page in enumerate(subpages):
             <span class="nav-title">{prev_page["title"]}</span>
         </a>"""
         
-    next_html = ""
+    next_html =""
     if next_page:
         next_html = f"""
         <a href="{next_page['id']}.html" class="nav-card next">
@@ -767,7 +763,7 @@ for i, page in enumerate(subpages):
     # Build list of all topics for the sidebar
     topics_html = '<div class="toc-title mt-8">DSA Topics</div><ul class="toc-list">'
     for p in subpages:
-        active_cls = "active" if p['id'] == page['id'] else ""
+        active_cls ="active" if p['id'] == page['id'] else""
         topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
     topics_html += '</ul>'
 
@@ -781,14 +777,13 @@ for i, page in enumerate(subpages):
     # Inject Navigation Cards
     nav_html = f"""
     <div class="nav-container">
-        {prev_html if prev_html else "<div></div>"}
-        {next_html if next_html else "<div></div>"}
-    </div>
-    """
+        {prev_html if prev_html else"<div></div>"}
+        {next_html if next_html else"<div></div>"}
+    </div>"""
     content = content.replace('</main>', nav_html + '</main>')
 
-    path = os.path.join("pages", "learn", "dsa-de", f"{page['id']}.html")
-    with open(path, "w", encoding="utf-8") as f:
+    path = os.path.join("pages","learn","dsa-de", f"{page['id']}.html")
+    with open(path,"w", encoding="utf-8") as f:
         f.write(content)
 
 print("Successfully generated all DSA subpages!")

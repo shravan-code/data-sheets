@@ -8,182 +8,32 @@
 <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.395.0"></script>
-<link rel="stylesheet" href="../../css/ds-main.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<link rel="stylesheet" href="../../css/ds-main.css?v=1778688749">
+
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200">
-  <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 hover:bg-slate-50 rounded-full">
-        <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-        <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-      </button>
-      <a href="../../index.html" class="no-underline group flex items-center gap-3 hover:scale-105 transition-transform">
-        <span style="font-family:'Outfit',sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-          <span class="font-light text-slate-500">Data</span>
-          <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3">Cake</span>
-        </span>
-      </a>
-      <div class="hidden md:flex items-center gap-3 ml-2">
-        <div class="h-4 w-px bg-slate-200"></div>
-        <span class="text-sm font-semibold text-slate-500">Streaming Architectures</span>
-      </div>
-    </div>
-    <a href="../portfolio.html" id="profile-btn" title="Profile" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-      <i data-lucide="user" class="w-5 h-5"></i>
-    </a>
-  </div>
-</nav>
-<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-<aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl">
-  <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-  <div class="py-5 px-3">
 
-<div class="sb-section sb-cat bg-fuchsia-50 text-fuchsia-700 hover:bg-fuchsia-100 cursor-pointer">
-        <span class="w-6 h-6 rounded-md bg-fuchsia-500 flex items-center justify-center flex-shrink-0">
-            <i data-lucide="cpu" class="w-3 h-3 text-white"></i>
-        </span>
-        DE Arch Guide
-    </div>
-    <nav class="pl-2">
-        <a href="../foundations.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>01. Foundations</a>
-        <a href="../classic-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>02. Classic Architectures</a>
-        <a href="../data-storage-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>03. Data Storage Architectures</a>
-        <a href="../modern-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>04. Modern Architectures</a>
-        <a href="../ingestion-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>05. Ingestion Patterns</a>
-        <a href="../processing-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>06. Processing Patterns</a>
-        <a href="../storage-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>07. Storage Patterns</a>
-        <a href="../table-formats-lakehouse-layer.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>08. Table Formats & Lakehouse</a>
-        <a href="../streaming-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>09. Streaming Architectures</a>
-        <a href="../pipeline-design-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>10. Pipeline Design Patterns</a>
-        <a href="../orchestration-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>11. Orchestration Patterns</a>
-        <a href="../data-governance-quality-architecture.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>12. Data Governance</a>
-        <a href="../cloud-native-data-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>13. Cloud-Native Archs</a>
-        <a href="../performance-scalability-patterns.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>14. Performance Patterns</a>
-        <a href="../security-architecture.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>15. Security Architecture</a>
-        <a href="../real-world-reference-architectures.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>16. Reference Architectures</a>
-        <a href="../architecture-trade-offs-decision-framework.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>17. Architecture Trade-offs</a>
-        <a href="../top-50-interview-questions-with-answers.html" class="sb-link"><i data-lucide="file-text" class="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0"></i>18. Top 50 Interview Qs</a>
-    </nav>
+<!-- NAV -->
 
 
-                <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
-                </span>
-                Programming
-            </div>
-            <nav class="pl-2">
-                <a href="../python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
-                <a href="../sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
-                <a href="../bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
-                <a href="../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
-            </nav>
+<!-- SIDEBAR OVERLAY (mobile) -->
 
-            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
-                </span>
-                Concepts
-            </div>
-            <nav class="pl-2">
-                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
-                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
-            </nav>
 
-            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
-                </span>
-                Tools
-            </div>
-            <nav class="pl-2">
-                <a href="../spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
-                <a href="../flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
-                <a href="../kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
-                <a href="../dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
-                <a href="../pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
-                <a href="../numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
-                <a href="../airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
-                <a href="../regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
-            </nav>
+<!-- SIDEBAR -->
 
-            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
-                </span>
-                Cloud
-            </div>
-            <nav class="pl-2">
-                <a href="../aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
-                <a href="../gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
-                <a href="../azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
-                <a href="../snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
-                <a href="../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
-            </nav>
 
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
-                </span>
-                CI / CD
-            </div>
-            <nav class="pl-2">
-                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
-                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
-                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
-                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
-                </span>
-                Design
-            </div>
-            <nav class="pl-2">
-                <a href="../system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
-                <a href="../pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
-                <a href="../de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
-                </span>
-                Roadmaps
-            </div>
-            <nav class="pl-2">
-                <a href="../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
-                <a href="../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
-                <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
-                </span>
-                Practice
-            </div>
-            <nav class="pl-2">
-                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
-                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
-                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
-            </nav>
-            
-    
-
-    <div class="mt-4 pt-4 border-t border-slate-200">
-      <a href="../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
-        <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0"><i data-lucide="user" class="w-3 h-3 text-white"></i></span>My Portfolio<i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
-      </a>
-    </div>
-  </div>
-</aside>
-<button id="scroll-top" title="Back to top" class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 text-white shadow-lg hover:scale-110 scale-90 transition-all duration-200">
-  <i data-lucide="arrow-up" class="w-4 h-4"></i>
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
 </button>
+
+
+
+
+
+
 <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
   <div id="ds-main-content" class="transition-all duration-300 min-w-0">
     <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
@@ -207,7 +57,7 @@
     <div class="my-6 p-6 border-l-4 border-blue-500 bg-blue-50/50 rounded-r-2xl"><p class="text-slate-700 text-base leading-relaxed font-medium">In Kafka, a stream and a table are two views of the same data. A stream is an infinite sequence of events. A table is a snapshot of the current state (materialized view of the stream). Kafka Streams and ksqlDB implement this duality.</p></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📌</span><h3 class="text-lg font-bold text-slate-800">Duality</h3></div><div><div class="grid grid-cols-1 gap-3 my-4"><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Stream To Table</span><span class="text-sm text-slate-700 leading-relaxed">Aggregate a stream of events → current state table (running sum, latest value per key)</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Table To Stream</span><span class="text-sm text-slate-700 leading-relaxed">Capture changes to a table → stream of change events (CDC)</span></div></div></div></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">💡</span><h3 class="text-lg font-bold text-slate-800">Example</h3></div><div><div class="grid grid-cols-1 gap-3 my-4"><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Stream</span><span class="text-sm text-slate-700 leading-relaxed">order_events topic: [order_placed, order_shipped, order_returned]</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Table Derived</span><span class="text-sm text-slate-700 leading-relaxed">current_order_status table: {order_id: 123, status: 'shipped'}</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Ksql</span><span class="text-sm text-slate-700 leading-relaxed">CREATE TABLE order_status AS SELECT order_id, LATEST_BY_OFFSET(status) AS status FROM order_events GROUP BY order_id EMIT CHANGES;</span></div></div></div></div>
   </div><div class="mb-16 pb-16 border-b border-slate-100 last:border-0">
     <div class="flex items-start gap-4 mb-6"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight font-display flex-1 pt-1">Stateful vs Stateless Processing</h2></div>
-    <div class="my-6 p-6 border-l-4 border-blue-500 bg-blue-50/50 rounded-r-2xl"><p class="text-slate-700 text-base leading-relaxed font-medium">Stateless processors transform each event independently. Stateful processors maintain state across events (counts, sums, session data, joins).</p></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📊</span><h3 class="text-lg font-bold text-slate-800">Comparison Table</h3></div><div><div class="overflow-x-auto my-6 rounded-2xl border border-slate-200 shadow-sm"><table class="w-full text-sm border-collapse"><thead><tr class="bg-gradient-to-r from-slate-800 to-slate-700 text-white"><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">Feature</th><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">stateless</th><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">stateful</th></tr></thead><tbody><tr class=" hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Memory needed</td><td class="px-5 py-3.5 text-slate-600">None (event-local)</td><td class="px-5 py-3.5 text-slate-600">State store (RocksDB in Flink)</td></tr><tr class="bg-slate-50/70 hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Scalability</td><td class="px-5 py-3.5 text-slate-600">Trivially parallelizable</td><td class="px-5 py-3.5 text-slate-600">Must route same key to same partition</td></tr><tr class=" hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Fault tolerance</td><td class="px-5 py-3.5 text-slate-600">Simple restart</td><td class="px-5 py-3.5 text-slate-600">State must be checkpointed</td></tr><tr class="bg-slate-50/70 hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Examples</td><td class="px-5 py-3.5 text-slate-600">Filter, map, format change</td><td class="px-5 py-3.5 text-slate-600">Aggregation, join, session detection</td></tr></tbody></table></div></div></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📌</span><h3 class="text-lg font-bold text-slate-800">Stateful Example</h3></div><div><div class="grid grid-cols-1 gap-3 my-4"><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Use Case</span><span class="text-sm text-slate-700 leading-relaxed">Count orders per customer in last 1 hour</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Flink</span><span class="text-sm text-slate-700 leading-relaxed">stream
+    <div class="my-6 p-6 border-l-4 border-blue-500 bg-blue-50/50 rounded-r-2xl"><p class="text-slate-700 text-base leading-relaxed font-medium">Stateless processors transform each event independently. Stateful processors maintain state across events (counts, sums, session data, joins).</p></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📊</span><h3 class="text-lg font-bold text-slate-800">Comparison Table</h3></div><div><div class="overflow-x-auto my-6 rounded-2xl border border-slate-200 shadow-sm"><table class="w-full text-sm border-collapse"><thead><tr class="bg-gradient-to-r from-slate-800 to-slate-700 text-white"><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">Feature</th><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">stateless</th><th class="px-5 py-3 text-left text-xs font-bold uppercase tracking-wider">stateful</th></tr></thead><tbody><tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Memory needed</td><td class="px-5 py-3.5 text-slate-600">None (event-local)</td><td class="px-5 py-3.5 text-slate-600">State store (RocksDB in Flink)</td></tr><tr class="bg-slate-50/70 hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Scalability</td><td class="px-5 py-3.5 text-slate-600">Trivially parallelizable</td><td class="px-5 py-3.5 text-slate-600">Must route same key to same partition</td></tr><tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Fault tolerance</td><td class="px-5 py-3.5 text-slate-600">Simple restart</td><td class="px-5 py-3.5 text-slate-600">State must be checkpointed</td></tr><tr class="bg-slate-50/70 hover:bg-blue-50/40 transition-colors border-b border-slate-100 last:border-0"><td class="px-5 py-3.5 font-semibold text-slate-700">Examples</td><td class="px-5 py-3.5 text-slate-600">Filter, map, format change</td><td class="px-5 py-3.5 text-slate-600">Aggregation, join, session detection</td></tr></tbody></table></div></div></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📌</span><h3 class="text-lg font-bold text-slate-800">Stateful Example</h3></div><div><div class="grid grid-cols-1 gap-3 my-4"><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Use Case</span><span class="text-sm text-slate-700 leading-relaxed">Count orders per customer in last 1 hour</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Flink</span><span class="text-sm text-slate-700 leading-relaxed">stream
   .keyBy(e -&gt; e.customerId)
   .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
   .aggregate(new CountAggregator())</span></div><div class="p-4 bg-slate-50 border border-slate-100 rounded-xl"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">State Store</span><span class="text-sm text-slate-700 leading-relaxed">Flink stores per-customer count in RocksDB. Checkpointed to S3 every 60 seconds for fault tolerance.</span></div></div></div></div>
@@ -237,5 +87,5 @@ env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);<
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 <script>lucide.createIcons();</script>
-<script src="../../js/ds-main.js" defer></script>
+<script src="../../js/ds-main.js?v=1778688749" defer></script>
 </body></html>

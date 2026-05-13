@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9. Data Governance & Observability — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688755">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">9. Data Governance & Observability</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Lineage, cataloging, metadata, and access control.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Data Lineage</h2>
+<p>Lineage tracks the lifecycle of data from its origin, through all transformations, to its final destination in a BI dashboard. It answers the question: <em>"If I change this source column, which downstream reports will break?"</em> Tools like dbt automatically generate DAGs (Directed Acyclic Graphs) that visualize this lineage.</p>
+
+<h2>Data Cataloging & Metadata Management</h2>
+<p>As a data platform grows to thousands of tables, users can't find what they need. A Data Catalog (e.g., Alation, Atlan, AWS Glue Catalog) is a searchable inventory of all data assets. It stores <strong>metadata</strong> (data about data): table descriptions, column definitions, owners, and tags.</p>
+
+<h2>Data Observability</h2>
+<p>Inspired by software observability (Datadog/New Relic). It's the practice of monitoring the health of data pipelines automatically. Good observability tools (like Monte Carlo) use machine learning to detect anomalies without manual tests (e.g.,"This table usually receives 10,000 rows a day, but today it received 0. Send an alert!").</p>
+
+<h2>Access Control (RBAC vs ABAC)</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6 not-prose">
+    <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+        <h3 class="font-bold text-slate-900 dark:text-white mb-2">Role-Based Access Control (RBAC)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Permissions are granted based on user roles (e.g., `Marketing_Role` gets read access to the `marketing_db`). Simple and most common.</p>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+        <h3 class="font-bold text-slate-900 dark:text-white mb-2">Attribute-Based Access Control (ABAC)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Dynamic permissions based on attributes. (e.g.,"A user can only see sales data if `user.region == data.region`"). Complex but highly secure.</p>
+    </div>
+</div>
+
+<h2>PII & Data Masking</h2>
+<p>Personally Identifiable Information (PII) like names, SSNs, and emails must be protected for GDPR/CCPA compliance.</p>
+<ul>
+    <li><strong>Masking:</strong> Replacing parts of data (e.g., `***-**-1234`).</li>
+    <li><strong>Hashing:</strong> Running data through a one-way algorithm (e.g., SHA-256) so it's anonymized but still joinable across tables.</li>
+    <li><strong>Tokenization:</strong> Replacing sensitive data with a random token, storing the mapping securely in a separate vault.</li>
+</ul>
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="data-quality.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">8. Data Quality</span>
+        </a>
+        
+        <a href="architecture-patterns.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">10. Pipeline Architecture Patterns</span>
+        </a>
+    </div></main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778688755" defer></script>
+</body>
+</html>

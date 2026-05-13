@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>6. Messaging & Queues — System Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: isDark ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+<link rel="stylesheet" href="../../../css/ds-main.css?v=1778688758">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<!-- NAV -->
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+
+
+<!-- SIDEBAR -->
+
+
+<button id="scroll-top" title="Back to top"
+    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
+           bg-gradient-to-br from-blue-500 to-violet-600 text-white
+           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+</button>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../system-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to System Design
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">6. Messaging & Queues</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Kafka, RabbitMQ, Decoupling, and Delivery Guarantees.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Asynchronous Communication</h2>
+<p>Messaging systems allow services to communicate without waiting for a response, enabling high throughput and decoupling.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
+    <section>
+        <h3 class="text-orange-600">RabbitMQ (Message Queue)</h3>
+        <p class="text-sm">Traditional message broker. Messages are deleted once consumed.</p>
+        <div class="mt-4 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+            <h4 class="font-bold text-xs mb-2">Routing Types</h4>
+            <ul class="text-xs space-y-1">
+                <li><strong>Direct:</strong> Exact routing key match.</li>
+                <li><strong>Fanout:</strong> Broadcast to all queues.</li>
+                <li><strong>Topic:</strong> Partial match using wildcards (*, #).</li>
+            </ul>
+        </div>
+    </section>
+    <section>
+        <h3 class="text-blue-600">Apache Kafka (Event Log)</h3>
+        <p class="text-sm">A distributed append-only log. Messages persist even after consumption.</p>
+        <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <h4 class="font-bold text-xs mb-2">Architecture</h4>
+            <ul class="text-xs space-y-1">
+                <li><strong>Topic:</strong> Stream of messages.</li>
+                <li><strong>Partition:</strong> Subsets of a topic (enables parallel processing).</li>
+                <li><strong>Offset:</strong> Unique ID for each message in a partition.</li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<h3>The Delivery Guarantee Spectrum</h3>
+<p>Depending on the business logic, you must choose how messages are delivered:</p>
+<div class="space-y-4 my-6">
+    <div class="p-4 border-l-4 border-rose-500 bg-rose-50 dark:bg-rose-950/20">
+        <h4 class="font-bold text-sm">At-Most-Once</h4>
+        <p class="text-xs">Message is sent once. If it's lost, it's gone. Used for telemetry data where missing a point is okay.</p>
+    </div>
+    <div class="p-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+        <h4 class="font-bold text-sm">At-Least-Once</h4>
+        <p class="text-xs">Message is sent until an ACK is received. Prevents data loss but can cause duplicates. (Most common in DE pipelines).</p>
+    </div>
+    <div class="p-4 border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20">
+        <h4 class="font-bold text-sm">Exactly-Once</h4>
+        <p class="text-xs">The holy grail. Requires transactional coordination between producer, broker, and consumer.</p>
+    </div>
+</div>
+        </div>
+    
+    <div class="nav-container">
+        
+        <a href="caching.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">5. Caching</span>
+        </a>
+        <div></div>
+    </div></main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778688758" defer></script>
+</body>
+</html>

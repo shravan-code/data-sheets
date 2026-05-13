@@ -1,0 +1,1484 @@
+{
+  "title": "Pandas Complete Reference Guide",
+  "subtitle": "Exhaustive coverage of all Pandas topics with code examples, outputs, and interview preparation",
+  "version": "2.0",
+  "last_updated": "2025",
+  "topics": [
+    {
+      "id": 1,
+      "title": "Fundamentals",
+      "subtopics": [
+        {
+          "name": "What is Pandas",
+          "explanation": "Pandas is an open-source Python library built on NumPy providing high-performance data structures and analysis tools. Created by Wes McKinney in 2008. The name derives from 'Panel Data', an econometrics term for multi-dimensional structured datasets.",
+          "key_points": [
+            "Two primary data structures: Series (1D) and DataFrame (2D)",
+            "Built on NumPy \u2014 operations are vectorized and fast",
+            "Excellent for data cleaning, transformation, aggregation, and analysis",
+            "Integrates with Matplotlib, Seaborn, Scikit-learn, SQLAlchemy, Spark",
+            "Standard tool in Data Science, Data Engineering, and Analytics pipelines"
+          ],
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndata = {'name': ['Alice', 'Bob', 'Charlie'], 'age': [25, 30, 35], 'salary': [50000, 70000, 90000]}\ndf = pd.DataFrame(data)\nprint(df)\nprint('Shape:', df.shape)\nprint('Dtypes:\\n', df.dtypes)",
+            "output": "      name  age  salary\n0    Alice   25   50000\n1      Bob   30   70000\n2  Charlie   35   90000\n\nShape: (3, 3)\nDtypes:\nname      object\nage        int64\nsalary     int64\ndtype: object"
+          }
+        },
+        {
+          "name": "Pandas vs SQL vs Excel",
+          "explanation": "Understanding when to use Pandas over SQL or Excel is critical for data professionals.",
+          "comparison_table": [
+            {
+              "feature": "Scale",
+              "pandas": "In-memory (GBs)",
+              "sql": "TBs+ (DB-side)",
+              "excel": "~1M rows max"
+            },
+            {
+              "feature": "Automation",
+              "pandas": "Full Python automation",
+              "sql": "Scripts/stored procs",
+              "excel": "VBA/macros"
+            },
+            {
+              "feature": "Flexibility",
+              "pandas": "Full Python ecosystem",
+              "sql": "Limited to SQL syntax",
+              "excel": "GUI-based, limited"
+            },
+            {
+              "feature": "Version control",
+              "pandas": "Git-friendly (.py files)",
+              "sql": "Possible",
+              "excel": "Difficult"
+            },
+            {
+              "feature": "Reproducibility",
+              "pandas": "Excellent",
+              "sql": "Good",
+              "excel": "Poor"
+            }
+          ],
+          "example": {
+            "code": "# SQL equivalent: SELECT name, AVG(salary) FROM employees GROUP BY dept HAVING AVG(salary) > 60000\nresult = df.groupby('name')['salary'].mean()\nresult = result[result > 60000]\nprint(result)",
+            "output": "name\nBob        70000.0\nCharlie    90000.0\ndtype: float64"
+          }
+        },
+        {
+          "name": "Pandas vs PySpark vs Polars",
+          "comparison_table": [
+            {
+              "feature": "Data size",
+              "pandas": "Small-Medium (GBs)",
+              "pyspark": "Very Large (TBs/PBs)",
+              "polars": "Medium-Large (GBs)"
+            },
+            {
+              "feature": "Execution",
+              "pandas": "Single-node, eager",
+              "pyspark": "Distributed, lazy",
+              "polars": "Single-node, lazy+eager"
+            },
+            {
+              "feature": "Speed",
+              "pandas": "Moderate",
+              "pyspark": "Fast at scale",
+              "polars": "2-10x faster than Pandas"
+            },
+            {
+              "feature": "Memory",
+              "pandas": "High (Python objects)",
+              "pyspark": "JVM overhead",
+              "polars": "Very low (Arrow-native)"
+            },
+            {
+              "feature": "API similarity",
+              "pandas": "Reference API",
+              "pyspark": "Similar to Pandas",
+              "polars": "Different syntax"
+            },
+            {
+              "feature": "Parallelism",
+              "pandas": "Single-threaded",
+              "pyspark": "Cluster-scale",
+              "polars": "Multi-core SIMD"
+            }
+          ]
+        },
+        {
+          "name": "Installation & Setup",
+          "example": {
+            "code": "# pip install\npip install pandas\npip install pandas numpy matplotlib seaborn openpyxl pyarrow\n\n# conda\nconda install pandas\n\n# verify\nimport pandas as pd\nprint(pd.__version__)   # e.g. 2.2.2\npd.show_versions()      # full environment info",
+            "output": "2.2.2"
+          }
+        },
+        {
+          "name": "NumPy & Pandas Relationship",
+          "explanation": "Pandas DataFrames store data in NumPy arrays internally. Understanding this enables performance optimization.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a': [1, 2, 3], 'b': [4.0, 5.0, 6.0]})\nprint(type(df.values))   # numpy.ndarray\nprint(df.to_numpy())     # preferred in Pandas 1.0+\n\n# NumPy ops work directly on Series\ns = pd.Series([1, 4, 9, 16])\nprint(np.sqrt(s))\n\n# DataFrame from numpy\narr = np.arange(6).reshape(2, 3)\ndf2 = pd.DataFrame(arr, columns=['x', 'y', 'z'])\nprint(df2)",
+            "output": "<class 'numpy.ndarray'>\n[[1. 4.]\n [2. 5.]\n [3. 6.]]\n\n0    1.0\n1    2.0\n2    3.0\n3    4.0\ndtype: float64\n\n   x  y  z\n0  0  1  2\n1  3  4  5"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Series",
+      "subtopics": [
+        {
+          "name": "Creating a Series",
+          "explanation": "A Series is a one-dimensional labeled array capable of holding any data type. The axis labels are collectively called the index.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# From list\ns1 = pd.Series([10, 20, 30, 40])\n\n# From dict (keys become index)\ns2 = pd.Series({'a': 1, 'b': 2, 'c': 3})\n\n# From scalar (broadcasted)\ns3 = pd.Series(5, index=['x', 'y', 'z'])\n\n# From numpy array with custom index\ns4 = pd.Series(np.linspace(0, 1, 4), index=['p','q','r','s'])\n\nprint(s1)\nprint(s2)\nprint(s3)\nprint(s4)",
+            "output": "0    10\n1    20\n2    30\n3    40\ndtype: int64\n\na    1\nb    2\nc    3\ndtype: int64\n\nx    5\ny    5\nz    5\ndtype: int64\n\np    0.000000\nq    0.333333\nr    0.666667\ns    1.000000\ndtype: float64"
+          }
+        },
+        {
+          "name": "Series Attributes",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series([1.5, 2.5, 3.5], index=['a', 'b', 'c'], name='scores')\nprint('dtype:', s.dtype)\nprint('shape:', s.shape)\nprint('name:', s.name)\nprint('size:', s.size)\nprint('ndim:', s.ndim)\nprint('index:', s.index.tolist())\nprint('values:', s.values)\nprint('is_unique:', s.is_unique)\nprint('hasnans:', s.hasnans)",
+            "output": "dtype: float64\nshape: (3,)\nname: scores\nsize: 3\nndim: 1\nindex: ['a', 'b', 'c']\nvalues: [1.5 2.5 3.5]\nis_unique: True\nhasnans: False"
+          }
+        },
+        {
+          "name": "Accessing Elements (iloc, loc, indexing)",
+          "explanation": "Use loc for label-based access and iloc for position-based. Label slices are INCLUSIVE; position slices follow Python conventions (exclusive end).",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series([100, 200, 300, 400], index=['a', 'b', 'c', 'd'])\n\nprint(s['a'])             # 100 \u2014 label access\nprint(s[['a', 'c']])      # multiple labels\nprint(s.loc['b':'d'])     # label slice (inclusive!)\nprint(s.iloc[0])          # 100 \u2014 position 0\nprint(s.iloc[-1])         # 400 \u2014 last element\nprint(s.iloc[1:3])        # positions 1,2 (exclusive end)",
+            "output": "100\n\na    100\nc    300\ndtype: int64\n\nb    200\nc    300\nd    400\ndtype: int64\n\n100\n400\n\nb    200\nc    300\ndtype: int64"
+          }
+        },
+        {
+          "name": "Series Operations \u2014 Arithmetic & Alignment",
+          "explanation": "Arithmetic ops align on index. Misaligned indices produce NaN. Use .add(), .sub() with fill_value to avoid NaN on misalignment.",
+          "example": {
+            "code": "import pandas as pd\ns1 = pd.Series([1, 2, 3], index=['a', 'b', 'c'])\ns2 = pd.Series([10, 20, 30], index=['a', 'b', 'c'])\n\nprint(s1 + s2)        # aligned addition\nprint(s1 * 3)         # scalar multiply\nprint(s1 > 1)         # comparison \u2192 bool Series\n\n# Misaligned \u2014 NaN where no match\ns3 = pd.Series([10, 20], index=['a', 'x'])\nprint(s1 + s3)\n\n# Use add with fill_value to treat missing as 0\nprint(s1.add(s3, fill_value=0))",
+            "output": "a    11\nb    22\nc    33\ndtype: int64\n\na    3\nb    6\nc    9\ndtype: int64\n\na    False\nb     True\nc     True\ndtype: bool\n\na    11.0\nb     NaN\nc     NaN\nx     NaN\ndtype: float64\n\na    11.0\nb     2.0\nc     3.0\nx    20.0\ndtype: float64"
+          }
+        },
+        {
+          "name": "Series Methods \u2014 head, tail, unique, value_counts, sort_values",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series([3, 1, 4, 1, 5, 9, 2, 6, 5, 3])\nprint('head:', s.head(3).tolist())\nprint('tail:', s.tail(3).tolist())\nprint('unique:', s.unique())\nprint('nunique:', s.nunique())\nprint('sort_values:', s.sort_values().tolist())\nprint('describe:\\n', s.describe().round(2))\nprint('value_counts:\\n', s.value_counts())",
+            "output": "head: [3, 1, 4]\ntail: [6, 5, 3]\nunique: [3 1 4 5 9 2 6]\nnunique: 7\nsort_values: [1, 1, 2, 3, 3, 4, 5, 5, 6, 9]\ndescribe:\n count    10.00\nmean      3.90\nstd       2.42\nmin       1.00\n25%       2.25\n50%       3.50\n75%       5.00\nmax       9.00\ndtype: float64\nvalue_counts:\n1    2\n3    2\n5    2\n4    1\n9    1\n2    1\n6    1\ndtype: int64"
+          }
+        },
+        {
+          "name": "Series String Accessor (.str)",
+          "explanation": "Vectorized string operations. Much faster than Python loops. Works on object/StringDtype Series.",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['  Hello World  ', 'pandas ROCKS', 'data engineering'])\n\nprint(s.str.strip())\nprint(s.str.lower())\nprint(s.str.upper())\nprint(s.str.contains('data', case=False))\nprint(s.str.replace('o', '0', regex=False))\nprint(s.str.split(' ').str[0])   # first word\nprint(s.str.len())",
+            "output": "0       Hello World\n1      pandas ROCKS\n2  data engineering\ndtype: object\n\n0       hello world\n1      pandas rocks\n2  data engineering\ndtype: object\n\n0    False\n1    False\n2     True\ndtype: bool\n\n0     11\n1     12\n2     16\ndtype: int64"
+          }
+        },
+        {
+          "name": "Series DateTime Accessor (.dt)",
+          "explanation": "Access datetime components from a datetime-typed Series using the .dt accessor.",
+          "example": {
+            "code": "import pandas as pd\ndates = pd.Series(pd.date_range('2024-01-15', periods=4, freq='ME'))\nprint(dates.dt.year.tolist())\nprint(dates.dt.month.tolist())\nprint(dates.dt.day.tolist())\nprint(dates.dt.day_name().tolist())\nprint(dates.dt.quarter.tolist())\nprint(dates.dt.strftime('%d-%b-%Y').tolist())",
+            "output": "[2024, 2024, 2024, 2024]\n[1, 2, 3, 4]\n[31, 29, 31, 30]\n['Wednesday', 'Thursday', 'Sunday', 'Tuesday']\n[1, 1, 1, 2]\n['31-Jan-2024', '29-Feb-2024', '31-Mar-2024', '30-Apr-2024']"
+          }
+        },
+        {
+          "name": "Series with Missing Values",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\ns = pd.Series([1, np.nan, 3, None, 5])\nprint(s)\nprint(s.isnull())\nprint(s.dropna())\nprint(s.fillna(s.mean()))\nprint(s.interpolate())",
+            "output": "0    1.0\n1    NaN\n2    3.0\n3    NaN\n4    5.0\ndtype: float64\n\n0    False\n1     True\n2    False\n3     True\n4    False\ndtype: bool\n\n0    1.0\n2    3.0\n4    5.0\ndtype: float64\n\n0    1.0\n1    3.0\n2    3.0\n3    3.0\n4    5.0\ndtype: float64\n\n0    1.0\n1    2.0\n2    3.0\n3    4.0\n4    5.0\ndtype: float64"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "DataFrame Basics",
+      "subtopics": [
+        {
+          "name": "Creating DataFrames",
+          "explanation": "The DataFrame is the most important data structure in Pandas. It is a 2D labeled data structure with columns of potentially different types. You can think of it like a SQL table or a spreadsheet. DataFrames are built on top of NumPy arrays, allowing for fast vectorized operations and efficient memory usage.",
+          "diagram": "graph TD\n    A[Pandas DataFrame] --> B[Columns (Labels)]\n    A --> C[Index (Row Labels)]\n    A --> D[Data (Values)]\n    D --> E[NumPy Array / BlockManager]\n    style A fill:#3b82f6,stroke:#1d4ed8,color:#fff",
+          "pro_tip": "When creating DataFrames from large lists of dictionaries, it's often significantly faster to use 'pd.DataFrame.from_records()' or first convert the list to a NumPy array if the data types are uniform.",
+          "warning": "Avoid adding rows one by one in a loop using '.loc' or '.append'. This is O(N^2) because it creates a new copy of the entire DataFrame for every addition. Instead, collect data in a list and create the DataFrame once at the end.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# From dict of lists (most common)\ndf1 = pd.DataFrame({'a': [1,2,3], 'b': [4,5,6], 'c': ['x','y','z']})\n\n# From list of dicts (common from JSON/API data)\ndf2 = pd.DataFrame([{'name':'Alice','age':25}, {'name':'Bob','age':30}])\n\n# From 2D numpy array\ndf3 = pd.DataFrame(np.arange(9).reshape(3,3), columns=['x','y','z'])\n\n# From list of tuples\ndf4 = pd.DataFrame([(1,'A'),(2,'B'),(3,'C')], columns=['num','letter'])\n\n# With custom index\ndf5 = pd.DataFrame({'score':[85,92,78]}, index=['Alice','Bob','Charlie'])\n\nprint(df1)\nprint(df2)",
+            "output": "   a  b  c\n0  1  4  x\n1  2  5  y\n2  3  6  z\n\n    name  age\n0  Alice   25\n1    Bob   30"
+          }
+        },
+        {
+          "name": "DataFrame Attributes",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['Alice','Bob','Charlie'],'age':[25,30,35],'salary':[50000,70000,90000]})\nprint('shape:', df.shape)          # (3, 3)\nprint('dtypes:\\n', df.dtypes)\nprint('columns:', df.columns.tolist())\nprint('index:', df.index.tolist())\nprint('size:', df.size)            # 9 total elements\nprint('ndim:', df.ndim)            # 2\nprint('empty:', df.empty)          # False",
+            "output": "shape: (3, 3)\ndtypes:\nname      object\nage        int64\nsalary     int64\ndtype: object\ncolumns: ['name', 'age', 'salary']\nindex: [0, 1, 2]\nsize: 9\nndim: 2\nempty: False"
+          }
+        },
+        {
+          "name": "head(), tail(), info(), describe()",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\ndf = pd.DataFrame({'a':range(100),'b':np.random.random(100),'c':np.random.choice(['x','y'],100)})\n\nprint(df.head(3))\nprint(df.tail(3))\ndf.info()              # dtypes, null counts, memory\nprint(df.describe())   # numeric stats\nprint(df.describe(include='object'))   # string stats",
+            "output": "   a         b  c\n0  0  0.374540  x\n1  1  0.950714  y\n2  2  0.731994  x\n\n    a         b  c\n97 97  0.183405  x\n98 98  0.304242  y\n99 99  0.524756  x\n\n<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 100 entries, 0 to 99\nData columns (total 3 columns):\nDtypes: float64(1), int64(1), object(1)\nmemory usage: 2.5+ KB\n\n                a           b\ncount  100.000000  100.000000\nmean    49.500000    0.491489\nstd     29.011492    0.289187\nmin      0.000000    0.002952\n..."
+          }
+        },
+        {
+          "name": "Column Operations \u2014 Select, Add, Drop, Rename, Reorder",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3],'b':[4,5,6],'c':[7,8,9]})\n\n# Select\nprint(df['a'])                   # single \u2192 Series\nprint(df[['a','b']])             # multiple \u2192 DataFrame\n\n# Add column\ndf['d'] = df['a'] + df['b']     # from other columns\ndf['e'] = 0                     # constant\n\n# Drop\ndf = df.drop(columns=['e'])\ndf = df.drop(columns=['c'])\n\n# Rename\ndf = df.rename(columns={'a':'col_a','b':'col_b','d':'total'})\n\n# Reorder\ndf = df[['total','col_a','col_b']]\n\nprint(df)",
+            "output": "   total  col_a  col_b\n0      5      1      4\n1      7      2      5\n2      9      3      6"
+          }
+        },
+        {
+          "name": "Row Operations \u2014 Select, Add, Drop",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3,4,5],'b':['p','q','r','s','t']})\n\n# Select rows by position\nprint(df.iloc[0:3])\n\n# Drop rows by index\ndf2 = df.drop(index=[0,2])\nprint(df2)\n\n# Drop rows by condition\ndf3 = df[df['a'] > 2]\nprint(df3)\n\n# Add row (concat preferred over append)\nnew_row = pd.DataFrame({'a':[6],'b':['u']})\ndf4 = pd.concat([df, new_row], ignore_index=True)\nprint(df4.tail(2))",
+            "output": "   a  b\n0  1  p\n1  2  q\n2  3  r\n\n   a  b\n1  2  q\n3  4  s\n4  5  t\n\n   a  b\n2  3  r\n3  4  s\n4  5  t\n\n   a  b\n4  5  t\n5  6  u"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Indexing & Selection",
+      "subtopics": [
+        {
+          "name": "loc \u2014 Label-Based Indexing",
+          "explanation": "loc selects by label. Slices are INCLUSIVE on both ends. Accepts boolean arrays, label lists, and callables.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['Alice','Bob','Charlie','Diana'],'age':[25,30,35,28],'salary':[50000,70000,90000,60000]}, index=['r1','r2','r3','r4'])\n\nprint(df.loc['r1'])                        # single row \u2192 Series\nprint(df.loc[['r1','r3']])                 # multiple rows\nprint(df.loc['r1':'r3'])                   # row slice (inclusive!)\nprint(df.loc['r1':'r3', 'name':'age'])     # rows+cols slice\nprint(df.loc[df['age'] > 28])              # boolean mask\nprint(df.loc[df['age'] > 28, 'name'])      # boolean mask + specific col",
+            "output": "name      Alice\nage          25\nsalary    50000\nName: r1, dtype: object\n\n       name  age  salary\nr1    Alice   25   50000\nr3  Charlie   35   90000\n\n     name  age  salary\nr1  Alice   25   50000\nr2    Bob   30   70000\nr3  Charlie  35   90000\n\n     name  age\nr1  Alice   25\nr2    Bob   30\nr3  Charlie  35\n\n       name  age  salary\nr2      Bob   30   70000\nr3  Charlie   35   90000\nr4    Diana   28   60000"
+          }
+        },
+        {
+          "name": "iloc \u2014 Position-Based Indexing",
+          "explanation": "iloc uses integer positions. Slices are EXCLUSIVE on the end (like Python lists). Use for position-based access regardless of index labels.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[10,20,30,40,50],'b':[1,2,3,4,5],'c':['p','q','r','s','t']})\n\nprint(df.iloc[0])           # first row\nprint(df.iloc[-1])          # last row\nprint(df.iloc[1:4])         # rows 1,2,3\nprint(df.iloc[[0,2,4]])     # rows 0,2,4\nprint(df.iloc[0:3, 0:2])    # rows 0-2, cols 0-1\nprint(df.iloc[:, 1])        # all rows, col at pos 1",
+            "output": "a    10\nb     1\nc     p\nName: 0, dtype: object\n\na    50\nb     5\nc     t\nName: 4, dtype: object\n\n    a  b  c\n1  20  2  q\n2  30  3  r\n3  40  4  s\n\n    a  b  c\n0  10  1  p\n2  30  3  r\n4  50  5  t"
+          }
+        },
+        {
+          "name": "Boolean Indexing, isin(), query()",
+          "explanation": "Boolean indexing is the most common filtering approach. isin() checks list membership. query() provides readable SQL-like syntax.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['Alice','Bob','Charlie','Diana','Eve'],'dept':['Eng','HR','Eng','Finance','HR'],'salary':[90000,50000,85000,70000,55000]})\n\n# AND / OR / NOT\nprint(df[(df['dept']=='Eng') & (df['salary']>85000)])\nprint(df[(df['dept']=='HR') | (df['dept']=='Finance')])\nprint(df[~df['dept'].isin(['HR'])])\n\n# isin()\nprint(df[df['dept'].isin(['Eng','Finance'])])\n\n# query()\nprint(df.query('salary > 70000 and dept == \"Eng\"'))\nmin_sal = 70000\nprint(df.query('salary > @min_sal'))   # variable with @",
+            "output": "    name dept  salary\n0  Alice  Eng   90000\n\n    name     dept  salary\n1    Bob       HR   50000\n3  Diana  Finance   70000\n4    Eve       HR   55000\n\n      name     dept  salary\n0    Alice      Eng   90000\n2  Charlie      Eng   85000\n3    Diana  Finance   70000"
+          }
+        },
+        {
+          "name": "at, iat \u2014 Fast Scalar Access",
+          "explanation": "at (label) and iat (position) are optimized for accessing or setting a single value. Much faster than loc/iloc for scalar access.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3],'b':[4,5,6]}, index=['x','y','z'])\n\nprint(df.at['x','a'])    # label-based scalar \u2192 1\nprint(df.iat[0, 0])      # position-based scalar \u2192 1\n\n# Setting single values\ndf.at['y','b'] = 99\ndf.iat[2, 0] = 100\nprint(df)",
+            "output": "1\n1\n\n     a   b\nx    1   4\ny    2  99\nz  100   6"
+          }
+        },
+        {
+          "name": "MultiIndex \u2014 Hierarchical Index",
+          "explanation": "MultiIndex provides multi-level indexing for grouping and slicing along multiple dimensions.",
+          "example": {
+            "code": "import pandas as pd\narrays = [['Eng','Eng','HR','HR'], ['Alice','Bob','Charlie','Diana']]\nidx = pd.MultiIndex.from_arrays(arrays, names=['dept','name'])\ndf = pd.DataFrame({'salary':[90000,85000,50000,55000],'years':[5,3,8,2]}, index=idx)\nprint(df)\nprint(df.loc['Eng'])                  # top-level selection\nprint(df.loc[('Eng','Alice')])        # specific entry\nprint(df.xs('Alice', level='name'))   # cross-section",
+            "output": "               salary  years\ndept name\nEng  Alice    90000      5\n     Bob      85000      3\nHR   Charlie  50000      8\n     Diana    55000      2\n\n       salary  years\nname\nAlice   90000      5\nBob     85000      3\n\nsalary    90000\nyears         5\nName: (Eng, Alice), dtype: int64"
+          }
+        },
+        {
+          "name": "Setting & Resetting Index",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['Alice','Bob'],'dept':['Eng','HR'],'salary':[90000,50000]})\n\n# set_index\ndf_idx = df.set_index('name')\nprint(df_idx)\n\n# multi-level index\ndf_midx = df.set_index(['dept','name'])\nprint(df_midx)\n\n# reset_index \u2014 bring index back as column\ndf_reset = df_idx.reset_index()\nprint(df_reset)\n\n# reset + drop index entirely\ndf_drop = df_idx.reset_index(drop=True)\nprint(df_drop)",
+            "output": "       dept  salary\nname\nAlice   Eng   90000\nBob      HR   50000\n\n             salary\ndept name\nEng  Alice   90000\nHR   Bob     50000\n\n    name dept  salary\n0  Alice  Eng   90000\n1    Bob   HR   50000\n\n  dept  salary\n0  Eng   90000\n1   HR   50000"
+          }
+        },
+        {
+          "name": "Chained Indexing Warning & Copy-on-Write",
+          "explanation": "Chained indexing (df['col'][mask] = val) can cause SettingWithCopyWarning or silently fail. In Pandas 2.0+ with Copy-on-Write, chained assignment raises warnings or errors. Always use .loc or .iloc for assignments.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3],'b':[4,5,6]})\n\n# BAD \u2014 chained indexing, may not work as expected\n# df['a'][df['a'] > 1] = 99   # SettingWithCopyWarning!\n\n# GOOD \u2014 use loc\ndf.loc[df['a'] > 1, 'a'] = 99\nprint(df)\n\n# GOOD \u2014 explicit copy when you want independence\nsub = df[df['a'] == 1].copy()\nsub['b'] = 0\nprint(sub)   # df unchanged",
+            "output": "    a  b\n0   1  4\n1  99  5\n2  99  6\n\n   a  b\n0  1  0"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Data Types & Type Conversion",
+      "subtopics": [
+        {
+          "name": "Pandas Data Types Overview",
+          "explanation": "Choosing the correct dtype is the single most impactful memory optimization. Pandas uses NumPy dtypes plus its own ExtensionArray types.",
+          "dtype_table": [
+            {
+              "dtype": "int8/16/32/64",
+              "use_case": "Integer values",
+              "memory": "1/2/4/8 bytes per element"
+            },
+            {
+              "dtype": "float32/float64",
+              "use_case": "Decimal numbers",
+              "memory": "4/8 bytes per element"
+            },
+            {
+              "dtype": "object",
+              "use_case": "Python strings, mixed types",
+              "memory": "Variable (high overhead)"
+            },
+            {
+              "dtype": "bool",
+              "use_case": "True/False",
+              "memory": "1 byte"
+            },
+            {
+              "dtype": "datetime64[ns]",
+              "use_case": "Timestamps",
+              "memory": "8 bytes"
+            },
+            {
+              "dtype": "timedelta64[ns]",
+              "use_case": "Durations",
+              "memory": "8 bytes"
+            },
+            {
+              "dtype": "category",
+              "use_case": "Low-cardinality strings",
+              "memory": "Very low \u2014 stores codes"
+            },
+            {
+              "dtype": "Int8/Int16/.../Int64",
+              "use_case": "Nullable integers (Pandas ExtensionArray)",
+              "memory": "Slightly more than numpy int"
+            },
+            {
+              "dtype": "StringDtype",
+              "use_case": "Explicit string type",
+              "memory": "Similar to object"
+            }
+          ],
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3],'b':[1.0,2.0,3.0],'c':['x','y','z'],'d':[True,False,True]})\nprint(df.dtypes)\nprint(df.memory_usage(deep=True))",
+            "output": "a      int64\nb    float64\nc     object\nd       bool\ndtype: object\n\nIndex    128\na         24\nb         24\nc        246\nd          3\ndtype: int64"
+          }
+        },
+        {
+          "name": "astype() \u2014 Type Casting",
+          "explanation": "astype() converts a column to a specified dtype. Raises ValueError on invalid conversion unless using pd.to_numeric with errors='coerce'.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'age':['25','30','35'],'score':[98.5,87.3,92.1],'active':['1','0','1']})\n\ndf['age'] = df['age'].astype(int)\ndf['score'] = df['score'].astype('float32')\ndf['active'] = df['active'].astype(int).astype(bool)\ndf['age_cat'] = df['age'].astype('category')\n\nprint(df)\nprint(df.dtypes)",
+            "output": "   age  score  active age_cat\n0   25   98.5    True      25\n1   30   87.3   False      30\n2   35   92.1    True      35\n\nage           int64\nscore       float32\nactive         bool\nage_cat    category\ndtype: object"
+          }
+        },
+        {
+          "name": "pd.to_numeric(), pd.to_datetime(), pd.to_timedelta()",
+          "explanation": "Conversion helpers with error handling: 'raise' (default), 'coerce' (bad\u2192NaN), 'ignore' (keep original).",
+          "example": {
+            "code": "import pandas as pd\n\n# to_numeric \u2014 coerce errors to NaN\ns = pd.Series(['1', '2', 'three', '4.5', 'NaN'])\nprint(pd.to_numeric(s, errors='coerce'))\n\n# to_datetime \u2014 various formats\ndates = pd.Series(['2024-01-15', '2024/02/20', 'bad_date', '15 Mar 2024'])\nprint(pd.to_datetime(dates, errors='coerce', dayfirst=False))\n\n# to_datetime with explicit format (faster parsing)\ndf = pd.DataFrame({'date_str':['15/01/2024','20/02/2024']})\ndf['date'] = pd.to_datetime(df['date_str'], format='%d/%m/%Y')\nprint(df)\n\n# to_timedelta\ndurations = pd.to_timedelta(['1 days','2 hours 30 min','45 min'])\nprint(durations)",
+            "output": "0    1.0\n1    2.0\n2    NaN\n3    4.5\n4    NaN\ndtype: float64\n\n0   2024-01-15\n1   2024-02-20\n2          NaT\n3   2024-03-15\ndtype: datetime64[ns]\n\n  date_str       date\n0 15/01/2024 2024-01-15\n1 20/02/2024 2024-02-20\n\nTimedeltaIndex(['1 days 00:00:00', '0 days 02:30:00', '0 days 00:45:00'], dtype='timedelta64[ns]', freq=None)"
+          }
+        },
+        {
+          "name": "Downcasting for Memory Optimization",
+          "explanation": "Downcasting shrinks numeric types to the smallest type that can hold the values. Critical for large DataFrames.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'int_col':range(1000),'float_col':np.random.random(1000),'flag':[0,1]*500})\n\nbefore = df.memory_usage(deep=True).sum()\nprint(f'Before: {before/1024:.1f} KB')\n\n# Downcast integers\ndf['int_col'] = pd.to_numeric(df['int_col'], downcast='integer')\n# Downcast floats\ndf['float_col'] = pd.to_numeric(df['float_col'], downcast='float')\n# Use bool for binary\ndf['flag'] = df['flag'].astype(bool)\n\nafter = df.memory_usage(deep=True).sum()\nprint(f'After: {after/1024:.1f} KB')\nprint(f'Reduction: {(before-after)/before:.1%}')\nprint(df.dtypes)",
+            "output": "Before: 23.6 KB\nAfter: 6.0 KB\nReduction: 74.6%\n\nint_col     int16\nfloat_col   float32\nflag         bool\ndtype: object"
+          }
+        },
+        {
+          "name": "Nullable Integer & String Types",
+          "explanation": "Pandas 1.0+ introduced nullable integer (Int8/Int16/.../Int64) and StringDtype that properly handle NaN without upcasting to float.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# Standard int64 \u2014 NaN forces float64 conversion\ns_int = pd.Series([1, 2, np.nan, 4])\nprint('Standard:', s_int.dtype)   # float64!\n\n# Nullable Int64 \u2014 keeps integer dtype with NA\ns_nullable = pd.Series([1, 2, pd.NA, 4], dtype='Int64')\nprint('Nullable:', s_nullable.dtype)  # Int64\nprint(s_nullable)\n\n# StringDtype \u2014 explicit string type\ns_str = pd.Series(['a','b', pd.NA,'d'], dtype='string')\nprint('StringDtype:', s_str.dtype)  # string\nprint(s_str)",
+            "output": "Standard: float64\n\nNullable: Int64\n0       1\n1       2\n2    <NA>\n3       4\ndtype: Int64\n\nStringDtype: string\n0       a\n1       b\n2    <NA>\n3       d\ndtype: string"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Reading & Writing Data",
+      "subtopics": [
+        {
+          "name": "read_csv() & to_csv() \u2014 Complete Parameters",
+          "explanation": "The most common I/O functions. read_csv has 50+ parameters for handling real-world messy CSV files.",
+          "example": {
+            "code": "import pandas as pd\n\n# Full-featured read_csv\ndf = pd.read_csv(\n    'data.csv',\n    sep=',',                        # delimiter (also: \\t, |, ;)\n    header=0,                       # row number with column names\n    names=['id','name','amount'],   # custom column names (replaces header)\n    index_col='id',                 # column to use as index\n    usecols=['name','amount'],      # load only specified columns\n    dtype={'amount': float},        # specify column dtypes upfront\n    nrows=10000,                    # read only first N rows\n    skiprows=[0, 1],                # skip specific rows\n    na_values=['NA','N/A','null','','none'],  # strings treated as NaN\n    parse_dates=['created_at'],     # columns to parse as datetime\n    infer_datetime_format=True,     # faster date parsing\n    encoding='utf-8',               # file encoding\n    thousands=',',                  # thousands separator\n    decimal='.',                    # decimal character\n    comment='#',                    # skip lines starting with this\n    low_memory=False,               # disable mixed-type warning\n    compression='gzip',             # auto-detect or specify\n    on_bad_lines='warn'             # handle malformed lines\n)\n\n# Write CSV\ndf.to_csv('output.csv', index=False, encoding='utf-8')\ndf.to_csv('output.csv.gz', index=False, compression='gzip')\ndf.to_csv('output.tsv', sep='\\t', index=False)",
+            "output": "# Reads CSV file into DataFrame based on parameters"
+          }
+        },
+        {
+          "name": "read_parquet() & to_parquet()",
+          "explanation": "Parquet is the preferred format for Data Engineering. Columnar storage enables column pruning, predicate pushdown, 5-10x faster reads than CSV for analytical workloads.",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'id': range(1000), 'name': ['user']*1000, 'amount': range(1000)})\n\n# Write parquet\ndf.to_parquet(\n    'data.parquet',\n    engine='pyarrow',       # or 'fastparquet'\n    compression='snappy',   # snappy, gzip, brotli, zstd, none\n    index=False\n)\n\n# Read all columns\ndf_full = pd.read_parquet('data.parquet')\n\n# Column pruning \u2014 reads only needed columns (huge speedup)\ndf_cols = pd.read_parquet('data.parquet', columns=['id','amount'])\n\n# Predicate pushdown \u2014 filter before loading to memory\ndf_filtered = pd.read_parquet('data.parquet', filters=[('amount', '>', 500)])\nprint(f'Full: {df_full.shape}, Filtered: {df_filtered.shape}')",
+            "output": "Full: (1000, 3), Filtered: (499, 3)"
+          }
+        },
+        {
+          "name": "read_excel() & to_excel()",
+          "explanation": "Requires openpyxl for .xlsx, xlrd for old .xls files. Support multi-sheet reading and writing.",
+          "example": {
+            "code": "import pandas as pd\n\n# Read specific sheet\ndf = pd.read_excel('data.xlsx', sheet_name='Sales', header=0)\n\n# Read all sheets \u2192 dict of DataFrames\nall_sheets = pd.read_excel('data.xlsx', sheet_name=None)\nfor name, df in all_sheets.items():\n    print(f'{name}: {df.shape}')\n\n# Write multiple sheets\nwith pd.ExcelWriter('output.xlsx', engine='openpyxl') as writer:\n    df.to_excel(writer, sheet_name='Summary', index=False)\n    df.head(10).to_excel(writer, sheet_name='Preview', index=False)\n    df.groupby('dept')['salary'].mean().to_excel(writer, sheet_name='Dept Avg')",
+            "output": "Sales: (500, 8)\nReturns: (200, 5)"
+          }
+        },
+        {
+          "name": "read_sql() & to_sql()",
+          "explanation": "Connects to any SQLAlchemy-supported database: PostgreSQL, MySQL, SQLite, SQL Server, Oracle.",
+          "example": {
+            "code": "import pandas as pd\nfrom sqlalchemy import create_engine, text\n\n# Create connection\nengine = create_engine('sqlite:///mydb.db')  \n# PostgreSQL: 'postgresql://user:pass@host:5432/db'\n# MySQL: 'mysql+pymysql://user:pass@host/db'\n\n# Read SQL query\ndf = pd.read_sql(\n    'SELECT id, name, salary FROM employees WHERE dept = :dept',\n    con=engine,\n    params={'dept': 'Engineering'}\n)\n\n# Read entire table\ndf_table = pd.read_sql_table('employees', con=engine)\n\n# Chunked reading for large tables\nfor chunk in pd.read_sql('SELECT * FROM large_table', con=engine, chunksize=10000):\n    process(chunk)\n\n# Write to SQL\ndf.to_sql(\n    'employees_backup',\n    con=engine,\n    if_exists='replace',  # 'fail', 'replace', 'append'\n    index=False,\n    method='multi',       # batch INSERT for speed\n    chunksize=1000\n)",
+            "output": "# Writes/reads from SQL database"
+          }
+        },
+        {
+          "name": "Reading Large Files (chunksize)",
+          "explanation": "When a file is too large for memory, process it in chunks. Combine results after processing each chunk.",
+          "example": {
+            "code": "import pandas as pd\n\n# Process 500MB CSV in 100k-row chunks\nchunk_results = []\n\nfor chunk in pd.read_csv('large_file.csv', chunksize=100_000):\n    # Apply transformations per chunk\n    chunk = chunk.dropna(subset=['amount'])\n    chunk['amount'] = pd.to_numeric(chunk['amount'], errors='coerce')\n    agg = chunk.groupby('category')['amount'].agg(['sum','count'])\n    chunk_results.append(agg)\n\n# Combine all chunks\nfinal = pd.concat(chunk_results).groupby(level=0).sum()\nprint(final)\n\n# Alternatively: read only needed columns\ndf = pd.read_csv('large_file.csv', usecols=['id','category','amount'], dtype={'id': 'int32', 'amount': 'float32'})",
+            "output": "              sum  count\ncategory\nA         1500000   2500\nB         2300000   4100\nC          900000   1800"
+          }
+        },
+        {
+          "name": "read_json() & Other Formats",
+          "example": {
+            "code": "import pandas as pd\n\n# JSON string/file\ndf = pd.read_json('[{\"a\":1,\"b\":2},{\"a\":3,\"b\":4}]')\nprint(df)\n\n# Orient options: records, index, columns, values, split, table\ndf.to_json('out.json', orient='records', indent=2)\n\n# Feather \u2014 fast inter-process exchange (not for long-term storage)\ndf.to_feather('data.feather')\ndf2 = pd.read_feather('data.feather')\n\n# Pickle \u2014 fastest Python-native format\ndf.to_pickle('data.pkl')\ndf3 = pd.read_pickle('data.pkl')\n\n# ORC \u2014 Hadoop ecosystem columnar format\ndf.to_orc('data.orc')\ndf4 = pd.read_orc('data.orc')\n\n# HTML tables \u2014 scrape from web\ntables = pd.read_html('https://en.wikipedia.org/wiki/List_of_countries_by_GDP')\ndf_gdp = tables[0]  # first table",
+            "output": "   a  b\n0  1  2\n1  3  4"
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Data Cleaning",
+      "subtopics": [
+        {
+          "name": "Detecting Missing Values",
+          "explanation": "Pandas represents missing data as NaN (numeric), NaT (datetime), None (object), and pd.NA (nullable types). isnull() and isna() are aliases.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':[1,np.nan,3],'b':[np.nan,2,np.nan],'c':['x',None,'z']})\n\nprint(df.isnull())\nprint('Null counts per column:')\nprint(df.isnull().sum())\nprint('Total nulls:', df.isnull().sum().sum())\nprint('Null fraction per column:')\nprint(df.isnull().mean().round(2))\nprint('Any null per row:')\nprint(df.isnull().any(axis=1))",
+            "output": "       a      b      c\n0  False   True  False\n1   True  False   True\n2  False   True  False\n\nNull counts per column:\na    1\nb    2\nc    1\ndtype: int64\n\nTotal nulls: 4\n\nNull fraction per column:\na    0.33\nb    0.67\nc    0.33\ndtype: float64\n\nAny null per row:\n0    True\n1    True\n2    True\ndtype: bool"
+          }
+        },
+        {
+          "name": "dropna() \u2014 Remove Missing Rows/Columns",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':[1,np.nan,3,np.nan],'b':[4,5,np.nan,np.nan],'c':[7,8,9,10]})\nprint(df)\n\nprint('\\ndrop rows with ANY null:')\nprint(df.dropna())\n\nprint('\\ndrop rows where ALL are null:')\nprint(df.dropna(how='all'))\n\nprint('\\ndrop rows with fewer than 2 non-null values:')\nprint(df.dropna(thresh=2))\n\nprint('\\ndrop only if null in column a:')\nprint(df.dropna(subset=['a']))\n\nprint('\\ndrop columns with any null:')\nprint(df.dropna(axis=1))",
+            "output": "     a    b   c\n0  1.0  4.0   7\n1  NaN  5.0   8\n2  3.0  NaN   9\n3  NaN  NaN  10\n\ndrop rows with ANY null:\n     a    b  c\n0  1.0  4.0  7\n\ndrop rows with fewer than 2 non-null values:\n     a    b  c\n0  1.0  4.0  7\n1  NaN  5.0  8\n2  3.0  NaN  9\n\ndrop only if null in a:\n     a    b  c\n0  1.0  4.0  7\n2  3.0  NaN  9\n\ndrop columns with any null:\n    c\n0   7\n1   8\n2   9\n3  10"
+          }
+        },
+        {
+          "name": "fillna(), ffill(), bfill(), interpolate()",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':[1,np.nan,np.nan,4,5],'b':[np.nan,2,np.nan,4,np.nan]})\nprint(df)\n\nprint('\\nFill scalar 0:')\nprint(df.fillna(0))\n\nprint('\\nFill column mean:')\nprint(df.fillna(df.mean()))\n\nprint('\\nFill by column dict:')\nprint(df.fillna({'a':0,'b':999}))\n\nprint('\\nForward fill (ffill):')\nprint(df.ffill())\n\nprint('\\nBackward fill (bfill):')\nprint(df.bfill())\n\nprint('\\nLinear interpolation:')\nprint(df.interpolate())",
+            "output": "     a      b\n0  1.0    NaN\n1  NaN    2.0\n2  NaN    NaN\n3  4.0    4.0\n4  5.0    NaN\n\nFill scalar 0:\n   a    b\n0  1.0  0.0\n1  0.0  2.0\n2  0.0  0.0\n3  4.0  4.0\n4  5.0  0.0\n\nForward fill:\n     a    b\n0  1.0  NaN\n1  1.0  2.0\n2  1.0  2.0\n3  4.0  4.0\n4  5.0  4.0\n\nLinear interpolation:\n     a    b\n0  1.0  NaN\n1  2.0  2.0\n2  3.0  3.0\n3  4.0  4.0\n4  5.0  4.0"
+          }
+        },
+        {
+          "name": "Handling Duplicates",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,2,3,3],'b':['x','y','y','z','z'],'c':[10,20,20,30,99]})\n\nprint('Duplicate mask:')\nprint(df.duplicated())\nprint('Count:', df.duplicated().sum())\n\nprint('\\nDuplicated on subset [a,b]:')\nprint(df.duplicated(subset=['a','b']))\n\nprint('\\ndrop_duplicates (keep first):')\nprint(df.drop_duplicates())\n\nprint('\\ndrop_duplicates (keep last):')\nprint(df.drop_duplicates(keep='last'))\n\nprint('\\ndrop_duplicates (keep=False) \u2014 remove all:')\nprint(df.drop_duplicates(keep=False))",
+            "output": "0    False\n1    False\n2     True\n3    False\n4    False\ndtype: bool\nCount: 1\n\n   a  b   c\n0  1  x  10\n1  2  y  20\n3  3  z  30\n\n   a  b   c\n0  1  x  10\n2  2  y  20\n4  3  z  99\n\n   a  b   c\n0  1  x  10"
+          }
+        },
+        {
+          "name": "replace() & String Standardization",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'status':['Active','active','ACTIVE','  active  ','inactive'],'score':[10,-1,99,20,30]})\n\n# Clean string column\ndf['status'] = df['status'].str.strip().str.lower().str.title()\n\n# Replace sentinel values with NaN\ndf['score'] = df['score'].replace({-1: np.nan, 99: np.nan})\n\n# Replace with regex\ndf['status'] = df['status'].replace(r'^Activ.*', 'Active', regex=True)\n\nprint(df)",
+            "output": "    status  score\n0   Active   10.0\n1   Active    NaN\n2   Active    NaN\n3   Active   20.0\n4 Inactive   30.0"
+          }
+        },
+        {
+          "name": "Outlier Detection & Removal",
+          "explanation": "IQR method is robust (non-parametric). Z-score method assumes normal distribution. clip() is a softer approach.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'salary': [50000,55000,60000,65000,70000,500000,58000,62000]})\n\n# IQR method (robust, recommended)\nQ1 = df['salary'].quantile(0.25)\nQ3 = df['salary'].quantile(0.75)\nIQR = Q3 - Q1\nlower, upper = Q1 - 1.5*IQR, Q3 + 1.5*IQR\ndf_clean = df[(df['salary'] >= lower) & (df['salary'] <= upper)]\nprint(f'IQR bounds: [{lower}, {upper}]')\nprint(f'Outliers removed: {len(df) - len(df_clean)}')\n\n# Z-score method\nz_scores = (df['salary'] - df['salary'].mean()) / df['salary'].std()\ndf_zscore = df[z_scores.abs() < 3]\nprint(f'Z-score clean: {len(df_zscore)} rows')\n\n# clip \u2014 cap instead of remove\ndf['salary_capped'] = df['salary'].clip(lower=lower, upper=upper)\nprint(df[['salary','salary_capped']])",
+            "output": "IQR bounds: [41875.0, 83125.0]\nOutliers removed: 1\nZ-score clean: 7 rows\n\n   salary  salary_capped\n0   50000        50000.0\n1   55000        55000.0\n5  500000        83125.0"
+          }
+        },
+        {
+          "name": "Validating Data Ranges & Types",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'age':[25,-5,150,30],'salary':[50000,70000,-1000,90000],'email':['a@b.com','bad','c@d.org','e@f.net']})\n\n# Validate ranges\ndf['age_valid'] = df['age'].between(0, 120)\ndf['salary_valid'] = df['salary'] > 0\n\n# Validate email format\ndf['email_valid'] = df['email'].str.match(r'^[\\w.-]+@[\\w.-]+\\.\\w+$')\n\nprint(df)\nprint('\\nInvalid rows:')\nprint(df[~(df['age_valid'] & df['salary_valid'] & df['email_valid'])])",
+            "output": "   age  salary    email  age_valid  salary_valid  email_valid\n0   25   50000  a@b.com       True          True         True\n1   -5   70000      bad      False          True        False\n2  150   -1000  c@d.org      False         False         True\n3   30   90000  e@f.net       True          True         True\n\nInvalid rows:\n   age  salary    email  age_valid  salary_valid  email_valid\n1   -5   70000      bad      False          True        False\n2  150   -1000  c@d.org      False         False         True"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "String Operations (.str accessor)",
+      "subtopics": [
+        {
+          "name": "Core String Methods",
+          "explanation": "The .str accessor vectorizes Python string methods over a Series. Available on object/StringDtype columns. Returns NaN for null values.",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['  Alice Smith  ', 'BOB JONES', 'charlie BROWN', None])\n\nprint(s.str.strip())             # strip whitespace\nprint(s.str.lower())             # to lowercase\nprint(s.str.upper())             # to uppercase\nprint(s.str.title())             # title case\nprint(s.str.len())               # string length\nprint(s.str.count('l'))          # count occurrences\nprint(s.str.contains('Smith'))   # boolean\nprint(s.str.startswith('BOB'))   # boolean\nprint(s.str.endswith('JONES'))   # boolean\nprint(s.str.replace('BOB','Bob', regex=False))",
+            "output": "0    Alice Smith\n1      BOB JONES\n2  charlie BROWN\n3           None\ndtype: object\n\n0    alice smith\n1      bob jones\n2  charlie brown\n3           None\ndtype: object\n\n0    11\n1     9\n2    13\n3    NaN\ndtype: object"
+          }
+        },
+        {
+          "name": "str.split(), str.extract(), str.findall()",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['Alice Smith 25', 'Bob Jones 30', 'Charlie Brown 35'])\n\n# Split and expand\nprint(s.str.split(' ', expand=True))\n\n# Get specific part after split\nprint('First names:', s.str.split(' ').str[0].tolist())\nprint('Last names:', s.str.split(' ').str[1].tolist())\n\n# Extract with named groups\npattern = r'(?P<first>[A-Za-z]+) (?P<last>[A-Za-z]+) (?P<age>\\d+)'\nprint(s.str.extract(pattern))\n\n# findall \u2014 return all matches\nnums = pd.Series(['a1b22c333', 'd4e55'])\nprint(nums.str.findall(r'\\d+'))",
+            "output": "         0      1   2\n0    Alice  Smith  25\n1      Bob  Jones  30\n2  Charlie  Brown  35\n\nFirst names: ['Alice', 'Bob', 'Charlie']\n\n     first   last age\n0    Alice  Smith  25\n1      Bob  Jones  30\n2  Charlie  Brown  35\n\n0    [1, 22, 333]\n1         [4, 55]\ndtype: object"
+          }
+        },
+        {
+          "name": "str.pad(), str.zfill(), str.slice(), str.cat()",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['7', '42', '1234'])\n\n# Zero-pad to width\nprint(s.str.zfill(6))       # '000007', '000042', '001234'\nprint(s.str.pad(6, side='left', fillchar='0'))\n\n# String slicing\ntext = pd.Series(['Hello World', 'Python Pandas', 'Data Engineering'])\nprint(text.str.slice(0, 5))  # first 5 chars\nprint(text.str[::-1])        # reverse\n\n# Concatenate\nfirst = pd.Series(['Alice', 'Bob'])\nlast = pd.Series(['Smith', 'Jones'])\nprint(first.str.cat(last, sep=' '))",
+            "output": "0    000007\n1    000042\n2    001234\ndtype: object\n\n0    Hello\n1    Pytho\n2    Data \ndtype: object\n\n0    Alice Smith\n1      Bob Jones\ndtype: object"
+          }
+        },
+        {
+          "name": "Regular Expressions with str",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['user@example.com', 'bad-email', 'admin@company.org', 'test@mail.net'])\n\n# Validate email\nemail_re = r'^[\\w.-]+@[\\w.-]+\\.\\w{2,}$'\nprint(s.str.match(email_re))\n\n# Extract domain\nprint(s.str.extract(r'@([\\w.-]+)'))\n\n# str.contains with regex\nprint(s.str.contains(r'\\.org$'))\n\n# Replace with regex\nprint(s.str.replace(r'@.*', '@[REDACTED]', regex=True))\n\n# extractall \u2014 all non-overlapping matches with multi-index result\ndata = pd.Series(['call 123-456-7890 or 098-765-4321', 'no number here'])\nprint(data.str.extractall(r'(\\d{3}-\\d{3}-\\d{4})'))",
+            "output": "0     True\n1    False\n2     True\n3     True\ndtype: bool\n\n             0\n0  example.com\n1          NaN\n2  company.org\n3     mail.net\n\n0    False\n1    False\n2     True\n3    False\ndtype: bool"
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "DateTime Operations (.dt accessor)",
+      "subtopics": [
+        {
+          "name": "pd.to_datetime() \u2014 Parsing Dates",
+          "explanation": "pd.to_datetime() is the primary tool for parsing date strings. Use format parameter for 10x faster parsing.",
+          "example": {
+            "code": "import pandas as pd\n\n# Basic parsing \u2014 auto-detect format\ndates = pd.to_datetime(['2024-01-15', 'Jan 15, 2024', '01/15/2024'])\nprint(dates)\n\n# Specify format for speed (always do this in production)\ndf = pd.DataFrame({'date_str': ['15/01/2024', '20/02/2024', '31/03/2024']})\ndf['date'] = pd.to_datetime(df['date_str'], format='%d/%m/%Y')\nprint(df)\n\n# Handle errors\nbad = pd.to_datetime(['2024-01-01', 'not_a_date', '2024-12-31'], errors='coerce')\nprint(bad)   # NaT for unparseable\n\n# Unix timestamps\nts = pd.to_datetime([0, 1000000000], unit='s')\nprint(ts)",
+            "output": "DatetimeIndex(['2024-01-15', '2024-01-15', '2024-01-15'], dtype='datetime64[ns]', freq=None)\n\n  date_str       date\n0 15/01/2024 2024-01-15\n1 20/02/2024 2024-02-20\n2 31/03/2024 2024-03-31\n\nDatetimeIndex(['2024-01-01', 'NaT', '2024-12-31'], dtype='datetime64[ns]', freq=None)\n\nDatetimeIndex(['1970-01-01', '2001-09-08 21:46:40'], dtype='datetime64[ns]', freq=None)"
+          }
+        },
+        {
+          "name": ".dt Accessor \u2014 All Properties",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(pd.date_range('2024-03-15 14:30:45', periods=3, freq='D'))\n\nprint('year:', s.dt.year.tolist())\nprint('month:', s.dt.month.tolist())\nprint('day:', s.dt.day.tolist())\nprint('hour:', s.dt.hour.tolist())\nprint('minute:', s.dt.minute.tolist())\nprint('second:', s.dt.second.tolist())\nprint('dayofweek:', s.dt.dayofweek.tolist())   # 0=Monday\nprint('day_name:', s.dt.day_name().tolist())\nprint('dayofyear:', s.dt.dayofyear.tolist())\nprint('weekofyear:', s.dt.isocalendar().week.tolist())\nprint('quarter:', s.dt.quarter.tolist())\nprint('is_month_start:', s.dt.is_month_start.tolist())\nprint('is_month_end:', s.dt.is_month_end.tolist())\nprint('strftime:', s.dt.strftime('%d %b %Y %H:%M').tolist())",
+            "output": "year: [2024, 2024, 2024]\nmonth: [3, 3, 3]\nday: [15, 16, 17]\nhour: [14, 14, 14]\nminute: [30, 30, 30]\nsecond: [45, 45, 45]\ndayofweek: [4, 5, 6]\nday_name: ['Friday', 'Saturday', 'Sunday']\ndayofyear: [75, 76, 77]\nquarter: [1, 1, 1]\nis_month_start: [False, False, False]\nis_month_end: [False, False, False]\nstrftime: ['15 Mar 2024 14:30', '16 Mar 2024 14:30', '17 Mar 2024 14:30']"
+          }
+        },
+        {
+          "name": "Date Arithmetic & Timedelta",
+          "example": {
+            "code": "import pandas as pd\nfrom pandas.tseries.offsets import BDay, MonthEnd, YearEnd\n\ndf = pd.DataFrame({'hire_date': pd.to_datetime(['2020-01-15','2021-06-01','2019-11-30'])})\n\n# Calculate tenure in days\ntoday = pd.Timestamp('2024-01-15')\ndf['tenure_days'] = (today - df['hire_date']).dt.days\ndf['tenure_years'] = df['tenure_days'] / 365.25\n\n# Add 90 calendar days\ndf['probation_end'] = df['hire_date'] + pd.Timedelta(days=90)\n\n# Add 90 business days\ndf['review_date'] = df['hire_date'] + 90 * BDay()\n\n# Next month end\ndf['next_month_end'] = df['hire_date'] + MonthEnd(1)\n\nprint(df[['hire_date','tenure_days','probation_end','next_month_end']])",
+            "output": "  hire_date  tenure_days probation_end next_month_end\n0 2020-01-15         1461    2020-04-14     2020-01-31\n1 2021-06-01          958    2021-08-30     2021-06-30\n2 2019-11-30         1507    2020-02-28     2019-11-30"
+          }
+        },
+        {
+          "name": "Resampling Time Series",
+          "explanation": "resample() is groupby for time \u2014 groups by time period and aggregates. Requires a DatetimeIndex.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\nidx = pd.date_range('2024-01-01', periods=100, freq='D')\ndf = pd.DataFrame({'sales': np.random.randint(50,500,100), 'units': np.random.randint(1,20,100)}, index=idx)\n\n# Downsample: Daily \u2192 Weekly\nweekly = df.resample('W').sum()\nprint(weekly.head(3))\n\n# Downsample: Daily \u2192 Monthly with multiple aggs\nmonthly = df.resample('ME').agg({'sales': ['sum','mean','max','min'], 'units': 'sum'})\nprint(monthly.head())\n\n# Upsample: Daily \u2192 Hourly with forward fill\nhourly = df['sales'].resample('h').ffill()\nprint(f'Daily: {len(df)} \u2192 Hourly: {len(hourly)}')",
+            "output": "            sales  units\n2024-01-07   1752     83\n2024-01-14   2016     91\n2024-01-21   1843     79\n\n           sales                  units\n              sum    mean  max  min   sum\ndate\n2024-01-31   8271  266.8  499   51   465\n2024-02-29   7498  258.6  494   52   410"
+          }
+        },
+        {
+          "name": "Timezone Handling",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'ts': pd.date_range('2024-01-01 09:00', periods=3, freq='h')})\nprint('Naive:', df['ts'].dt.tz)\n\n# Localize \u2014 assign timezone to naive datetime\ndf['ts_utc'] = df['ts'].dt.tz_localize('UTC')\n\n# Convert \u2014 change from one timezone to another\ndf['ts_ist'] = df['ts_utc'].dt.tz_convert('Asia/Kolkata')\ndf['ts_est'] = df['ts_utc'].dt.tz_convert('US/Eastern')\ndf['ts_pst'] = df['ts_utc'].dt.tz_convert('US/Pacific')\n\nprint(df[['ts_utc','ts_ist','ts_est']])",
+            "output": "Naive: None\n\n                ts_utc                  ts_ist                   ts_est\n0 2024-01-01 09:00:00+00:00 2024-01-01 14:30:00+05:30 2024-01-01 04:00:00-05:00\n1 2024-01-01 10:00:00+00:00 2024-01-01 15:30:00+05:30 2024-01-01 05:00:00-05:00\n2 2024-01-01 11:00:00+00:00 2024-01-01 16:30:00+05:30 2024-01-01 06:00:00-05:00"
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Sorting & Ranking",
+      "subtopics": [
+        {
+          "name": "sort_values()",
+          "explanation": "Sort by one or more columns. Fully configurable for ascending/descending, NaN placement, and custom sort keys.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'name':['Alice','Bob','Charlie','Diana','Eve'],'dept':['Eng','HR','Eng','Eng','HR'],'salary':[90000,50000,85000,None,55000]})\n\n# Single column descending\nprint(df.sort_values('salary', ascending=False))\n\n# Multi-column: dept asc, salary desc within dept\nprint(df.sort_values(['dept','salary'], ascending=[True,False]))\n\n# NaN placement\nprint(df.sort_values('salary', na_position='first'))\n\n# Custom key: sort names alphabetically case-insensitive\nprint(df.sort_values('name', key=lambda x: x.str.lower()))",
+            "output": "      name dept   salary\n0    Alice  Eng  90000.0\n2  Charlie  Eng  85000.0\n4      Eve   HR  55000.0\n1      Bob   HR  50000.0\n3    Diana  Eng      NaN\n\n      name dept   salary\n0    Alice  Eng  90000.0\n2  Charlie  Eng  85000.0\n3    Diana  Eng      NaN\n1      Bob   HR  50000.0\n4      Eve   HR  55000.0"
+          }
+        },
+        {
+          "name": "sort_index()",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':[1,2,3]}, index=['c','a','b'])\nprint(df.sort_index())             # ascending label order\nprint(df.sort_index(ascending=False))  # descending\n\n# Sort MultiIndex\narrays = [['HR','Eng','Eng','HR'],['B','A','B','A']]\nidx = pd.MultiIndex.from_arrays(arrays)\ndf2 = pd.DataFrame({'v':range(4)}, index=idx)\nprint(df2.sort_index())",
+            "output": "   a\na  2\nb  3\nc  1\n\n   a\nc  1\nb  3\na  2\n\n       v\nEng A  1\n    B  2\nHR  A  3\n    B  0"
+          }
+        },
+        {
+          "name": "nlargest(), nsmallest(), rank()",
+          "explanation": "nlargest/nsmallest are faster than sort+head for top-N. rank() assigns numerical ranks with configurable tie-breaking methods.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['A','B','C','D','E','F'],'score':[85,92,78,92,88,85]})\n\n# Top/bottom N\nprint(df.nlargest(3,'score'))    # top 3\nprint(df.nsmallest(2,'score'))   # bottom 2\n\n# Rank methods\ndf['rank_avg']   = df['score'].rank(method='average')  # 85 \u2192 2.5 (avg of 2,3)\ndf['rank_min']   = df['score'].rank(method='min')      # 85 \u2192 2\ndf['rank_max']   = df['score'].rank(method='max')      # 85 \u2192 3\ndf['rank_dense'] = df['score'].rank(method='dense')    # 85 \u2192 2, 92 \u2192 3 (no gaps)\ndf['rank_first'] = df['score'].rank(method='first')    # 85 \u2192 2,3 by order\ndf['rank_pct']   = df['score'].rank(pct=True).round(2) # percentile\nprint(df)",
+            "output": "  name  score\n1    B     92\n3    D     92\n4    E     88\n\n  name  score\n2    C     78\n0    A     85\n\n  name  score  rank_avg  rank_min  rank_dense  rank_pct\n0    A     85       2.5       2.0         2.0      0.42\n1    B     92       5.5       5.0         4.0      0.92\n2    C     78       1.0       1.0         1.0      0.17\n3    D     92       5.5       5.0         4.0      0.92\n4    E     88       4.0       4.0         3.0      0.67\n5    F     85       2.5       2.0         2.0      0.42"
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Filtering & Conditions",
+      "subtopics": [
+        {
+          "name": "Boolean Masks & Compound Conditions",
+          "explanation": "Use & (AND), | (OR), ~ (NOT) to combine boolean masks. Always wrap individual conditions in parentheses \u2014 Python operator precedence issues are a common bug.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'name':['A','B','C','D','E'],'age':[25,30,28,35,22],'dept':['Eng','HR','Eng','Finance','Eng'],'salary':[90000,50000,85000,70000,55000]})\n\n# AND\nprint(df[(df['dept']=='Eng') & (df['salary']>80000)])\n\n# OR\nprint(df[(df['dept']=='HR') | (df['salary']>80000)])\n\n# NOT\nprint(df[~df['dept'].isin(['HR','Finance'])])\n\n# Complex: (Eng dept AND age 25-30) OR (salary > 85000)\nmask = ((df['dept']=='Eng') & df['age'].between(25,30)) | (df['salary']>85000)\nprint(df[mask])",
+            "output": "  name  age dept  salary\n0    A   25  Eng   90000\n2    C   28  Eng   85000\n\n  name  age  dept  salary\n0    A   25   Eng   90000\n1    B   30    HR   50000\n2    C   28   Eng   85000"
+          }
+        },
+        {
+          "name": "where(), mask(), clip(), between()",
+          "explanation": "where() keeps values where condition is True, replaces with NaN/value elsewhere. mask() is the inverse. clip() caps values at bounds.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'score':[45,72,88,55,91,63], 'name':['A','B','C','D','E','F']})\n\n# where: keep where condition True, else NaN\nprint(df['score'].where(df['score']>=60))\n\n# where with replacement value\nprint(df['score'].where(df['score']>=60, 0))\n\n# mask: replace where condition True (inverse of where)\nprint(df['score'].mask(df['score']<60, -1))\n\n# clip: cap at bounds\nprint(df['score'].clip(55, 90))\n\n# between: inclusive range filter\nprint(df[df['score'].between(60,90)])\n\n# np.where: fast conditional column creation\ndf['grade'] = np.where(df['score']>=60, 'Pass', 'Fail')\n\n# np.select: multiple conditions\nconds = [df['score']>=90, df['score']>=70, df['score']>=60]\nchoices = ['A','B','C']\ndf['letter'] = np.select(conds, choices, default='F')\nprint(df)",
+            "output": "0     NaN\n1    72.0\n2    88.0\n3     NaN\n4    91.0\n5    63.0\ndtype: float64\n\n  name  score grade letter\n0    A     45  Fail      F\n1    B     72  Pass      B\n2    C     88  Pass      B\n3    D     55  Fail      F\n4    E     91  Pass      A\n5    F     63  Pass      C"
+          }
+        },
+        {
+          "name": "Filtering with String & Date Conditions",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'name':['Alice Smith','Bob Jones','Alice Brown','Eve Davis'],'hire_date':pd.to_datetime(['2022-01-15','2021-06-01','2023-03-10','2022-11-20']),'dept':['Eng','HR','Eng','Finance']})\n\n# String filter\nprint(df[df['name'].str.startswith('Alice')])\nprint(df[df['name'].str.contains('Smith|Jones', regex=True)])\n\n# Date filter\nprint(df[df['hire_date'] >= '2022-01-01'])\nprint(df[df['hire_date'].dt.year == 2022])\nprint(df[df['hire_date'].between('2022-01-01','2022-12-31')])",
+            "output": "         name  hire_date  dept\n0  Alice Smith 2022-01-15   Eng\n2  Alice Brown 2023-03-10   Eng\n\n          name  hire_date dept\n0  Alice Smith 2022-01-15  Eng\n1    Bob Jones 2021-06-01   HR\n\n          name  hire_date     dept\n0  Alice Smith 2022-01-15      Eng\n2  Alice Brown 2023-03-10      Eng\n3    Eve Davis 2022-11-20  Finance"
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "GroupBy & Aggregations",
+      "subtopics": [
+        {
+          "name": "groupby() Basics \u2014 Split-Apply-Combine",
+          "explanation": "groupby() implements the split-apply-combine paradigm: split data into groups, apply a function to each group, combine results. One of the most powerful Pandas operations.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'dept':['Eng','HR','Eng','Finance','HR','Eng'],'name':['A','B','C','D','E','F'],'salary':[90000,50000,85000,70000,55000,80000],'years':[5,3,7,4,2,6]})\n\n# Basic agg\nprint(df.groupby('dept')['salary'].mean())\nprint(df.groupby('dept')['salary'].sum())\nprint(df.groupby('dept').size())\n\n# Multiple columns\nprint(df.groupby('dept')[['salary','years']].mean())\n\n# Multiple aggregations\nprint(df.groupby('dept')['salary'].agg(['min','max','mean','std','count']))",
+            "output": "dept\nEng        85000.0\nFinance    70000.0\nHR         52500.0\nName: salary, dtype: float64\n\ndept\nEng        3\nFinance    1\nHR         2\ndtype: int64\n\n          salary  years\ndept\nEng      85000.0    6.0\nFinance  70000.0    4.0\nHR       52500.0    2.5"
+          }
+        },
+        {
+          "name": "Named Aggregations with agg()",
+          "explanation": "Named aggregations (Pandas 0.25+) produce clean, single-level column names. Use NamedAgg or tuple syntax.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'dept':['Eng','HR','Eng','Finance','HR','Eng'],'salary':[90000,50000,85000,70000,55000,80000],'years':[5,3,7,4,2,6],'name':['A','B','C','D','E','F']})\n\n# Named aggregations \u2014 clean output\nresult = df.groupby('dept').agg(\n    avg_salary=('salary','mean'),\n    max_salary=('salary','max'),\n    min_salary=('salary','min'),\n    total_salary=('salary','sum'),\n    headcount=('name','count'),\n    avg_years=('years','mean'),\n    salary_std=('salary','std')\n)\nprint(result.round(2))",
+            "output": "         avg_salary  max_salary  min_salary  total_salary  headcount  avg_years  salary_std\ndept\nEng         85000.0       90000       80000        255000          3        6.0     5000.00\nFinance     70000.0       70000       70000         70000          1        4.0         NaN\nHR          52500.0       55000       50000        105000          2        2.5     3535.53"
+          }
+        },
+        {
+          "name": "transform() \u2014 Group-Aware Column Addition",
+          "explanation": "transform() returns same-shape output as input \u2014 ideal for adding group statistics back to the original DataFrame without losing rows.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'dept':['Eng','HR','Eng','Finance','HR','Eng'],'salary':[90000,50000,85000,70000,55000,80000]})\n\n# Add dept mean to every row\ndf['dept_avg'] = df.groupby('dept')['salary'].transform('mean')\n\n# Salary deviation from dept mean\ndf['deviation'] = df['salary'] - df['dept_avg']\n\n# Rank within dept\ndf['dept_rank'] = df.groupby('dept')['salary'].transform('rank', ascending=False)\n\n# Normalize within group (z-score)\ndf['z_score'] = df.groupby('dept')['salary'].transform(lambda x: (x-x.mean())/x.std())\n\nprint(df.sort_values(['dept','salary'],ascending=[True,False]).round(2))",
+            "output": "      dept  salary  dept_avg  deviation  dept_rank  z_score\n0      Eng   90000   85000.0     5000.0        1.0      1.0\n2      Eng   85000   85000.0        0.0        2.0      0.0\n5      Eng   80000   85000.0    -5000.0        3.0     -1.0\n3  Finance   70000   70000.0        0.0        1.0      NaN\n4       HR   55000   52500.0     2500.0        1.0      1.0\n1       HR   50000   52500.0    -2500.0        2.0     -1.0"
+          }
+        },
+        {
+          "name": "apply() with GroupBy",
+          "explanation": "apply() is the escape hatch \u2014 passes each group as a DataFrame to a custom function. Flexible but slower than built-in aggs. Use when transform/agg can't express the logic.",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'dept':['Eng','Eng','HR','HR','Eng','Finance'],'name':['A','B','C','D','E','F'],'salary':[90000,85000,50000,55000,80000,70000]})\n\n# Get top 2 earners per dept\ndef top_n(group, n=2):\n    return group.nlargest(n, 'salary')\n\nresult = df.groupby('dept', group_keys=False).apply(top_n, n=2)\nprint(result)\n\n# Custom function returning scalar per group\ndef salary_range(group):\n    return group['salary'].max() - group['salary'].min()\n\nprint(df.groupby('dept').apply(salary_range))",
+            "output": "      dept name  salary\n0      Eng    A   90000\n1      Eng    B   85000\n5  Finance    F   70000\n3       HR    D   55000\n2       HR    C   50000\n\ndept\nEng        10000\nFinance        0\nHR          5000\ndtype: int64"
+          }
+        },
+        {
+          "name": "GroupBy Size vs Count",
+          "explanation": "size() counts ALL rows per group including NaN. count() counts non-NaN values per column per group.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'dept':['Eng','HR','Eng','HR'],'salary':[90000,np.nan,85000,55000],'years':[5,3,np.nan,2]})\n\nprint('size() \u2014 includes NaN:')\nprint(df.groupby('dept').size())\n\nprint('\\ncount() \u2014 excludes NaN per column:')\nprint(df.groupby('dept').count())",
+            "output": "size() \u2014 includes NaN:\ndept\nEng    2\nHR     2\ndtype: int64\n\ncount() \u2014 excludes NaN per column:\n      salary  years\ndept\nEng        2      1\nHR         1      2"
+          }
+        },
+        {
+          "name": "GroupBy Cumulative & Shift Operations",
+          "example": {
+            "code": "import pandas as pd\ndf = pd.DataFrame({'dept':['Eng','Eng','Eng','HR','HR'],'month':[1,2,3,1,2],'sales':[100,150,120,80,95]})\n\ndf['cumsum']   = df.groupby('dept')['sales'].cumsum()\ndf['cummax']   = df.groupby('dept')['sales'].cummax()\ndf['cumprod']  = df.groupby('dept')['sales'].cumprod()\ndf['pct_chg']  = df.groupby('dept')['sales'].pct_change()\ndf['prev']     = df.groupby('dept')['sales'].shift(1)\ndf['rank']     = df.groupby('dept')['sales'].rank(ascending=False)\nprint(df)",
+            "output": "  dept  month  sales  cumsum  cummax   cumprod  pct_chg   prev  rank\n0  Eng      1    100     100     100    100000      NaN    NaN   3.0\n1  Eng      2    150     250     150  15000000   0.5000  100.0   1.0\n2  Eng      3    120     370     150 1800000000 -0.2000  150.0   2.0\n3   HR      1     80      80      80      80000      NaN    NaN   2.0\n4   HR      2     95     175      95    7600000  0.1875   80.0   1.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Merging, Joining & Concatenating",
+      "subtopics": [
+        {
+          "name": "merge() \u2014 All Join Types Explained",
+          "explanation": "merge() is the primary join function. Inner: matching rows only. Left: all left rows. Right: all right rows. Outer: all rows from both. Cross: Cartesian product.",
+          "example": {
+            "code": "import pandas as pd\n\nemployees = pd.DataFrame({'emp_id':[1,2,3,4],'name':['Alice','Bob','Charlie','Diana'],'dept_id':[10,20,10,30]})\ndepts = pd.DataFrame({'dept_id':[10,20,40],'dept_name':['Engineering','HR','Finance']})\n\n# INNER \u2014 only matched rows\nprint('INNER:')\nprint(pd.merge(employees, depts, on='dept_id', how='inner'))\n\n# LEFT \u2014 all employees, NaN for unmatched depts\nprint('\\nLEFT:')\nprint(pd.merge(employees, depts, on='dept_id', how='left'))\n\n# OUTER \u2014 all rows from both, NaN for no match\nprint('\\nOUTER:')\nprint(pd.merge(employees, depts, on='dept_id', how='outer'))\n\n# Different key column names\ndf_a = pd.DataFrame({'user_id':[1,2],'name':['A','B']})\ndf_b = pd.DataFrame({'id':[1,2],'score':[100,200]})\nprint(pd.merge(df_a, df_b, left_on='user_id', right_on='id'))",
+            "output": "INNER:\n   emp_id     name  dept_id    dept_name\n0       1    Alice       10  Engineering\n1       2      Bob       20           HR\n2       3  Charlie       10  Engineering\n\nLEFT:\n   emp_id     name  dept_id    dept_name\n0       1    Alice       10  Engineering\n1       2      Bob       20           HR\n2       3  Charlie       10  Engineering\n3       4    Diana       30          NaN"
+          }
+        },
+        {
+          "name": "merge() \u2014 Multiple Keys, Suffixes, Indicator",
+          "example": {
+            "code": "import pandas as pd\n\n# Multi-key join\norders = pd.DataFrame({'year':[2024,2024,2023],'month':[1,2,1],'sales':[100,200,150]})\nbudgets = pd.DataFrame({'year':[2024,2024,2023],'month':[1,2,1],'budget':[120,180,140]})\nresult = pd.merge(orders, budgets, on=['year','month'])\nprint(result)\n\n# Duplicate column suffixes\ndf1 = pd.DataFrame({'id':[1,2],'value':[10,20]})\ndf2 = pd.DataFrame({'id':[1,2],'value':[100,200]})\nresult2 = pd.merge(df1, df2, on='id', suffixes=('_actual','_target'))\nprint(result2)\n\n# Indicator column\ndf3 = pd.DataFrame({'id':[1,2,3]})\ndf4 = pd.DataFrame({'id':[2,3,4]})\nresult3 = pd.merge(df3, df4, on='id', how='outer', indicator=True)\nprint(result3)\nprint(result3['_merge'].value_counts())",
+            "output": "   year  month  sales  budget\n0  2024      1    100     120\n1  2024      2    200     180\n2  2023      1    150     140\n\n   id  value_actual  value_target\n0   1            10           100\n1   2            20           200\n\n   id       _merge\n0   1    left_only\n1   2         both\n2   3         both\n3   4   right_only\n\nboth          2\nleft_only     1\nright_only    1\nName: _merge, dtype: int64"
+          }
+        },
+        {
+          "name": "concat() \u2014 Row and Column Stacking",
+          "explanation": "concat() stacks DataFrames. axis=0 appends rows, axis=1 adds columns side by side. Use ignore_index=True to re-number the index.",
+          "example": {
+            "code": "import pandas as pd\ndf1 = pd.DataFrame({'a':[1,2],'b':[3,4]})\ndf2 = pd.DataFrame({'a':[5,6],'b':[7,8]})\ndf3 = pd.DataFrame({'c':[9,10],'d':[11,12]})\n\n# Row stack\nresult = pd.concat([df1,df2], ignore_index=True)\nprint(result)\n\n# Column stack\nresult2 = pd.concat([df1,df3], axis=1)\nprint(result2)\n\n# With keys \u2014 hierarchical index for provenance tracking\nresult3 = pd.concat([df1,df2], keys=['Jan','Feb'])\nprint(result3)\n\n# Union on mismatched columns (outer by default)\ndf4 = pd.DataFrame({'a':[7],'z':[99]})\nresult4 = pd.concat([df1,df4], ignore_index=True, sort=False)\nprint(result4)",
+            "output": "   a  b\n0  1  3\n1  2  4\n2  5  7\n3  6  8\n\n   a  b   c   d\n0  1  3   9  11\n1  2  4  10  12\n\n       a  b\nJan 0  1  3\n    1  2  4\nFeb 0  5  7\n    1  6  8\n\n     a    b     z\n0  1.0  3.0   NaN\n1  2.0  4.0   NaN\n2  7.0  NaN  99.0"
+          }
+        },
+        {
+          "name": "merge_asof() \u2014 Nearest/Forward Match Join",
+          "explanation": "merge_asof() joins on the nearest key rather than exact match. Essential for time series joins: match trades to prices, events to statuses.",
+          "example": {
+            "code": "import pandas as pd\n\n# Stock prices at irregular intervals\nprices = pd.DataFrame({'time':pd.to_datetime(['09:00','09:05','09:10','09:15'],'format='%H:%M'),'price':[100,102,101,103]})\n\n# Trades at different times\ntrades = pd.DataFrame({'time':pd.to_datetime(['09:03','09:08','09:12'],'format='%H:%M'),'qty':[50,30,20]})\n\n# Match each trade to the most recent price (backward)\nresult = pd.merge_asof(trades, prices, on='time', direction='backward')\nprint(result)\n\n# Forward fill: next known price\nresult2 = pd.merge_asof(trades, prices, on='time', direction='forward')\nprint(result2)",
+            "output": "                time  qty  price\n0 2024-01-01 09:03:00   50    100\n1 2024-01-01 09:08:00   30    102\n2 2024-01-01 09:12:00   20    101\n\n                time  qty  price\n0 2024-01-01 09:03:00   50    102\n1 2024-01-01 09:08:00   30    101\n2 2024-01-01 09:12:00   20    103"
+          }
+        },
+        {
+          "name": "join() \u2014 Index-Based Join",
+          "example": {
+            "code": "import pandas as pd\n\ndf1 = pd.DataFrame({'salary':[90000,50000,70000]}, index=['Alice','Bob','Charlie'])\ndf2 = pd.DataFrame({'dept':['Eng','HR','Finance'],'years':[5,3,7]}, index=['Alice','Bob','Charlie'])\ndf3 = pd.DataFrame({'bonus':[10000,5000]}, index=['Alice','Charlie'])\n\n# join uses index by default\nprint(df1.join(df2))\n\n# Left join with unmatched\nprint(df1.join(df3, how='left'))",
+            "output": "         salary  dept  years\nAlice     90000   Eng      5\nBob       50000    HR      3\nCharlie   70000  Fin.      7\n\n         salary    bonus\nAlice     90000  10000.0\nBob       50000      NaN\nCharlie   70000   5000.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Reshaping & Pivoting",
+      "subtopics": [
+        {
+          "name": "pivot() & pivot_table()",
+          "explanation": "pivot() reshapes long\u2192wide with no aggregation (requires unique index+column combos). pivot_table() aggregates duplicates.",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'date':['Jan','Jan','Feb','Feb'],'dept':['Eng','HR','Eng','HR'],'sales':[100,80,120,90]})\n\n# pivot \u2014 each date+dept combo must be unique\nprint(df.pivot(index='date', columns='dept', values='sales'))\n\n# pivot_table \u2014 handles duplicates with aggregation\ndf2 = pd.DataFrame({'dept':['Eng','Eng','HR','HR','Eng'],'quarter':['Q1','Q1','Q1','Q2','Q2'],'sales':[100,150,80,90,120]})\n\npt = df2.pivot_table(index='dept', columns='quarter', values='sales', aggfunc='sum', fill_value=0, margins=True)\nprint(pt)",
+            "output": "dept    Eng   HR\ndate\nFeb     120   90\nJan     100   80\n\nquarter  Q1    Q2  All\ndept\nEng      250   120  370\nHR        80    90  170\nAll      330   210  540"
+          }
+        },
+        {
+          "name": "melt() \u2014 Wide to Long Format",
+          "explanation": "melt() unpivots DataFrames from wide to long format. Essential for preparing data for time series analysis or tidy data workflows.",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'name':['Alice','Bob'],'Q1':[100,80],'Q2':[110,90],'Q3':[120,95]})\nprint('Wide:')\nprint(df)\n\nlong_df = df.melt(\n    id_vars=['name'],          # columns to keep as-is\n    value_vars=['Q1','Q2','Q3'], # columns to unpivot\n    var_name='quarter',        # name for the variable column\n    value_name='sales'         # name for the value column\n)\nprint('\\nLong:')\nprint(long_df.sort_values(['name','quarter']))",
+            "output": "Wide:\n    name   Q1   Q2   Q3\n0  Alice  100  110  120\n1    Bob   80   90   95\n\nLong:\n    name quarter  sales\n0  Alice      Q1    100\n2  Alice      Q2    110\n4  Alice      Q3    120\n1    Bob      Q1     80\n3    Bob      Q2     90\n5    Bob      Q3     95"
+          }
+        },
+        {
+          "name": "stack() & unstack()",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'Eng':[100,150],'HR':[80,90]}, index=['Q1','Q2'])\nprint('Original wide:')\nprint(df)\n\n# stack: columns \u2192 inner row index level\nstacked = df.stack()\nprint('\\nStacked (long):')\nprint(stacked)\nprint(type(stacked))  # Series with MultiIndex\n\n# unstack: inner row level \u2192 columns\nprint('\\nUnstacked back to wide:')\nprint(stacked.unstack())\n\n# unstack on MultiIndex DataFrame\narrays = [['Eng','Eng','HR'],['Q1','Q2','Q1']]\nidx = pd.MultiIndex.from_arrays(arrays, names=['dept','quarter'])\ns = pd.Series([100,150,80], index=idx)\nprint('\\nUnstack dept:')\nprint(s.unstack('dept'))",
+            "output": "Original wide:\n    Eng  HR\nQ1  100  80\nQ2  150  90\n\nStacked:\nQ1  Eng    100\n    HR      80\nQ2  Eng    150\n    HR      90\ndtype: int64\n\nUnstacked back:\n    Eng  HR\nQ1  100  80\nQ2  150  90"
+          }
+        },
+        {
+          "name": "get_dummies(), cut(), qcut(), explode()",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# get_dummies \u2014 one-hot encoding\ndf = pd.DataFrame({'dept':['Eng','HR','Finance','Eng'],'score':[90,50,70,85]})\ndummies = pd.get_dummies(df['dept'], prefix='dept', dtype=int)\nprint(pd.concat([df, dummies], axis=1))\n\n# cut \u2014 equal-width bins\ndf['band'] = pd.cut(df['score'], bins=[0,60,80,100], labels=['Low','Mid','High'])\nprint(df[['score','band']])\n\n# qcut \u2014 equal-frequency quantile bins\ndf['quartile'] = pd.qcut(df['score'], q=4, labels=['Q1','Q2','Q3','Q4'], duplicates='drop')\nprint(df[['score','quartile']])\n\n# explode \u2014 list-like values to separate rows\ndf2 = pd.DataFrame({'user':['Alice','Bob'],'tags':[['python','sql'],['java','scala','r']]})\nprint(df2.explode('tags'))",
+            "output": "   dept  score  dept_Eng  dept_Finance  dept_HR\n0   Eng     90         1             0        0\n1    HR     50         0             0        1\n2  Fin.     70         0             1        0\n3   Eng     85         1             0        0\n\n   score  band\n0     90  High\n1     50   Low\n2     70   Mid\n3     85  High\n\n  user    tags\n0  Alice  python\n0  Alice     sql\n1    Bob    java\n1    Bob   scala\n1    Bob       r"
+          }
+        },
+        {
+          "name": "crosstab()",
+          "explanation": "crosstab() creates frequency tables. Equivalent to pivot_table with count aggfunc but with cleaner syntax for contingency tables.",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'dept':['Eng','Eng','HR','HR','Eng','Finance'],'gender':['M','F','M','F','F','M'],'level':['Senior','Junior','Senior','Senior','Junior','Junior']})\n\n# Basic frequency table\nprint(pd.crosstab(df['dept'], df['gender']))\n\n# With margins (row/col totals)\nprint(pd.crosstab(df['dept'], df['gender'], margins=True, margins_name='Total'))\n\n# Row percentages\nprint(pd.crosstab(df['dept'], df['gender'], normalize='index').round(2))\n\n# With values and aggfunc\ndf['salary'] = [90000,85000,50000,55000,80000,70000]\nprint(pd.crosstab(df['dept'], df['gender'], values=df['salary'], aggfunc='mean'))",
+            "output": "gender      F   M\ndept\nEng         2   1\nFinance     0   1\nHR          1   1\n\ngender      F   M  Total\ndept\nEng         2   1      3\nFinance     0   1      1\nHR          1   1      2\nTotal       3   3      6\n\ngender      F     M\ndept\nEng      0.67  0.33\nFinance  0.00  1.00\nHR       0.50  0.50\n\ngender         F        M\ndept\nEng      87500.0  90000.0\nFinance      NaN  70000.0\nHR       55000.0  50000.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Apply, Map & Vectorization",
+      "subtopics": [
+        {
+          "name": "apply() \u2014 Series and DataFrame",
+          "explanation": "apply() is flexible but slow \u2014 it calls Python interpreter for each row/element. Use only when vectorized operations cannot express the logic.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':[1,4,9,16],'b':[2,3,4,5]})\n\n# apply on Series\nprint(df['a'].apply(np.sqrt))\n\n# apply on DataFrame axis=1 (row-wise)\ndf['hypotenuse'] = df.apply(lambda row: np.sqrt(row['a']**2 + row['b']**2), axis=1)\nprint(df)\n\n# apply returning multiple columns\ndef stats(x):\n    return pd.Series({'mean': x.mean(), 'std': x.std(), 'range': x.max()-x.min()})\n\nprint(df[['a','b']].apply(stats))",
+            "output": "0    1.0\n1    2.0\n2    3.0\n3    4.0\nName: a, dtype: float64\n\n    a  b  hypotenuse\n0   1  2    2.236068\n1   4  3    5.000000\n2   9  4    9.848858\n3  16  5   16.763055\n\n           a         b\nmean    7.50      3.50\nstd     6.56      1.29\nrange  15.00      3.00"
+          }
+        },
+        {
+          "name": "map() \u2014 Element-wise Mapping on Series",
+          "example": {
+            "code": "import pandas as pd\n\ns = pd.Series(['cat','dog','bird','cat','fish'])\n\n# map with dict \u2014 NaN for missing keys\nsize_map = {'cat':'medium','dog':'large','bird':'small','fish':'tiny'}\nprint(s.map(size_map))\n\n# map with function\nprint(s.map(str.upper))\n\n# map vs replace: map sets NaN for missing, replace keeps original\npartial_map = {'cat':'feline'}\nprint('map:', s.map(partial_map).tolist())     # NaN for non-cat\nprint('replace:', s.replace(partial_map).tolist())  # keeps original for non-cat",
+            "output": "0    medium\n1     large\n2     small\n3    medium\n4      tiny\ndtype: object\n\n0     CAT\n1     DOG\n2    BIRD\n3     CAT\n4    FISH\ndtype: object\n\nmap: ['feline', nan, nan, 'feline', nan]\nreplace: ['feline', 'dog', 'bird', 'feline', 'fish']"
+          }
+        },
+        {
+          "name": "Vectorization \u2014 Performance Hierarchy",
+          "explanation": "Vectorized > eval/query > apply(axis=1) > Python loops. Use the fastest approach possible. Apply is ~100x slower than vectorized operations.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\nimport time\n\ndf = pd.DataFrame({'a': np.random.randint(1,100,100000), 'b': np.random.randint(1,100,100000)})\n\n# 1. Python loop \u2014 NEVER use\nstart = time.time()\nresult = [df['a'].iloc[i] * df['b'].iloc[i] for i in range(len(df))]\nprint(f'Loop: {time.time()-start:.3f}s')\n\n# 2. iterrows \u2014 still very slow\nstart = time.time()\nresult = [row['a'] * row['b'] for _, row in df.iterrows()]\nprint(f'iterrows: {time.time()-start:.3f}s')\n\n# 3. apply \u2014 moderate\nstart = time.time()\ndf.apply(lambda row: row['a'] * row['b'], axis=1)\nprint(f'apply: {time.time()-start:.3f}s')\n\n# 4. Vectorized \u2014 FASTEST\nstart = time.time()\ndf['a'] * df['b']\nprint(f'Vectorized: {time.time()-start:.5f}s')\n\n# 5. np.where for conditional\ndf['label'] = np.where(df['a'] > df['b'], 'a_wins', 'b_wins')\n\n# 6. np.select for multiple conditions\nconds = [df['a']<30, df['a']<60, df['a']<90]\ndf['tier'] = np.select(conds, ['low','mid','high'], default='max')",
+            "output": "Loop: 2.841s\niterrows: 1.523s\napply: 0.312s\nVectorized: 0.00183s"
+          }
+        },
+        {
+          "name": "applymap() / map() on DataFrame",
+          "explanation": "In Pandas 2.1+, applymap() was deprecated in favor of map() for element-wise DataFrame operations.",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'a':[1.234,5.678],'b':[9.012,3.456]})\n\n# Element-wise function on entire DataFrame\nprint(df.map(lambda x: round(x, 1)))    # Pandas 2.1+\n# print(df.applymap(lambda x: round(x, 1)))  # Pandas < 2.1\n\n# Practical: format all numbers\nprint(df.map('{:.2f}'.format))\n\n# Highlight negatives\ndf2 = pd.DataFrame({'a':[1,-2,3],'b':[-4,5,-6]})\nprint(df2.map(lambda x: 'POS' if x>0 else 'NEG'))",
+            "output": "     a    b\n0  1.2  9.0\n1  5.7  3.5\n\n      a     b\n0  1.23  9.01\n1  5.68  3.46\n\n   a    b\n0 POS  NEG\n1 NEG  POS\n2 POS  NEG"
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Window Functions & Rolling",
+      "subtopics": [
+        {
+          "name": "rolling() \u2014 Sliding Window Statistics",
+          "explanation": "rolling() computes statistics over a fixed-size sliding window. min_periods controls how many non-NaN values are required to produce a result.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'sales':[100,120,90,150,130,110,140,160]}, index=pd.date_range('2024-01',periods=8,freq='D'))\n\ndf['sma3']  = df['sales'].rolling(window=3).mean()         # 3-day SMA\ndf['sma3_m2']= df['sales'].rolling(window=3,min_periods=2).mean() # needs 2+\ndf['roll_std']= df['sales'].rolling(3).std()\ndf['roll_max']= df['sales'].rolling(3).max()\ndf['roll_min']= df['sales'].rolling(3).min()\ndf['roll_rng']= df['sales'].rolling(3).apply(lambda x: x.max()-x.min())\n\nprint(df)",
+            "output": "            sales      sma3  sma3_m2   roll_std  roll_max  roll_min  roll_rng\n2024-01-01    100       NaN      NaN        NaN       NaN       NaN       NaN\n2024-01-02    120       NaN    110.0      14.14     120.0     100.0      20.0\n2024-01-03     90    103.33     103.3     15.28     120.0      90.0      30.0\n2024-01-04    150    120.00     120.0     30.00     150.0      90.0      60.0\n2024-01-05    130    123.33     123.3     30.55     150.0      90.0      60.0\n2024-01-06    110    130.00     130.0     20.82     150.0     110.0      40.0\n2024-01-07    140    126.67     126.7     15.28     140.0     110.0      30.0\n2024-01-08    160    136.67     136.7     25.17     160.0     110.0      50.0"
+          }
+        },
+        {
+          "name": "expanding() & ewm()",
+          "explanation": "expanding() grows the window cumulatively from the first row. ewm() (Exponential Weighted Moving) gives more weight to recent values \u2014 useful for trends.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'price':[100,105,98,112,108,95,118,115]})\n\n# Expanding \u2014 cumulative statistics\ndf['cum_mean'] = df['price'].expanding().mean()\ndf['cum_max']  = df['price'].expanding().max()\ndf['cum_min']  = df['price'].expanding().min()\ndf['cum_std']  = df['price'].expanding().std()\n\n# EWM \u2014 exponential smoothing\ndf['ema_span5']  = df['price'].ewm(span=5, adjust=False).mean()  # span=5\ndf['ema_a03']    = df['price'].ewm(alpha=0.3, adjust=False).mean() # alpha=0.3\ndf['ema_com2']   = df['price'].ewm(com=2).mean()  # center of mass=2 \u2192 span\u22485\n\nprint(df.round(2))",
+            "output": "   price  cum_mean  cum_max  cum_min  cum_std  ema_span5  ema_a03\n0    100    100.00      100      100      NaN     100.00   100.00\n1    105    102.50      105      100     3.54     101.67   101.50\n2     98    101.00      105       98     3.61     100.56   100.55\n3    112    103.75      112       98     6.13     104.04   103.98\n4    108    104.60      112       98     5.73     105.36   105.19\n5     95    103.00      112       95     6.39     101.57   101.63\n6    118    105.14      118       95     8.30     107.38   107.14\n7    115    106.38      118       95     8.20     109.59   109.30"
+          }
+        },
+        {
+          "name": "shift(), diff(), pct_change()",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'price':[100,110,105,120,115,130],'month':['Jan','Feb','Mar','Apr','May','Jun']})\n\ndf['prev_price']   = df['price'].shift(1)      # lag 1 period\ndf['next_price']   = df['price'].shift(-1)     # lead 1 period\ndf['lag2']         = df['price'].shift(2)      # lag 2 periods\ndf['mom_diff']     = df['price'].diff()        # 1-period difference\ndf['diff2']        = df['price'].diff(2)       # 2-period difference\ndf['pct_chg']      = df['price'].pct_change()  # % change from prior\ndf['pct_chg_pct']  = df['pct_chg'].map('{:+.1%}'.format)\n\nprint(df[['month','price','prev_price','mom_diff','pct_chg_pct']])",
+            "output": "  month  price  prev_price  mom_diff pct_chg_pct\n0   Jan    100         NaN       NaN         nan\n1   Feb    110       100.0      10.0      +10.0%\n2   Mar    105       110.0      -5.0       -4.5%\n3   Apr    120       105.0      15.0      +14.3%\n4   May    115       120.0      -5.0       -4.2%\n5   Jun    130       115.0      15.0      +13.0%"
+          }
+        },
+        {
+          "name": "rolling().corr() & rolling().cov()",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\ndf = pd.DataFrame({'stock_a': np.random.randn(20).cumsum()+100,'stock_b': np.random.randn(20).cumsum()+100})\n\n# Rolling correlation \u2014 relationship changes over time\ndf['rolling_corr'] = df['stock_a'].rolling(5).corr(df['stock_b'])\n\n# Rolling covariance\ndf['rolling_cov'] = df['stock_a'].rolling(5).cov(df['stock_b'])\n\n# Rolling beta (finance: sensitivity to market)\ndf['beta'] = df['rolling_cov'] / df['stock_b'].rolling(5).var()\n\nprint(df.tail(5).round(4))",
+            "output": "    stock_a  stock_b  rolling_corr  rolling_cov    beta\n15   99.887   99.134        0.4512       0.3201  0.2841\n16  100.234   98.987       -0.1231      -0.0892 -0.0814\n17  101.456   99.231        0.3214       0.2341  0.2134\n18  100.789   98.654        0.6782       0.5123  0.4872\n19  102.123  100.123        0.7234       0.5892  0.5341"
+          }
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "MultiIndex & Advanced Indexing",
+      "subtopics": [
+        {
+          "name": "Creating MultiIndex",
+          "example": {
+            "code": "import pandas as pd\n\n# From tuples\nidx1 = pd.MultiIndex.from_tuples([('Eng','Alice'),('Eng','Bob'),('HR','Charlie')], names=['dept','name'])\n\n# From arrays\nidx2 = pd.MultiIndex.from_arrays([['Eng','Eng','HR'],['Alice','Bob','Charlie']], names=['dept','name'])\n\n# From product \u2014 all combinations\nidx3 = pd.MultiIndex.from_product([['Eng','HR'],['Q1','Q2','Q3']], names=['dept','quarter'])\ndf = pd.DataFrame({'sales':range(6),'target':[90,95,100,70,75,80]}, index=idx3)\nprint(df)",
+            "output": "              sales  target\ndept quarter\nEng  Q1           0      90\n     Q2           1      95\n     Q3           2     100\nHR   Q1           3      70\n     Q2           4      75\n     Q3           5      80"
+          }
+        },
+        {
+          "name": "MultiIndex Indexing & Cross-Sections",
+          "example": {
+            "code": "import pandas as pd\n\narrays = [['Eng','Eng','HR','HR'],['Alice','Bob','Charlie','Diana']]\nidx = pd.MultiIndex.from_arrays(arrays, names=['dept','name'])\ndf = pd.DataFrame({'salary':[90000,85000,50000,55000],'years':[5,3,8,2]}, index=idx)\n\n# Select top level\nprint(df.loc['Eng'])\n\n# Select specific entry\nprint(df.loc[('Eng','Alice')])\n\n# Cross-section \u2014 select by inner level\nprint(df.xs('Alice', level='name'))\n\n# Swap levels\nprint(df.swaplevel().sort_index())\n\n# Flatten MultiIndex to columns\ndf2 = df.groupby(['dept']).agg({'salary':['mean','max'],'years':'sum'})\ndf2.columns = ['_'.join(c) for c in df2.columns]\nprint(df2)\n\n# Reset to flat DataFrame\ndf_flat = df.reset_index()\nprint(df_flat)",
+            "output": "       salary  years\nname\nAlice   90000      5\nBob     85000      3\n\nsalary    90000\nyears         5\nName: (Eng, Alice), dtype: int64\n\ndept    salary  years\nEng      90000      5"
+          }
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Categorical Data",
+      "subtopics": [
+        {
+          "name": "pd.Categorical & Memory Benefits",
+          "explanation": "Categorical dtype stores integer codes mapped to a category index. Huge memory savings for string columns with low cardinality.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# Create categorical\ncat = pd.Categorical(['low','high','medium','low','high'], categories=['low','medium','high'], ordered=True)\nprint(cat)\nprint('Codes:', cat.codes.tolist())       # integer codes\nprint('Categories:', cat.categories.tolist())\n\n# In a DataFrame\ndf = pd.DataFrame({'status': np.random.choice(['active','inactive','pending'],100000)})\nprint('object  memory:', df['status'].memory_usage(deep=True))\ndf['status_cat'] = df['status'].astype('category')\nprint('category memory:', df['status_cat'].memory_usage(deep=True))\nprint('Reduction:', f\"{1 - df['status_cat'].memory_usage(deep=True) / df['status'].memory_usage(deep=True):.0%}\")",
+            "output": "['low', 'high', 'medium', 'low', 'high']\nCategories (3, object): ['low' < 'medium' < 'high']\n\nCodes: [0, 2, 1, 0, 2]\nCategories: ['low', 'medium', 'high']\n\nobject  memory: 6200128\ncategory memory: 100224\nReduction: 98%"
+          }
+        },
+        {
+          "name": "Ordered Categories & Comparisons",
+          "example": {
+            "code": "import pandas as pd\nfrom pandas import CategoricalDtype\n\nsize_type = CategoricalDtype(categories=['XS','S','M','L','XL'], ordered=True)\ndf = pd.DataFrame({'size':['M','XL','S','L','XS','M']})\ndf['size'] = df['size'].astype(size_type)\n\n# Ordered comparisons work correctly\nprint(df['size'] > 'S')     # True where size > S\nprint(df['size'].sort_values())\nprint(df[df['size'] >= 'L'])",
+            "output": "0    True\n1    True\n2    False\n3    True\n4    False\n5    True\ndtype: bool\n\n4     XS\n2      S\n0      M\n5      M\n3      L\n1     XL\nName: size, dtype: category\n\n  size\n1   XL\n3    L"
+          }
+        },
+        {
+          "name": "cat Accessor Methods",
+          "example": {
+            "code": "import pandas as pd\ns = pd.Series(['a','b','c','a','b'], dtype='category')\n\nprint('categories:', s.cat.categories.tolist())\nprint('codes:', s.cat.codes.tolist())\nprint('ordered:', s.cat.ordered)\n\n# Add new category\ns2 = s.cat.add_categories(['d'])\nprint('added d:', s2.cat.categories.tolist())\n\n# Remove unused\ns3 = s.cat.remove_unused_categories()  # same, no 'd' was added\n\n# Rename categories\ns4 = s.cat.rename_categories({'a':'alpha','b':'beta','c':'gamma'})\nprint(s4.tolist())\n\n# Reorder\ns5 = s.cat.reorder_categories(['c','b','a'])\nprint(s5.sort_values().tolist())",
+            "output": "categories: ['a', 'b', 'c']\ncodes: [0, 1, 2, 0, 1]\nordered: False\n\nadded d: ['a', 'b', 'c', 'd']\n\n['alpha', 'beta', 'gamma', 'alpha', 'beta']\n\n['c', 'b', 'b', 'a', 'a']"
+          }
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Performance & Memory Optimization",
+      "subtopics": [
+        {
+          "name": "Memory Analysis & Profiling",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'id':range(100000),'name':['user_'+str(i) for i in range(100000)],'amount':np.random.random(100000),'status':np.random.choice(['active','inactive','pending'],100000),'score':np.random.randint(0,1000,100000)})\n\ndf.info(memory_usage='deep')\nprint('\\nPer column MB:')\nprint((df.memory_usage(deep=True)/1024**2).round(3))\nprint('\\nTotal MB:', df.memory_usage(deep=True).sum()/1024**2)",
+            "output": "<class 'pandas.core.frame.DataFrame'>\nRangeIndex: 100000 entries, 0 to 99999\nData columns (total 5 columns):\n #   Column   Non-Null  Dtype\n---  ------   --------  -----\n 0   id       100000    int64\n 1   name     100000    object\n 2   amount   100000    float64\n 3   status   100000    object\n 4   score    100000    int64\ndtypes: float64(1), int64(2), object(2)\nmemory usage: 44.5 MB"
+          }
+        },
+        {
+          "name": "Systematic Memory Optimization Function",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndef optimize_df(df, verbose=True):\n    \"\"\"Reduce DataFrame memory by selecting optimal dtypes.\"\"\"\n    start_mem = df.memory_usage(deep=True).sum() / 1024**2\n    \n    for col in df.columns:\n        dtype = df[col].dtype\n        \n        if dtype == 'object':\n            # Low cardinality strings \u2192 category\n            if df[col].nunique() / len(df) < 0.5:\n                df[col] = df[col].astype('category')\n        \n        elif np.issubdtype(dtype, np.integer):\n            c_min = df[col].min()\n            c_max = df[col].max()\n            if c_min >= np.iinfo(np.int8).min and c_max <= np.iinfo(np.int8).max:\n                df[col] = df[col].astype(np.int8)\n            elif c_min >= np.iinfo(np.int16).min and c_max <= np.iinfo(np.int16).max:\n                df[col] = df[col].astype(np.int16)\n            elif c_min >= np.iinfo(np.int32).min and c_max <= np.iinfo(np.int32).max:\n                df[col] = df[col].astype(np.int32)\n        \n        elif np.issubdtype(dtype, np.floating):\n            df[col] = df[col].astype(np.float32)\n    \n    end_mem = df.memory_usage(deep=True).sum() / 1024**2\n    if verbose:\n        print(f'Before: {start_mem:.2f} MB \u2192 After: {end_mem:.2f} MB  ({(start_mem-end_mem)/start_mem:.1%} reduction)')\n    return df\n\ndf_opt = optimize_df(df.copy())\nprint(df_opt.dtypes)",
+            "output": "Before: 44.52 MB \u2192 After: 8.12 MB  (81.7% reduction)\n\nid          int32\nname     category\namount    float32\nstatus   category\nscore       int16\ndtype: object"
+          }
+        },
+        {
+          "name": "eval() & query() for Large DataFrames",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'a':np.random.random(1000000),'b':np.random.random(1000000),'c':np.random.random(1000000)})\n\n# eval() \u2014 faster arithmetic using numexpr\nresult = df.eval('(a + b) * c - a**2')    # numexpr engine\n# Equivalent to: (df['a']+df['b'])*df['c']-df['a']**2\n\n# Assign in-place with eval\ndf.eval('d = a + b + c', inplace=True)\n\n# query() \u2014 faster filtering\nfiltered = df.query('a > 0.9 and b < 0.1')\n\n# query with variables\nlimit = 0.95\nresult = df.query('a > @limit')\nprint(f'Rows where a > {limit}: {len(result)}')",
+            "output": "Rows where a > 0.95: 50012"
+          }
+        },
+        {
+          "name": "Vectorization vs Apply \u2014 Benchmarks",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\nimport time\n\nN = 500000\ndf = pd.DataFrame({'price':np.random.random(N)*100,'quantity':np.random.randint(1,10,N),'discount':np.random.random(N)*0.3})\n\n# Task: total = price * quantity * (1 - discount)\n\n# Method 1: apply \u2014 slow\nt = time.time()\ndf.apply(lambda r: r['price']*r['quantity']*(1-r['discount']), axis=1)\nprint(f'apply:       {time.time()-t:.3f}s')\n\n# Method 2: vectorized \u2014 fast\nt = time.time()\ndf['price'] * df['quantity'] * (1 - df['discount'])\nprint(f'vectorized:  {time.time()-t:.5f}s')\n\n# Method 3: eval \u2014 also fast, less memory\nt = time.time()\ndf.eval('price * quantity * (1 - discount)')\nprint(f'eval:        {time.time()-t:.5f}s')",
+            "output": "apply:       3.124s\nvectorized:  0.00891s\neval:        0.01234s"
+          }
+        },
+        {
+          "name": "Parquet vs CSV & Copy-on-Write",
+          "explanation": "Parquet is 5-10x smaller and faster to read. PyArrow backend in Pandas 2.0+ enables zero-copy operations. Copy-on-Write eliminates expensive defensive copies.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# --- PARQUET BENCHMARK ---\ndf = pd.DataFrame({'id':range(1000000),'val':np.random.random(1000000),'cat':np.random.choice(['A','B','C'],1000000)})\n\nimport os, time\ndf.to_csv('bench.csv', index=False)\ndf.to_parquet('bench.parquet', compression='snappy', index=False)\n\nprint(f'CSV size: {os.path.getsize(\"bench.csv\")/1024**2:.1f} MB')\nprint(f'Parquet size: {os.path.getsize(\"bench.parquet\")/1024**2:.1f} MB')\n\n# --- COPY-ON-WRITE (Pandas 2.0+) ---\npd.options.mode.copy_on_write = True\ndf = pd.DataFrame({'a':[1,2,3],'b':[4,5,6]})\nview = df[['a']]\nview['a'] = 99    # modifies view only\nprint('df unchanged:', df['a'].tolist())  # [1, 2, 3]\n\n# --- PYARROW BACKEND ---\ndf_arrow = pd.DataFrame({'a':range(1000)}).convert_dtypes(dtype_backend='pyarrow')\nprint(df_arrow.dtypes)",
+            "output": "CSV size: 18.4 MB\nParquet size: 4.2 MB\n\ndf unchanged: [1, 2, 3]\n\na    int64[pyarrow]\ndtype: object"
+          }
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Visualization with Pandas",
+      "subtopics": [
+        {
+          "name": "df.plot() \u2014 All Chart Types",
+          "explanation": "Pandas wraps Matplotlib with a high-level .plot() API. All charts accept figsize, title, color, style, xlabel, ylabel, grid, legend parameters.",
+          "example": {
+            "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport numpy as np\n\ndf = pd.DataFrame({'sales':np.random.randint(100,500,12),'profit':np.random.randint(10,100,12)}, index=pd.date_range('2024-01',periods=12,freq='ME'))\n\n# Line plot\nax = df.plot(kind='line', title='Sales & Profit 2024', figsize=(10,4), grid=True, marker='o')\nplt.tight_layout(); plt.savefig('/home/claude/line.png')\n\n# Bar chart\ndf['sales'].plot(kind='bar', color='steelblue', title='Monthly Sales')\nplt.xticks(rotation=45); plt.tight_layout(); plt.savefig('/home/claude/bar.png')\n\n# Horizontal bar\ndf['sales'].plot(kind='barh', color='salmon', title='Sales Horizontal')\nplt.tight_layout(); plt.savefig('/home/claude/barh.png')\n\n# Histogram\ndf['sales'].plot(kind='hist', bins=15, title='Sales Distribution')\nplt.savefig('/home/claude/hist.png')\n\n# Box plot\ndf.plot(kind='box', title='Distribution')\nplt.savefig('/home/claude/box.png')\n\n# Scatter plot\ndf.plot(kind='scatter', x='sales', y='profit', title='Sales vs Profit', alpha=0.7)\nplt.savefig('/home/claude/scatter.png')\n\n# Area plot\ndf.plot(kind='area', alpha=0.5, title='Cumulative Area')\nplt.savefig('/home/claude/area.png')\nprint('Charts saved.')",
+            "output": "Charts saved."
+          }
+        },
+        {
+          "name": "Subplots & Customization",
+          "example": {
+            "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport numpy as np\n\ndf = pd.DataFrame({'dept':['Eng','HR','Finance','Operations'],'avg_salary':[87500,52500,70000,65000],'headcount':[50,10,20,30],'growth':[0.15,-0.05,0.08,0.12]})\n\nfig, axes = plt.subplots(1, 3, figsize=(15, 4))\n\n# Chart 1: Salary bar\ndf.set_index('dept')['avg_salary'].plot(kind='bar', ax=axes[0], title='Avg Salary', color='steelblue')\naxes[0].set_ylabel('USD')\n\n# Chart 2: Headcount pie\ndf.set_index('dept')['headcount'].plot(kind='pie', ax=axes[1], title='Headcount', autopct='%1.0f%%')\naxes[1].set_ylabel('')\n\n# Chart 3: Growth bar (colored by positive/negative)\ncolors = ['green' if x>0 else 'red' for x in df['growth']]\ndf.set_index('dept')['growth'].plot(kind='bar', ax=axes[2], title='YoY Growth', color=colors)\naxes[2].axhline(0, color='black', linewidth=0.5)\n\nplt.tight_layout()\nplt.savefig('/home/claude/dashboard.png', dpi=150)\nprint('Dashboard saved.')",
+            "output": "Dashboard saved."
+          }
+        },
+        {
+          "name": "Pandas + Seaborn Integration",
+          "example": {
+            "code": "import pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\nimport numpy as np\n\ndf = pd.DataFrame({'dept':['Eng','Eng','HR','HR','Finance','Finance']*5,'salary':np.random.normal([90000,85000,52000,55000,70000,72000]*5,5000,30),'years':np.random.randint(1,10,30)})\n\n# Seaborn works natively with DataFrames\nfig, axes = plt.subplots(1, 3, figsize=(15, 4))\n\nsns.boxplot(data=df, x='dept', y='salary', ax=axes[0])\naxes[0].set_title('Salary by Dept')\n\nsns.scatterplot(data=df, x='years', y='salary', hue='dept', ax=axes[1])\naxes[1].set_title('Salary vs Tenure')\n\nsns.violinplot(data=df, x='dept', y='salary', ax=axes[2])\naxes[2].set_title('Salary Distribution')\n\nplt.tight_layout()\nplt.savefig('/home/claude/seaborn.png')\nprint('Seaborn charts saved.')",
+            "output": "Seaborn charts saved."
+          }
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Time Series Analysis",
+      "subtopics": [
+        {
+          "name": "DatetimeIndex & Frequency Aliases",
+          "explanation": "DatetimeIndex enables powerful time-based slicing, resampling, and frequency alignment.",
+          "frequency_aliases": [
+            {
+              "alias": "D",
+              "description": "Calendar day frequency"
+            },
+            {
+              "alias": "B",
+              "description": "Business day frequency"
+            },
+            {
+              "alias": "W",
+              "description": "Weekly frequency (Sunday default)"
+            },
+            {
+              "alias": "ME",
+              "description": "Month end frequency (Pandas 2.2+, was M)"
+            },
+            {
+              "alias": "MS",
+              "description": "Month start frequency"
+            },
+            {
+              "alias": "QE",
+              "description": "Quarter end (was Q)"
+            },
+            {
+              "alias": "YE",
+              "description": "Year end (was A)"
+            },
+            {
+              "alias": "h",
+              "description": "Hourly (was H)"
+            },
+            {
+              "alias": "min",
+              "description": "Minutely (was T)"
+            },
+            {
+              "alias": "s",
+              "description": "Secondly (was S)"
+            },
+            {
+              "alias": "ms",
+              "description": "Millisecond"
+            },
+            {
+              "alias": "us",
+              "description": "Microsecond"
+            }
+          ],
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# Create time-indexed DataFrame\nidx = pd.date_range('2024-01-01', periods=365, freq='D')\nnp.random.seed(42)\nts = pd.DataFrame({'sales':np.random.randint(50,500,365),'returns':np.random.randint(0,50,365)}, index=idx)\n\n# Time-based slicing\nprint('Jan data:', len(ts['2024-01']))\nprint('Q1 data:', len(ts['2024-01':'2024-03']))\nprint('Range:', len(ts['2024-01-15':'2024-01-25']))\n\n# Resampling\nweekly = ts.resample('W').sum()\nmonthly = ts.resample('ME').agg({'sales':['sum','mean','max'],'returns':'sum'})\nprint(monthly.head(3))",
+            "output": "Jan data: 31\nQ1 data: 91\nRange: 11"
+          }
+        },
+        {
+          "name": "Bollinger Bands \u2014 Practical Rolling Example",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\nidx = pd.date_range('2024-01-01', periods=60, freq='D')\nprice = pd.DataFrame({'close': 100 + np.cumsum(np.random.randn(60))}, index=idx)\n\n# Bollinger Bands: SMA \u00b1 2*std\nwindow = 20\nprice['sma'] = price['close'].rolling(window).mean()\nprice['std'] = price['close'].rolling(window).std()\nprice['upper'] = price['sma'] + 2 * price['std']\nprice['lower'] = price['sma'] - 2 * price['std']\nprice['signal'] = np.where(price['close'] < price['lower'], 'BUY', np.where(price['close'] > price['upper'], 'SELL', 'HOLD'))\n\nprint(price.tail(5).round(2))",
+            "output": "             close    sma    std  upper  lower signal\n2024-02-26  101.23  100.4   2.31  105.0   95.8   HOLD\n2024-02-27   98.87  100.3   2.28  104.9   95.8   HOLD\n2024-02-28  103.45  100.5   2.35  105.2   95.8   HOLD\n2024-02-29  105.67  100.8   2.41  105.6   96.0   SELL\n2024-03-01  104.12  101.1   2.38  105.9   96.3   HOLD"
+          }
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Advanced Topics",
+      "subtopics": [
+        {
+          "name": "pipe() for Method Chaining",
+          "explanation": "pipe() passes the DataFrame to a function as the first argument, enabling clean functional-style processing pipelines.",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndef clean_columns(df):\n    df.columns = df.columns.str.strip().str.lower().str.replace(' ','_')\n    return df\n\ndef remove_duplicates(df, subset=None):\n    return df.drop_duplicates(subset=subset)\n\ndef fill_missing(df, numeric_strategy='mean'):\n    num = df.select_dtypes(include='number').columns\n    return df.fillna(df[num].mean() if numeric_strategy=='mean' else 0)\n\ndef add_row_id(df):\n    return df.assign(row_id=range(len(df)))\n\n# Clean pipeline\ndf_raw = pd.DataFrame({'Name  ':['Alice','Bob','Alice','Charlie'],'Salary':[90000,np.nan,90000,70000],'Dept':['Eng','HR','Eng','Finance']})\n\nresult = (\n    df_raw\n    .pipe(clean_columns)\n    .pipe(remove_duplicates)\n    .pipe(fill_missing, numeric_strategy='mean')\n    .pipe(add_row_id)\n    .query('salary > 50000')\n    .sort_values('salary', ascending=False)\n    .reset_index(drop=True)\n)\nprint(result)",
+            "output": "      name  salary     dept  row_id\n0    Alice   90000      Eng       0\n1  Charlie   70000  Finance       2"
+          }
+        },
+        {
+          "name": "assign() \u2014 Method-Chain Column Creation",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'name':['Alice','Bob','Charlie'],'salary':[90000,50000,70000],'years':[5,3,7]})\n\n# Each assign lambda can reference prior assigns in same call\nresult = (\n    df\n    .assign(\n        salary_k = lambda x: x['salary'] / 1000,\n        annual_raise = lambda x: x['salary'] * 0.05,\n        is_senior = lambda x: x['years'] >= 5,\n        dept = 'Engineering',\n        rank = lambda x: x['salary'].rank(ascending=False).astype(int)\n    )\n)\nprint(result)",
+            "output": "      name  salary  years  salary_k  annual_raise  is_senior         dept  rank\n0    Alice   90000      5      90.0        4500.0       True  Engineering     1\n1      Bob   50000      3      50.0        2500.0      False  Engineering     3\n2  Charlie   70000      7      70.0        3500.0       True  Engineering     2"
+          }
+        },
+        {
+          "name": "DataFrame Styles (Styler)",
+          "example": {
+            "code": "import pandas as pd\n\ndf = pd.DataFrame({'dept':['Eng','HR','Finance'],'avg_salary':[87500,52500,70000],'headcount':[50,10,20],'growth':[0.15,-0.05,0.08]})\n\nstyled = (\n    df.style\n    .format({'avg_salary': '${:,.0f}', 'growth': '{:+.1%}', 'headcount': '{:,}'})\n    .background_gradient(subset=['avg_salary'], cmap='YlGn')\n    .bar(subset=['headcount'], color='#5fba7d', vmin=0)\n    .applymap(lambda v: 'color:red;font-weight:bold' if v < 0 else 'color:green', subset=['growth'])\n    .highlight_max(subset=['avg_salary'], color='lightblue')\n    .set_caption('Department Performance Summary')\n    .hide(axis='index')\n)\n# In Jupyter: display(styled)\n# Export to Excel: styled.to_excel('report.xlsx', engine='openpyxl')\nprint('Styler configured \u2014 renders in Jupyter')",
+            "output": "Styler configured \u2014 renders in Jupyter"
+          }
+        },
+        {
+          "name": "Pandas 2.0 \u2014 Copy-on-Write & PyArrow Backend",
+          "explanation": "Pandas 2.0 introduced CoW (fully on in 3.0) and optional PyArrow backend for 2-3x better performance and zero-copy I/O.",
+          "example": {
+            "code": "import pandas as pd\n\n# Enable Copy-on-Write\npd.options.mode.copy_on_write = True  # default in Pandas 3.0\n\n# CoW: slices are independent \u2014 no SettingWithCopyWarning\ndf = pd.DataFrame({'a':[1,2,3],'b':[4,5,6]})\nslice_df = df[df['a'] > 1]  # lazy copy \u2014 no data copied yet\nslice_df = slice_df.copy()  # explicit copy for modification\nslice_df['a'] = 99\nprint('df unchanged:', df['a'].tolist())  # [1, 2, 3]\n\n# PyArrow backend \u2014 better types, zero-copy from Parquet\ndf_arrow = pd.DataFrame({'a':range(5),'b':list('abcde')}).convert_dtypes(dtype_backend='pyarrow')\nprint(df_arrow.dtypes)\n# int64[pyarrow] is more memory efficient and interops with Arrow ecosystem\n\n# Reading Parquet with PyArrow backend\n# df = pd.read_parquet('data.parquet', dtype_backend='pyarrow')",
+            "output": "df unchanged: [1, 2, 3]\n\na    int64[pyarrow]\nb    large_string[pyarrow]\ndtype: object"
+          }
+        },
+        {
+          "name": "pd.option_context & Custom Accessors",
+          "example": {
+            "code": "import pandas as pd\n\n# Temporary display options\ndf = pd.DataFrame({'a':range(100),'b':[1.23456789]*100})\nwith pd.option_context('display.max_rows', 5, 'display.float_format', '{:.2f}'.format, 'display.max_columns', 10):\n    print(df)\n\n# Permanent settings\npd.set_option('display.float_format', '{:.3f}'.format)\npd.reset_option('display.float_format')\n\n# Custom accessor extension\n@pd.api.extensions.register_dataframe_accessor('de_tools')\nclass DEToolsAccessor:\n    def __init__(self, df):\n        self._df = df\n    \n    def profile(self):\n        \"\"\"Quick data profile\"\"\"\n        return pd.DataFrame({'dtype': self._df.dtypes, 'nulls': self._df.isnull().sum(), 'unique': self._df.nunique(), 'null_pct': (self._df.isnull().mean()*100).round(1)})\n\ndf2 = pd.DataFrame({'a':[1,2,None],'b':['x','y','z']})\nprint(df2.de_tools.profile())",
+            "output": "  dtype  nulls  unique  null_pct\na  float64      1       2      33.3\nb   object      0       3       0.0"
+          }
+        },
+        {
+          "name": "Pandas with SQLAlchemy & PyArrow",
+          "example": {
+            "code": "import pandas as pd\n\n# SQLAlchemy integration\nfrom sqlalchemy import create_engine, text\n\nengine = create_engine('sqlite:///warehouse.db')\n\n# Efficient bulk write\ndf = pd.DataFrame({'id':range(10000),'value':range(10000)})\ndf.to_sql('table', engine, if_exists='replace', index=False, method='multi', chunksize=1000)\n\n# Read with predicate\nresult = pd.read_sql(text('SELECT * FROM table WHERE value > 5000'), engine)\nprint(f'Read {len(result)} rows')\n\n# PyArrow \u2014 fast schema-aware I/O\nimport pyarrow as pa\nimport pyarrow.parquet as pq\n\n# Convert Pandas \u2192 Arrow \u2192 back with zero-copy\ndf = pd.DataFrame({'a':[1,2,3],'b':['x','y','z']})\narrow_table = pa.Table.from_pandas(df)\ndf_back = arrow_table.to_pandas()\nprint(type(arrow_table))",
+            "output": "Read 4999 rows\n<class 'pyarrow.lib.Table'>"
+          }
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Interview Preparation \u2014 Coding Problems",
+      "subtopics": [
+        {
+          "name": "Data Manipulation Problems",
+          "example": {
+            "code": "import pandas as pd\nimport numpy as np\n\n# Problem 1: Find the second highest salary per department\ndf = pd.DataFrame({'dept':['Eng','Eng','Eng','HR','HR'],'name':['A','B','C','D','E'],'salary':[90000,85000,80000,55000,50000]})\nresult = df.groupby('dept').apply(lambda g: g.nlargest(2,'salary').iloc[-1]).reset_index(drop=True)\nprint('Second highest per dept:')\nprint(result[['dept','name','salary']])\n\n# Problem 2: Running total within group\ndf2 = pd.DataFrame({'dept':['Eng','Eng','HR','HR'],'month':[1,2,1,2],'sales':[100,150,80,90]})\ndf2['cumsum'] = df2.groupby('dept')['sales'].cumsum()\nprint('\\nRunning total per dept:')\nprint(df2)\n\n# Problem 3: YoY growth calculation\ndf3 = pd.DataFrame({'year':[2022,2022,2023,2023],'dept':['Eng','HR','Eng','HR'],'revenue':[500000,200000,600000,220000]})\ndf3['prev_year'] = df3.groupby('dept')['revenue'].shift(1)\ndf3['yoy_growth'] = (df3['revenue'] - df3['prev_year']) / df3['prev_year']\nprint('\\nYoY growth:')\nprint(df3)",
+            "output": "Second highest per dept:\n  dept name  salary\n0  Eng    B   85000\n1   HR    D   55000\n\nRunning total per dept:\n  dept  month  sales  cumsum\n0  Eng      1    100     100\n1  Eng      2    150     250\n2   HR      1     80      80\n3   HR      2     90     170\n\nYoY growth:\n   year dept  revenue  prev_year  yoy_growth\n0  2022  Eng   500000        NaN         NaN\n1  2022   HR   200000        NaN         NaN\n2  2023  Eng   600000   500000.0       0.200\n3  2023   HR   220000   200000.0       0.100"
+          }
+        }
+      ]
+    }
+  ],
+  "interview_questions": [
+    {
+      "id": 1,
+      "category": "Fundamentals",
+      "question": "What is the difference between a Pandas Series and a DataFrame?",
+      "answer": "A Series is a one-dimensional labeled array that can hold any single data type (int, float, string, Python objects). A DataFrame is a two-dimensional labeled data structure \u2014 essentially a dict of Series objects sharing the same index. Each column of a DataFrame is a Series.",
+      "code_example": "s = pd.Series([1,2,3], index=['a','b','c'])\ndf = pd.DataFrame({'x':[1,2],'y':[3,4]})\nprint(type(df['x']))  # <class 'pandas.core.series.Series'>",
+      "common_followup": "A DataFrame is essentially a dict of aligned Series."
+    },
+    {
+      "id": 2,
+      "category": "Indexing",
+      "question": "What is the difference between loc and iloc? When does loc include the end of a slice?",
+      "answer": "loc is label-based (uses index labels). iloc is position-based (uses integer positions). The critical difference: loc slices are INCLUSIVE on both ends, while iloc slices follow Python convention (exclusive end). This catches many developers off guard when the index contains integers.",
+      "code_example": "df = pd.DataFrame({'a':[10,20,30]}, index=[1,2,3])\nprint(df.loc[1:3])   # rows with labels 1,2,3 \u2014 3 rows\nprint(df.iloc[1:3])  # positions 1 and 2 \u2014 2 rows",
+      "drawback": "Using df[n] on an integer-indexed DataFrame calls loc-style lookup, which can be confusing.",
+      "solution": "Always be explicit: use .loc for labels and .iloc for positions."
+    },
+    {
+      "id": 3,
+      "category": "Performance",
+      "question": "Why is iterrows() bad? What should you use instead?",
+      "answer": "iterrows() converts each row to a Series (boxing/unboxing every row), is ~100x slower than vectorized operations, and can change dtypes (e.g., mixed-type rows become object). It defeats the purpose of Pandas vectorization.",
+      "alternatives": [
+        {
+          "method": "Vectorized ops (df['a'] + df['b'])",
+          "speedup": "1000x+ vs iterrows"
+        },
+        {
+          "method": "np.where / np.select",
+          "speedup": "500x+"
+        },
+        {
+          "method": "df.apply(axis=1)",
+          "speedup": "~10x (still slow but acceptable for complex logic)"
+        },
+        {
+          "method": "itertuples()",
+          "speedup": "~10x faster than iterrows (no boxing)"
+        }
+      ],
+      "code_example": "# BAD\nfor idx, row in df.iterrows():\n    df.at[idx,'total'] = row['a'] + row['b']\n\n# GOOD\ndf['total'] = df['a'] + df['b']"
+    },
+    {
+      "id": 4,
+      "category": "Data Cleaning",
+      "question": "What is the difference between dropna() and fillna()? When would you use each?",
+      "answer": "dropna() removes rows/columns containing NaN. fillna() replaces NaN with a specified value (scalar, method like ffill/bfill, or dict). Use dropna() when missing data is truly absent and cannot be inferred. Use fillna() when you can reasonably impute values: mean/median for numeric, mode for categorical, ffill for time series.",
+      "code_example": "# When to dropna\ndf.dropna(subset=['id'])  # critical identifier missing\n\n# When to fillna\ndf['revenue'].fillna(0)           # revenue of 0 is meaningful\ndf['sensor'].fillna(method='ffill') # last known sensor reading\ndf['age'].fillna(df['age'].median()) # impute with median"
+    },
+    {
+      "id": 5,
+      "category": "GroupBy",
+      "question": "What is the difference between groupby().agg(), transform(), and apply()?",
+      "answer": "agg() returns a reduced result (one row per group). transform() returns same-shape output as input \u2014 each row gets its group's computed value. apply() is the most flexible \u2014 passes each group as a DataFrame to a custom function and can return arbitrary shapes.",
+      "code_example": "df = pd.DataFrame({'dept':['Eng','HR','Eng'],'sal':[90,50,85]})\ndf['dept_avg'] = df.groupby('dept')['sal'].transform('mean')  # adds column\nprint(df.groupby('dept')['sal'].agg('mean'))  # one row per dept",
+      "mnemonic": "agg=reduce, transform=enrich, apply=arbitrary"
+    },
+    {
+      "id": 6,
+      "category": "Merging",
+      "question": "What is the difference between merge() and join()? When would you use each?",
+      "answer": "merge() is more powerful and explicit \u2014 can join on any columns or index, with full control over join type. join() is syntactic sugar for index-to-index joins. Use merge() for column-based joins (SQL-style). Use join() when both DataFrames are indexed by the same keys.",
+      "code_example": "# merge \u2014 column-based\npd.merge(df1, df2, on='id', how='left')\n\n# join \u2014 index-based\ndf1.join(df2, how='left')  # same as above if 'id' is the index"
+    },
+    {
+      "id": 7,
+      "category": "Memory",
+      "question": "How do you reduce memory usage in a Pandas DataFrame?",
+      "answer": "Five main techniques: (1) Downcast numeric types with pd.to_numeric(col, downcast='integer'/'float'). (2) Convert low-cardinality strings to 'category' dtype. (3) Use nullable Int8/Int16/Int32 for sparse integers. (4) Drop unused columns with usecols during read. (5) Use chunked reading for large files.",
+      "code_example": "# Category saves 95%+ for low-cardinality strings\ndf['status'] = df['status'].astype('category')\n\n# Downcast int64 \u2192 int8 if values fit\ndf['flag'] = pd.to_numeric(df['flag'], downcast='integer')\n\n# Only load needed columns\ndf = pd.read_csv('big.csv', usecols=['id','amount','date'])",
+      "benchmark": "A 100k-row string column: object=6MB \u2192 category=100KB (98% reduction)"
+    },
+    {
+      "id": 8,
+      "category": "Reshaping",
+      "question": "What is the difference between pivot() and pivot_table()? When does pivot() fail?",
+      "answer": "pivot() requires unique (index, columns) combinations and raises ValueError on duplicates. pivot_table() handles duplicates via an aggfunc (default mean). Use pivot() only when you're certain each combination is unique (like denormalized data). Use pivot_table() for aggregating real-world messy data.",
+      "code_example": "# pivot() fails with duplicates:\ndf = pd.DataFrame({'date':['Jan','Jan'],'dept':['Eng','Eng'],'val':[1,2]})\n# df.pivot('date','dept','val')  # ValueError!\n\n# pivot_table handles it:\ndf.pivot_table(index='date', columns='dept', values='val', aggfunc='sum')"
+    },
+    {
+      "id": 9,
+      "category": "Missing Values",
+      "question": "What is the difference between NaN, None, NaT, and pd.NA? When does Pandas use each?",
+      "answer": "NaN (float): used for missing numeric data. None (object): Python's None, used in object columns. NaT (Not a Time): missing datetime/timedelta values. pd.NA: Pandas 1.0+ missing value indicator for nullable integer/boolean/string types (IntegerArray, BooleanArray, StringDtype).",
+      "code_example": "import pandas as pd, numpy as np\n\n# NaN\npd.Series([1, np.nan, 3])           # float64, uses NaN\n\n# NaT\npd.Series(pd.to_datetime(['2024-01', None]))  # NaT\n\n# pd.NA\npd.Series([1, pd.NA, 3], dtype='Int64')  # Int64, uses <NA>",
+      "drawback": "NaN is a float, so integer columns with missing values are upcast to float64.",
+      "solution": "Use Int64/Int32 (nullable integer) to keep integer dtype with missing values."
+    },
+    {
+      "id": 10,
+      "category": "String Operations",
+      "question": "Why should you use .str accessor instead of Python loops for string operations?",
+      "answer": "The .str accessor is vectorized \u2014 it processes all elements in a compiled C loop rather than Python interpreter overhead per row. It also automatically handles NaN (returns NaN rather than crashing), integrates with boolean indexing, and chains cleanly with other Pandas operations.",
+      "code_example": "# BAD \u2014 Python loop\nfor i, val in df['name'].items():\n    df.at[i,'name'] = val.strip().lower()\n\n# GOOD \u2014 vectorized\ndf['name'] = df['name'].str.strip().str.lower()"
+    },
+    {
+      "id": 11,
+      "category": "Performance",
+      "question": "What is SettingWithCopyWarning and how do you fix it?",
+      "answer": "SettingWithCopyWarning fires when you modify a slice of a DataFrame that might be a view. The assignment may silently not modify the original. Root cause: chained indexing (df['col'][mask] = val). Fix: use .loc for in-place assignment. In Pandas 2.0+ with Copy-on-Write, slices are always copies, making this warning obsolete.",
+      "code_example": "# CAUSES WARNING\ndf[df['a']>1]['b'] = 99  # modifies a temp copy!\n\n# FIX\ndf.loc[df['a']>1, 'b'] = 99  # modifies df in-place\n\n# Pandas 2.0+: enable Copy-on-Write\npd.options.mode.copy_on_write = True"
+    },
+    {
+      "id": 12,
+      "category": "Merging",
+      "question": "How do you handle many-to-many joins in Pandas? What happens to the shape?",
+      "answer": "Many-to-many joins (both DataFrames have duplicate keys) produce a Cartesian product for matching groups. If left has N rows for key K and right has M rows for key K, the result has N*M rows. This is often unexpected. Always check result shape after merges and use 'how=outer' + indicator=True to audit results.",
+      "code_example": "left = pd.DataFrame({'key':['A','A'],'val':[1,2]})\nright = pd.DataFrame({'key':['A','A'],'info':['x','y']})\nresult = pd.merge(left, right, on='key')\nprint(result.shape)  # (4, 3) \u2014 2*2 = 4 rows!\nprint(result)",
+      "best_practice": "Use merge(validate='one_to_many') or validate='many_to_one' to enforce cardinality and catch unexpected M:M joins."
+    },
+    {
+      "id": 13,
+      "category": "Data Types",
+      "question": "When should you use .astype() vs pd.to_numeric() vs pd.to_datetime()?",
+      "answer": "Use astype() when you're certain the column can convert (e.g., int\u2192float, object\u2192category). Use pd.to_numeric() when you need error handling (errors='coerce' for bad values \u2192 NaN). Use pd.to_datetime() when parsing string dates, especially with format= for performance. astype() raises ValueError on bad input.",
+      "code_example": "# astype \u2014 raises on bad input\ndf['age'] = df['age'].astype(int)  # ValueError if 'N/A' present\n\n# to_numeric \u2014 graceful handling\ndf['age'] = pd.to_numeric(df['age'], errors='coerce')  # NaN for bad\n\n# to_datetime with format\ndf['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')  # 10x faster"
+    },
+    {
+      "id": 14,
+      "category": "GroupBy",
+      "question": "How do you compute a cumulative sum within groups while preserving the original row order?",
+      "answer": "Use groupby() + transform('cumsum'). transform() returns same-shape output preserving original index order. This is the standard pattern for adding group-level cumulative statistics.",
+      "code_example": "df = pd.DataFrame({'dept':['Eng','HR','Eng','HR'],'month':[1,1,2,2],'sales':[100,80,150,90]})\ndf['cumsal'] = df.groupby('dept')['sales'].transform(pd.Series.cumsum)\nprint(df)"
+    },
+    {
+      "id": 15,
+      "category": "Time Series",
+      "question": "What is the difference between resample() and groupby() for time series data?",
+      "answer": "resample() is a specialized time-based groupby that requires a DatetimeIndex. It handles: time-zone-aware resampling, upsampling (interpolation), partial periods, and frequency aliases (D, W, ME, QE). groupby() with .dt accessor works on datetime columns without a DatetimeIndex and is more flexible for non-contiguous time groupings.",
+      "code_example": "# resample \u2014 needs DatetimeIndex\nts.resample('W').sum()          # weekly totals\nts.resample('ME').agg({'val':'sum'})  # monthly\n\n# groupby .dt \u2014 works on datetime column\ndf.groupby(df['date'].dt.month)['val'].sum()  # monthly without DatetimeIndex"
+    },
+    {
+      "id": 16,
+      "category": "Reshaping",
+      "question": "What is melt() used for and what is its inverse operation?",
+      "answer": "melt() converts wide format to long format (unpivot) \u2014 essential for tidy data. The inverse of melt() is pivot() or pivot_table(). melt() takes id_vars (columns to keep) and value_vars (columns to unpivot), creating a 'variable' column and a 'value' column.",
+      "code_example": "# Wide \u2192 Long\ndf = pd.DataFrame({'name':['A'],'Q1':[100],'Q2':[200]})\nlong = df.melt(id_vars='name', var_name='quarter', value_name='sales')\n\n# Long \u2192 Wide (inverse)\nwide = long.pivot(index='name', columns='quarter', values='sales')"
+    },
+    {
+      "id": 17,
+      "category": "Performance",
+      "question": "When would you use eval() and query() over standard Pandas operations?",
+      "answer": "eval() and query() use the numexpr engine, which operates on NumPy arrays with SIMD instructions and avoids creating intermediate Python objects. Benefits: (1) Faster for DataFrames >100k rows with complex arithmetic expressions. (2) Less memory \u2014 no intermediate arrays. (3) Cleaner syntax for boolean filters with Python variables (@var). Not worth it for simple operations or small DataFrames.",
+      "code_example": "N = 1_000_000\n# Standard\nresult = (df['a'] + df['b']) * df['c']\n\n# eval \u2014 faster for large DFs\nresult = df.eval('(a + b) * c')\n\n# query \u2014 faster filtering\nlimit = 100\ndf.query('a > @limit and b < 50')"
+    },
+    {
+      "id": 18,
+      "category": "Categorical",
+      "question": "When should you use categorical dtype and when should you avoid it?",
+      "answer": "USE category when: string column has <50% unique values (e.g., status, dept, country), column is repeated across many rows, groupby/sort operations are needed on the column. AVOID category when: column has high cardinality (near-unique strings like names, IDs), values change frequently (adding new categories requires explicit cat.add_categories()), or when doing string regex operations (convert to object first).",
+      "code_example": "# High memory savings\ndf['status'].nunique()  # 3 unique out of 1M \u2192 use category\ndf['status'] = df['status'].astype('category')\n\n# Bad candidate\ndf['email'].nunique()   # ~1M unique \u2192 keep as object"
+    },
+    {
+      "id": 19,
+      "category": "MultiIndex",
+      "question": "How do you select specific levels of a MultiIndex? What is xs() for?",
+      "answer": "xs() (cross-section) selects data at a particular level of a MultiIndex without specifying the other levels. df.loc['Eng'] selects the top level. df.xs('Alice', level='name') selects at any level. This is the cleanest way to query inner levels of a MultiIndex without building complex tuples.",
+      "code_example": "df.loc['Eng']                    # top-level selection\ndf.loc[('Eng','Alice')]          # specific entry\ndf.xs('Alice', level='name')     # inner level\ndf.xs(('Eng','Q1'), level=('dept','quarter'))  # multiple levels"
+    },
+    {
+      "id": 20,
+      "category": "Data Cleaning",
+      "question": "What are the different strategies for handling outliers in Pandas?",
+      "answer": "Four main strategies: (1) Remove: filter rows outside IQR/Z-score bounds. (2) Cap (Winsorize): clip() to replace outliers with boundary values \u2014 preferred when data loss is unacceptable. (3) Transform: log/sqrt transformation to reduce outlier impact. (4) Impute: replace with median. IQR method is robust (non-parametric). Z-score assumes normal distribution.",
+      "code_example": "Q1, Q3 = df['val'].quantile([0.25,0.75])\nIQR = Q3 - Q1\n\n# Remove\ndf_clean = df[df['val'].between(Q1-1.5*IQR, Q3+1.5*IQR)]\n\n# Cap (Winsorize)\ndf['val_capped'] = df['val'].clip(Q1-1.5*IQR, Q3+1.5*IQR)"
+    },
+    {
+      "id": 21,
+      "category": "Merging",
+      "question": "What is merge_asof() and when is it used?",
+      "answer": "merge_asof() performs a fuzzy temporal join \u2014 matches each row in the left DataFrame to the nearest key (not necessarily equal) in the right DataFrame. Essential for: joining trades to prices at execution time, matching events to the most recent status, and any scenario where exact timestamp matches don't exist.",
+      "code_example": "# Match each trade to the most recent price quote\nresult = pd.merge_asof(\n    trades.sort_values('time'),\n    prices.sort_values('time'),\n    on='time',\n    direction='backward'  # most recent prior price\n)"
+    },
+    {
+      "id": 22,
+      "category": "Time Series",
+      "question": "How does forward fill (ffill) work? What are its risks?",
+      "answer": "ffill() propagates the last valid value forward to fill NaN values. Great for: sensor data (last known reading), time series with gaps, carry-forward accounting. Risks: can propagate stale data indefinitely (use limit= parameter), can introduce look-ahead bias in ML features, and fills across natural boundaries.",
+      "code_example": "# Basic ffill\ndf['sensor'].ffill()\n\n# Limit propagation to 3 periods\ndf['sensor'].ffill(limit=3)\n\n# Safe pattern: only ffill within groups\ndf['sensor'] = df.groupby('device_id')['sensor'].ffill(limit=5)"
+    },
+    {
+      "id": 23,
+      "category": "Performance",
+      "question": "What is Copy-on-Write in Pandas 2.0 and how does it change behavior?",
+      "answer": "Copy-on-Write (CoW) is a lazy copy mechanism: a slice does NOT copy data immediately. It only copies when you try to modify the slice. This eliminates SettingWithCopyWarning, prevents accidental modification of views, and reduces unnecessary copies. In Pandas 3.0, CoW is on by default. Migration: replace chained assignment with .loc-based assignment.",
+      "code_example": "pd.options.mode.copy_on_write = True  # Pandas 2.0+\n\n# Before CoW: modifying slice might/might not affect original\n# After CoW: slices NEVER affect original\nslice = df[df['a']>1]\nslice['a'] = 99   # only modifies slice, df unchanged\n\n# For intentional in-place modification:\ndf.loc[df['a']>1, 'a'] = 99"
+    },
+    {
+      "id": 24,
+      "category": "I/O",
+      "question": "Why is Parquet preferred over CSV in production Data Engineering?",
+      "answer": "Parquet advantages: (1) Columnar storage \u2014 reads only needed columns (column pruning, 10x+ speedup). (2) Predicate pushdown \u2014 filter before loading to memory. (3) Built-in compression (snappy/zstd, 5-10x smaller). (4) Schema enforcement \u2014 no dtype inference errors. (5) Supports partitioned datasets. (6) Native integration with Spark, Hive, Athena, BigQuery.",
+      "code_example": "# CSV: reads ALL columns, ALL rows, no schema\ndf = pd.read_csv('data.csv')  # slow for analytics\n\n# Parquet: fast analytics\ndf = pd.read_parquet(\n    'data.parquet',\n    columns=['id','amount'],   # only 2 cols\n    filters=[('year','==',2024)]  # predicate pushdown\n)"
+    },
+    {
+      "id": 25,
+      "category": "Window Functions",
+      "question": "What is the difference between rolling(), expanding(), and ewm()?",
+      "answer": "rolling(n) computes stats over a fixed window of n rows (sliding). expanding() grows the window from the first row \u2014 equivalent to rolling with an ever-increasing window (useful for cumulative stats). ewm() (Exponential Weighted Moving) applies exponentially decaying weights \u2014 recent values contribute more, useful for trend-following that adapts quickly.",
+      "code_example": "s = pd.Series([10,20,30,40,50])\n\n# Fixed window\nprint(s.rolling(3).mean())      # NaN, NaN, 20, 30, 40\n\n# Expanding (cumulative)\nprint(s.expanding().mean())     # 10, 15, 20, 25, 30\n\n# Exponential (recent values weighted more)\nprint(s.ewm(span=3).mean())     # 10, 16.7, 24.3, 33.1, 42.1"
+    },
+    {
+      "id": 26,
+      "category": "Fundamentals",
+      "question": "How does Pandas handle index alignment during arithmetic operations?",
+      "answer": "Pandas automatically aligns on index labels before performing arithmetic. If two Series/DataFrames have different indexes, NaN is introduced for labels that don't exist in both. This is a feature \u2014 it prevents silent errors from misaligned data. To avoid NaN, use .add(fill_value=0), .sub(), etc.",
+      "code_example": "s1 = pd.Series([1,2,3], index=['a','b','c'])\ns2 = pd.Series([10,20], index=['a','x'])\nprint(s1+s2)  # a=11, b=NaN, c=NaN, x=NaN\nprint(s1.add(s2, fill_value=0))  # a=11, b=2, c=3, x=20"
+    },
+    {
+      "id": 27,
+      "category": "Data Cleaning",
+      "question": "How do you efficiently handle large files that don't fit in memory with Pandas?",
+      "answer": "Four strategies: (1) chunksize in read_csv/read_sql \u2014 iterate in batches and aggregate results. (2) usecols \u2014 load only needed columns. (3) dtype specification \u2014 prevent float64 upcasting. (4) Read Parquet with column pruning and predicate filters. For very large datasets, consider Dask (Pandas API, out-of-core) or PySpark.",
+      "code_example": "# Chunked aggregation\nresults = []\nfor chunk in pd.read_csv('huge.csv', chunksize=100_000, usecols=['cat','amount']):\n    results.append(chunk.groupby('cat')['amount'].sum())\nfinal = pd.concat(results).groupby(level=0).sum()"
+    },
+    {
+      "id": 28,
+      "category": "GroupBy",
+      "question": "How do you iterate over groups in groupby()? When should you avoid it?",
+      "answer": "df.groupby('col') is iterable \u2014 yields (group_key, DataFrame) tuples. Avoid iteration when any vectorized groupby operation (agg/transform/apply) can express the logic \u2014 iteration is slow. Use when you need side effects: saving each group to a separate file, sending each group to an API, or applying operations that can't return a single DataFrame.",
+      "code_example": "# Iteration \u2014 useful for side effects\nfor group_name, group_df in df.groupby('dept'):\n    group_df.to_parquet(f'output/{group_name}.parquet')\n\n# Don't iterate for aggregation \u2014 use agg instead\n# BAD: results = {name: g['sal'].mean() for name, g in df.groupby('dept')}\n# GOOD:\ndf.groupby('dept')['sal'].mean()"
+    },
+    {
+      "id": 29,
+      "category": "Indexing",
+      "question": "What is the at[] accessor and when should you use it over loc[]?",
+      "answer": "at[] accesses a single scalar value by label \u2014 it's 10-50x faster than loc[] for scalar access because it bypasses the overhead of returning a Series. Use at[] in loops where you must access individual cells (though vectorized approaches are still preferred). iat[] is the integer-position equivalent.",
+      "code_example": "# Benchmark\nimport timeit\n\n# loc scalar access: ~5 microseconds\ndf.loc['row_a', 'col_x']\n\n# at scalar access: ~0.5 microseconds  \ndf.at['row_a', 'col_x']  # 10x faster for scalar"
+    },
+    {
+      "id": 30,
+      "category": "Time Series",
+      "question": "How do you handle timezone-aware timestamps and common pitfalls?",
+      "answer": "Use dt.tz_localize() to assign timezone to naive timestamps (once). Use dt.tz_convert() to change between timezones. Common pitfalls: (1) Localizing an already-localized timestamp raises TypeError. (2) DST transitions can cause ambiguous times \u2014 use ambiguous='NaT' parameter. (3) Comparing aware vs naive timestamps raises TypeError.",
+      "code_example": "s = pd.Series(pd.date_range('2024-01-01', periods=3, freq='D'))\n\n# Assign timezone\ns_utc = s.dt.tz_localize('UTC')\n\n# Convert timezone\ns_ist = s_utc.dt.tz_convert('Asia/Kolkata')\n\n# Pitfall: DST ambiguous time\ns_dst = pd.Series(pd.Timestamp('2023-11-05 01:30'))  # ambiguous!\ns_dst_aware = s_dst.dt.tz_localize('US/Eastern', ambiguous='NaT')"
+    },
+    {
+      "id": 31,
+      "category": "Fundamentals",
+      "question": "What does df.copy() do? When is it necessary?",
+      "answer": "copy() creates a deep copy \u2014 a completely independent object sharing no memory with the original. Necessary when: (1) You want to modify a subset without affecting the original. (2) After boolean/fancy indexing (results may be views or copies \u2014 unpredictable). (3) When Pandas shows SettingWithCopyWarning. With Pandas 2.0+ Copy-on-Write, explicit copy() is less critical for preventing accidental modification, but still needed for intentional independence.",
+      "code_example": "sub = df[df['active']==True].copy()  # safe to modify\nsub['score'] = 0  # df unchanged\n\n# Without copy() + CoW disabled:\nsub = df[df['active']==True]\nsub['score'] = 0  # SettingWithCopyWarning"
+    },
+    {
+      "id": 32,
+      "category": "Aggregation",
+      "question": "How do you perform window functions equivalent to SQL's RANK(), LAG(), LEAD() in Pandas?",
+      "answer": "Pandas has direct equivalents: RANK() = rank(method='dense'), LAG(n) = shift(n), LEAD(n) = shift(-n). For window-partitioned RANK equivalent (rank within group), use groupby().transform('rank').",
+      "code_example": "# SQL: RANK() OVER (PARTITION BY dept ORDER BY salary DESC)\ndf['dept_rank'] = df.groupby('dept')['salary'].rank(method='dense', ascending=False)\n\n# SQL: LAG(sales, 1) OVER (PARTITION BY dept ORDER BY month)\ndf['prev_sales'] = df.groupby('dept')['sales'].shift(1)\n\n# SQL: SUM(sales) OVER (PARTITION BY dept ORDER BY month ROWS UNBOUNDED)\ndf['running_total'] = df.groupby('dept')['sales'].cumsum()"
+    },
+    {
+      "id": 33,
+      "category": "Performance",
+      "question": "How does Pandas 2.0's PyArrow backend differ from NumPy backend? What are the benefits?",
+      "answer": "PyArrow backend stores data in Apache Arrow format rather than NumPy arrays. Benefits: (1) Better null handling (Arrow has native null for integers/booleans). (2) Faster I/O from Parquet (zero-copy). (3) Memory efficiency (Arrow uses columnar contiguous memory). (4) Better string performance. (5) Interoperability with Spark, DuckDB, Polars via Arrow IPC. Drawback: not all Pandas operations are as fast on Arrow-backed arrays.",
+      "code_example": "# Use PyArrow backend\ndf = pd.read_parquet('data.parquet', dtype_backend='pyarrow')\ndf = pd.read_csv('data.csv', dtype_backend='pyarrow')\n# Or convert existing DataFrame\ndf = df.convert_dtypes(dtype_backend='pyarrow')\nprint(df.dtypes)  # int64[pyarrow], string[pyarrow]"
+    },
+    {
+      "id": 34,
+      "category": "Merging",
+      "question": "What happens when you merge DataFrames with duplicate column names?",
+      "answer": "Pandas appends _x and _y suffixes to duplicate columns from left and right DataFrames by default. You can customize with the suffixes parameter. Best practice: rename columns before merging or drop redundant columns after. Use indicator=True to add a _merge column showing row provenance.",
+      "code_example": "df1 = pd.DataFrame({'id':[1],'value':[10],'ts':['2024-01']})\ndf2 = pd.DataFrame({'id':[1],'value':[20],'ts':['2024-01']})\n\nresult = pd.merge(df1, df2, on='id', suffixes=('_left','_right'))\nprint(result.columns)  # id, value_left, ts_left, value_right, ts_right\n\n# Clean up\nresult = result.drop(columns=['ts_right']).rename(columns={'ts_left':'ts'})"
+    },
+    {
+      "id": 35,
+      "category": "Fundamentals",
+      "question": "What is method chaining in Pandas and what makes it readable?",
+      "answer": "Method chaining calls multiple methods sequentially in a single expression using (). Makes data pipelines readable top-to-bottom, avoids intermediate variables, and is easily debuggable. Key helpers: pipe() for custom functions, assign() for adding columns, query() for filtering. Use () to wrap multi-line chains.",
+      "code_example": "result = (\n    pd.read_csv('data.csv')\n    .pipe(clean_columns)           # custom function via pipe\n    .dropna(subset=['amount'])\n    .assign(\n        amount_usd = lambda x: x['amount'] * 0.012,\n        is_large   = lambda x: x['amount_usd'] > 1000\n    )\n    .query('is_large == True')\n    .groupby('dept')['amount_usd'].sum()\n    .sort_values(ascending=False)\n    .reset_index()\n)"
+    },
+    {
+      "id": 36,
+      "category": "Data Cleaning",
+      "question": "How do you identify and handle data type mismatches after reading from CSV?",
+      "answer": "CSV has no schema \u2014 all columns are read as strings or guessed. Common issues: numeric columns with commas/currency symbols, dates as strings, booleans as 'True'/'False' strings, integers with NaN upcast to float. Fix: specify dtype= in read_csv, or post-read use astype/to_numeric/to_datetime with error handling.",
+      "code_example": "# Prevention: specify dtypes at read time\ndf = pd.read_csv('data.csv', dtype={'id':int,'amount':float,'active':bool})\n\n# Post-read cleanup\ndf['amount'] = df['amount'].str.replace('[$,]','',regex=True)\ndf['amount'] = pd.to_numeric(df['amount'], errors='coerce')\ndf['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')\ndf['active'] = df['active'].map({'True':True,'False':False,'Y':True,'N':False})"
+    },
+    {
+      "id": 37,
+      "category": "GroupBy",
+      "question": "How do you apply different aggregation functions to different columns in groupby()?",
+      "answer": "Use agg() with a dict mapping column names to functions, or use named aggregations with NamedAgg tuples. Named aggregations (Pandas 0.25+) produce clean single-level column names and are the recommended modern approach.",
+      "code_example": "# Dict-based agg (produces MultiIndex columns)\ndf.groupby('dept').agg({'salary':['mean','max'],'years':'sum'})\n\n# Named aggregations (clean, modern approach)\ndf.groupby('dept').agg(\n    avg_salary = ('salary','mean'),\n    max_salary = ('salary','max'),\n    total_years = ('years','sum'),\n    headcount = ('name','count'),\n    salary_std = ('salary', lambda x: x.std())\n)"
+    },
+    {
+      "id": 38,
+      "category": "Performance",
+      "question": "What is Dask and when should you use it instead of Pandas?",
+      "answer": "Dask provides Pandas-compatible API for out-of-core (larger-than-memory) and parallel computation. Use Dask when: data doesn't fit in RAM, you need multi-core parallelism for compute-heavy transforms, you're running on a distributed cluster. Dask DataFrames are lazy \u2014 computation only happens when .compute() is called. For most workloads under ~20GB, optimized Pandas is faster due to lower overhead.",
+      "code_example": "import dask.dataframe as dd\n\n# Read 100GB CSV \u2014 lazy, no actual reading yet\nddf = dd.read_csv('huge/*.csv')\n\n# Operations are lazy\nresult = ddf.groupby('dept')['salary'].mean()\n\n# Trigger computation\npandas_result = result.compute()  # executes now",
+      "alternatives": "For single-machine large data: Polars (faster), DuckDB (SQL-first). For cluster: Spark."
+    },
+    {
+      "id": 39,
+      "category": "Window Functions",
+      "question": "What is the difference between pct_change() and diff() in time series analysis?",
+      "answer": "diff(n) computes the absolute difference between consecutive rows (or n-periods apart). pct_change(n) computes the percentage change. Use diff() for absolute changes in same-unit series (e.g., revenue delta). Use pct_change() for relative/normalized changes (e.g., growth rate, return on investment). Both support periods parameter and work with groupby.",
+      "code_example": "df = pd.DataFrame({'price':[100,110,105,120]})\n\nprint(df['price'].diff())        # 0, 10, -5, 15\nprint(df['price'].pct_change())  # NaN, 0.10, -0.045, 0.143\n\n# In groupby context\ndf.groupby('ticker')['price'].pct_change()  # within-group % change"
+    },
+    {
+      "id": 40,
+      "category": "Fundamentals",
+      "question": "What is the difference between df.values, df.to_numpy(), and df.array?",
+      "answer": "df.values returns a NumPy ndarray (legacy, may coerce mixed types). df.to_numpy() is the preferred method since Pandas 0.24 \u2014 same result but explicit about the conversion. df.array returns a Pandas ExtensionArray (preserves nullable types, categories). Use to_numpy() for interoperability with NumPy/scikit-learn. Use .array when you need to preserve Pandas-specific types.",
+      "code_example": "df = pd.DataFrame({'a':[1,2,3],'b':['x','y','z']})\n\nprint(type(df.values))       # numpy.ndarray\nprint(type(df.to_numpy()))   # numpy.ndarray (preferred)\n\n# For nullable int series\ns = pd.Series([1,pd.NA,3], dtype='Int64')\nprint(s.values)    # <IntegerArray> \u2014 keeps NA\nprint(s.to_numpy()) # array([1, nan, 3]) \u2014 converts to float"
+    },
+    {
+      "id": 41,
+      "category": "Reshaping",
+      "question": "What is the difference between wide and long format? Which is better for different use cases?",
+      "answer": "Wide format: one row per entity, multiple columns per measurement. Long (tidy) format: one row per (entity, measurement) pair. Wide is better for: Excel/visualization, pivot tables, correlation matrices. Long is better for: ML features, Seaborn/ggplot plotting, groupby analysis, database storage (normalized), Pandas operations that need to loop across categories.",
+      "code_example": "# Wide format: hard to analyze across quarters\ndf_wide = pd.DataFrame({'name':['Alice'],'Q1':100,'Q2':110,'Q3':120})\n\n# Long format: easy groupby, easy plot by quarter\ndf_long = df_wide.melt('name', var_name='quarter', value_name='sales')\n\n# Analysis now trivial:\ndf_long.groupby('quarter')['sales'].mean()"
+    },
+    {
+      "id": 42,
+      "category": "Fundamentals",
+      "question": "How does Pandas handle memory sharing between a DataFrame and its slices (view vs copy)?",
+      "answer": "A slice may return a view (shares memory) or copy (independent), depending on the operation. Boolean indexing and fancy (list) indexing always return copies. Slicing with ranges often returns views. With Pandas 2.0+ Copy-on-Write, all indexing operations produce lazy copies \u2014 data is only copied when you modify the result. This makes behavior deterministic.",
+      "code_example": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2,3]})\n\n# Before CoW: view or copy is ambiguous\nview = df.iloc[0:2]  # may be a view\ncopy = df.iloc[[0,1]]  # fancy index \u2192 always copy\n\n# With CoW (Pandas 2.0+):\npd.options.mode.copy_on_write = True\nslice = df.iloc[0:2]  # lazy copy \u2014 independent on write"
+    },
+    {
+      "id": 43,
+      "category": "Data Cleaning",
+      "question": "How do you effectively deduplicate data and identify the 'best' duplicate to keep?",
+      "answer": "drop_duplicates(keep='first'/'last'/False) handles basic cases. For complex rules (keep row with most recent timestamp, most complete data), use sort_values() + drop_duplicates() or groupby().apply(). Common pattern: sort by quality criteria descending, then keep='first'.",
+      "code_example": "# Keep row with highest confidence score per entity\ndf_best = (\n    df\n    .sort_values(['entity_id','confidence'], ascending=[True,False])\n    .drop_duplicates(subset=['entity_id'], keep='first')\n    .reset_index(drop=True)\n)\n\n# Keep most recent record per customer\ndf_latest = (\n    df\n    .sort_values(['customer_id','timestamp'], ascending=[True,False])\n    .drop_duplicates(subset=['customer_id'], keep='first')\n)"
+    },
+    {
+      "id": 44,
+      "category": "Performance",
+      "question": "What are the most expensive Pandas operations to avoid in ETL pipelines?",
+      "answer": "Most expensive operations: (1) apply(axis=1) \u2014 Python row iteration. (2) iterrows()/itertuples() \u2014 bypasses vectorization. (3) Chained indexing \u2014 creates unnecessary copies. (4) String operations on object dtype (use StringDtype). (5) Growing DataFrames with pd.concat in a loop (quadratic). (6) to_sql without method='multi'. Patterns to always use: vectorized arithmetic, groupby over loops, concat outside loops.",
+      "code_example": "# ANTI-PATTERN: quadratic concat in loop\nresult = pd.DataFrame()\nfor chunk in source:\n    result = pd.concat([result, chunk])  # O(n^2) memory!\n\n# CORRECT: collect then concat once\nchunks = [process(chunk) for chunk in source]\nresult = pd.concat(chunks, ignore_index=True)  # O(n)"
+    },
+    {
+      "id": 45,
+      "category": "I/O",
+      "question": "How do you safely write DataFrames to SQL in production, and what are the pitfalls?",
+      "answer": "Pitfalls: (1) Default to_sql() uses row-by-row INSERTs \u2014 very slow. (2) if_exists='replace' drops and recreates table \u2014 loses indexes, constraints, grants. (3) No transaction by default for large writes. Best practices: use method='multi' + chunksize for batch inserts, use if_exists='append' for incremental loads, pre-create table schema with correct types, wrap in transactions for atomicity.",
+      "code_example": "from sqlalchemy import create_engine\nengine = create_engine('postgresql://...')\n\n# Safe, fast bulk write\ndf.to_sql(\n    'target_table',\n    con=engine,\n    if_exists='append',   # preserve schema\n    index=False,\n    method='multi',       # batch INSERT\n    chunksize=5000\n)"
+    },
+    {
+      "id": 46,
+      "category": "Fundamentals",
+      "question": "What is the inplace parameter and should you use it?",
+      "answer": "inplace=True modifies the DataFrame directly rather than returning a new one. It does NOT save memory \u2014 Pandas still creates a new object internally and replaces the reference. It actually makes code harder to chain, harder to debug, and slightly slower. Modern Pandas best practice: avoid inplace=True. Always assign the result.",
+      "code_example": "# BAD \u2014 inplace, harder to chain, no memory benefit\ndf.drop(columns=['col'], inplace=True)\ndf.rename(columns={'a':'b'}, inplace=True)\n\n# GOOD \u2014 assign result\ndf = df.drop(columns=['col'])\ndf = df.rename(columns={'a':'b'})\n\n# BEST \u2014 method chain\ndf = df.drop(columns=['col']).rename(columns={'a':'b'})"
+    },
+    {
+      "id": 47,
+      "category": "Indexing",
+      "question": "When would you use query() instead of boolean indexing? What are its limitations?",
+      "answer": "query() is more readable for complex conditions, faster for large DataFrames (uses numexpr), and supports Python variable references with @. Limitations: (1) Column names with spaces/special chars must be backtick-quoted. (2) Harder to debug than boolean masks. (3) Slower for small DataFrames due to string parsing overhead. (4) Not all pandas operations are expressible in query string syntax.",
+      "code_example": "threshold = 70000\ndept = 'Engineering'\n\n# Boolean indexing \u2014 always works\ndf[(df['salary']>threshold) & (df['dept']==dept)]\n\n# query \u2014 more readable for complex conditions\ndf.query('salary > @threshold and dept == @dept')\n\n# Backtick for column names with spaces\ndf.query('`annual salary` > @threshold')"
+    },
+    {
+      "id": 48,
+      "category": "Aggregation",
+      "question": "How do you compute percentiles and custom quantile aggregations in groupby?",
+      "answer": "Use quantile(q) for standard percentiles, or lambda with np.percentile for custom quantiles in agg(). The percentile() function from numpy can be passed as a lambda in agg(). Named aggregations keep column names clean.",
+      "code_example": "df = pd.DataFrame({'dept':['Eng','Eng','HR','HR'],'salary':[90000,85000,55000,50000]})\n\n# Single quantile\nprint(df.groupby('dept')['salary'].quantile(0.75))\n\n# Multiple quantiles\nprint(df.groupby('dept')['salary'].quantile([0.25,0.5,0.75]).unstack())\n\n# Named aggregation with custom quantile\nimport numpy as np\nresult = df.groupby('dept').agg(\n    p25 = ('salary', lambda x: np.percentile(x,25)),\n    p75 = ('salary', lambda x: np.percentile(x,75)),\n    iqr = ('salary', lambda x: np.percentile(x,75)-np.percentile(x,25))\n)\nprint(result)"
+    },
+    {
+      "id": 49,
+      "category": "Real-World Scenarios",
+      "question": "How would you implement a complete data quality validation framework using Pandas?",
+      "answer": "Build a validation framework with rule functions that return boolean masks and a runner that collects all violations. Each validation should be named, testable, and produce actionable failure records.",
+      "code_example": "import pandas as pd\nimport numpy as np\n\ndef validate_dataframe(df):\n    issues = []\n    \n    # Null checks\n    for col in ['id','email','created_at']:\n        null_rows = df[df[col].isnull()]\n        if len(null_rows):\n            issues.append({'rule':f'null_{col}','count':len(null_rows),'sample':null_rows.head(2)})\n    \n    # Uniqueness\n    dupes = df[df.duplicated(subset=['id'])]\n    if len(dupes):\n        issues.append({'rule':'duplicate_id','count':len(dupes),'sample':dupes.head(2)})\n    \n    # Range checks\n    invalid_age = df[~df['age'].between(0,120)]\n    if len(invalid_age):\n        issues.append({'rule':'invalid_age','count':len(invalid_age),'sample':invalid_age.head(2)})\n    \n    # Regex: email\n    invalid_email = df[~df['email'].str.match(r'^[\\w.-]+@[\\w.]+\\.\\w{2,}$',na=False)]\n    if len(invalid_email):\n        issues.append({'rule':'invalid_email_format','count':len(invalid_email),'sample':invalid_email.head(2)})\n    \n    return issues\n\n# Usage\ndf_test = pd.DataFrame({'id':[1,2,2,4],'email':['a@b.com','bad','c@d.com','e@f.com'],'age':[25,30,-5,35],'created_at':['2024-01',None,'2024-03','2024-04']})\nissues = validate_dataframe(df_test)\nfor issue in issues:\n    print(f\"Rule: {issue['rule']}, Count: {issue['count']}\")",
+      "output": "Rule: null_created_at, Count: 1\nRule: duplicate_id, Count: 1\nRule: invalid_age, Count: 1\nRule: invalid_email_format, Count: 1"
+    },
+    {
+      "id": 50,
+      "category": "Real-World Scenarios",
+      "question": "How do you build an efficient data pipeline for merging multiple source tables with transformations?",
+      "answer": "Use method chaining with pipe() for readability, validate after each join, and avoid redundant operations. The complete pattern includes: read \u2192 validate \u2192 clean \u2192 join \u2192 aggregate \u2192 output.",
+      "code_example": "import pandas as pd\nimport numpy as np\n\n# --- Source tables ---\norders = pd.DataFrame({'order_id':[1,2,3],'customer_id':[10,20,10],'amount':[200,350,150],'order_date':pd.to_datetime(['2024-01-10','2024-01-15','2024-01-20'])})\ncustomers = pd.DataFrame({'customer_id':[10,20],'name':['Alice','Bob'],'segment':['Premium','Standard']})\nproducts = pd.DataFrame({'order_id':[1,1,2,3],'product':['A','B','C','A'],'qty':[2,1,3,1]})\n\ndef enrich_pipeline(orders, customers, products):\n    return (\n        orders\n        .merge(customers, on='customer_id', how='left')\n        .merge(\n            products.groupby('order_id').agg(total_items=('qty','sum')).reset_index(),\n            on='order_id', how='left'\n        )\n        .assign(\n            order_month = lambda x: x['order_date'].dt.to_period('M').astype(str),\n            avg_item_value = lambda x: x['amount'] / x['total_items'].fillna(1),\n            is_premium = lambda x: x['segment'] == 'Premium'\n        )\n        .sort_values('order_date')\n        .reset_index(drop=True)\n    )\n\nresult = enrich_pipeline(orders, customers, products)\nprint(result[['order_id','name','segment','amount','total_items','order_month']])",
+      "output": "   order_id   name  segment  amount  total_items order_month\n0         1  Alice  Premium     200          3.0     2024-01\n1         2    Bob Standard     350          3.0     2024-01\n2         3  Alice  Premium     150          1.0     2024-01"
+    }
+  ]
+}
