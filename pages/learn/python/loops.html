@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Loops — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 2: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Loops</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Basic for loop</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Iterates over a sequence (range, list, string). The standard way to repeat a task a fixed number of times.</p>
+<pre class="language-python"><code>for i in range(3):
+    print(f'Iteration {i}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Iteration 0
+Iteration 1
+Iteration 2</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Loop with enumerate</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Get both index and value simultaneously. Avoids manual counter variables.</p>
+<pre class="language-python"><code>fruits = ['apple', 'banana']
+for i, fruit in enumerate(fruits):
+    print(f'{i}: {fruit}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>0: apple
+1: banana</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Loop with zip</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Iterate over multiple iterables in parallel. Stops at the shortest iterable.</p>
+<pre class="language-python"><code>names = ['Alice', 'Bob']
+scores = [90, 85]
+for name, score in zip(names, scores):
+    print(f'{name}: {score}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Alice: 90
+Bob: 85</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+while loop</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Repeats while condition is True. Use when iteration count is unknown.</p>
+<pre class="language-python"><code># Basic while
+n = 1
+while n &lt; 32:
+    n *= 2
+print(n)  # 32
+
+# while with break
+import random
+random.seed(42)
+while True:
+    val = random.randint(1, 10)
+    if val == 5:
+        print(f'Found 5!')
+        break
+    print(val, end=' ')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>32
+2 1 9 Found 5!</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+break, continue, pass</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">break exits loop; continue skips to next iteration; pass is a no-op placeholder.</p>
+<pre class="language-python"><code># break
+for i in range(10):
+    if i == 5:
+        break
+    print(i, end=' ')
+print()
+
+# continue
+for i in range(10):
+    if i % 2 == 0:
+        continue  # skip even
+    print(i, end=' ')
+print()
+
+# pass - placeholder
+def todo_function():
+    pass  # implement later
+
+# for-else (runs if loop completed without break)
+for i in range(5):
+    if i == 10:  # never true
+        break
+else:
+    print('Loop completed without break')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>0 1 2 3 4 
+1 3 5 7 9 
+Loop completed without break</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Iterating with enumerate, zip, reversed</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Built-in helpers for common iteration patterns.</p>
+<pre class="language-python"><code># enumerate with start index
+for i, v in enumerate(['a','b','c'], start=1):
+    print(i, v)
+
+# zip stops at shortest
+for a, b in zip([1,2,3], ['x','y']):
+    print(a, b)
+
+# reversed
+for x in reversed([1,2,3,4]):
+    print(x, end=' ')
+print()
+
+# zip_longest fills missing values
+from itertools import zip_longest
+for a, b in zip_longest([1,2,3], ['x'], fillvalue='?'):
+    print(a, b)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>1 a
+2 b
+3 c
+1 x
+2 y
+4 3 2 1 
+1 x
+2 ?
+3 ?</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the for-else construct in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">The `else` block of a `for` or `while` loop runs only if the loop completes without hitting a `break`. Useful for search algorithms: loop to find item, break if found, else block handles 'not found' case.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What's the difference between range() and list(range())?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">`range()` returns a lazy range object (O(1) memory regardless of size). `list(range(n))` materializes it into a list (O(n) memory). Always prefer `range()` in for loops.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="conditionals.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Conditionals</span></a>
+                    <a href="comprehensions.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Comprehensions</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

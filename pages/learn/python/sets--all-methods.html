@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Sets — All Methods — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 3: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Sets — All Methods</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Sets are unordered collections of unique hashable elements. O(1) average for add/remove/lookup.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Basic Operations: add, remove, discard, pop</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Modify set elements. remove() raises KeyError if the item is missing; discard() does not. pop() removes an arbitrary element.</p>
+<pre class="language-python"><code>s = {1, 2, 3}
+s.add(4)
+s.remove(1)
+s.discard(10)  # no error
+print(s.pop()) # returns arbitrary
+print(s)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>2
+{3, 4}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Set Mathematics: union, intersection, difference</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Standard set theory operations. Can be performed using methods or operators (| for union, & for intersection, - for difference).</p>
+<pre class="language-python"><code>a = {1, 2, 3}
+b = {3, 4, 5}
+print(a | b)   # union: {1, 2, 3, 4, 5}
+print(a &amp; b)   # intersection: {3}
+print(a - b)   # difference: {1, 2}</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{1, 2, 3, 4, 5}
+{3}
+{1, 2}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Membership & Subsets</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Check relationships between sets. Efficient O(1) average time complexity.</p>
+<pre class="language-python"><code>a = {1, 2}
+b = {1, 2, 3}
+print(a.issubset(b))   # True
+print(b.issuperset(a)) # True
+print(a.isdisjoint({4, 5})) # True</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+frozenset</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Immutable set — hashable, usable as dict key.</p>
+<pre class="language-python"><code>fs = frozenset([1, 2, 3])
+print(fs)
+
+# Can use as dict key
+graph = {frozenset({'A','B'}): 5}
+print(graph)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>frozenset({1, 2, 3})
+{frozenset({'A', 'B'}): 5}</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How would you remove duplicates from a list while preserving order?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Python 3.7+: `list(dict.fromkeys(lst))` — dicts preserve insertion order. Or: `seen = set(); result = [x for x in lst if not (x in seen or seen.add(x))]`. Simple `list(set(lst))` removes duplicates but loses order.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="dictionaries--all-methods.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Dictionaries — All Methods</span></a>
+                    <a href="defining-functions.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Defining Functions</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

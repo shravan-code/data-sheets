@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Interview Master: Top 50 Python Interview Q&A — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 18: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Interview Master: Top 50 Python Interview Q&A</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">1</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between list, tuple, set, and dict?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">list: ordered, mutable, allows duplicates, O(n) search. tuple: ordered, immutable, hashable, slightly faster. set: unordered, mutable, unique elements, O(1) search/add/remove. dict: key-value pairs, ordered (3.7+), O(1) key access. Use: list for sequences, tuple for fixed records, set for unique membership, dict for lookups.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">2</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain Python's memory management.</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">CPython uses reference counting: each object has a refcount. When it hits 0, memory is freed. A cyclic garbage collector (gc module) handles reference cycles. Python has a private heap managed by pymalloc for small objects. __slots__ reduces per-instance memory. del decrements refcount; sys.getrefcount() inspects it.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">3</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is a decorator? Write one from scratch.</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">A decorator is a callable that takes a function and returns a modified function. Example: `def log(func): @wraps(func) def wrapper(*a,**kw): print(f'Calling {func.__name__}'); return func(*a,**kw); return wrapper`. Always use @functools.wraps to preserve __name__, __doc__.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">4</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between shallow and deep copy?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Shallow copy (copy.copy / .copy() / [:]) copies the container but nested objects are still shared references. Deep copy (copy.deepcopy) recursively copies all nested objects. Example: list of lists — modifying a nested list in a shallow copy affects the original.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">5</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain generators and when to use them.</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Generators are functions that yield values lazily. They use O(1) memory regardless of sequence size. Use when: processing large/infinite sequences, building data pipelines, values only needed once. Created with yield keyword or generator expressions (x for x in iterable).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">6</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between @staticmethod and @classmethod?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">@staticmethod receives no implicit first argument — it's a regular function in the class namespace. @classmethod receives cls (the class itself) as first argument. Use @classmethod for factory methods (alternate constructors), access to class state. Use @staticmethod for utility functions logically grouped with the class.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">7</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How does Python resolve multiple inheritance (MRO)?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Python uses C3 linearization (MRO). For class C(A, B): Python builds a list that preserves left-to-right order and ensures a class appears before its parents. Check with Class.__mro__. super() follows MRO, not just the direct parent.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">8</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What are *args and **kwargs?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">*args captures extra positional args as a tuple. **kwargs captures extra keyword args as a dict. In a function signature, order must be: positional, *args, keyword-only, **kwargs. They can also unpack when calling: func(*list, **dict).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">9</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain the difference between is and ==.</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">== checks value equality (__eq__). is checks identity (same object in memory, same id()). Small integers (-5 to 256) and interned strings may share identity. Never use 'is' to compare values — always use == for equality, is only for None checks (x is None).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">10</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is a context manager and how do you create one?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">A context manager wraps setup/teardown around a with block. Implement __enter__ (returns resource) and __exit__ (cleanup, suppress exception if returns True). Or use @contextlib.contextmanager with a generator (yield is the body of the with block).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">11</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the GIL and when does it matter?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Global Interpreter Lock — CPython mutex allowing only one thread to run Python bytecode at once. Released during I/O operations. Matters for CPU-bound multithreaded code — threads don't parallelize. Solutions: multiprocessing (separate processes), asyncio (async I/O), or use C extensions that release the GIL (e.g. NumPy).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">12</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How do you handle exceptions properly?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Catch specific exceptions (not bare except). Use try/except/else/finally correctly. Re-raise with `raise` or chain with `raise X from Y`. Create custom exceptions for domain errors. Never swallow exceptions silently. Log with logger.exception() to preserve traceback.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">13</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between append() and extend()?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">append(x) adds x as a single element (even if x is a list — you get a nested list). extend(iterable) adds each element of the iterable individually. [1,2].append([3,4]) → [1,2,[3,4]]. [1,2].extend([3,4]) → [1,2,3,4].</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">14</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain list comprehension vs generator expression vs map().</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">List comp: creates full list in memory, use when you need to reuse or index the result. Generator: lazy, one item at a time, O(1) memory, use for single-pass iteration. map(): applies function lazily, like a generator. For readability, list/gen comprehensions are preferred. map() is fast for simple built-in functions.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">15</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is functools.lru_cache? When would you use it?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">lru_cache memoizes a function's results based on arguments. Subsequent calls with same args return cached result. Use for: pure functions called repeatedly with same inputs, expensive computations (Fibonacci, DB lookups in read-only scenarios). Set maxsize=None for unlimited cache. Use cache() as shorthand in Python 3.9+.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">16</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How would you find duplicates in a list?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Using Counter: `[x for x, c in Counter(lst).items() if c > 1]`. Using sets: `seen = set(); dups = set(x for x in lst if x in seen or seen.add(x))`. For just checking existence: `len(lst) != len(set(lst))`.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">17</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between module and package?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">A module is a single .py file. A package is a directory containing an __init__.py (makes it a package) and possibly submodules/subpackages. Import with `import module` or `from package.module import name`.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">18</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain Python's LEGB scope rule.</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Python resolves names in this order: Local (inside current function), Enclosing (outer function scopes), Global (module level), Built-in (Python builtins). Use `global` to assign to global scope, `nonlocal` to assign to enclosing function scope.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">19</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is a metaclass?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">A metaclass is the class of a class — it controls how classes are created. type is the default metaclass. Custom metaclasses inherit from type and override __new__ or __init__. Used for: ORM models, singleton enforcement, automatic method registration. Prefer __init_subclass__ or class decorators for simpler cases.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">20</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How do you make a class iterable?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Implement __iter__ (returns iterator) and __next__ (returns next value, raises StopIteration when done). Or implement __iter__ as a generator function (uses yield). Or __getitem__ with integer indices (legacy protocol).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">21</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the difference between sorted() and list.sort()?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">sorted() works on any iterable, returns a new list, original unchanged. list.sort() modifies in-place, returns None, only works on lists. Both accept key= and reverse= parameters. list.sort() is slightly faster (no copy).</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">22</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How do you reverse a list? What are the different approaches?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">1) lst[::-1] — creates new reversed list. 2) list(reversed(lst)) — lazy reversed() iterator. 3) lst.reverse() — in-place, returns None. For strings: s[::-1]. For generators: can't reverse directly, convert to list first.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">23</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">Explain Python's data model (dunder methods).</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Python's data model lets custom classes integrate with language features via __dunder__ methods. __len__ enables len(), __iter__ enables for loops, __add__ enables +, __enter__/__exit__ enables with. This is why Python's built-in functions and operators work on custom objects — they call these protocols.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">24</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">What is the walrus operator (:=)?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">The walrus operator (Python 3.8+) assigns and returns a value in a single expression. Useful in while loops: `while chunk := f.read(8192): process(chunk)` or comprehensions: `[y for x in data if (y := f(x)) > 0]`. Avoids calling the same function twice.</p>
+</div>
+<div class="mb-10 p-6 bg-surface-container border border-outline-variant rounded-xl transition-all hover:border-secondary-fixed">
+<h3 class="text-lg font-bold text-secondary-fixed mb-4 flex items-start gap-4">
+<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-base font-black text-on-surface">25</span>
+<span class="pt-1.5 text-on-surface leading-relaxed">How do you handle circular imports in Python?</span></h3>
+<p class="text-on-surface-variant leading-relaxed pl-14">Options: 1) Restructure code to remove cycle. 2) Move import inside the function that needs it (lazy import). 3) Import the module, not the name: `import module; module.name`. 4) Use TYPE_CHECKING guard for type-hint-only imports. Root cause is usually poor module structure.</p>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="file-and-data-handling.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">File & Data Handling</span></a>
+                    
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

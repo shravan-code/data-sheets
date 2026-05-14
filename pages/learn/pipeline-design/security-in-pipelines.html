@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>13. Security in Pipelines — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781626">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781626">
+    <script src="../../../js/modules/universal-nav.js?v=1778781626" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781626" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">13. Security in Pipelines</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Encryption, PII masking, and secrets management.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Encryption at Rest & In Transit</h2>
+<br>
+<pre><code class="language-python">
+# At rest: S3 server-side encryption
+import boto3
+
+s3 = boto3.client("s3")
+
+# Write with SSE-S3 encryption
+s3.put_object(
+    Bucket="my-bucket",
+    Key="data/orders.parquet",
+    Body=data,
+    ServerSideEncryption="aws:kms",
+    SSEKMSKeyId="arn:aws:kms:us-east-1:123456789012:key/your-key-id"
+)
+
+# In transit: always use TLS — enable in Kafka
+kafka_config = {
+    "bootstrap.servers": "kafka:9093",
+    "security.protocol": "SSL",
+    "ssl.ca.location": "/path/to/ca.crt",
+    "ssl.certificate.location": "/path/to/client.crt",
+    "ssl.key.location": "/path/to/client.key",
+}
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>PII Detection & Masking</h2>
+<br>
+<pre><code class="language-python">
+import hashlib
+import re
+
+def detect_pii(df: pd.DataFrame) -&gt; dict:
+    """Detect columns that likely contain PII."""
+    pii_patterns = {
+        "email": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+        "phone": r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b",
+        "ssn": r"\b\d{3}-\d{2}-\d{4}\b",
+        "credit_card": r"\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b",
+    }
+    
+    pii_columns = {}
+    for col in df.select_dtypes(include="object").columns:
+        sample = df[col].dropna().head(100).astype(str)
+        for pii_type, pattern in pii_patterns.items():
+            if sample.str.match(pattern).mean() &gt; 0.5:
+                pii_columns[col] = pii_type
+                break
+    
+    return pii_columns
+
+def mask_pii(df: pd.DataFrame, pii_columns: dict) -&gt; pd.DataFrame:
+    """Apply appropriate masking to PII columns."""
+    df = df.copy()
+    
+    for col, pii_type in pii_columns.items():
+        if pii_type == "email":
+            # Pseudonymize: hash preserves joins but hides value
+            df[col] = df[col].apply(
+                lambda x: hashlib.sha256(str(x).encode()).hexdigest()[:16] + "@masked.com"
+                if pd.notna(x) else x
+            )
+        elif pii_type == "phone":
+            df[col] = df[col].str.replace(r"\d", "*", regex=True)
+        elif pii_type in ("ssn", "credit_card"):
+            # Full redaction
+            df[col] = "REDACTED"
+    
+    return df
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Secrets Management</h2>
+<br>
+<pre><code class="language-python">
+import boto3
+import json
+from functools import lru_cache
+
+@lru_cache(maxsize=20)
+def get_secret(secret_name: str, region: str = "us-east-1") -&gt; dict:
+    """Retrieve secret from AWS Secrets Manager (cached)."""
+    client = boto3.client("secretsmanager", region_name=region)
+    response = client.get_secret_value(SecretId=secret_name)
+    return json.loads(response["SecretString"])
+
+# Usage — never hardcode credentials
+def get_db_connection():
+    secret = get_secret("prod/orders-db/credentials")
+    engine = create_engine(
+        f"postgresql://{secret['username']}:{secret['password']}"
+        f"@{secret['host']}/{secret['dbname']}"
+    )
+    return engine
+
+# Airflow: use Connections (never put creds in code)
+from airflow.hooks.postgres_hook import PostgresHook
+
+def load_data(**context):
+    hook = PostgresHook(postgres_conn_id="my_postgres")  # defined in Airflow UI
+    conn = hook.get_conn()
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="performance-optimization.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">12. Performance & Optimization</span>
+            </a>
+            
+            <a href="pipeline-design-patterns.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">14. Pipeline Design Patterns</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781626" defer></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>File & Data Handling — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 17: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">File & Data Handling</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+CSV, JSON, pickle</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Reading and writing structured data formats.</p>
+<pre class="language-python"><code>import csv, json, pickle
+from io import StringIO
+
+# CSV reading and writing
+data = [
+    {'name': 'Alice', 'dept': 'Engineering', 'salary': 90000},
+    {'name': 'Bob',   'dept': 'Marketing',   'salary': 75000},
+]
+
+# Write CSV
+with open('/tmp/employees.csv', 'w', newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=['name','dept','salary'])
+    writer.writeheader()
+    writer.writerows(data)
+
+# Read CSV
+with open('/tmp/employees.csv') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(dict(row))
+
+# JSON - serialize/deserialize
+config = {
+    'host': 'localhost',
+    'port': 5432,
+    'options': ['ssl', 'timeout'],
+    'credentials': {'user': 'admin'}
+}
+
+# Serialize
+json_str = json.dumps(config, indent=2)
+print(json_str[:80])
+
+# Deserialize
+parsed = json.loads(json_str)
+print(parsed['options'])
+
+# Custom encoder for non-serializable types
+from datetime import datetime
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+data_with_date = {'created': datetime.now(), 'value': 42}
+print(json.dumps(data_with_date, cls=DateTimeEncoder))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'name': 'Alice', 'dept': 'Engineering', 'salary': '90000'}
+{'name': 'Bob', 'dept': 'Marketing', 'salary': '75000'}
+{
+  "host": "localhost",
+  "port": 5432,
+['ssl', 'timeout']
+{"created": "2024-01-01T10:00:00", "value": 42}</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="databases.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Databases</span></a>
+                    <a href="interview-master-top-50-python-interview-qanda.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Interview Master: Top 50 Python Interview Q&A</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

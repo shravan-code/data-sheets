@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Dataclasses — Complete Coverage — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 5: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Dataclasses — Complete Coverage</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+@dataclass decorator and all parameters</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Dataclasses auto-generate __init__, __repr__, __eq__ and more.</p>
+<pre class="language-python"><code>from dataclasses import dataclass, field, fields, asdict, astuple, replace, make_dataclass, is_dataclass
+from typing import ClassVar, List
+
+@dataclass(order=True, frozen=False)
+class Employee:
+    # ClassVar - not included in __init__
+    company: ClassVar[str] = 'Acme Corp'
+    
+    name: str
+    department: str
+    salary: float
+    skills: List[str] = field(default_factory=list)
+    _id: int = field(default=0, repr=False, compare=False)
+    
+    def __post_init__(self):
+        if self.salary &lt; 0:
+            raise ValueError('Salary cannot be negative')
+        self.name = self.name.strip().title()
+
+e1 = Employee('alice', 'Engineering', 90000.0, ['Python', 'SQL'])
+e2 = Employee('Bob', 'Marketing', 75000.0)
+
+print(e1)
+print(e1.company)
+print(e1 &gt; e2)           # order=True compares all fields
+print(asdict(e1))
+print(astuple(e1))
+e3 = replace(e1, salary=95000.0)
+print(e3)
+print(fields(Employee))  # Field objects</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Employee(name='Alice', department='Engineering', salary=90000.0, skills=['Python', 'SQL'])
+Acme Corp
+True
+{'name': 'Alice', 'department': 'Engineering', 'salary': 90000.0, 'skills': ['Python', 'SQL']}
+('Alice', 'Engineering', 90000.0, ['Python', 'SQL'], 0)
+Employee(name='Alice', department='Engineering', salary=95000.0, skills=['Python', 'SQL'])
+(Field(name='name',...), ...)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+field() — All Parameters</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">field() gives fine-grained control over each field.</p>
+<pre class="language-python"><code>from dataclasses import dataclass, field
+
+@dataclass
+class Config:
+    host: str = field(default='localhost', metadata={'help': 'Server host'})
+    port: int = field(default=8080)
+    tags: list = field(default_factory=list)  # mutable default!
+    debug: bool = field(default=False, repr=True, compare=True)
+    _internal: str = field(default='', init=False, repr=False)  # not in __init__
+
+c1 = Config()
+c2 = Config(host='prod.server.com', port=443, tags=['web'])
+print(c1)
+print(c2)
+print(c1 == Config())  # True
+
+# Inspect field metadata
+from dataclasses import fields
+for f in fields(Config):
+    print(f'{f.name}: default={f.default}, metadata={f.metadata}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Config(host='localhost', port=8080, tags=[], debug=False)
+Config(host='prod.server.com', port=443, tags=['web'], debug=False)
+True
+host: default=localhost, metadata={'help': 'Server host'}
+port: default=8080, metadata={}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Frozen Dataclasses & Inheritance</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">frozen=True makes instances immutable and hashable.</p>
+<pre class="language-python"><code>from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Point:
+    x: float
+    y: float
+    
+    def distance(self):
+        return (self.x**2 + self.y**2) ** 0.5
+
+p = Point(3.0, 4.0)
+print(p.distance())  # 5.0
+
+# Can use as dict key (hashable)
+distances = {Point(0,0): 'origin', Point(3,4): 'far'}
+print(distances[Point(3,4)])
+
+# try: p.x = 10  -&gt; FrozenInstanceError!
+
+# Inheritance
+@dataclass
+class Point3D(Point):
+    z: float = 0.0
+
+p3 = Point3D(1.0, 2.0, 3.0)
+print(p3)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>5.0
+far
+Point3D(x=1.0, y=2.0, z=3.0)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+InitVar and __post_init__</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">InitVar fields are passed to __init__ but not stored as attributes.</p>
+<pre class="language-python"><code>from dataclasses import dataclass, field
+from dataclasses import InitVar
+
+@dataclass
+class DatabaseConnection:
+    host: str
+    port: int
+    password: InitVar[str]  # passed to __post_init__ but not stored
+    _connected: bool = field(default=False, init=False, repr=False)
+    _conn_string: str = field(default='', init=False, repr=False)
+    
+    def __post_init__(self, password: str):
+        # password available here but not stored as attribute
+        self._conn_string = f'{self.host}:{self.port}?pwd={password}'
+        print(f'Connecting to {self.host}:{self.port}')
+
+db = DatabaseConnection('localhost', 5432, 'secret123')
+print(db)
+print(hasattr(db, 'password'))  # False!
+print(db._conn_string)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Connecting to localhost:5432
+DatabaseConnection(host='localhost', port=5432)
+False
+localhost:5432?pwd=secret123</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+All Helper Functions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">dataclasses module utility functions.</p>
+<pre class="language-python"><code>from dataclasses import (
+    dataclass, fields, asdict, astuple,
+    replace, make_dataclass, is_dataclass, field
+)
+
+@dataclass
+class Product:
+    name: str
+    price: float
+    qty: int = 0
+
+p = Product('Apple', 1.5, 100)
+
+# fields() - inspect Field objects
+for f in fields(p):
+    print(f'{f.name}: type={f.type}, default={f.default}')
+
+# asdict() - recursive dict conversion
+print(asdict(p))
+
+# astuple() - recursive tuple conversion
+print(astuple(p))
+
+# replace() - copy with changes
+p2 = replace(p, price=2.0, qty=50)
+print(p2)
+
+# is_dataclass()
+print(is_dataclass(Product))   # True
+print(is_dataclass(p))         # True
+print(is_dataclass(dict))      # False
+
+# make_dataclass() - create dynamically
+Point = make_dataclass('Point', ['x', 'y'])
+pt = Point(1, 2)
+print(pt)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>name: type=str, default=MISSING
+price: type=float, default=MISSING
+qty: type=int, default=0
+{'name': 'Apple', 'price': 1.5, 'qty': 100}
+('Apple', 1.5, 100)
+Product(name='Apple', price=2.0, qty=50)
+True
+True
+False
+Point(x=1, y=2)</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why use default_factory instead of a mutable default?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Mutable defaults (like `field: list = []`) are shared across all instances — a classic Python bug. `default_factory=list` calls `list()` for each new instance, giving each its own list. This mirrors the mutable default argument trap.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When to use dataclass vs NamedTuple vs plain class?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Use dataclass for mutable data with behavior, validation, and flexibility. Use NamedTuple for immutable records that need tuple-like unpacking. Use plain class for complex logic. Dataclasses are the modern default for simple data containers.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="dunder---magic-methods.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Dunder / Magic Methods</span></a>
+                    <a href="exceptions.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Exceptions</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

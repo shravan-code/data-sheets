@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Lists — All Methods — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 3: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Lists — All Methods</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Lists are ordered, mutable sequences. They can contain mixed types.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Adding Elements: append, extend, insert</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Add single items, merge iterables, or inject at specific positions. append() is O(1), while insert() is O(n).</p>
+<pre class="language-python"><code>lst = [1, 2]
+lst.append(3)         # [1, 2, 3]
+lst.extend([4, 5])    # [1, 2, 3, 4, 5]
+lst.insert(0, 0)      # [0, 1, 2, 3, 4, 5]
+print(lst)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Removing Elements: pop, remove, clear</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Remove items by index (pop), value (remove), or wipe the entire list. pop() from the end is O(1); remove() is O(n).</p>
+<pre class="language-python"><code>lst = [10, 20, 30, 40]
+print(lst.pop())      # 40 (removes last)
+print(lst.pop(0))     # 10 (removes index 0)
+lst.remove(30)        # removes value 30
+print(lst)            # [20]
+lst.clear()           # empty the list
+print(lst)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>40
+10
+[20]
+[]</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Searching: index & count</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Find the position of an item or count its occurrences. Both operations are O(n).</p>
+<pre class="language-python"><code>lst = ['a', 'b', 'a', 'c']
+print(lst.index('b')) # 1
+print(lst.count('a')) # 2</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Ordering: sort & reverse</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">sort() modifies the list in-place (Timsort, O(n log n)). reverse() flips the order in-place (O(n)).</p>
+<pre class="language-python"><code>lst = [3, 1, 4, 2]
+lst.sort()            # [1, 2, 3, 4]
+print(lst)
+lst.reverse()         # [4, 3, 2, 1]
+print(lst)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+sorted() vs sort()</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">sorted() returns new list; sort() modifies in-place.</p>
+<pre class="language-python"><code>nums = [3, 1, 4, 1, 5]
+result = sorted(nums)          # new list
+print(nums)                    # original unchanged
+print(result)
+
+# Sort strings by length
+words = ['banana', 'apple', 'fig', 'cherry']
+print(sorted(words, key=len))
+
+# Sort by multiple criteria
+people = [('Alice', 30), ('Bob', 25), ('Charlie', 30)]
+print(sorted(people, key=lambda x: (x[1], x[0])))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[3, 1, 4, 1, 5]
+[1, 1, 3, 4, 5]
+['fig', 'apple', 'banana', 'cherry']
+[('Bob', 25), ('Alice', 30), ('Charlie', 30)]</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Shallow vs Deep Copy</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Shallow copy copies the list but not nested objects. Deep copy copies everything.</p>
+<pre class="language-python"><code>import copy
+
+# Shallow copy - nested objects still shared
+original = [[1, 2], [3, 4]]
+shallow = original.copy()  # or list(original) or original[:]
+shallow[0].append(99)
+print(original)  # [[1,2,99],[3,4]] - inner list affected!
+
+# Deep copy - fully independent
+original2 = [[1, 2], [3, 4]]
+deep = copy.deepcopy(original2)
+deep[0].append(99)
+print(original2)  # [[1,2],[3,4]] - unchanged</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[[1, 2, 99], [3, 4]]
+[[1, 2], [3, 4]]</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the time complexity of list operations?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">append: O(1) amortized, pop from end: O(1), pop from index: O(n), insert at index: O(n), index lookup by index: O(1), search by value: O(n), sort: O(n log n).</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How is list.sort() different from sorted()?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">list.sort() modifies the list in-place and returns None. sorted() returns a new list and works on any iterable. Both accept key and reverse parameters. list.sort() is slightly faster since it doesn't create a new list.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="comprehensions.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Comprehensions</span></a>
+                    <a href="tuples--all-methods.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Tuples — All Methods</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

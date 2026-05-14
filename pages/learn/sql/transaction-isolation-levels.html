@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Transaction Isolation Levels — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <aside class="hidden lg:block w-64 pr-8 border-r border-outline-variant sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto">
+            
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="code-2" class="w-4 h-4"></i>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/python.html" class="sb-link"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>Python</a>
+                <a href="../../../pages/learn/sql.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5"></i>SQL</a>
+                <a href="../../../pages/learn/bash.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>Bash</a>
+                <a href="../../../pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers" class="w-3.5 h-3.5"></i>Fundamentals</a>
+                <a href="../../../pages/learn/dsa-de.html" class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="bot" class="w-4 h-4"></i>
+                Artificial Intelligence
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/agents.html" class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5"></i>AI Agents</a>
+                <a href="../../../pages/roadmaps/ai-engineer.html" class="sb-link"><i data-lucide="map" class="w-3.5 h-3.5"></i>AI Roadmap</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="hammer" class="w-4 h-4"></i>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>Practice Hub</a>
+            </nav>
+        
+        </aside>
+
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0 flex-1">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl mx-auto">
+                <a href="../sql.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-[10px] font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-12 group no-underline uppercase tracking-widest">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to SQL Hub
+                </a>
+
+                <header class="mb-16">
+                    <div class="text-[10px] font-bold text-secondary-fixed uppercase tracking-[0.3em] mb-4 opacity-70">SQL Mastery • Section 22</div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-on-surface mb-8 tracking-tight leading-tight">
+                        Transaction Isolation Levels
+                    </h1>
+                </header>
+
+                <article class="prose max-w-none pb-20">
+                    <p class="text-xl text-on-surface-variant mb-10 font-medium leading-relaxed border-l-4 border-secondary-fixed/30 pl-8 py-2 bg-secondary-fixed/5 rounded-r-2xl">Transactions ensure that a sequence of database operations are treated as a single unit of work. This follows the ACID properties, guaranteeing that either all operations succeed or none are applied, maintaining absolute data integrity.</p>
+                </article>
+
+                <div class="nav-container border-t border-outline-variant pt-10">
+                    <a href="acid-properties.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">ACID Properties</span></a>
+                    <a href="deadlocks.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Deadlocks</span></a>
+                </div>
+            </main>
+        </div>
+
+        <aside class="toc-container hidden xl:block w-64 pl-8 sticky top-24 h-[calc(100vh-6rem)]">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list border-l border-outline-variant"></ul>
+        </aside>
+    </div>
+
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

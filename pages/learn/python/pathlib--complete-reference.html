@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>pathlib — Complete Reference — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 11: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">pathlib — Complete Reference</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Path Object — All Properties & Methods</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">pathlib provides an OOP interface to file system paths.</p>
+<pre class="language-python"><code>from pathlib import Path
+
+# Construction
+p = Path('/home/user/documents/report.pdf')
+
+# Properties
+print(p.name)       # report.pdf
+print(p.stem)       # report
+print(p.suffix)     # .pdf
+print(p.suffixes)   # ['.pdf']
+print(p.parent)     # /home/user/documents
+print(p.parents[0]) # /home/user/documents
+print(p.parents[1]) # /home/user
+print(p.root)       # /
+print(p.anchor)     # /
+print(p.parts)      # ('/', 'home', 'user', 'documents', 'report.pdf')
+print(p.drive)      # '' (empty on Unix)
+
+# Build paths with / operator
+base = Path('/home/user')
+doc = base / 'documents' / 'report.pdf'
+print(doc)
+
+# Modify path
+print(p.with_name('summary.pdf'))     # change filename
+print(p.with_stem('summary'))         # change stem (3.9+)
+print(p.with_suffix('.txt'))          # change extension</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>report.pdf
+report
+.pdf
+['.pdf']
+/home/user/documents
+/home/user/documents
+/home/user
+/
+/
+('/', 'home', 'user', 'documents', 'report.pdf')
+
+/home/user/documents/report.pdf
+/home/user/documents/summary.pdf
+/home/user/documents/summary.pdf
+/home/user/documents/report.txt</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Path I/O and Filesystem Operations</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Read, write, and navigate the filesystem with Path objects.</p>
+<pre class="language-python"><code>from pathlib import Path
+
+# Create and write files
+p = Path('/tmp/test_pathlib.txt')
+p.write_text('Hello, pathlib!')
+
+# Read
+print(p.read_text())
+
+# Exists and type checks
+print(p.exists())    # True
+print(p.is_file())   # True
+print(p.is_dir())    # False
+
+# Stat info
+stat = p.stat()
+print(f'Size: {stat.st_size} bytes')
+
+# Directory operations
+dir_path = Path('/tmp/test_dir')
+dir_path.mkdir(exist_ok=True)
+(dir_path / 'file1.txt').write_text('File 1')
+(dir_path / 'file2.txt').write_text('File 2')
+(dir_path / 'subdir').mkdir(exist_ok=True)
+
+# List directory
+for item in dir_path.iterdir():
+    print(f'{item.name}: {"dir" if item.is_dir() else "file"}')
+
+# Glob patterns
+for txt in dir_path.glob('*.txt'):
+    print(txt.name)
+
+# Recursive glob
+for f in dir_path.rglob('*'):
+    print(f.relative_to(dir_path))
+
+# Cleanup
+p.unlink()
+import shutil
+shutil.rmtree(dir_path)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Hello, pathlib!
+True
+True
+False
+Size: 16 bytes
+file1.txt: file
+file2.txt: file
+subdir: dir
+file1.txt
+file2.txt
+file1.txt
+file2.txt
+subdir</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why use pathlib over os.path?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">pathlib provides an OOP interface — paths are objects with methods, not strings. The / operator for joining is cleaner than os.path.join(). Methods like .read_text(), .write_text() simplify file I/O. Path objects work across OS. For new code, pathlib is always preferred.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="os-module--complete.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">os Module — Complete</span></a>
+                    <a href="threading.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Threading</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

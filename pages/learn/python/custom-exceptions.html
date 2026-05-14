@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Custom Exceptions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 6: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Custom Exceptions</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Creating Custom Exception Hierarchies</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Subclass Exception to create domain-specific errors.</p>
+<pre class="language-python"><code># Base application exception
+class AppError(Exception):
+    """Base class for all application errors."""
+    pass
+
+class ValidationError(AppError):
+    def __init__(self, field, message):
+        self.field = field
+        self.message = message
+        super().__init__(f'{field}: {message}')
+
+class DatabaseError(AppError):
+    def __init__(self, query, original_error):
+        self.query = query
+        super().__init__(f'DB error on query "{query}"')
+        self.__cause__ = original_error
+
+class NotFoundError(DatabaseError):
+    pass
+
+# Usage
+try:
+    raise ValidationError('email', 'Invalid format')
+except ValidationError as e:
+    print(f'Field: {e.field}')
+    print(f'Error: {e.message}')
+except AppError as e:
+    print(f'App error: {e}')
+
+# Check hierarchy
+err = NotFoundError('SELECT *', Exception('connection refused'))
+print(isinstance(err, AppError))      # True
+print(isinstance(err, DatabaseError)) # True</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Field: email
+Error: Invalid format
+True
+True</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why create custom exceptions?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Custom exceptions allow callers to catch specific error types from your library without catching unrelated built-in exceptions. They carry domain-specific context (like field name in ValidationError), and enable building clean exception hierarchies that mirror your application's domain.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="exceptions.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Exceptions</span></a>
+                    <a href="logging.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Logging</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

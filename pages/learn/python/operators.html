@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Operators — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 1: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Operators</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Python supports arithmetic, comparison, logical, bitwise, assignment, identity, and membership operators.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Arithmetic: Basic Math</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Standard operations like addition, subtraction, multiplication, and division. Division (/) always returns a float.</p>
+<pre class="language-python"><code>print(10 + 3)   # 13
+print(10 - 3)   # 7
+print(10 * 3)   # 30
+print(10 / 3)   # 3.333...</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>13
+7
+30
+3.3333333333333335</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Arithmetic: Advanced Math</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Floor division (//) truncates results; modulo (%) returns the remainder; exponentiation (**) raises to power.</p>
+<pre class="language-python"><code>print(10 // 3)  # 3
+print(10 % 3)   # 1
+print(2 ** 3)   # 8</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Comparison Operators</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Return boolean values. Python supports chained comparisons.</p>
+<pre class="language-python"><code>print(5 == 5)    # True
+print(5 != 3)    # True
+print(5 &gt; 3)     # True
+print(5 &lt; 3)     # False
+print(5 &gt;= 5)    # True
+print(5 &lt;= 4)    # False
+
+# Chained comparison (Pythonic!)
+x = 5
+print(1 &lt; x &lt; 10)   # True
+print(1 &lt; x &lt; 4)    # False</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Logical Operators</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">and, or, not with short-circuit evaluation. Return the actual values, not just True/False.</p>
+<pre class="language-python"><code># Short-circuit: returns first falsy for 'and', first truthy for 'or'
+print(True and False)   # False
+print(True or False)    # True
+print(not True)         # False
+
+# Returns actual values (useful pattern)
+print(0 or 'default')   # 'default' (0 is falsy)
+print(5 or 'default')   # 5 (5 is truthy)
+print(None and 'never') # None (short-circuits)
+print([] or {} or 42)   # 42 (first truthy)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>False
+True
+False
+default
+5
+None
+42</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Bitwise Operators</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Operate on integer bits directly.</p>
+<pre class="language-python"><code>a, b = 0b1010, 0b1100  # 10 and 12
+print(bin(a &amp; b))   # AND:  0b1000 = 8
+print(bin(a | b))   # OR:   0b1110 = 14
+print(bin(a ^ b))   # XOR:  0b0110 = 6
+print(bin(~a))      # NOT:  -11 (two's complement)
+print(bin(a &lt;&lt; 1))  # Left shift:  0b10100 = 20
+print(bin(a &gt;&gt; 1))  # Right shift: 0b0101 = 5</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>0b1000
+0b1110
+0b110
+-0b1011
+0b10100
+0b101</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Identity & Membership</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">is/is not for object identity; in/not in for membership testing.</p>
+<pre class="language-python"><code># Identity
+a = [1, 2]
+b = a
+c = [1, 2]
+print(a is b)    # True - same object
+print(a is c)    # False - different objects
+print(a == c)    # True - equal values
+
+# Membership
+print(3 in [1, 2, 3])        # True
+print('py' in 'python')      # True
+print('key' in {'key': 1})   # True (checks keys)
+print(5 not in range(3))     # True</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>True
+False
+True
+True
+True
+True
+True</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is operator precedence in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">From highest to lowest: ** (exponent), ~+- (unary), */%// , +-, <<>>, &, ^, |, comparisons, not, and, or. Use parentheses to make intent explicit.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How does Python's `or` operator work for default values?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">`x = value or default` returns `value` if truthy, else `default`. But beware: if value is 0, '', [], etc. (valid but falsy), it returns default unexpectedly. Prefer `x = value if value is not None else default` for precision.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="variables-and-data-types.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Variables & Data Types</span></a>
+                    <a href="strings--all-methods.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Strings — All Methods</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

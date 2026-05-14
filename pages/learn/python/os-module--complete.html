@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>os Module — Complete — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 11: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">os Module — Complete</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+File & Directory Operations</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Core file system operations via the os module.</p>
+<pre class="language-python"><code>import os
+
+# Current directory
+print(os.getcwd())
+
+# List directory
+files = os.listdir('.')
+print(files[:3])
+
+# scandir - richer than listdir
+for entry in os.scandir('.'):
+    print(f'{entry.name}: isfile={entry.is_file()}')
+    break  # just first entry
+
+# os.walk - recursive tree traversal
+for root, dirs, files in os.walk('/tmp', topdown=True):
+    print(f'Dir: {root}')
+    print(f'  Subdirs: {dirs}')
+    print(f'  Files: {files}')
+    break  # just root level
+
+# Create / remove directories
+os.makedirs('/tmp/test/nested', exist_ok=True)
+print(os.path.exists('/tmp/test/nested'))  # True
+os.removedirs('/tmp/test/nested')          # removes empty dirs
+
+# File operations
+with open('/tmp/test.txt', 'w') as f:
+    f.write('hello')
+os.rename('/tmp/test.txt', '/tmp/test2.txt')
+print(os.path.exists('/tmp/test2.txt'))  # True
+os.remove('/tmp/test2.txt')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>/home/user
+['file1.py', 'file2.py', 'dir1']
+file1.py: isfile=True
+Dir: /tmp
+  Subdirs: ['test']
+  Files: []
+True
+True</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+os.path — All Methods</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Path manipulation without creating Path objects.</p>
+<pre class="language-python"><code>import os
+
+path = '/home/user/documents/report.pdf'
+
+# Decompose path
+print(os.path.dirname(path))     # /home/user/documents
+print(os.path.basename(path))    # report.pdf
+print(os.path.split(path))       # ('/home/user/documents', 'report.pdf')
+print(os.path.splitext(path))    # ('/home/user/documents/report', '.pdf')
+
+# Join paths (OS-safe)
+print(os.path.join('/home', 'user', 'file.txt'))
+
+# Check existence
+print(os.path.exists('/tmp'))
+print(os.path.isfile('/tmp'))
+print(os.path.isdir('/tmp'))
+
+# Normalize and resolve
+print(os.path.abspath('.'))
+print(os.path.normpath('/home/user/../user/./docs'))
+print(os.path.expanduser('~'))
+print(os.path.expandvars('$HOME/docs'))
+
+# Relative path
+print(os.path.relpath('/home/user/docs', '/home/user'))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>/home/user/documents
+report.pdf
+('/home/user/documents', 'report.pdf')
+('/home/user/documents/report', '.pdf')
+/home/user/file.txt
+True
+False
+True
+/home/user/current_dir
+/home/user/docs
+/home/user
+/home/user/docs
+docs</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Environment Variables & Process</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Access and manipulate environment variables and process info.</p>
+<pre class="language-python"><code>import os
+
+# Environment variables
+print(os.environ.get('HOME', '/default'))
+print(os.environ.get('NONEXISTENT', 'fallback'))
+
+# Set/unset
+os.environ['MY_APP_ENV'] = 'production'
+print(os.getenv('MY_APP_ENV'))   # production
+
+# Process info
+print(os.getpid())         # current process ID
+print(os.cpu_count())      # number of CPUs
+print(os.name)             # 'posix' or 'nt'
+
+# System constants
+print(repr(os.sep))        # '/' on Unix, '\\' on Windows
+print(repr(os.linesep))    # '\n' on Unix, '\r\n' on Windows
+print(repr(os.pathsep))    # ':' on Unix, ';' on Windows
+print(os.curdir, os.pardir)  # . and ..
+print(os.devnull)          # /dev/null</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>/home/user
+fallback
+production
+12345
+8
+posix
+'/'
+'\n'
+':'
+. ..
+/dev/null</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="userdict-userlist-userstring.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">UserDict, UserList, UserString</span></a>
+                    <a href="pathlib--complete-reference.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">pathlib — Complete Reference</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

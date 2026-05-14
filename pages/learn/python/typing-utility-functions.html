@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Typing Utility Functions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 9: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Typing Utility Functions</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+cast, overload, get_type_hints, TYPE_CHECKING</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Runtime typing utilities and static analysis helpers.</p>
+<pre class="language-python"><code>from typing import cast, overload, get_type_hints, TYPE_CHECKING
+
+# cast - tell type checker the type (no runtime effect)
+data = [1, 2, 3]
+data_as_list = cast(list[int], data)
+print(type(data_as_list))  # still list, cast is a no-op at runtime
+
+# overload - multiple type signatures
+@overload
+def process(x: int) -&gt; int: ...
+@overload
+def process(x: str) -&gt; str: ...
+def process(x):
+    if isinstance(x, int):
+        return x * 2
+    return x.upper()
+
+print(process(5))
+print(process('hello'))
+
+# TYPE_CHECKING - avoid circular imports
+if TYPE_CHECKING:
+    from collections import OrderedDict  # only imported for type checkers
+
+# get_type_hints - resolve annotations at runtime
+def example(x: int, y: str) -&gt; bool:
+    pass
+
+print(get_type_hints(example))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'list'&gt;
+10
+HELLO
+{'x': &lt;class 'int'&gt;, 'y': &lt;class 'str'&gt;, 'return': &lt;class 'bool'&gt;}</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between Protocol and ABC?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">ABC (Abstract Base Class) requires explicit inheritance: `class MyClass(MyABC)`. Protocol uses structural subtyping — if an object has the right methods/attributes, it satisfies the Protocol without inheritance. Protocol is the Pythonic way to formalize duck typing. ABCs are better for enforcing that subclasses implement required methods.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Does Python enforce type hints at runtime?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">No. Type hints are purely for static analysis tools (mypy, pyright) and IDE support. Python ignores them at runtime unless you use a library like pydantic or beartype. You can access annotations via __annotations__ or get_type_hints().</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="typeddict-literal-annotated.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">TypedDict, Literal, Annotated</span></a>
+                    <a href="deque--double-ended-queue.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">deque — Double-Ended Queue</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

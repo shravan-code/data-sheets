@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>11. Pipeline Observability — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">11. Pipeline Observability</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Logging, metrics, lineage, and health dashboards.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Pipeline Logging Design</h2>
+<br>
+<pre><code class="language-python">
+import logging
+import json
+import time
+from contextlib import contextmanager
+
+# Structured logging for machine-readable logs
+class PipelineLogger:
+    def __init__(self, pipeline_name: str, run_id: str):
+        self.pipeline_name = pipeline_name
+        self.run_id = run_id
+        self.logger = logging.getLogger(pipeline_name)
+    
+    def _log(self, level: str, message: str, **kwargs):
+        log_entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "level": level,
+            "pipeline": self.pipeline_name,
+            "run_id": self.run_id,
+            "message": message,
+            **kwargs
+        }
+        getattr(self.logger, level.lower())(json.dumps(log_entry))
+    
+    def info(self, msg: str, **kwargs): self._log("INFO", msg, **kwargs)
+    def warning(self, msg: str, **kwargs): self._log("WARNING", msg, **kwargs)
+    def error(self, msg: str, **kwargs): self._log("ERROR", msg, **kwargs)
+    
+    @contextmanager
+    def task(self, task_name: str):
+        start = time.time()
+        self.info(f"Task started: {task_name}", task=task_name)
+        try:
+            yield
+            duration = time.time() - start
+            self.info(f"Task completed: {task_name}", task=task_name, duration_seconds=duration)
+        except Exception as e:
+            duration = time.time() - start
+            self.error(f"Task failed: {task_name}", task=task_name, error=str(e), duration_seconds=duration)
+            raise
+
+# Usage
+logger = PipelineLogger("orders_pipeline", run_id="2024-01-15-001")
+
+with logger.task("extract_orders"):
+    df = extract_from_source()
+
+with logger.task("validate"):
+    result = validate_ingested_data(df)
+    logger.info("Validation complete", rows=len(df), valid_rows=result.valid_row_count)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Metrics to Track</h2>
+<br>
+<pre><code class="language-python">
+# Key pipeline metrics with Prometheus-style counters
+from prometheus_client import Counter, Histogram, Gauge, push_to_gateway
+
+# Counters
+records_processed = Counter("pipeline_records_processed_total", "Records processed", ["pipeline", "stage"])
+records_failed = Counter("pipeline_records_failed_total", "Records failed", ["pipeline", "stage", "error_type"])
+
+# Histograms (latency)
+task_duration = Histogram("pipeline_task_duration_seconds", "Task duration", ["pipeline", "task"])
+
+# Gauges (current state)
+pipeline_lag = Gauge("pipeline_lag_seconds", "Seconds behind real-time", ["pipeline"])
+
+# In pipeline code:
+def instrumented_process(records: list, pipeline: str) -&gt; list:
+    with task_duration.labels(pipeline=pipeline, task="process").time():
+        results = []
+        for rec in records:
+            try:
+                results.append(transform(rec))
+                records_processed.labels(pipeline=pipeline, stage="process").inc()
+            except Exception as e:
+                records_failed.labels(
+                    pipeline=pipeline, stage="process", error_type=type(e).__name__
+                ).inc()
+        return results
+
+# Push metrics to Pushgateway
+push_to_gateway("http://pushgateway:9091", job="orders_pipeline", registry=REGISTRY)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Data Lineage Tracking</h2>
+<br>
+<pre><code class="language-python">
+# Simple lineage metadata tracking
+from dataclasses import dataclass
+from typing import Optional, List
+
+@dataclass
+class LineageEvent:
+    pipeline: str
+    run_id: str
+    task: str
+    input_dataset: str
+    output_dataset: str
+    input_row_count: int
+    output_row_count: int
+    transformation_logic: str
+    executed_at: str
+    upstream_run_ids: Optional[List[str]] = None
+
+def track_lineage(event: LineageEvent, lineage_db_conn):
+    """Persist lineage event to lineage database (e.g., Marquez, OpenLineage)."""
+    lineage_db_conn.execute("""
+        INSERT INTO pipeline_lineage 
+        (pipeline, run_id, task, input_dataset, output_dataset,
+         input_rows, output_rows, logic, executed_at)
+        VALUES (%(pipeline)s, %(run_id)s, %(task)s, %(input_dataset)s, %(output_dataset)s,
+                %(input_row_count)s, %(output_row_count)s, %(transformation_logic)s, %(executed_at)s)
+    """, event.__dict__)
+
+# OpenLineage integration (standard lineage protocol)
+from openlineage.client import OpenLineageClient
+from openlineage.client.run import RunEvent, RunState, Run, Job
+
+client = OpenLineageClient.from_environment()
+
+def emit_openlineage_start(job_name: str, run_id: str):
+    client.emit(RunEvent(
+        eventType=RunState.START,
+        eventTime=datetime.utcnow().isoformat(),
+        run=Run(runId=run_id),
+        job=Job(namespace="my_pipeline", name=job_name),
+        inputs=[],
+        outputs=[],
+    ))
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="data-quality-in-pipelines.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">10. Data Quality in Pipelines</span>
+            </a>
+            
+            <a href="performance-optimization.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">12. Performance & Optimization</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

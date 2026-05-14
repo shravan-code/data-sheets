@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7. Streaming Concepts — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">7. Streaming Concepts</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Event time, windowing, watermarks, and exactly-once semantics.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Event Streaming vs Message Queue</h2>
+<ul>
+    <li><strong>Message Queue (RabbitMQ, SQS):</strong> Designed for task queuing. Once a message is read by a consumer, it is deleted. Good for async microservices.</li>
+    <li><strong>Event Stream (Kafka, Kinesis):</strong> An immutable, append-only log of events. Messages are kept for a retention period (e.g., 7 days) and can be read by multiple different consumers simultaneously. You can also "rewind" and replay events.</li>
+</ul>
+
+<h2>Event Time vs Processing Time</h2>
+<div class="my-6 p-4 border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-slate-800 dark:text-slate-200">
+    <p class="mb-2"><strong>Event Time:</strong> The exact timestamp when the event actually occurred on the device (e.g., when the user clicked the button on their phone while offline in a tunnel).</p>
+    <p><strong>Processing Time:</strong> The timestamp when your streaming server finally receives and processes the event (e.g., when the user exits the tunnel and regains signal, pushing the event 10 minutes later).</p>
+    <p class="text-sm mt-2 opacity-80">Robust streaming systems MUST calculate metrics based on Event Time.</p>
+</div>
+
+<h2>Windowing</h2>
+<p>Streaming data never ends. To calculate aggregates (like "clicks per minute"), we cut the stream into "windows".</p>
+<ul>
+    <li><strong>Tumbling Window:</strong> Fixed-size, non-overlapping windows. (e.g., 1:00-1:05, 1:05-1:10).</li>
+    <li><strong>Sliding Window:</strong> Overlapping windows. (e.g., a 5-minute window that slides every 1 minute).</li>
+    <li><strong>Session Window:</strong> Dynamic windows based on user activity. It groups events separated by a period of inactivity (e.g., group all clicks until the user goes idle for 30 mins).</li>
+</ul>
+
+<h2>Watermarking & Late-arriving Data</h2>
+<p>If an event happened at 1:04 PM but arrives at the server at 1:15 PM due to network lag, how long should the 1:00-1:05 window wait before closing?</p>
+<p>A <strong>Watermark</strong> is a threshold. If we set a watermark of 10 minutes, the 1:05 window won't be closed and finalized until the system sees an event with an event time of 1:15. Any data arriving later than the watermark is ignored or sent to a dead-letter queue.</p>
+
+<h2>Delivery Semantics</h2>
+<ul>
+    <li><strong>At-most-once:</strong> Fire and forget. Messages might be lost, but never duplicated.</li>
+    <li><strong>At-least-once:</strong> Guaranteed delivery. Messages will not be lost, but might be processed multiple times if a crash occurs. (Requires idempotent downstream pipelines).</li>
+    <li><strong>Exactly-once:</strong> The holy grail. Guaranteed delivery with zero duplicates. Very complex and adds latency, supported by modern Kafka and Flink via transactional states.</li>
+</ul>
+        
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="processing-concepts.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">6. Data Processing Concepts</span>
+        </a>
+        
+        <a href="data-quality.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">8. Data Quality</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

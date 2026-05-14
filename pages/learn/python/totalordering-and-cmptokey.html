@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>total_ordering and cmp_to_key — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 8: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">total_ordering and cmp_to_key</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+total_ordering</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Fill in missing comparison methods automatically.</p>
+<pre class="language-python"><code>from functools import total_ordering
+
+@total_ordering
+class Version:
+    def __init__(self, major, minor, patch):
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+    
+    def __eq__(self, other):
+        return (self.major, self.minor, self.patch) == \
+               (other.major, other.minor, other.patch)
+    
+    def __lt__(self, other):  # only need eq + one comparison
+        return (self.major, self.minor, self.patch) &lt; \
+               (other.major, other.minor, other.patch)
+    
+    def __repr__(self):
+        return f'v{self.major}.{self.minor}.{self.patch}'
+
+v1 = Version(1, 0, 0)
+v2 = Version(2, 0, 0)
+v3 = Version(1, 5, 3)
+
+print(v1 &lt; v2)    # True
+print(v1 &gt; v2)    # False  (generated!)
+print(v1 &lt;= v3)   # True   (generated!)
+print(sorted([v2, v1, v3]))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>True
+False
+True
+[v1.0.0, v1.5.3, v2.0.0]</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="reduce.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">reduce</span></a>
+                    <a href="singledispatch.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">singledispatch</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>1. Fundamentals — System Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: isDark ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../system-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to System Design
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">1. Fundamentals</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">The foundation of architecture: FR, NFR, Estimation, and Metrics.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Core Architecture Concepts</h2>
+<p>Before diving into specific technologies, we must understand the "why" behind system design. Every architectural decision is a trade-off between competing goals.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
+    <div class="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl">
+        <h3 class="font-bold text-blue-800 dark:text-blue-400">Functional Requirements (FR)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The specific behaviors of the system. "What the system does."</p>
+        <ul class="text-xs mt-3 space-y-1 text-slate-500">
+            <li>• User can search for products</li>
+            <li>• System sends email notification</li>
+            <li>• User can process a payment</li>
+        </ul>
+    </div>
+    <div class="p-6 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800 rounded-xl">
+        <h3 class="font-bold text-purple-800 dark:text-purple-400">Non-Functional Requirements (NFR)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The constraints or quality attributes. "How the system performs."</p>
+        <ul class="text-xs mt-3 space-y-1 text-slate-500">
+            <li>• Scalability: Handle 100k concurrent users</li>
+            <li>• Availability: 99.99% uptime</li>
+            <li>• Latency: Search results in < 200ms</li>
+        </ul>
+    </div>
+</div>
+
+<h3>Back of the Envelope Estimation</h3>
+<p>System designers use quick calculations to estimate resource needs. Key constants to remember:</p>
+<div class="overflow-x-auto my-6 not-prose">
+    <table class="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
+        <thead class="bg-slate-100 dark:bg-slate-800 uppercase text-xs">
+            <tr>
+                <th class="px-4 py-2">Operation</th>
+                <th class="px-4 py-2">Approx. Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="px-4 py-2">L1 Cache Reference</td><td class="px-4 py-2">0.5 ns</td></tr>
+            <tr><td class="px-4 py-2">Main Memory Reference</td><td class="px-4 py-2">100 ns</td></tr>
+            <tr><td class="px-4 py-2">SSD Random Read</td><td class="px-4 py-2">16,000 ns (16 µs)</td></tr>
+            <tr><td class="px-4 py-2">Round trip in same datacenter</td><td class="px-4 py-2">500,000 ns (0.5 ms)</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<h3>Service Level Agreements (SLA)</h3>
+<p>How we measure and guarantee system performance:</p>
+<ul>
+    <li><strong>SLI (Indicator):</strong> The actual metric being measured (e.g., Latency).</li>
+    <li><strong>SLO (Objective):</strong> The target value for the indicator (e.g., Latency < 100ms).</li>
+    <li><strong>SLA (Agreement):</strong> The contract with the customer (e.g., "If SLO is missed, we pay you back").</li>
+</ul>
+
+<div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
+<div class="mermaid text-center">
+graph LR
+    U[User] -- "Latency (SLI)" --> S[System]
+    S -- "Target: 99.9% (SLO)" --> B[Business Goal]
+    B -- "Contract" --> C[SLA]
+</div>
+</div>
+        
+        </div>
+    
+    <div class="nav-container">
+        <div></div>
+        
+        <a href="scalability.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">2. Scalability</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

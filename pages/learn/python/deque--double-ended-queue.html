@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>deque — Double-Ended Queue — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 10: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">deque — Double-Ended Queue</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+All deque Methods</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">deque provides O(1) appends and pops from both ends. Lists are O(n) for left operations.</p>
+<pre class="language-python"><code>from collections import deque
+
+# Creation
+d = deque([1, 2, 3, 4, 5])
+print(d)
+
+# append/appendleft
+d.append(6)
+d.appendleft(0)
+print(d)
+
+# pop/popleft
+d.pop()       # removes 6
+d.popleft()   # removes 0
+print(d)
+
+# extend/extendleft
+d.extend([6, 7])
+d.extendleft([-1, -2])  # note: each item appended left -&gt; reversed!
+print(d)
+
+# rotate(n) - right rotation if n&gt;0, left if n&lt;0
+d2 = deque([1,2,3,4,5])
+d2.rotate(2)
+print(d2)   # [4,5,1,2,3]
+d2.rotate(-2)
+print(d2)   # back to [1,2,3,4,5]
+
+# maxlen - sliding window
+window = deque(maxlen=3)
+for i in range(6):
+    window.append(i)
+    print(list(window))
+
+# Other methods
+d3 = deque([1,2,3,2,1])
+print(d3.count(2))         # 2
+print(d3.index(3))         # 2
+d3.insert(2, 99)
+print(d3)
+d3.remove(99)
+d3.reverse()
+print(d3)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>deque([1, 2, 3, 4, 5])
+deque([0, 1, 2, 3, 4, 5, 6])
+deque([1, 2, 3, 4, 5])
+deque([-2, -1, 1, 2, 3, 4, 5, 6, 7])
+deque([4, 5, 1, 2, 3])
+deque([1, 2, 3, 4, 5])
+[0]
+[0, 1]
+[0, 1, 2]
+[1, 2, 3]
+[2, 3, 4]
+[3, 4, 5]
+2
+2
+deque([1, 2, 99, 3, 2, 1])
+deque([1, 2, 3, 2, 1])</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When use deque over list?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Use deque when you need O(1) appendleft/popleft (list is O(n) for these). Typical use cases: queues (FIFO), sliding windows with maxlen, breadth-first search, implementing undo history. For random access by index, list is still faster.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="typing-utility-functions.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Typing Utility Functions</span></a>
+                    <a href="ordereddict.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">OrderedDict</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

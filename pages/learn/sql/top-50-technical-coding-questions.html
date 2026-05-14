@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Top 50 Technical Coding Questions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <aside class="hidden lg:block w-64 pr-8 border-r border-outline-variant sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto">
+            
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="code-2" class="w-4 h-4"></i>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/python.html" class="sb-link"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>Python</a>
+                <a href="../../../pages/learn/sql.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5"></i>SQL</a>
+                <a href="../../../pages/learn/bash.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>Bash</a>
+                <a href="../../../pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers" class="w-3.5 h-3.5"></i>Fundamentals</a>
+                <a href="../../../pages/learn/dsa-de.html" class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="bot" class="w-4 h-4"></i>
+                Artificial Intelligence
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/agents.html" class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5"></i>AI Agents</a>
+                <a href="../../../pages/roadmaps/ai-engineer.html" class="sb-link"><i data-lucide="map" class="w-3.5 h-3.5"></i>AI Roadmap</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="hammer" class="w-4 h-4"></i>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>Practice Hub</a>
+            </nav>
+        
+        </aside>
+
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0 flex-1">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl mx-auto">
+                <a href="../sql.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-[10px] font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-12 group no-underline uppercase tracking-widest">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to SQL Hub
+                </a>
+
+                <header class="mb-16">
+                    <div class="text-[10px] font-bold text-secondary-fixed uppercase tracking-[0.3em] mb-4 opacity-70">SQL Mastery • Section 30</div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-on-surface mb-8 tracking-tight leading-tight">
+                        Top 50 Technical Coding Questions
+                    </h1>
+                </header>
+
+                <article class="prose max-w-none pb-20">
+                    <div class="space-y-8 mt-20">
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the second highest salary in the employees table.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the Nth highest salary (generalized solution).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find employees earning more than the average salary of their department.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Get the top 3 highest-paid employees per department.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find duplicate rows in the employees table based on name and dept_id.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Delete duplicate rows keeping only the one with the lowest emp_id.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find all employees who have no manager (top-level).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find all managers (employees who manage at least one person).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find departments with more than 5 employees.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Calculate running total of salary ordered by hire_date.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find month-over-month revenue growth.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find customers who made orders every month for the last 3 months.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the gap in a sequence of order IDs (find missing IDs).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find consecutive login days (islands of activity).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Calculate the median salary.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find products that have never been ordered.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find customers who bought product A but not product B.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to transpose/pivot monthly sales into columns.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the department with the highest average salary.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Compute a 3-day moving average of daily sales.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find employees hired in the last 30 days.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Calculate cumulative percentage of sales by product.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find all direct and indirect reports for a given manager (org hierarchy).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the first purchase date for each customer.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find customers who have not placed an order in the last 90 days.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Rank customers by total spend within each city.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find pairs of employees in the same department.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Calculate the percentage of orders by status.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the most recent order for each customer.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to find the employee with the maximum salary in each department.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find all orders where the order amount is above the customer's average.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Get employee salary difference from their manager's salary.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the category with the highest total revenue.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to detect salary anomalies (employees with salary > 2x dept average).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find customers who placed orders on consecutive days.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to compute year-over-year sales comparison.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Implement SCD Type 2 upsert logic in SQL.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find employees with the same salary.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the total sales per month and the cumulative total.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Get the top 5 customers by revenue and show what % of total revenue they represent.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to get the longest streak of profitable days.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write an incremental load query that only loads new/changed records.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find customers who have spent more than $10,000 lifetime and placed 5+ orders.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to create a date spine (every day for a year).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the most purchased product in each category.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Compute a cohort retention analysis (monthly cohorts).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find employees who joined the same month as another employee (same dept).</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a query to deduplicate a table and store results in a new table.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Find the average time between orders for each customer.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Write a full CDC-aware MERGE to sync a staging table to a target table.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Answer pending...</div>
+                    </div>
+                </div>
+</div>
+</div>
+                </article>
+
+                <div class="nav-container border-t border-outline-variant pt-10">
+                    <a href="top-50-conceptual-interview-questions.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Top 50 Conceptual Interview Questions</span></a>
+                    
+                </div>
+            </main>
+        </div>
+
+        <aside class="toc-container hidden xl:block w-64 pl-8 sticky top-24 h-[calc(100vh-6rem)]">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list border-l border-outline-variant"></ul>
+        </aside>
+    </div>
+
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

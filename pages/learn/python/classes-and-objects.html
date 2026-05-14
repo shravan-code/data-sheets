@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Classes & Objects — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 5: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Classes & Objects</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Python is an object-oriented programming language. Classes are blueprints for creating objects (instances). They encapsulate data (attributes) and behavior (methods) into a single logical unit.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+The Class Blueprint</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">A class is defined using the `class` keyword. It acts as a template. When you call the class, you create an 'instance' of that class.</p>
+<pre class="language-python"><code>class User:
+    pass
+
+# Creating instances
+user1 = User()
+user2 = User()
+
+print(type(user1))  # &lt;class '__main__.User'&gt;
+print(user1 == user2) # False (different objects in memory)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class '__main__.User'&gt;
+False</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+The __init__ Method & self</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">`__init__` is the constructor method called automatically when an object is created. `self` refers to the specific instance being created, allowing you to attach data to it.</p>
+<pre class="language-python"><code>class User:
+    def __init__(self, username, email):
+        self.username = username  # Instance attribute
+        self.email = email        # Instance attribute
+        self.is_active = True
+
+    def greet(self):
+        return f'Hello, I am {self.username}'
+
+user = User('johndoe', 'john@example.com')
+print(user.username)
+print(user.greet())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>johndoe
+Hello, I am johndoe</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Attributes: Class vs Instance</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Instance attributes are unique to each object. Class attributes are shared across all instances of the class.</p>
+<pre class="language-python"><code>class Employee:
+    company = 'Data Cake'  # Class Attribute
+
+    def __init__(self, name):
+        self.name = name   # Instance Attribute
+
+emp1 = Employee('Alice')
+emp2 = Employee('Bob')
+
+print(emp1.company)  # Data Cake
+print(emp2.company)  # Data Cake
+
+# Changing class attribute affects all
+Employee.company = 'Cake Tech'
+print(emp1.company)  # Cake Tech</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Methods: Instance, Class, and Static</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">1. Instance Methods: Take `self`. Access instance data. 2. Class Methods: Take `cls`. Access class-level data. 3. Static Methods: Take nothing. Pure utility functions.</p>
+<pre class="language-python"><code>class Calculator:
+    brand = 'Casio'
+
+    def __init__(self, version):
+        self.version = version
+
+    def get_version(self):
+        return f'Version: {self.version}'
+
+    @classmethod
+    def get_brand(cls):
+        return f'Brand: {cls.brand}'
+
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+calc = Calculator('v2.0')
+print(calc.get_version()) # Instance access
+print(Calculator.get_brand()) # Class access
+print(Calculator.add(5, 10))  # Static access</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Version: v2.0
+Brand: Casio
+15</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between @classmethod, @staticmethod, and instance method?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Instance method receives `self` (instance). @classmethod receives `cls` (class) — used for factory methods, alternative constructors. @staticmethod receives nothing special — it's a regular function in the class namespace, used for utility functions logically related to the class.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the purpose of 'self' in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">'self' represents the instance of the class. By using 'self', we can access the attributes and methods of the class in python. It binds the attributes with the given arguments. Python passes it automatically as the first argument when calling an instance method.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="generators.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Generators</span></a>
+                    <a href="inheritance.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Inheritance</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+/* Code Block Module */
+
+:root {
+    --code-bg: #ffffff;
+    --code-border: #e9ecef;
+    --code-header-bg: #f8f9fa;
+    --code-text: #1e293b;
+    --code-copy-btn: #64748b;
+    --code-copy-btn-hover: #0f172a;
+    --output-text: #334155;
+}
+
+.dark {
+    --code-bg: #000000;
+    --code-border: #30363d;
+    --code-header-bg: #0d1117;
+    --code-text: #e2e8f0;
+    --code-copy-btn: #94a3b8;
+    --code-copy-btn-hover: #f1f5f9;
+    --output-text: #cbd5e1;
+}
+
+/* Container */
+.ds-code-block {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    border: 1px solid var(--code-border);
+    background: var(--code-bg);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.ds-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: var(--code-header-bg);
+    border-bottom: 1px solid var(--code-border);
+}
+
+.ds-code-lang {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--on-surface-variant);
+    opacity: 0.8;
+}
+
+/* Copy Button */
+.ds-code-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    color: var(--code-copy-btn);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.ds-code-copy:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--code-copy-btn-hover);
+}
+
+.dark .ds-code-copy:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ds-code-copy i {
+    width: 14px;
+    height: 14px;
+}
+
+/* Pre/Code */
+.ds-code-block pre {
+    margin: 0 !important;
+    padding: 1.25rem !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow-x: auto;
+}
+
+.ds-code-block:has(.ds-output-label) pre:first-of-type {
+    padding-bottom: 0.5rem !important;
+}
+
+.ds-code-block code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+    color: var(--code-text) !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Token Colors Overrides for modern look */
+.dark .token.comment {
+    color: #6a9955 !important;
+}
+
+.dark .token.keyword {
+    color: #569cd6 !important;
+}
+
+.dark .token.function {
+    color: #dcdcaa !important;
+}
+
+.dark .token.string {
+    color: #ce9178 !important;
+}
+
+.dark .token.number {
+    color: #b5cea8 !important;
+}
+
+.dark .token.operator {
+    color: #d4d4d4 !important;
+}
+
+.dark .token.punctuation {
+    color: #d4d4d4 !important;
+}
+
+:root:not(.dark) .token.comment {
+    color: #38a169 !important;
+}
+
+:root:not(.dark) .token.keyword {
+    color: #3182ce !important;
+}
+
+:root:not(.dark) .token.function {
+    color: #805ad5 !important;
+}
+
+:root:not(.dark) .token.string {
+    color: #e53e3e !important;
+}
+
+:root:not(.dark) .token.number {
+    color: #dd6b20 !important;
+}
+
+:root:not(.dark) .token.operator {
+    color: #4a5568 !important;
+}
+
+/* Output Styling */
+.ds-output-label {
+    padding: 0.75rem 1.25rem 0.25rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ds-output-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-blue, #3b82f6);
+}
+
+.ds-output-block {
+    margin: 0 !important;
+    padding: 0 1.25rem 1.25rem !important;
+    background: transparent !important;
+    border-top: none !important;
+}
+
+.ds-output-block code {
+    color: var(--output-text) !important;
+}
+
+.ds-output-container {
+    padding: 0 1.25rem 1.25rem;
+    background: transparent;
+    overflow-x: auto;
+}
+
+.ds-output-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.ds-output-container th, 
+.ds-output-container td {
+    padding: 0.75rem;
+    border: 1px solid var(--code-border);
+    text-align: left;
+}
+
+.ds-output-container th {
+    background: var(--surface-container);
+    font-weight: 700;
+}
+
+.dark .token.punctuation {
+    color: #d4d4d4 !important;
+}
+
+:root:not(.dark) .token.comment {
+    color: #38a169 !important;
+}
+
+:root:not(.dark) .token.keyword {
+    color: #3182ce !important;
+}
+
+:root:not(.dark) .token.function {
+    color: #805ad5 !important;
+}
+
+:root:not(.dark) .token.string {
+    color: #e53e3e !important;
+}
+
+:root:not(.dark) .token.number {
+    color: #dd6b20 !important;
+}
+
+:root:not(.dark) .token.operator {
+    color: #4a5568 !important;
+}
+
+:root:not(.dark) .token.punctuation {
+    color: #4a5568 !important;
+}

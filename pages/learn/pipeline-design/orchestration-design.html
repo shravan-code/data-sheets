@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>9. Orchestration Design — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">9. Orchestration Design</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">DAGs, retry strategies, and dependency management.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>DAG Design Principles</h2>
+<br>
+<ul class="list-disc pl-5 my-4">
+<li><strong>Atomicity:</strong> Each task should do one thing well and be independently retriable.</li>
+<li><strong>Idempotency:</strong> Re-running any task produces the same result.</li>
+<li><strong>Minimal footprint:</strong> Don't pass large data through XCom — use external storage.</li>
+<li><strong>Observable:</strong> Each task should emit meaningful logs and metrics.</li>
+</ul>
+<br>
+<pre><code class="language-python">
+# Good DAG structure: clear, atomic tasks
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+
+with DAG("well_designed_dag", schedule_interval="@daily", start_date=datetime(2024,1,1)) as dag:
+    
+    # Each task is atomic, retriable, and observable
+    extract = PythonOperator(task_id="extract", python_callable=extract_fn)
+    validate = PythonOperator(task_id="validate", python_callable=validate_fn)
+    transform = PythonOperator(task_id="transform", python_callable=transform_fn)
+    load = PythonOperator(task_id="load", python_callable=load_fn)
+    notify = PythonOperator(task_id="notify", python_callable=notify_fn)
+    
+    extract &gt;&gt; validate &gt;&gt; transform &gt;&gt; load &gt;&gt; notify
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Dynamic DAGs</h2>
+<br>
+<pre><code class="language-python">
+# Dynamic tasks from config or database
+from airflow.decorators import dag, task
+import yaml
+
+TABLES = yaml.safe_load(open("config/tables.yaml"))["tables"]
+
+with DAG("dynamic_table_ingestion", schedule_interval="@daily", start_date=datetime(2024,1,1)) as dag:
+    
+    def make_ingest_task(table_name: str):
+        return PythonOperator(
+            task_id=f"ingest_{table_name}",
+            python_callable=ingest_table,
+            op_kwargs={"table": table_name, "date": "{{ ds }}"},
+        )
+    
+    ingest_tasks = [make_ingest_task(t) for t in TABLES]
+    
+    # All tables must finish before aggregation
+    final_aggregate = PythonOperator(
+        task_id="aggregate_all",
+        python_callable=final_agg,
+    )
+    
+    for task in ingest_tasks:
+        task &gt;&gt; final_aggregate
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Retry & Timeout Strategies</h2>
+<br>
+<pre><code class="language-python">
+# Airflow: different retry strategies per task type
+from airflow.utils.trigger_rule import TriggerRule
+
+default_args = {
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+    "retry_exponential_backoff": True,   # 5m, 10m, 20m
+    "max_retry_delay": timedelta(hours=1),
+    "execution_timeout": timedelta(hours=2),
+}
+
+# For critical tasks: more retries, alerting
+critical_task = PythonOperator(
+    task_id="critical_load",
+    python_callable=load_fn,
+    retries=5,
+    retry_delay=timedelta(minutes=2),
+    on_failure_callback=page_oncall,
+    execution_timeout=timedelta(hours=4),
+)
+
+# Cleanup task: always runs even if pipeline fails
+cleanup = PythonOperator(
+    task_id="cleanup",
+    python_callable=cleanup_fn,
+    trigger_rule=TriggerRule.ALL_DONE,  # runs regardless of upstream success/failure
+)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Alerting & SLA Monitoring</h2>
+<br>
+<pre><code class="language-python">
+import requests
+
+def slack_alert(context):
+    """Send Slack notification on DAG failure."""
+    dag_id = context["dag"].dag_id
+    task_id = context["task"].task_id
+    run_id = context["run_id"]
+    log_url = context["task_instance"].log_url
+    
+    message = {
+        "text": f":red_circle: *Pipeline Failure*",
+        "blocks": [{
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    f"*DAG:* `{dag_id}`\n"
+                    f"*Task:* `{task_id}`\n"
+                    f"*Run ID:* `{run_id}`\n"
+                    f"&lt;{log_url}|View Logs&gt;"
+                )
+            }
+        }]
+    }
+    
+    requests.post(
+        url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+        json=message
+    )
+
+with DAG(
+    "monitored_dag",
+    default_args={"on_failure_callback": slack_alert},
+    schedule_interval="@hourly",
+    start_date=datetime(2024, 1, 1),
+    sla_miss_callback=slack_alert,
+) as dag:
+    pass
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="cdc-pipeline-design.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">8. CDC Pipeline Design</span>
+            </a>
+            
+            <a href="data-quality-in-pipelines.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">10. Data Quality in Pipelines</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

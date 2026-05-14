@@ -153,7 +153,7 @@ def render_topic_content(topic):
     
     for key, title in theory_sections.items():
         if topic.get(key):
-            parts.append(f'<h2 class="text-3xl font-black text-slate-900 mb-6 mt-16 flex items-center gap-4 tracking-tight"><span class="w-2 h-10 bg-blue-600 rounded-full"></span>{title}</h2>')
+            parts.append(f'<h2 class="text-3xl font-black text-slate-900 mb-6 mt-16 flex items-center gap-4 tracking-tight border-b border-on-surface/10 pb-2">{title}</h2>')
             val = topic[key]
             
             # Special case for Normal Forms
@@ -235,7 +235,7 @@ def render_topic_content(topic):
 
     if topic.get("categories"):
         for cat in topic["categories"]:
-            parts.append(f'<h2 class="text-2xl font-bold text-slate-800 mb-4 mt-12 flex items-center gap-3"><span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>{cat["category"]}</h2>')
+            parts.append(f'<h2 class="text-2xl font-bold text-slate-800 mb-4 mt-12 flex items-center gap-3 border-b border-on-surface/10 pb-2">{cat["category"]}</h2>')
             if cat.get("types"):
                 parts.append(render_sql_table(cat["types"]))
 
@@ -612,8 +612,7 @@ def build_sql_subpages(data):
                 Back to SQL
             </a>
             <header class="mb-12">
-                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2">
-                    <span class="w-8 h-[1px] bg-slate-300"></span>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">
                     Section {topic.get('section_id', '?')}: {topic.get('section_title', 'General')}
                 </div>
                 <h1 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tighter font-display">

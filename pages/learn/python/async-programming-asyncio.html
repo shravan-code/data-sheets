@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Async Programming (asyncio) — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 12: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Async Programming (asyncio)</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+async/await Basics</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Async programming uses a single thread with cooperative multitasking. Best for high-concurrency I/O.</p>
+<pre class="language-python"><code>import asyncio
+import time
+
+# Coroutine - defined with async def
+async def fetch(url, delay):
+    print(f'Fetching {url}')
+    await asyncio.sleep(delay)  # non-blocking sleep
+    return f'Response from {url}'
+
+# Run coroutines sequentially
+async def sequential():
+    start = time.perf_counter()
+    r1 = await fetch('site1.com', 1)
+    r2 = await fetch('site2.com', 1)
+    print(f'Sequential: {time.perf_counter()-start:.1f}s')
+    return [r1, r2]
+
+# Run concurrently with gather
+async def concurrent():
+    start = time.perf_counter()
+    r1, r2, r3 = await asyncio.gather(
+        fetch('site1.com', 1),
+        fetch('site2.com', 1),
+        fetch('site3.com', 1)
+    )
+    print(f'Concurrent: {time.perf_counter()-start:.1f}s')
+    return [r1, r2, r3]
+
+asyncio.run(sequential())
+asyncio.run(concurrent())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Fetching site1.com
+Fetching site2.com
+Sequential: 2.0s
+Fetching site1.com
+Fetching site2.com
+Fetching site3.com
+Concurrent: 1.0s</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Tasks, gather, and asyncio patterns</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Create tasks for concurrent execution, handle timeouts and cancellation.</p>
+<pre class="language-python"><code>import asyncio
+
+async def work(name, delay):
+    print(f'{name} started')
+    await asyncio.sleep(delay)
+    print(f'{name} done')
+    return name
+
+async def main():
+    # create_task - schedule immediately
+    t1 = asyncio.create_task(work('Task1', 2))
+    t2 = asyncio.create_task(work('Task2', 1))
+    
+    # await both (order of completion may differ)
+    results = await asyncio.gather(t1, t2)
+    print(f'Results: {results}')
+    
+    # Timeout
+    try:
+        await asyncio.wait_for(work('Slow', 5), timeout=1.0)
+    except asyncio.TimeoutError:
+        print('Timed out!')
+    
+    # as_completed - handle as each finishes
+    tasks = [work(f'Job{i}', 3-i) for i in range(3)]
+    for coro in asyncio.as_completed(tasks):
+        result = await coro
+        print(f'Finished: {result}')
+
+asyncio.run(main())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Task1 started
+Task2 started
+Task2 done
+Task1 done
+Results: ['Task1', 'Task2']
+Slow started
+Timed out!
+Job2 started
+Job1 started
+Job0 started
+Finished: Job2
+Finished: Job1
+Finished: Job0</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+async for, async with, asyncio.Queue</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Async versions of iterators and context managers.</p>
+<pre class="language-python"><code>import asyncio
+
+# Async context manager
+class AsyncDBConnection:
+    async def __aenter__(self):
+        print('Connecting to DB...')
+        await asyncio.sleep(0.1)  # simulate connection
+        return self
+    
+    async def __aexit__(self, *args):
+        print('Closing DB connection')
+    
+    async def query(self, sql):
+        await asyncio.sleep(0.1)
+        return f'Results for: {sql}'
+
+# Async iterator
+class AsyncRange:
+    def __init__(self, n):
+        self.n = n
+        self.i = 0
+    
+    def __aiter__(self):
+        return self
+    
+    async def __anext__(self):
+        if self.i &gt;= self.n:
+            raise StopAsyncIteration
+        await asyncio.sleep(0)  # yield control
+        val = self.i
+        self.i += 1
+        return val
+
+# asyncio.Queue - producer/consumer
+async def producer(queue):
+    for i in range(5):
+        await queue.put(i)
+        await asyncio.sleep(0.1)
+    await queue.put(None)  # sentinel
+
+async def consumer(queue):
+    while True:
+        item = await queue.get()
+        if item is None: break
+        print(f'Consumed: {item}')
+
+async def main():
+    async with AsyncDBConnection() as db:
+        result = await db.query('SELECT *')
+        print(result)
+    
+    async for i in AsyncRange(3):
+        print(f'Async iter: {i}')
+    
+    queue = asyncio.Queue()
+    await asyncio.gather(producer(queue), consumer(queue))
+
+asyncio.run(main())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Connecting to DB...
+Closing DB connection
+Results for: SELECT *
+Async iter: 0
+Async iter: 1
+Async iter: 2
+Consumed: 0
+Consumed: 1
+Consumed: 2
+Consumed: 3
+Consumed: 4</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between asyncio, threading, and multiprocessing?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">asyncio: single thread, cooperative multitasking via event loop — best for high-concurrency I/O (thousands of connections). Threading: multiple threads, preemptive — good for moderate I/O concurrency. Multiprocessing: multiple processes — only option for true CPU parallelism in CPython. asyncio has lowest overhead per concurrent unit.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What happens if you call a blocking function inside an async function?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">It blocks the entire event loop — no other coroutines can run. Always use async alternatives (aiohttp instead of requests, aiofiles instead of open). For unavoidable blocking calls, use `await loop.run_in_executor(None, blocking_func)` to run in a thread pool.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="multiprocessing.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Multiprocessing</span></a>
+                    <a href="memory-management.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Memory Management</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Logging — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 6: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Logging</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Logging Module Complete</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Use logging instead of print for production code. Five levels: DEBUG < INFO < WARNING < ERROR < CRITICAL.</p>
+<pre class="language-python"><code>import logging
+
+# Basic config
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+logger = logging.getLogger(__name__)
+
+logger.debug('Debug detail')        # development only
+logger.info('Service started')      # normal events
+logger.warning('Low disk space')    # something unexpected
+logger.error('Failed to connect')   # error occurred
+logger.critical('System down!')     # serious failure
+
+# Log with exception info
+try:
+    1/0
+except ZeroDivisionError:
+    logger.exception('Caught an error')  # includes traceback</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>2024-01-01 10:00:00 - __main__ - DEBUG - Debug detail
+2024-01-01 10:00:00 - __main__ - INFO - Service started
+2024-01-01 10:00:00 - __main__ - WARNING - Low disk space
+2024-01-01 10:00:00 - __main__ - ERROR - Failed to connect
+2024-01-01 10:00:00 - __main__ - CRITICAL - System down!
+2024-01-01 10:00:00 - __main__ - ERROR - Caught an error
+Traceback (most recent call last): ...</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Handlers and Formatters</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Route logs to different destinations with different formats.</p>
+<pre class="language-python"><code>import logging
+
+logger = logging.getLogger('myapp')
+logger.setLevel(logging.DEBUG)
+
+# Console handler (INFO+)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+console.setFormatter(logging.Formatter('%(levelname)s: %(message)s'))
+
+# File handler (DEBUG+)
+file_h = logging.FileHandler('app.log')
+file_h.setLevel(logging.DEBUG)
+file_h.setFormatter(logging.Formatter(
+    '%(asctime)s %(name)s %(levelname)s: %(message)s'
+))
+
+logger.addHandler(console)
+logger.addHandler(file_h)
+
+logger.debug('This goes to file only')
+logger.info('This goes to both')
+logger.error('Error in both')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>INFO: This goes to both
+ERROR: Error in both
+(file gets all three with timestamps)</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why use logging over print statements?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Logging provides: severity levels (filter noise), timestamps, source file/line info, multiple outputs (console + file), ability to disable all logs in production with one line, structured formatting, and is thread-safe. print() gives none of these.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="custom-exceptions.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Custom Exceptions</span></a>
+                    <a href="infinite-iterators.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Infinite Iterators</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

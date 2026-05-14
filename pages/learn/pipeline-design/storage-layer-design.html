@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>5. Storage Layer Design — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781626">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781626">
+    <script src="../../../js/modules/universal-nav.js?v=1778781626" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781626" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">5. Storage Layer Design</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Medallion architecture, partitioning, and file formats.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Choosing the Right Storage</h2>
+<br>
+<div class="overflow-x-auto my-6"><table class="min-w-full text-sm text-left border-collapse border border-slate-200 dark:border-slate-800"><thead class="bg-slate-50 dark:bg-slate-800/50"><tr><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Storage Type</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Use Case</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Examples</th></tr></thead><tbody><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Operational DB</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">OLTP, application data</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">PostgreSQL, MySQL, DynamoDB</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Data Warehouse</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">OLAP, analytics, SQL</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Redshift, BigQuery, Snowflake</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Data Lake</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Raw storage, semi-structured, ML</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">S3, GCS, ADLS</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Lakehouse</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Unified ACID + analytics</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Delta Lake, Apache Iceberg, Hudi</td></tr></tbody></table></div>
+<br>
+<hr>
+<br>
+<h2>Medallion Architecture (Bronze → Silver → Gold)</h2>
+<br>
+<pre><code class="language-text">
+Raw/Bronze                Silver                    Gold
+────────────        ──────────────────       ──────────────────
+• Raw data          • Cleaned, validated     • Business-ready
+• Immutable         • Deduped                • Aggregated
+• Append-only       • Type-cast              • Joined/modeled
+• No transformation • Schema enforced        • Ready for BI/ML
+</code></pre>
+<br>
+<pre><code class="language-python">
+# PySpark Medallion Architecture implementation
+
+# ── BRONZE: Land raw data as-is ──────────────────────────────
+def write_bronze(spark, raw_df, source: str, run_date: str):
+    """Write raw data with ingestion metadata — never overwrite."""
+    bronze_path = f"s3://datalake/bronze/{source}/date={run_date}/"
+    
+    enriched = raw_df \
+        .withColumn("_ingested_at", F.current_timestamp()) \
+        .withColumn("_source", F.lit(source)) \
+        .withColumn("_run_date", F.lit(run_date))
+    
+    enriched.write.mode("overwrite").parquet(bronze_path)
+    print(f"Bronze written: {bronze_path}")
+
+# ── SILVER: Clean and validate ────────────────────────────────
+def bronze_to_silver(spark, source: str, run_date: str):
+    """Clean bronze layer into validated silver layer."""
+    bronze_path = f"s3://datalake/bronze/{source}/date={run_date}/"
+    silver_path = f"s3://datalake/silver/{source}/date={run_date}/"
+    
+    df = spark.read.parquet(bronze_path)
+    
+    silver = (df
+        .dropDuplicates(["order_id"])
+        .filter(F.col("order_id").isNotNull())
+        .withColumn("amount", F.col("amount").cast("double"))
+        .withColumn("order_date", F.to_date("order_date"))
+        .filter(F.col("amount") &gt; 0)
+        .withColumn("_silver_processed_at", F.current_timestamp())
+    )
+    
+    silver.write.mode("overwrite").parquet(silver_path)
+
+# ── GOLD: Business aggregations ───────────────────────────────
+def silver_to_gold(spark, run_date: str):
+    """Aggregate silver into business-level gold metrics."""
+    silver_path = f"s3://datalake/silver/orders/date={run_date}/"
+    gold_path = f"s3://datalake/gold/daily_revenue/date={run_date}/"
+    
+    df = spark.read.parquet(silver_path)
+    
+    gold = (df
+        .groupBy("region", "product_category")
+        .agg(
+            F.sum("amount").alias("total_revenue"),
+            F.count("order_id").alias("order_count"),
+            F.avg("amount").alias("avg_order_value"),
+            F.countDistinct("customer_id").alias("unique_customers")
+        )
+        .withColumn("run_date", F.lit(run_date))
+    )
+    
+    gold.write.mode("overwrite").parquet(gold_path)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Partitioning Strategy</h2>
+<br>
+<pre><code class="language-python">
+# PySpark: partition by date and region
+def write_partitioned(df, output_path: str):
+    """Write data partitioned for efficient query pruning."""
+    df.write \
+        .mode("overwrite") \
+        .partitionBy("year", "month", "day", "region") \
+        .parquet(output_path)
+
+# Good partition keys:
+#   - Date columns (year/month/day)
+#   - Low-to-medium cardinality columns (region, status)
+#   - Columns frequently used in WHERE clauses
+
+# Bad partition keys:
+#   - High cardinality (customer_id, order_id → too many small files)
+#   - Columns never used in filters
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>File Format Selection</h2>
+<br>
+<div class="overflow-x-auto my-6"><table class="min-w-full text-sm text-left border-collapse border border-slate-200 dark:border-slate-800"><thead class="bg-slate-50 dark:bg-slate-800/50"><tr><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Format</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Best For</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Pros</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Cons</th></tr></thead><tbody><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Parquet</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Analytics, columnar queries</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Columnar, compressed, splittable</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Not human-readable</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Avro</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Streaming, schema evolution</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Row-based, schema embedded, Kafka-native</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Slower analytics</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>ORC</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Hive workloads</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Compressed, predicate pushdown</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Less ecosystem support</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>JSON</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Flexibility, APIs</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Human-readable, flexible schema</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Large size, slow queries</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Delta/Iceberg</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Lakehouse, ACID</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">ACID, time travel, schema evolution</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Overhead</td></tr></tbody></table></div>
+<br>
+<pre><code class="language-python">
+# Writing in different formats
+df.write.parquet("s3://bucket/path/", compression="snappy")
+df.write.format("avro").save("s3://bucket/path/")
+df.write.orc("s3://bucket/path/")
+
+# Delta Lake (ACID with time travel)
+df.write.format("delta").mode("overwrite").save("s3://bucket/delta_table/")
+
+# Read with time travel
+spark.read.format("delta") \
+    .option("versionAsOf", 5) \
+    .load("s3://bucket/delta_table/")
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Compaction & Vacuuming</h2>
+<br>
+<pre><code class="language-python">
+# Delta Lake compaction (optimize small files)
+from delta.tables import DeltaTable
+
+delta_table = DeltaTable.forPath(spark, "s3://bucket/delta_table/")
+
+# Compact small files (bin-packing)
+delta_table.optimize().executeCompaction()
+
+# Z-order for multi-dimensional pruning
+delta_table.optimize().executeZOrderBy("customer_id", "order_date")
+
+# Vacuum: remove old files beyond retention period
+delta_table.vacuum(retentionHours=168)  # 7 days retention
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="processing-layer-design.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">4. Processing Layer Design</span>
+            </a>
+            
+            <a href="batch-pipeline-design.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">6. Batch Pipeline Design</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781626" defer></script>
+</body>
+</html>

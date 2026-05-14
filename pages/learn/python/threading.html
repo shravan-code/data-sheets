@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Threading — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 12: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Threading</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Thread Basics</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">threading.Thread runs code concurrently. Best for I/O-bound tasks. GIL limits CPU-bound parallelism.</p>
+<pre class="language-python"><code>import threading
+import time
+
+def download(url, delay):
+    print(f'Starting {url}')
+    time.sleep(delay)  # simulate I/O
+    print(f'Done {url}')
+
+# Sequential
+start = time.perf_counter()
+download('site1.com', 1)
+download('site2.com', 1)
+print(f'Sequential: {time.perf_counter()-start:.1f}s')
+
+# Threaded
+start = time.perf_counter()
+t1 = threading.Thread(target=download, args=('site1.com', 1))
+t2 = threading.Thread(target=download, args=('site2.com', 1))
+t1.start()
+t2.start()
+t1.join()  # wait for t1
+t2.join()  # wait for t2
+print(f'Threaded: {time.perf_counter()-start:.1f}s')
+
+# Daemon thread - dies with main program
+def background_task():
+    while True:
+        time.sleep(1)
+        print('background tick')
+
+daemon = threading.Thread(target=background_task, daemon=True)
+daemon.start()
+print('Main thread done')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Starting site1.com
+Done site1.com
+Starting site2.com
+Done site2.com
+Sequential: 2.0s
+Starting site1.com
+Starting site2.com
+Done site1.com
+Done site2.com
+Threaded: 1.0s
+Main thread done</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Thread Synchronization: Lock, RLock, Semaphore, Event</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Synchronization primitives prevent race conditions when threads share state.</p>
+<pre class="language-python"><code>import threading
+
+# Lock - mutual exclusion
+class BankAccount:
+    def __init__(self, balance):
+        self.balance = balance
+        self._lock = threading.Lock()
+    
+    def deposit(self, amount):
+        with self._lock:  # acquire and release automatically
+            self.balance += amount
+    
+    def withdraw(self, amount):
+        with self._lock:
+            if self.balance &gt;= amount:
+                self.balance -= amount
+                return True
+            return False
+
+account = BankAccount(1000)
+
+def do_deposits():
+    for _ in range(100):
+        account.deposit(10)
+
+def do_withdrawals():
+    for _ in range(100):
+        account.withdraw(5)
+
+threads = [threading.Thread(target=do_deposits),
+           threading.Thread(target=do_withdrawals)]
+for t in threads: t.start()
+for t in threads: t.join()
+print(f'Final balance: {account.balance}')  # deterministic!
+
+# Event - signal between threads
+event = threading.Event()
+
+def waiter():
+    print('Waiting for event...')
+    event.wait()  # blocks until set
+    print('Event received!')
+
+t = threading.Thread(target=waiter)
+t.start()
+import time; time.sleep(0.1)
+event.set()  # signal all waiters
+t.join()</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Final balance: 1500
+Waiting for event...
+Event received!</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+ThreadPoolExecutor</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">High-level interface for managing a pool of worker threads.</p>
+<pre class="language-python"><code>from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
+
+def fetch_data(url):
+    time.sleep(0.5)  # simulate I/O
+    return f'Data from {url}'
+
+urls = [f'http://site{i}.com' for i in range(5)]
+
+# map - submit all, collect in order
+with ThreadPoolExecutor(max_workers=3) as executor:
+    results = list(executor.map(fetch_data, urls))
+    print(results)
+
+# submit + as_completed - get results as they finish
+with ThreadPoolExecutor(max_workers=3) as executor:
+    futures = {executor.submit(fetch_data, url): url for url in urls}
+    for future in as_completed(futures):
+        url = futures[future]
+        try:
+            result = future.result()
+            print(f'{url} -&gt; {result}')
+        except Exception as e:
+            print(f'{url} failed: {e}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>['Data from http://site0.com', ..., 'Data from http://site4.com']
+http://site0.com -&gt; Data from http://site0.com
+http://site2.com -&gt; Data from http://site2.com
+...</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the GIL and how does it affect threading?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">The Global Interpreter Lock (GIL) allows only one thread to execute Python bytecode at a time in CPython. This means CPU-bound threads don't actually run in parallel. However, the GIL is released during I/O operations, so threading is effective for I/O-bound tasks. For CPU-bound parallelism, use multiprocessing.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is a race condition and how do you prevent it?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">A race condition occurs when multiple threads access and modify shared data concurrently, producing unpredictable results. Prevent with: Lock (mutex), RLock (reentrant lock), Semaphore (limit concurrent access), Queue (thread-safe communication), or using thread-local storage.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="pathlib--complete-reference.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">pathlib — Complete Reference</span></a>
+                    <a href="multiprocessing.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Multiprocessing</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

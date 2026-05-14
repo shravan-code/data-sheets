@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. Data Processing Concepts — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">6. Data Processing Concepts</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Distributed computing, shuffling, skew, and evaluation strategies.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Distributed Computing Basics</h2>
+<p>When data is too large to fit in the RAM or hard drive of a single machine, we use distributed computing (like Spark). Data is split into chunks, and a cluster of computers (workers) processes the chunks in parallel, coordinated by a central master node.</p>
+
+<h2>MapReduce Paradigm</h2>
+<p>The foundational concept of big data processing, popularized by Hadoop.</p>
+<ul>
+    <li><strong>Map phase:</strong> Apply a function to every row independently in parallel across nodes. (e.g., convert text to uppercase).</li>
+    <li><strong>Reduce phase:</strong> Bring related data together across the network to aggregate it. (e.g., SUM or COUNT).</li>
+</ul>
+
+<h2>Partitioning & Bucketing</h2>
+<p>These are physical data organization techniques to speed up reads.</p>
+<ul>
+    <li><strong>Partitioning:</strong> Creating separate folders for unique values of a column (e.g., `/date=2023-01-01/`).</li>
+    <li><strong>Bucketing:</strong> Dividing data into a fixed number of files based on a hash of a column (e.g., `hash(user_id) % 10`). Perfect for speeding up JOINs because the engine knows exactly which bucket contains which `user_id`.</li>
+</ul>
+
+<h2>Shuffling & Data Skew</h2>
+<p><strong>Shuffling:</strong> When data must be moved between different nodes over the network (e.g., during a `GROUP BY` or `JOIN`). Shuffling is the most expensive, slowest operation in big data. Try to avoid it!</p>
+<p><strong>Data Skew:</strong> When one node gets significantly more data to process than others because the data isn't distributed evenly (e.g., grouping by `country` where 90% of users are from the US). The whole job is bottlenecked by that single slow node. Solutions include salting (adding random numbers to keys).</p>
+
+<h2>Lazy vs Eager Evaluation</h2>
+<p><strong>Eager Evaluation (Pandas):</strong> As soon as you write a line of code, the data is processed immediately.</p>
+<p><strong>Lazy Evaluation (Spark):</strong> Spark doesn't process anything when you define transformations. It waits until you call an "Action" (like `.show()` or `.write()`), looks at your entire pipeline, optimizes the query execution plan, and then executes it efficiently in one go.</p>
+
+<h2>In-memory vs Disk-based Processing</h2>
+<p>Hadoop MapReduce wrote intermediate results to disk after every step, making it extremely slow. Spark keeps intermediate results in RAM (in-memory), making it up to 100x faster, though it requires more expensive hardware.</p>
+        
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="ingestion-patterns.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">5. Data Ingestion Patterns</span>
+        </a>
+        
+        <a href="streaming-concepts.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">7. Streaming Concepts</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

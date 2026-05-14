@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>singledispatch — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 8: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">singledispatch</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+singledispatch — Function Overloading</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Dispatch to different implementations based on argument type.</p>
+<pre class="language-python"><code>from functools import singledispatch
+
+@singledispatch
+def process(data):
+    raise NotImplementedError(f'No handler for {type(data).__name__}')
+
+@process.register(int)
+def _(data):
+    return f'Integer: {data * 2}'
+
+@process.register(str)
+def _(data):
+    return f'String: {data.upper()}'
+
+@process.register(list)
+def _(data):
+    return f'List of {len(data)} items'
+
+print(process(42))
+print(process('hello'))
+print(process([1,2,3]))
+
+# Python 3.7+ - register with type annotation
+@process.register
+def _(data: float):
+    return f'Float: {data:.4f}'
+
+print(process(3.14))
+print(process.dispatch(int))  # view handler
+print(process.registry.keys())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Integer: 84
+String: HELLO
+List of 3 items
+Float: 3.1400
+&lt;function _ at 0x...&gt;
+dict_keys([&lt;class 'object'&gt;, &lt;class 'int'&gt;, &lt;class 'str'&gt;, &lt;class 'list'&gt;, &lt;class 'float'&gt;])</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When would you use functools.partial vs a lambda?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">partial is better when: freezing named arguments for reuse, creating multiple variants of a function, when the result needs to be inspected (.func, .args, .keywords). Lambda is better for quick one-off transformations inline. partial also works correctly with pickle (lambdas don't).</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What's the difference between lru_cache and cached_property?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">lru_cache caches based on function arguments — same args returns cached result. cached_property caches per instance with no arguments — computed once on first access, stored in instance __dict__. Use cached_property for expensive computed attributes on objects.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="totalordering-and-cmptokey.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">total_ordering and cmp_to_key</span></a>
+                    <a href="basic-type-annotations.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Basic Type Annotations</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

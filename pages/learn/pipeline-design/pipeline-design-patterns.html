@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>14. Pipeline Design Patterns — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">14. Pipeline Design Patterns</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Classic architecture patterns: Medallion, Lambda, Kappa.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Fan-in & Fan-out Pattern</h2>
+<br>
+<pre><code class="language-python">
+# Fan-out: one source → multiple parallel consumers
+with DAG("fan_out_dag") as dag:
+    source = PythonOperator(task_id="extract_source", python_callable=extract)
+    
+    # Fan-out: parallel processing branches
+    process_us = PythonOperator(task_id="process_us", python_callable=lambda: process_region("US"))
+    process_eu = PythonOperator(task_id="process_eu", python_callable=lambda: process_region("EU"))
+    process_ap = PythonOperator(task_id="process_ap", python_callable=lambda: process_region("AP"))
+    
+    # Fan-in: merge results
+    merge = PythonOperator(task_id="merge_results", python_callable=merge_fn)
+    
+    source &gt;&gt; [process_us, process_eu, process_ap] &gt;&gt; merge
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Idempotent Write Pattern</h2>
+<br>
+<pre><code class="language-python">
+def idempotent_write(df: pd.DataFrame, conn, table: str, partition_key: str, partition_value: str):
+    """
+    Write pattern that is safe to run multiple times:
+    1. Delete existing partition
+    2. Insert new data
+    Both within a single transaction.
+    """
+    with conn.begin() as txn:
+        conn.execute(
+            f"DELETE FROM {table} WHERE {partition_key} = :val",
+            {"val": partition_value}
+        )
+        df.to_sql(table, conn, if_exists="append", index=False)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Slowly Changing Dimension (SCD) Patterns</h2>
+<br>
+<pre><code class="language-python">
+# SCD Type 1: Overwrite (no history)
+def scd_type1(df_updates: pd.DataFrame, conn, table: str, key: str):
+    df_updates.to_sql(table, conn, if_exists="replace", index=False)  # simple overwrite
+
+# SCD Type 2: Keep full history with effective dates
+def scd_type2_upsert(spark, updates_df, target_path: str, key_col: str):
+    """Implement SCD Type 2: expire old rows, insert new rows."""
+    from delta.tables import DeltaTable
+    
+    target = DeltaTable.forPath(spark, target_path)
+    
+    # Stage updates with metadata
+    staged = updates_df \
+        .withColumn("effective_start", F.current_timestamp()) \
+        .withColumn("effective_end", F.lit(None).cast("timestamp")) \
+        .withColumn("is_current", F.lit(True))
+    
+    # Merge: expire current rows that changed, insert new versions
+    (target.alias("t")
+        .merge(staged.alias("s"), f"t.{key_col} = s.{key_col} AND t.is_current = true")
+        .whenMatchedUpdate(
+            condition="t.record_hash != s.record_hash",  # changed record
+            set={
+                "effective_end": "s.effective_start",
+                "is_current": "false"
+            }
+        )
+        .whenNotMatchedInsertAll()
+        .execute()
+    )
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Lambda Architecture Pattern</h2>
+<br>
+<pre><code class="language-python">
+# Lambda: Batch layer (accuracy) + Speed layer (low latency)
+# Batch layer: full historical recompute nightly
+def batch_layer_daily(spark, date: str):
+    """Accurate historical aggregate — runs nightly."""
+    df = spark.read.parquet(f"s3://datalake/raw/orders/")
+    daily_agg = df.groupBy("date", "region").agg(F.sum("amount").alias("revenue"))
+    daily_agg.write.mode("overwrite").parquet(f"s3://datalake/batch_views/daily_revenue/")
+
+# Speed layer: real-time incremental (approximate)
+# (Kafka + Spark Streaming, updates last few hours)
+
+# Serving layer: query router — recent data from speed, historical from batch
+def query_serving_layer(spark, start_date: str, end_date: str):
+    cutoff = "2024-01-14"  # yesterday
+    if end_date &lt;= cutoff:
+        return spark.read.parquet(f"s3://datalake/batch_views/daily_revenue/")
+    else:
+        batch = spark.read.parquet(f"s3://datalake/batch_views/daily_revenue/")
+        realtime = spark.read.parquet(f"s3://datalake/speed_views/hourly_revenue/")
+        return batch.union(realtime).groupBy("date", "region").agg(F.sum("revenue"))
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Kappa Architecture Pattern</h2>
+<br>
+<pre><code class="language-python">
+# Kappa: Single streaming layer for everything
+# Reprocess historical data by replaying Kafka from beginning
+
+# Set Kafka retention to cover reprocessing window
+kafka_config = {
+    "retention.ms": str(30 * 24 * 60 * 60 * 1000),  # 30 days
+    "retention.bytes": str(1024 * 1024 * 1024 * 1024),  # 1 TB
+}
+
+# For reprocessing: start from earliest offset
+query = (
+    spark.readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", "kafka:9092")
+    .option("subscribe", "orders")
+    .option("startingOffsets", "earliest")  # replay from beginning
+    .load()
+)
+
+# Write to new output path for clean reprocessing
+query.writeStream \
+    .format("delta") \
+    .option("path", "s3://bucket/delta/orders_v2/") \
+    .option("checkpointLocation", "s3://bucket/checkpoints/orders_v2/") \
+    .start()
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="security-in-pipelines.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">13. Security in Pipelines</span>
+            </a>
+            
+            <a href="classic-pipeline-design-problems.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">15. Classic Pipeline Design Problems</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. Data Storage — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778781625">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">3. Data Storage</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Warehouses, Lakes, OLTP vs OLAP, and file formats.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Databases vs Data Warehouses vs Data Lakes vs Lakehouse</h2>
+<div class="overflow-x-auto my-6 not-prose">
+    <table class="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
+        <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <tr>
+                <th class="px-6 py-3">System</th>
+                <th class="px-6 py-3">Data Type</th>
+                <th class="px-6 py-3">Use Case</th>
+                <th class="px-6 py-3">Examples</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Database (OLTP)</td>
+                <td class="px-6 py-4">Highly structured, normalized</td>
+                <td class="px-6 py-4">Application backends, fast transactions</td>
+                <td class="px-6 py-4">PostgreSQL, MySQL, MongoDB</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Data Warehouse (OLAP)</td>
+                <td class="px-6 py-4">Structured, denormalized (Star Schema)</td>
+                <td class="px-6 py-4">Analytics, BI reporting, aggregations</td>
+                <td class="px-6 py-4">Snowflake, Redshift, BigQuery</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Data Lake</td>
+                <td class="px-6 py-4">Structured, semi-structured, unstructured (images, text)</td>
+                <td class="px-6 py-4">Cheap storage, Machine Learning, staging area</td>
+                <td class="px-6 py-4">Amazon S3, Azure ADLS Gen2</td>
+            </tr>
+            <tr class="border-b dark:border-slate-800">
+                <td class="px-6 py-4 font-bold">Lakehouse</td>
+                <td class="px-6 py-4">Structured & unstructured with ACID transactions</td>
+                <td class="px-6 py-4">Combines Warehouse reliability with Lake cheap storage</td>
+                <td class="px-6 py-4">Databricks (Delta Lake), Apache Iceberg</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2>Row-based vs Columnar Storage</h2>
+<p><strong>Row-based (e.g., PostgreSQL, CSV):</strong> Data is stored sequentially row by row. Great for writing new records quickly (OLTP).</p>
+<p><strong>Columnar (e.g., Redshift, Parquet):</strong> Data is stored column by column. Great for analytics (OLAP) because reading only the specific columns you need is lightning fast, and identical data types compress beautifully.</p>
+
+<h2>File Formats</h2>
+<ul>
+    <li><strong>Parquet:</strong> The king of data engineering. Columnar, highly compressed, strongly typed.</li>
+    <li><strong>ORC:</strong> Similar to Parquet, heavily optimized for Hive environments.</li>
+    <li><strong>Avro:</strong> Row-based, excellent for schema evolution. Heavily used with Kafka.</li>
+    <li><strong>JSON:</strong> Semi-structured, human-readable, but slow to parse and uncompressed.</li>
+    <li><strong>CSV:</strong> Text format. Prone to parsing errors (delimiters inside strings). Avoid for big data!</li>
+</ul>
+
+<h2>Storage Partitioning</h2>
+<p>Partitioning means dividing your data into separate directories based on a column (usually a date). Instead of scanning a 10TB table, a query filtering `WHERE year=2023 AND month=10` will only scan the `/year=2023/month=10/` directory, drastically improving speed and reducing costs.</p>
+        
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="pipeline-basics.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">2. Data Pipeline Basics</span>
+        </a>
+        
+        <a href="data-modelling.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">4. Data Modelling</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

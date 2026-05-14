@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Dictionaries — All Methods — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 3: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Dictionaries — All Methods</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Dictionaries are hash maps: O(1) average for get/set/delete. Ordered by insertion since Python 3.7.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Accessing Data: get & setdefault</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">get() provides safe access with a default value to avoid KeyError. setdefault() returns the value if present, otherwise inserts the default.</p>
+<pre class="language-python"><code>d = {'a': 1}
+print(d.get('b', 0))    # 0
+print(d.setdefault('b', 2)) # 2
+print(d)                # {'a': 1, 'b': 2}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Modifying: update, pop, popitem</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">update() merges another dict. pop() removes by key. popitem() removes the last inserted item (Python 3.7+).</p>
+<pre class="language-python"><code>d = {'a': 1, 'b': 2}
+d.update({'c': 3, 'a': 0})
+print(d.pop('b'))       # 2
+print(d.popitem())      # ('c', 3)
+print(d)                # {'a': 0}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Dict Views: keys, values, items</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Return dynamic view objects that reflect changes in the dictionary. items() is perfect for iterating through pairs.</p>
+<pre class="language-python"><code>d = {'a': 1, 'b': 2}
+print(list(d.keys()))   # ['a', 'b']
+print(list(d.values())) # [1, 2]
+for k, v in d.items():
+    print(f'{k}:{v}', end=' ')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>['a', 'b']
+[1, 2]
+a:1 b:2</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Dict Merging (Python 3.9+)</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">New operators for merging dicts.</p>
+<pre class="language-python"><code>d1 = {'a': 1, 'b': 2}
+d2 = {'b': 3, 'c': 4}
+
+# | operator - merge, right takes priority
+merged = d1 | d2
+print(merged)   # {'a':1, 'b':3, 'c':4}
+
+# |= update in-place
+d1 |= d2
+print(d1)
+
+# Old way
+merged2 = {**d1, **d2}  # still works
+print(merged2)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'a': 1, 'b': 3, 'c': 4}
+{'a': 1, 'b': 3, 'c': 4}
+{'a': 1, 'b': 3, 'c': 4}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+defaultdict</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Dict that auto-initializes missing keys with a factory function.</p>
+<pre class="language-python"><code>from collections import defaultdict
+
+# Group by first letter
+words = ['apple', 'avocado', 'banana', 'blueberry', 'cherry']
+groups = defaultdict(list)
+for word in words:
+    groups[word[0]].append(word)
+print(dict(groups))
+
+# Count with default 0
+counts = defaultdict(int)
+for word in words:
+    counts[word[0]] += 1
+print(dict(counts))
+
+# Nested defaultdict
+tree = defaultdict(lambda: defaultdict(int))
+tree['fruits']['apple'] += 1
+tree['fruits']['banana'] += 2
+print(dict(tree['fruits']))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'a': ['apple', 'avocado'], 'b': ['banana', 'blueberry'], 'c': ['cherry']}
+{'a': 2, 'b': 2, 'c': 1}
+{'apple': 1, 'banana': 2}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Counter</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Specialized dict for counting hashable objects.</p>
+<pre class="language-python"><code>from collections import Counter
+
+# Count characters
+c = Counter('abracadabra')
+print(c)
+print(c.most_common(3))
+print(c['a'])
+print(c['z'])  # returns 0, not KeyError
+
+# Count words
+words = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple']
+wc = Counter(words)
+print(wc.most_common(2))
+
+# Arithmetic on counters
+c1 = Counter({'a': 3, 'b': 2})
+c2 = Counter({'a': 1, 'b': 4, 'c': 1})
+print(c1 + c2)   # add counts
+print(c1 - c2)   # subtract, keep positives
+print(c1 &amp; c2)   # intersection (min)
+print(c1 | c2)   # union (max)
+
+# elements() - iterate with repetition
+print(list(Counter({'a':2,'b':1}).elements()))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
+[('a', 5), ('b', 2), ('r', 2)]
+5
+0
+[('apple', 3), ('banana', 2)]
+Counter({'b': 6, 'a': 4, 'c': 1})
+Counter({'a': 2})
+Counter({'a': 1, 'b': 2})
+Counter({'b': 4, 'a': 3, 'c': 1})
+['a', 'a', 'b']</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the time complexity of dict operations?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Average O(1) for get, set, delete, and `in` operator. Worst case O(n) due to hash collisions (rare). Iteration is O(n).</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How would you count word frequency in a sentence?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Use Counter: `from collections import Counter; freq = Counter(sentence.split())`. Or manually: `freq = {}; freq[word] = freq.get(word, 0) + 1`.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="tuples--all-methods.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Tuples — All Methods</span></a>
+                    <a href="sets--all-methods.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Sets — All Methods</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

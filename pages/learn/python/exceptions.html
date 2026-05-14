@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Exceptions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 6: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Exceptions</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+try / except / else / finally</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">try: code that might fail. except: handle errors. else: runs if no exception. finally: always runs.</p>
+<pre class="language-python"><code>def divide(a, b):
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print('Cannot divide by zero')
+        return None
+    except TypeError as e:
+        print(f'Type error: {e}')
+        return None
+    else:
+        print(f'Success: {result}')
+        return result
+    finally:
+        print('divide() called')  # always runs
+
+divide(10, 2)
+print('---')
+divide(10, 0)
+print('---')
+divide(10, 'a')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Success: 5.0
+divide() called
+---
+Cannot divide by zero
+divide() called
+---
+Type error: unsupported operand type(s) for /: 'int' and 'str'
+divide() called</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+Exception Hierarchy</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">All exceptions inherit from BaseException. Catch specific before general.</p>
+<pre class="language-python"><code># Exception hierarchy (partial)
+# BaseException
+#   SystemExit, KeyboardInterrupt, GeneratorExit
+#   Exception
+#     ArithmeticError: ZeroDivisionError, OverflowError
+#     LookupError: IndexError, KeyError
+#     ValueError, TypeError, AttributeError
+#     OSError: FileNotFoundError, PermissionError
+#     RuntimeError, StopIteration
+
+# Catch multiple exceptions
+try:
+    data = {'key': 'value'}
+    val = data['missing']  # KeyError
+except (KeyError, IndexError) as e:
+    print(f'Lookup error: {type(e).__name__}: {e}')
+
+# Catch broad (last resort)
+try:
+    int('not a number')
+except ValueError:
+    print('Invalid integer string')
+except Exception as e:
+    print(f'Unexpected: {e}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Lookup error: KeyError: 'missing'
+Invalid integer string</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+raise and Exception Chaining</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Raise exceptions explicitly. Chain with 'raise X from Y'.</p>
+<pre class="language-python"><code># Basic raise
+def validate_age(age):
+    if not isinstance(age, int):
+        raise TypeError(f'Age must be int, got {type(age).__name__}')
+    if age &lt; 0 or age &gt; 150:
+        raise ValueError(f'Age {age} is not realistic')
+    return True
+
+try:
+    validate_age(-5)
+except ValueError as e:
+    print(e)
+
+# Exception chaining
+def read_config(path):
+    try:
+        with open(path) as f:
+            return f.read()
+    except FileNotFoundError as e:
+        raise RuntimeError(f'Config not found: {path}') from e
+
+try:
+    read_config('/nonexistent')
+except RuntimeError as e:
+    print(e)
+    print(f'Caused by: {e.__cause__}')
+
+# Suppress chaining with 'from None'
+try:
+    int('abc')
+except ValueError:
+    raise RuntimeError('Conversion failed') from None</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Age -5 is not realistic
+Config not found: /nonexistent
+Caused by: [Errno 2] No such file or directory: '/nonexistent'</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between except Exception and except BaseException?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">except Exception catches all normal exceptions. except BaseException also catches SystemExit, KeyboardInterrupt, GeneratorExit — which you usually DON'T want to catch. Always use except Exception unless you have a specific reason to catch system-level events.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When does the else block in try/except run?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">The else block runs only if the try block completed without raising any exception. It's used to separate 'code that might fail' from 'code that should run on success', keeping the except block focused on actual error handling.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="dataclasses--complete-coverage.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Dataclasses — Complete Coverage</span></a>
+                    <a href="custom-exceptions.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Custom Exceptions</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

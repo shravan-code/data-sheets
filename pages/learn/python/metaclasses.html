@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Metaclasses — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 13: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Metaclasses</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+type and Custom Metaclasses</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Classes are objects too. type is the metaclass of all classes. You can customize class creation.</p>
+<pre class="language-python"><code># type is the metaclass of all classes
+print(type(int))     # &lt;class 'type'&gt;
+print(type(list))    # &lt;class 'type'&gt;
+print(type(type))    # &lt;class 'type'&gt; (type is its own metaclass)
+
+# Create class dynamically with type
+Dog = type('Dog', (object,), {
+    'species': 'Canis lupus',
+    'bark': lambda self: 'Woof!'
+})
+d = Dog()
+print(d.bark())
+print(Dog.species)
+
+# Custom metaclass
+class SingletonMeta(type):
+    _instances = {}
+    
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class DatabasePool(metaclass=SingletonMeta):
+    def __init__(self):
+        self.connections = []
+
+db1 = DatabasePool()
+db2 = DatabasePool()
+print(db1 is db2)   # True - same instance
+
+# __init_subclass__ - lighter alternative to metaclass
+class PluginBase:
+    _plugins = {}
+    
+    def __init_subclass__(cls, plugin_name=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if plugin_name:
+            PluginBase._plugins[plugin_name] = cls
+
+class CSVPlugin(PluginBase, plugin_name='csv'):
+    pass
+
+class JSONPlugin(PluginBase, plugin_name='json'):
+    pass
+
+print(PluginBase._plugins)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'type'&gt;
+&lt;class 'type'&gt;
+&lt;class 'type'&gt;
+Woof!
+Canis lupus
+True
+{'csv': &lt;class 'CSVPlugin'&gt;, 'json': &lt;class 'JSONPlugin'&gt;}</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When would you use a metaclass?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Metaclasses are for 'class creation hooks': enforcing interface contracts, registering subclasses automatically (plugin systems), modifying class attributes at definition time, ORMs (like Django models). Most of the time, __init_subclass__, class decorators, or descriptors are simpler alternatives.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="memory-management.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Memory Management</span></a>
+                    <a href="descriptors.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Descriptors</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Caching — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 8: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Caching</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+lru_cache and cache</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Memoize function results to avoid recomputation.</p>
+<pre class="language-python"><code>from functools import lru_cache, cache
+import time
+
+# Without cache - recomputes every call
+def fib_slow(n):
+    if n &lt; 2: return n
+    return fib_slow(n-1) + fib_slow(n-2)
+
+# With lru_cache
+@lru_cache(maxsize=128)
+def fib(n):
+    if n &lt; 2: return n
+    return fib(n-1) + fib(n-2)
+
+start = time.perf_counter()
+print(fib(35))
+print(f'Cached: {time.perf_counter()-start:.6f}s')
+
+start = time.perf_counter()
+print(fib_slow(35))
+print(f'Uncached: {time.perf_counter()-start:.6f}s')
+
+# Cache info
+print(fib.cache_info())
+
+# Clear cache
+fib.cache_clear()
+print(fib.cache_info())
+
+# typed=True: f(3) and f(3.0) cached separately
+@lru_cache(typed=True)
+def typed_func(x):
+    return type(x).__name__
+
+print(typed_func(3))
+print(typed_func(3.0))
+print(typed_func.cache_info())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>9227465
+Cached: 0.000050s
+9227465
+Uncached: 2.340000s
+CacheInfo(hits=34, misses=36, maxsize=128, currsize=36)
+CacheInfo(hits=0, misses=0, maxsize=128, currsize=0)
+int
+float
+CacheInfo(hits=0, misses=2, maxsize=128, currsize=2)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+cached_property</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Compute expensive property once and cache on instance.</p>
+<pre class="language-python"><code>from functools import cached_property
+import statistics
+
+class DataSet:
+    def __init__(self, data):
+        self._data = data
+    
+    @cached_property
+    def mean(self):
+        print('Computing mean...')
+        return statistics.mean(self._data)
+    
+    @cached_property
+    def stdev(self):
+        print('Computing stdev...')
+        return statistics.stdev(self._data)
+
+ds = DataSet([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print(ds.mean)    # computes
+print(ds.mean)    # from cache, no 'Computing...' printed
+print(ds.stdev)   # computes
+print('mean' in ds.__dict__)  # True - stored in instance</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Computing mean...
+5.5
+5.5
+Computing stdev...
+3.0276503...
+True</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="combinatoric-iterators.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Combinatoric Iterators</span></a>
+                    <a href="partial-and-partialmethod.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">partial and partialmethod</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>
