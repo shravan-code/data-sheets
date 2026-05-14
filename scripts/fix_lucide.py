@@ -28,5 +28,5 @@ def fix_lucide():
     
     print(f"\nDone! Updated {count} files.")
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     fix_lucide()

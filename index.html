@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" >
+﻿<!DOCTYPE html>
+<html lang="en" class="">
 <head>
 <script>(function(){
             document.documentElement.classList.remove('dark');
@@ -36,52 +36,333 @@
         .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
         .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
         
+        /* Home page interactive grid */
+        .animate-grid {
+            inset: 0 !important;
+            width: 100%;
+            height: 100%;
+            pointer-events: auto !important;
+            overflow: hidden;
+        }
 
+        .grid-cells-layer {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 40px);
+            grid-template-rows: repeat(auto-fill, 40px);
+            z-index: 0;
+            opacity: 0.6;
+        }
 
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+        .traveling-blocks-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0.4;
         }
-        .animate-blob {
-            animation: blob 7s infinite;
+        .grid-cell {
+            width: 40px;
+            height: 40px;
+            transition: background-color 0.8s ease, opacity 0.8s ease;
         }
-        .animation-delay-2000 {
-            animation-delay: 2s;
+        .grid-cell:hover {
+            background-color: rgba(96, 165, 250, 0.4);
+            transition: background-color 0s;
         }
-        .animation-delay-4000 {
-            animation-delay: 4s;
+        .dark .grid-cell:hover {
+            background-color: rgba(96, 165, 250, 0.2);
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+
+        /* Traveling Blocks */
+        .traveling-block {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(59, 130, 246, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            pointer-events: none;
+            z-index: 10;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+            border-radius: 4px;
         }
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        .dark .traveling-block {
+            background-color: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
         }
+
+        /* Shifting Pulse Animation */
+        .grid-cell.animate {
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(59, 130, 246, 0.12); }
+        }
+        .dark @keyframes gridPulse {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(96, 165, 250, 0.08); }
+        }
+
+        /* Feature Cards Style */
+        .feature-card {
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 1.5rem;
+            padding: 1.25rem 1.75rem;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none !important;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12);
+        }
+
+        .feature-card .icon-box {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .feature-card:hover .icon-box {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .feature-card.practice .icon-box { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .feature-card.portfolio .icon-box { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        .feature-card.practice:hover { border-color: #8b5cf6; }
+        .feature-card.portfolio:hover { border-color: #10b981; }
+
+        .feature-card .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .feature-card .card-arrow {
+            margin-left: auto;
+            color: #94a3b8;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover .card-arrow {
+            transform: translateX(4px);
+        }
+
+        .feature-card.practice .card-arrow { color: #8b5cf6; }
+        .feature-card.portfolio .card-arrow { color: #10b981; }
+
+        .dark .feature-card {
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(51, 65, 85, 0.5);
+            backdrop-blur: xl;
+        }
+
+        .dark .feature-card:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(30, 41, 59, 0.6);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark .feature-card .card-title { color: white; }
+        .dark .feature-card .card-desc { color: #94a3b8; }
     </style>
     
     
-<link rel="stylesheet" href="css/ds-main.css?v=1778688736">
+<link rel="stylesheet" href="css/ds-main.css?v=1777291467">
 <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
 
 <!-- NAV -->
+<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
+    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
+        <!-- LEFT: Toggle, Logo and Page Title -->
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
+            </button>
 
+            <a href="index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
+                <div class="flex items-center">
+                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
+                        <span class="font-light text-slate-500">Data</span>
+                        <span class="ds-logo-cake font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left" data-text="Cake">Cake</span>
+                    </span>
+                </div>
+            </a>
+
+            
+        </div>
+
+        <!-- RIGHT: Profile Icon -->
+        <div class="flex items-center">
+            <a href="pages/portfolio.html" id="profile-btn" title="Profile"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </a>
+        </div>
+    </div>
+</nav>
 
 <!-- SIDEBAR OVERLAY (mobile) -->
-
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
 <!-- SIDEBAR -->
+<aside id="ds-sidebar"
+    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
+           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
 
+    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+
+    <div class="py-5 px-3 flex flex-col h-full">
+        <div class="flex-1">
+
+            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
+                </span>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="pages/python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
+                <a href="pages/sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
+                <a href="pages/bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
+                <a href="pages/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
+                </span>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="pages/de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="pages/dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
+                </span>
+                Tools
+            </div>
+            <nav class="pl-2">
+                <a href="pages/spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
+                <a href="pages/flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
+                <a href="pages/kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
+                <a href="pages/dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
+                <a href="pages/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
+                <a href="pages/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
+                <a href="pages/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
+                <a href="pages/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
+                </span>
+                Cloud
+            </div>
+            <nav class="pl-2">
+                <a href="pages/aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
+                <a href="pages/gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
+                <a href="pages/azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
+                <a href="pages/snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
+                <a href="pages/databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
+                </span>
+                CI / CD
+            </div>
+            <nav class="pl-2">
+                <a href="pages/docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
+                <a href="pages/kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
+                <a href="pages/terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
+                <a href="pages/github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
+                </span>
+                Design
+            </div>
+            <nav class="pl-2">
+                <a href="pages/system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
+                <a href="pages/pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
+                <a href="pages/de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
+                </span>
+                Roadmaps
+            </div>
+            <nav class="pl-2">
+                <a href="pages/roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
+                <a href="pages/roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
+                <a href="pages/roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
+            </nav>
+
+            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
+                </span>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
+                <a href="pages/practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
+                <a href="pages/practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+            </nav>
+
+            <div class="mt-4 pt-4 border-t border-slate-200">
+                <a href="pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
+                    </span>
+                    My Portfolio
+                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+                </a>
+            </div>
+
+            <!-- Guide Specific Topics (e.g. Bash Topics) -->
+            <div id="guide-topics" class="mt-6 hidden">
+                
+            </div>
+        </div>
+
+        </div>
+    </div>
+</aside>
 
 <button id="scroll-top" title="Back to top"
     class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
@@ -95,7 +376,6 @@
 
 
 
-<!-- SIDEBAR -->
 
 
 
@@ -1307,101 +1587,52 @@
 
 
 
-
-
-
-
-
-
-
-
-
-<!-- Premium Static Background -->
-<div class="fixed inset-0 grid-bg opacity-30 z-0 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"></div>
-
-<!-- Gradient Animated Background Blurry Glassy Blobs -->
-<div class="fixed inset-0 overflow-hidden pointer-events-none z-0 flex justify-center items-center">
-    <div class="absolute w-96 h-96 bg-blue-400/30 dark:bg-blue-600/30 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-[100px] animate-blob left-[10%] top-[20%]"></div>
-    <div class="absolute w-96 h-96 bg-fuchsia-400/30 dark:bg-fuchsia-600/30 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-[100px] animate-blob animation-delay-2000 right-[10%] top-[10%]"></div>
-    <div class="absolute w-[30rem] h-[30rem] bg-emerald-400/30 dark:bg-emerald-600/30 rounded-full mix-blend-multiply dark:mix-blend-overlay filter blur-[100px] animate-blob animation-delay-4000 bottom-[-10%]"></div>
-</div>
+<!-- Background -->
+<div class="fixed inset-0 grid-bg animate-grid opacity-100 z-0"></div>
+<div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+<div class="fixed bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
 
 <!-- MAIN -->
 
-    <div id="ds-main-content" class="transition-all duration-300"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center min-h-[70vh] px-6 max-w-7xl mx-auto w-full">
-        <div class="text-center max-w-4xl flex flex-col items-center">
+    <div id="ds-main-content" class="transition-all duration-300 pointer-events-none"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-20 px-6 max-w-7xl mx-auto w-full pointer-events-none">
+        <div class="text-center max-w-3xl pointer-events-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300 mb-8 transition-colors duration-300 shadow-sm dark:shadow-none">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                Your personal data engineering companion
+            </div>
             
-
+            <h1 class="font-display font-bold text-5xl md:text-7xl text-slate-900 dark:text-white mb-6 leading-tight transition-colors duration-300">
+                Master <span style="background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">Data Engineering</span> Concepts
+            </h1>
             
-            <div class="relative z-10 pt-4">
-                <style>
-                    .gradient-text {
-                        background: linear-gradient(to right, #2563eb, #7c3aed, #db2777, #7c3aed, #2563eb);
-                        background-size: 200% auto;
-                        -webkit-background-clip: text;
-                        background-clip: text;
-                        color: transparent;
-                        animation: gradient-move 4s linear infinite;
-                        display: inline-block;
-                    }
-                    
-                    @keyframes gradient-move {
-                        0% { background-position: 0% 50%; }
-                        100% { background-position: 200% 50%; }
-                    }
+            <p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed transition-colors duration-300">
+                Curated guides, architectural patterns, and practical cheat sheets covering everything from Python and SQL to Cloud and System Design.
+            </p>
 
-                    #word-rotator-container {
-                        vertical-align: baseline; 
-                        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-                        min-width: 0.5em;
-                        display: inline-flex;
-                        position: relative;
-                    }
-                </style>
-                <h1 class="font-display font-black text-6xl md:text-8xl tracking-tighter mb-8 leading-[1.05] text-slate-900 dark:text-white pb-4">
-                    Master <span id="word-rotator-container"><span id="word-rotator" class="gradient-text transform transition-all duration-300">AI</span></span>
-                    <br /> Architectures
-                </h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 max-w-2xl mx-auto">
+                <a href="pages/practice.html" class="feature-card practice group">
+                    <div class="icon-box">
+                        <i data-lucide="hammer" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Practice Skills</h3>
+                    </div>
+                    <div class="card-arrow">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
+                </a>
 
-                <script>
-                    (function() {
-                        const words = ["AI", "Data", "DE", "ML", "Python", "SQL", "Spark", "Cloud"];
-                        let index = 0;
-                        const el = document.getElementById('word-rotator');
-                        const container = document.getElementById('word-rotator-container');
-                        
-                        function updateWidth() {
-                            if (el && container) {
-                                container.style.width = el.offsetWidth + 'px';
-                            }
-                        }
-                        
-                        // Initial setup
-                        setTimeout(updateWidth, 100);
-                        window.addEventListener('resize', updateWidth);
-                        
-                        setInterval(() => {
-                            el.style.opacity = '0';
-                            el.style.transform = 'translateY(15px)';
-                            
-                            setTimeout(() => {
-                                index = (index + 1) % words.length;
-                                el.textContent = words[index];
-                                updateWidth();
-                                
-                                el.style.transform = 'translateY(-15px)';
-                                setTimeout(() => {
-                                    el.style.opacity = '1';
-                                    el.style.transform = 'translateY(0)';
-                                }, 50);
-                            }, 300);
-                        }, 3000);
-                    })();
-                </script>
-                
-                <p class="text-slate-600 dark:text-slate-400 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed transition-colors duration-300 font-medium">
-                    Curated guides, modern architectural patterns, and practical cheat sheets covering everything from Python and SQL to advanced Cloud, Streaming, and System Design.
-                </p>
+                <a href="pages/portfolio.html" class="feature-card portfolio group">
+                    <div class="icon-box">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="card-title">My Portfolio</h3>
+                    </div>
+                    <div class="card-arrow">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </div>
+                </a>
             </div>
         </div>
     </main>
@@ -1414,8 +1645,103 @@
 
 
     
+<script>
+    // Generate interactive grid cells
+    document.addEventListener('DOMContentLoaded', () => {
+        const gridContainer = document.querySelector('.animate-grid');
+        if (gridContainer) {
+            // Create layers
+            const cellsLayer = document.createElement('div');
+            cellsLayer.className = 'grid-cells-layer';
+            const blocksLayer = document.createElement('div');
+            blocksLayer.className = 'traveling-blocks-layer';
+            
+            gridContainer.appendChild(cellsLayer);
+            gridContainer.appendChild(blocksLayer);
 
-<script src="js/ds-main.js?v=1778688736" defer></script>
+            const cols = Math.ceil((window.innerWidth * 1.2) / 40);
+            const rows = Math.ceil((window.innerHeight * 1.2) / 40);
+            const total = cols * rows;
+            
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < total; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell animate';
+                cell.style.animationDelay = `${Math.random() * 8}s`;
+                fragment.appendChild(cell);
+            }
+            cellsLayer.appendChild(fragment);
+
+            // Handle window resize
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    const newCols = Math.ceil((window.innerWidth * 1.2) / 40);
+                    const newRows = Math.ceil((window.innerHeight * 1.2) / 40);
+                    const newTotal = newCols * newRows;
+                    if (newTotal > cellsLayer.children.length) {
+                        const newFragment = document.createDocumentFragment();
+                        for (let i = cellsLayer.children.length; i < newTotal; i++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'grid-cell animate';
+                            cell.style.animationDelay = `${Math.random() * 8}s`;
+                            newFragment.appendChild(cell);
+                        }
+                        cellsLayer.appendChild(newFragment);
+                    }
+                }, 200);
+            });
+
+            // Traveling Blocks Logic
+            const blocksCount = 25;
+            for (let i = 0; i < blocksCount; i++) {
+                createTravelingBlock(blocksLayer, cols, rows);
+            }
+        }
+
+        function createTravelingBlock(container, cols, rows) {
+            const block = document.createElement('div');
+            block.className = 'traveling-block';
+            
+            let x = Math.floor(Math.random() * cols);
+            let y = Math.floor(Math.random() * rows);
+            
+            const updatePos = () => {
+                block.style.left = `${x * 40}px`;
+                block.style.top = `${y * 40}px`;
+            };
+            
+            updatePos();
+            container.appendChild(block);
+            
+            const move = () => {
+                const direction = Math.floor(Math.random() * 4);
+                if (direction === 0 && x < cols - 1) x++;
+                else if (direction === 1 && x > 0) x--;
+                else if (direction === 2 && y < rows - 1) y++;
+                else if (direction === 3 && y > 0) y--;
+                
+                updatePos();
+                
+                if (Math.random() > 0.95) {
+                    block.style.opacity = '0';
+                    setTimeout(() => {
+                        x = Math.floor(Math.random() * cols);
+                        y = Math.floor(Math.random() * rows);
+                        updatePos();
+                        block.style.opacity = '1';
+                    }, 600);
+                }
+                
+                setTimeout(move, 1000 + Math.random() * 2000);
+            };
+            
+            setTimeout(move, Math.random() * 2000);
+        }
+    });
+</script>
+<script src="js/ds-main.js?v=1777291467" defer></script>
 </body>
 </html>
 

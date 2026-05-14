@@ -1,14 +1,19 @@
 import os
 
 subpages = [
-    {"id":"fundamentals","title":"1. Fundamentals","icon":"box","description":"The foundation of architecture: FR, NFR, Estimation, and Metrics.","content":"""
+    {
+        "id": "fundamentals",
+        "title": "1. Fundamentals",
+        "icon": "box",
+        "description": "The foundation of architecture: FR, NFR, Estimation, and Metrics.",
+        "content": """
 <h2>Core Architecture Concepts</h2>
-<p>Before diving into specific technologies, we must understand the"why" behind system design. Every architectural decision is a trade-off between competing goals.</p>
+<p>Before diving into specific technologies, we must understand the "why" behind system design. Every architectural decision is a trade-off between competing goals.</p>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
     <div class="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl">
         <h3 class="font-bold text-blue-800 dark:text-blue-400">Functional Requirements (FR)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The specific behaviors of the system."What the system does."</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The specific behaviors of the system. "What the system does."</p>
         <ul class="text-xs mt-3 space-y-1 text-slate-500">
             <li>• User can search for products</li>
             <li>• System sends email notification</li>
@@ -17,7 +22,7 @@ subpages = [
     </div>
     <div class="p-6 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800 rounded-xl">
         <h3 class="font-bold text-purple-800 dark:text-purple-400">Non-Functional Requirements (NFR)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The constraints or quality attributes."How the system performs."</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">The constraints or quality attributes. "How the system performs."</p>
         <ul class="text-xs mt-3 space-y-1 text-slate-500">
             <li>• Scalability: Handle 100k concurrent users</li>
             <li>• Availability: 99.99% uptime</li>
@@ -50,19 +55,25 @@ subpages = [
 <ul>
     <li><strong>SLI (Indicator):</strong> The actual metric being measured (e.g., Latency).</li>
     <li><strong>SLO (Objective):</strong> The target value for the indicator (e.g., Latency < 100ms).</li>
-    <li><strong>SLA (Agreement):</strong> The contract with the customer (e.g.,"If SLO is missed, we pay you back").</li>
+    <li><strong>SLA (Agreement):</strong> The contract with the customer (e.g., "If SLO is missed, we pay you back").</li>
 </ul>
 
 <div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
 <div class="mermaid text-center">
 graph LR
-    U[User] --"Latency (SLI)" --> S[System]
-    S --"Target: 99.9% (SLO)" --> B[Business Goal]
-    B --"Contract" --> C[SLA]
+    U[User] -- "Latency (SLI)" --> S[System]
+    S -- "Target: 99.9% (SLO)" --> B[Business Goal]
+    B -- "Contract" --> C[SLA]
 </div>
-</div>"""
+</div>
+        """
     },
-    {"id":"scalability","title":"2. Scalability","icon":"trending-up","description":"How systems handle growth: Scaling, Load Balancing, and Sharding.","content":"""
+    {
+        "id": "scalability",
+        "title": "2. Scalability",
+        "icon": "trending-up",
+        "description": "How systems handle growth: Scaling, Load Balancing, and Sharding.",
+        "content": """
 <h2>Handling System Growth</h2>
 <p>Scalability is the ability of a system to handle increased load by adding resources.</p>
 
@@ -137,14 +148,20 @@ graph LR
             <h4 class="font-bold mb-2">Sharding Strategies:</h4>
             <ul class="text-sm space-y-2">
                 <li><strong>Key-Based (Hash):</strong> Apply a hash function to the user ID to determine the shard.</li>
-                <li><strong>Range-Based:</strong> Shard based on a range (e.g., Dates or Alphabetical). Risk of"Hotspots" (e.g., all traffic on the current month).</li>
+                <li><strong>Range-Based:</strong> Shard based on a range (e.g., Dates or Alphabetical). Risk of "Hotspots" (e.g., all traffic on the current month).</li>
                 <li><strong>Directory-Based:</strong> A lookup service tracks which data lives in which shard. Most flexible but adds a dependency.</li>
             </ul>
         </div>
     </section>
-</div>"""
+</div>
+        """
     },
-    {"id":"networking","title":"3. Networking Basics","icon":"globe","description":"Protocols, Proxies, and Content Delivery.","content":"""
+    {
+        "id": "networking",
+        "title": "3. Networking Basics",
+        "icon": "globe",
+        "description": "Protocols, Proxies, and Content Delivery.",
+        "content": """
 <h2>The Internet Protocol Suite</h2>
 <p>Networking is the communication layer that enables distributed systems to talk to each other.</p>
 
@@ -205,7 +222,7 @@ graph LR
 </div>
 
 <h3>CDN (Content Delivery Network)</h3>
-<p>Geographically distributed servers that cache content at the"edge" (close to users).</p>
+<p>Geographically distributed servers that cache content at the "edge" (close to users).</p>
 <div class="my-6 p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl not-prose">
 <div class="mermaid text-center">
 graph LR
@@ -215,11 +232,17 @@ graph LR
     Origin -- Content --> Edge
     Edge -- Cache & Deliver --> User
 </div>
-</div>"""
+</div>
+        """
     },
-    {"id":"databases","title":"4. Databases","icon":"database","description":"SQL, NoSQL, ACID, BASE, and the CAP Theorem.","content":"""
+    {
+        "id": "databases",
+        "title": "4. Databases",
+        "icon": "database",
+        "description": "SQL, NoSQL, ACID, BASE, and the CAP Theorem.",
+        "content": """
 <h2>Modern Data Persistence</h2>
-<p>Choosing a database is not about finding the"best" one, but the one whose trade-offs fit your data model.</p>
+<p>Choosing a database is not about finding the "best" one, but the one whose trade-offs fit your data model.</p>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
     <section>
@@ -274,9 +297,15 @@ graph LR
     K2[Key 2] --> B
 </div>
 <p class="text-center text-xs opacity-50 mt-2">When Node 3 is added, only some keys move from Node 1 to Node 3.</p>
-</div>"""
+</div>
+        """
     },
-    {"id":"caching","title":"5. Caching","icon":"zap","description":"Improving speed with Memory storage and Eviction patterns.","content":"""
+    {
+        "id": "caching",
+        "title": "5. Caching",
+        "icon": "zap",
+        "description": "Improving speed with Memory storage and Eviction patterns.",
+        "content": """
 <h2>Why Cache?</h2>
 <p>Memory access is <strong>100,000x faster</strong> than disk access. Caching is the process of storing copies of data in a high-speed layer.</p>
 
@@ -315,9 +344,15 @@ graph LR
         <h4 class="font-bold text-sm mb-2">TTL</h4>
         <p class="text-xs"><strong>Time to Live:</strong> Automatically expires data after a set duration (e.g., 60 minutes).</p>
     </div>
-</div>"""
+</div>
+        """
     },
-    {"id":"messaging-queues","title":"6. Messaging & Queues","icon":"message-square","description":"Kafka, RabbitMQ, Decoupling, and Delivery Guarantees.","content":"""
+    {
+        "id": "messaging-queues",
+        "title": "6. Messaging & Queues",
+        "icon": "message-square",
+        "description": "Kafka, RabbitMQ, Decoupling, and Delivery Guarantees.",
+        "content": """
 <h2>Asynchronous Communication</h2>
 <p>Messaging systems allow services to communicate without waiting for a response, enabling high throughput and decoupling.</p>
 
@@ -363,84 +398,107 @@ graph LR
         <h4 class="font-bold text-sm">Exactly-Once</h4>
         <p class="text-xs">The holy grail. Requires transactional coordination between producer, broker, and consumer.</p>
     </div>
-</div>"""
+</div>
+        """
     }
 ]
 
 roadmap_phases = [
-    {"name":"Phase 1 — Design Fundamentals","items": [
-            {"name":"Architecture Basics","id":"fundamentals"},
-            {"name":"Requirement Analysis","id":"fundamentals"},
-            {"name":"Estimation (Back-of-Envelope)","id":"fundamentals"},
-            {"name":"SLA, SLO, and SLI","id":"fundamentals"}
+    {
+        "name": "Phase 1 — Design Fundamentals",
+        "items": [
+            {"name": "Architecture Basics", "id": "fundamentals"},
+            {"name": "Requirement Analysis", "id": "fundamentals"},
+            {"name": "Estimation (Back-of-Envelope)", "id": "fundamentals"},
+            {"name": "SLA, SLO, and SLI", "id": "fundamentals"}
         ]
     },
-    {"name":"Phase 2 — Scalability Patterns","items": [
-            {"name":"Vertical vs Horizontal Scaling","id":"scalability"},
-            {"name":"Load Balancing Algorithms","id":"scalability"},
-            {"name":"Database Sharding","id":"scalability"},
-            {"name":"Consistent Hashing","id":"databases"}
+    {
+        "name": "Phase 2 — Scalability Patterns",
+        "items": [
+            {"name": "Vertical vs Horizontal Scaling", "id": "scalability"},
+            {"name": "Load Balancing Algorithms", "id": "scalability"},
+            {"name": "Database Sharding", "id": "scalability"},
+            {"name": "Consistent Hashing", "id": "databases"}
         ]
     },
-    {"name":"Phase 3 — Networking & Communication","items": [
-            {"name":"HTTP 1.1 / 2 / 3","id":"networking"},
-            {"name":"Proxies & Reverse Proxies","id":"networking"},
-            {"name":"API Gateways","id":"networking"},
-            {"name":"CDN & Edge Computing","id":"networking"}
+    {
+        "name": "Phase 3 — Networking & Communication",
+        "items": [
+            {"name": "HTTP 1.1 / 2 / 3", "id": "networking"},
+            {"name": "Proxies & Reverse Proxies", "id": "networking"},
+            {"name": "API Gateways", "id": "networking"},
+            {"name": "CDN & Edge Computing", "id": "networking"}
         ]
     },
-    {"name":"Phase 4 — Data Persistence","items": [
-            {"name":"SQL vs NoSQL","id":"databases"},
-            {"name":"ACID vs BASE","id":"databases"},
-            {"name":"CAP Theorem","id":"databases"},
-            {"name":"Indexing & Partitioning","id":"databases"}
+    {
+        "name": "Phase 4 — Data Persistence",
+        "items": [
+            {"name": "SQL vs NoSQL", "id": "databases"},
+            {"name": "ACID vs BASE", "id": "databases"},
+            {"name": "CAP Theorem", "id": "databases"},
+            {"name": "Indexing & Partitioning", "id": "databases"}
         ]
     },
-    {"name":"Phase 5 — High-Performance Caching","items": [
-            {"name":"Cache Aside / Write-Through","id":"caching"},
-            {"name":"Eviction (LRU, LFU, TTL)","id":"caching"},
-            {"name":"Distributed Caching (Redis)","id":"caching"}
+    {
+        "name": "Phase 5 — High-Performance Caching",
+        "items": [
+            {"name": "Cache Aside / Write-Through", "id": "caching"},
+            {"name": "Eviction (LRU, LFU, TTL)", "id": "caching"},
+            {"name": "Distributed Caching (Redis)", "id": "caching"}
         ]
     },
-    {"name":"Phase 6 — Async Messaging","items": [
-            {"name":"Message Queues (RabbitMQ)","id":"messaging-queues"},
-            {"name":"Event Streaming (Kafka)","id":"messaging-queues"},
-            {"name":"Delivery Guarantees","id":"messaging-queues"}
+    {
+        "name": "Phase 6 — Async Messaging",
+        "items": [
+            {"name": "Message Queues (RabbitMQ)", "id": "messaging-queues"},
+            {"name": "Event Streaming (Kafka)", "id": "messaging-queues"},
+            {"name": "Delivery Guarantees", "id": "messaging-queues"}
         ]
     },
-    {"name":"Phase 7 — Microservices & API Design","items": [
-            {"name":"RESTful API Best Practices","id":"networking"},
-            {"name":"gRPC & Protocol Buffers","id":"networking"},
-            {"name":"GraphQL Fundamentals","id":"networking"},
-            {"name":"Service Discovery","id":"scalability"}
+    {
+        "name": "Phase 7 — Microservices & API Design",
+        "items": [
+            {"name": "RESTful API Best Practices", "id": "networking"},
+            {"name": "gRPC & Protocol Buffers", "id": "networking"},
+            {"name": "GraphQL Fundamentals", "id": "networking"},
+            {"name": "Service Discovery", "id": "scalability"}
         ]
     },
-    {"name":"Phase 8 — Security & Identity","items": [
-            {"name":"OAuth2 & OpenID Connect","id":"networking"},
-            {"name":"JWT Authentication","id":"networking"},
-            {"name":"TLS/SSL Encryption","id":"networking"},
-            {"name":"Role-Based Access Control","id":"networking"}
+    {
+        "name": "Phase 8 — Security & Identity",
+        "items": [
+            {"name": "OAuth2 & OpenID Connect", "id": "networking"},
+            {"name": "JWT Authentication", "id": "networking"},
+            {"name": "TLS/SSL Encryption", "id": "networking"},
+            {"name": "Role-Based Access Control", "id": "networking"}
         ]
     },
-    {"name":"Phase 9 — Reliability & Monitoring","items": [
-            {"name":"Circuit Breakers & Retries","id":"fundamentals"},
-            {"name":"Rate Limiting Patterns","id":"networking"},
-            {"name":"Distributed Tracing","id":"fundamentals"},
-            {"name":"Log Aggregation","id":"fundamentals"}
+    {
+        "name": "Phase 9 — Reliability & Monitoring",
+        "items": [
+            {"name": "Circuit Breakers & Retries", "id": "fundamentals"},
+            {"name": "Rate Limiting Patterns", "id": "networking"},
+            {"name": "Distributed Tracing", "id": "fundamentals"},
+            {"name": "Log Aggregation", "id": "fundamentals"}
         ]
     },
-    {"name":"Phase 10 — Cloud Native & Infra","items": [
-            {"name":"Docker & Containerization","id":"scalability"},
-            {"name":"Kubernetes Orchestration","id":"scalability"},
-            {"name":"Serverless Architectures","id":"scalability"},
-            {"name":"Infrastructure as Code","id":"fundamentals"}
+    {
+        "name": "Phase 10 — Cloud Native & Infra",
+        "items": [
+            {"name": "Docker & Containerization", "id": "scalability"},
+            {"name": "Kubernetes Orchestration", "id": "scalability"},
+            {"name": "Serverless Architectures", "id": "scalability"},
+            {"name": "Infrastructure as Code", "id": "fundamentals"}
         ]
     },
-    {"name":"Phase 11 — Design Interviews & Cases","items": [
-            {"name":"Twitter/X Timeline Design","id":"messaging-queues"},
-            {"name":"Uber/Lyft Proximity Design","id":"databases"},
-            {"name":"Netflix Content Delivery","id":"networking"},
-            {"name":"Standard Interview Template","id":"fundamentals"}
+    {
+        "name": "Phase 11 — Design Interviews & Cases",
+        "items": [
+            {"name": "Twitter/X Timeline Design", "id": "messaging-queues"},
+            {"name": "Uber/Lyft Proximity Design", "id": "databases"},
+            {"name": "Netflix Content Delivery", "id": "networking"},
+            {"name": "Standard Interview Template", "id": "fundamentals"}
         ]
     }
 ]
@@ -481,7 +539,8 @@ hub_template = '''<!DOCTYPE html>
                     <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
                         System <span class="bg-gradient-to-r from-blue-600 to-indigo-400 bg-clip-text text-transparent">Design</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">"Master the architecture, patterns, and best practices for building massive-scale distributed systems."
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "Master the architecture, patterns, and best practices for building massive-scale distributed systems."
                     </p>
                 </div>
             </header>
@@ -491,7 +550,9 @@ hub_template = '''<!DOCTYPE html>
                 {phases_html}
             </div>
 
-            
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium">© 2026 Data Cake • Path to Mastery</p>
+            </footer>
         </main>
     </div>
 </body>
@@ -546,10 +607,10 @@ subpage_template = '''<!DOCTYPE html>
 </html>'''
 
 # 1. Build Roadmap Index
-phases_html =""
+phases_html = ""
 for i, phase in enumerate(roadmap_phases):
     num = i + 1
-    items_html =""
+    items_html = ""
     for item in phase['items']:
         items_html += f"""
         <a href="system-design/{item['id']}.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
@@ -593,7 +654,8 @@ hub_template = '''<!DOCTYPE html>
                 <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
                     System <span class="bg-gradient-to-r from-blue-600 to-indigo-400 bg-clip-text text-transparent">Design</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">"Master the architecture, patterns, and best practices for building massive-scale distributed systems."
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
+                    "Master the architecture, patterns, and best practices for building massive-scale distributed systems."
                 </p>
             </header>
 
@@ -602,7 +664,9 @@ hub_template = '''<!DOCTYPE html>
                 {phases_html}
             </div>
             
-            
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase text-[10px]">\u00a9 2026 Data Cake \u2022 System Mastery</p>
+            </footer>
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -611,7 +675,7 @@ hub_template = '''<!DOCTYPE html>
 
 hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
-with open("pages/learn/system-design.html","w", encoding="utf-8") as f:
+with open("pages/learn/system-design.html", "w", encoding="utf-8") as f:
     f.write(hub_content)
 
 # 2. Build Subpages
@@ -621,7 +685,7 @@ for i, page in enumerate(subpages):
     prev_page = subpages[i-1] if i > 0 else None
     next_page = subpages[i+1] if i < len(subpages)-1 else None
 
-    prev_html =""
+    prev_html = ""
     if prev_page:
         prev_html = f"""
         <a href="{prev_page['id']}.html" class="nav-card prev">
@@ -629,7 +693,7 @@ for i, page in enumerate(subpages):
             <span class="nav-title">{prev_page["title"]}</span>
         </a>"""
         
-    next_html =""
+    next_html = ""
     if next_page:
         next_html = f"""
         <a href="{next_page['id']}.html" class="nav-card next">
@@ -640,7 +704,7 @@ for i, page in enumerate(subpages):
     # Build list of all topics for the sidebar
     topics_html = '<div class="toc-title mt-8">System Design</div><ul class="toc-list">'
     for p in subpages:
-        active_cls ="active" if p['id'] == page['id'] else""
+        active_cls = "active" if p['id'] == page['id'] else ""
         topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
     topics_html += '</ul>'
 
@@ -654,13 +718,14 @@ for i, page in enumerate(subpages):
     # Inject Navigation Cards
     nav_html = f"""
     <div class="nav-container">
-        {prev_html if prev_html else"<div></div>"}
-        {next_html if next_html else"<div></div>"}
-    </div>"""
+        {prev_html if prev_html else "<div></div>"}
+        {next_html if next_html else "<div></div>"}
+    </div>
+    """
     content = content.replace('</main>', nav_html + '</main>')
 
-    path = os.path.join("pages","learn","system-design", f"{page['id']}.html")
-    with open(path,"w", encoding="utf-8") as f:
+    path = os.path.join("pages", "learn", "system-design", f"{page['id']}.html")
+    with open(path, "w", encoding="utf-8") as f:
         f.write(content)
 
 print("Successfully generated System Design Roadmap!")

@@ -2,7 +2,12 @@ import os
 
 # Subpages definition
 subpages = [
-    {"id":"core-concepts","title":"1. Core Concepts","icon":"book-open","description":"What is Data Engineering, lifecycles, and team roles.","content":"""
+    {
+        "id": "core-concepts",
+        "title": "1. Core Concepts",
+        "icon": "book-open",
+        "description": "What is Data Engineering, lifecycles, and team roles.",
+        "content": """
 <h2>What is Data Engineering?</h2>
 <p>Data engineering is the practice of designing, building, and maintaining the systems and architecture that collect, store, and process data at scale. It transforms raw, messy data into clean, structured formats that downstream users (like data scientists and business analysts) can easily query and analyze.</p>
 
@@ -45,9 +50,15 @@ flowchart LR
 
 <h2>Upstream & Downstream Systems</h2>
 <p><strong>Upstream systems</strong> are the sources of data (the origin). If an upstream system changes its database schema without warning, the data pipeline breaks. This is a common pain point!</p>
-<p><strong>Downstream systems</strong> consume the data produced by pipelines. These are BI tools, ML models, and business reports. They rely on the data being timely, accurate, and structured.</p>"""
+<p><strong>Downstream systems</strong> consume the data produced by pipelines. These are BI tools, ML models, and business reports. They rely on the data being timely, accurate, and structured.</p>
+        """
     },
-    {"id":"pipeline-basics","title":"2. Data Pipeline Basics","icon":"git-branch","description":"ETL vs ELT, batch vs streaming, and pipeline design principles.","content":"""
+    {
+        "id": "pipeline-basics",
+        "title": "2. Data Pipeline Basics",
+        "icon": "git-branch",
+        "description": "ETL vs ELT, batch vs streaming, and pipeline design principles.",
+        "content": """
 <h2>What is a Data Pipeline?</h2>
 <p>A data pipeline is a set of automated processes that extract data from various sources, transform it into a usable format, and load it into a destination system for analysis.</p>
 
@@ -86,15 +97,21 @@ flowchart LR
     </div>
     <div class="border-l-4 border-blue-500 pl-4 py-2">
         <h4 class="font-bold text-slate-900 dark:text-white">2. Replayability</h4>
-        <p class="text-sm text-slate-600 dark:text-slate-400">The ability to easily re-run past data. If a bug is discovered in a transformation logic, you should be able to"replay" the pipeline for the last 30 days to fix the historical data.</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400">The ability to easily re-run past data. If a bug is discovered in a transformation logic, you should be able to "replay" the pipeline for the last 30 days to fix the historical data.</p>
     </div>
     <div class="border-l-4 border-violet-500 pl-4 py-2">
         <h4 class="font-bold text-slate-900 dark:text-white">3. Backfilling</h4>
         <p class="text-sm text-slate-600 dark:text-slate-400">The process of loading historical data into a new pipeline or table. A well-designed pipeline allows you to pass a custom date range to compute past data.</p>
     </div>
-</div>"""
+</div>
+        """
     },
-    {"id":"data-storage","title":"3. Data Storage","icon":"database","description":"Warehouses, Lakes, OLTP vs OLAP, and file formats.","content":"""
+    {
+        "id": "data-storage",
+        "title": "3. Data Storage",
+        "icon": "database",
+        "description": "Warehouses, Lakes, OLTP vs OLAP, and file formats.",
+        "content": """
 <h2>Databases vs Data Warehouses vs Data Lakes vs Lakehouse</h2>
 <div class="overflow-x-auto my-6 not-prose">
     <table class="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
@@ -149,9 +166,15 @@ flowchart LR
 </ul>
 
 <h2>Storage Partitioning</h2>
-<p>Partitioning means dividing your data into separate directories based on a column (usually a date). Instead of scanning a 10TB table, a query filtering `WHERE year=2023 AND month=10` will only scan the `/year=2023/month=10/` directory, drastically improving speed and reducing costs.</p>"""
+<p>Partitioning means dividing your data into separate directories based on a column (usually a date). Instead of scanning a 10TB table, a query filtering `WHERE year=2023 AND month=10` will only scan the `/year=2023/month=10/` directory, drastically improving speed and reducing costs.</p>
+        """
     },
-    {"id":"data-modelling","title":"4. Data Modelling","icon":"layout-template","description":"Star schemas, fact vs dimension tables, and SCDs.","content":"""
+    {
+        "id": "data-modelling",
+        "title": "4. Data Modelling",
+        "icon": "layout-template",
+        "description": "Star schemas, fact vs dimension tables, and SCDs.",
+        "content": """
 <h2>Fact Tables vs Dimension Tables</h2>
 <p>Data modeling for analytics revolves around separating metrics from context.</p>
 <ul>
@@ -191,8 +214,8 @@ erDiagram
         string product_name
         string category
     }
-    FACT_SALES }|--|| DIM_CUSTOMER :"made by"
-    FACT_SALES }|--|| DIM_PRODUCT :"includes"
+    FACT_SALES }|--|| DIM_CUSTOMER : "made by"
+    FACT_SALES }|--|| DIM_PRODUCT : "includes"
 </div>
 </div>
 
@@ -202,13 +225,19 @@ erDiagram
     <li><strong>Type 0:</strong> Never changes. (e.g., Date of Birth)</li>
     <li><strong>Type 1:</strong> Overwrite old data. You lose history. (e.g., correcting a typo in a name)</li>
     <li><strong>Type 2:</strong> Add a new row. Track history using `start_date`, `end_date`, and an `is_current` boolean flag. <strong>(The most common pattern)</strong></li>
-    <li><strong>Type 3:</strong> Add a new column to the existing row for the"previous_value". Only keeps one level of history.</li>
+    <li><strong>Type 3:</strong> Add a new column to the existing row for the "previous_value". Only keeps one level of history.</li>
 </ul>
 
 <h2>Data Vault</h2>
-<p>An advanced modeling technique focused on agility and scale, consisting of Hubs (business keys), Links (relationships), and Satellites (descriptive attributes). Excellent for integrating dozens of source systems in enterprise lakes, but overkill for simple startups.</p>"""
+<p>An advanced modeling technique focused on agility and scale, consisting of Hubs (business keys), Links (relationships), and Satellites (descriptive attributes). Excellent for integrating dozens of source systems in enterprise lakes, but overkill for simple startups.</p>
+        """
     },
-    {"id":"ingestion-patterns","title":"5. Data Ingestion Patterns","icon":"download-cloud","description":"CDC, Incremental vs Full Load, API and event-driven patterns.","content":"""
+    {
+        "id": "ingestion-patterns",
+        "title": "5. Data Ingestion Patterns",
+        "icon": "download-cloud",
+        "description": "CDC, Incremental vs Full Load, API and event-driven patterns.",
+        "content": """
 <h2>Full Load vs Incremental Load</h2>
 <div class="bg-slate-100 dark:bg-slate-800/50 p-6 rounded-xl my-6 not-prose">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -232,15 +261,21 @@ erDiagram
 </ul>
 
 <h2>Event-driven Ingestion</h2>
-<p>Data isn't pulled from a database; instead, the application pushes events (e.g.,"UserClickedButton","OrderPlaced") directly to an event bus (Kafka/Kinesis) the moment they occur. This is the foundation of real-time analytics.</p>
+<p>Data isn't pulled from a database; instead, the application pushes events (e.g., "UserClickedButton", "OrderPlaced") directly to an event bus (Kafka/Kinesis) the moment they occur. This is the foundation of real-time analytics.</p>
 
 <h2>API-based Ingestion</h2>
 <p>Pulling data from third-party SaaS applications (Salesforce, Zendesk, Stripe) using HTTP requests. Major challenges include handling rate limits, pagination, handling JSON nesting, and authentication (OAuth tokens). Tools like Fivetran and Airbyte dominate this space.</p>
 
 <h2>File-based Ingestion</h2>
-<p>Upstream systems dump CSV or JSON files into an S3 bucket or SFTP server daily. An orchestration tool (Airflow) triggers a job when the file arrives (e.g., using an S3 Sensor) to load it into the warehouse.</p>"""
+<p>Upstream systems dump CSV or JSON files into an S3 bucket or SFTP server daily. An orchestration tool (Airflow) triggers a job when the file arrives (e.g., using an S3 Sensor) to load it into the warehouse.</p>
+        """
     },
-    {"id":"processing-concepts","title":"6. Data Processing Concepts","icon":"cpu","description":"Distributed computing, shuffling, skew, and evaluation strategies.","content":"""
+    {
+        "id": "processing-concepts",
+        "title": "6. Data Processing Concepts",
+        "icon": "cpu",
+        "description": "Distributed computing, shuffling, skew, and evaluation strategies.",
+        "content": """
 <h2>Distributed Computing Basics</h2>
 <p>When data is too large to fit in the RAM or hard drive of a single machine, we use distributed computing (like Spark). Data is split into chunks, and a cluster of computers (workers) processes the chunks in parallel, coordinated by a central master node.</p>
 
@@ -264,16 +299,22 @@ erDiagram
 
 <h2>Lazy vs Eager Evaluation</h2>
 <p><strong>Eager Evaluation (Pandas):</strong> As soon as you write a line of code, the data is processed immediately.</p>
-<p><strong>Lazy Evaluation (Spark):</strong> Spark doesn't process anything when you define transformations. It waits until you call an"Action" (like `.show()` or `.write()`), looks at your entire pipeline, optimizes the query execution plan, and then executes it efficiently in one go.</p>
+<p><strong>Lazy Evaluation (Spark):</strong> Spark doesn't process anything when you define transformations. It waits until you call an "Action" (like `.show()` or `.write()`), looks at your entire pipeline, optimizes the query execution plan, and then executes it efficiently in one go.</p>
 
 <h2>In-memory vs Disk-based Processing</h2>
-<p>Hadoop MapReduce wrote intermediate results to disk after every step, making it extremely slow. Spark keeps intermediate results in RAM (in-memory), making it up to 100x faster, though it requires more expensive hardware.</p>"""
+<p>Hadoop MapReduce wrote intermediate results to disk after every step, making it extremely slow. Spark keeps intermediate results in RAM (in-memory), making it up to 100x faster, though it requires more expensive hardware.</p>
+        """
     },
-    {"id":"streaming-concepts","title":"7. Streaming Concepts","icon":"activity","description":"Event time, windowing, watermarks, and exactly-once semantics.","content":"""
+    {
+        "id": "streaming-concepts",
+        "title": "7. Streaming Concepts",
+        "icon": "activity",
+        "description": "Event time, windowing, watermarks, and exactly-once semantics.",
+        "content": """
 <h2>Event Streaming vs Message Queue</h2>
 <ul>
     <li><strong>Message Queue (RabbitMQ, SQS):</strong> Designed for task queuing. Once a message is read by a consumer, it is deleted. Good for async microservices.</li>
-    <li><strong>Event Stream (Kafka, Kinesis):</strong> An immutable, append-only log of events. Messages are kept for a retention period (e.g., 7 days) and can be read by multiple different consumers simultaneously. You can also"rewind" and replay events.</li>
+    <li><strong>Event Stream (Kafka, Kinesis):</strong> An immutable, append-only log of events. Messages are kept for a retention period (e.g., 7 days) and can be read by multiple different consumers simultaneously. You can also "rewind" and replay events.</li>
 </ul>
 
 <h2>Event Time vs Processing Time</h2>
@@ -284,7 +325,7 @@ erDiagram
 </div>
 
 <h2>Windowing</h2>
-<p>Streaming data never ends. To calculate aggregates (like"clicks per minute"), we cut the stream into"windows".</p>
+<p>Streaming data never ends. To calculate aggregates (like "clicks per minute"), we cut the stream into "windows".</p>
 <ul>
     <li><strong>Tumbling Window:</strong> Fixed-size, non-overlapping windows. (e.g., 1:00-1:05, 1:05-1:10).</li>
     <li><strong>Sliding Window:</strong> Overlapping windows. (e.g., a 5-minute window that slides every 1 minute).</li>
@@ -300,9 +341,15 @@ erDiagram
     <li><strong>At-most-once:</strong> Fire and forget. Messages might be lost, but never duplicated.</li>
     <li><strong>At-least-once:</strong> Guaranteed delivery. Messages will not be lost, but might be processed multiple times if a crash occurs. (Requires idempotent downstream pipelines).</li>
     <li><strong>Exactly-once:</strong> The holy grail. Guaranteed delivery with zero duplicates. Very complex and adds latency, supported by modern Kafka and Flink via transactional states.</li>
-</ul>"""
+</ul>
+        """
     },
-    {"id":"data-quality","title":"8. Data Quality","icon":"check-circle","description":"Validation, profiling, schema evolution, and data contracts.","content":"""
+    {
+        "id": "data-quality",
+        "title": "8. Data Quality",
+        "icon": "check-circle",
+        "description": "Validation, profiling, schema evolution, and data contracts.",
+        "content": """
 <h2>Dimensions of Data Quality</h2>
 <p>Data quality is usually measured across these key dimensions:</p>
 <ul>
@@ -329,9 +376,15 @@ erDiagram
 
 <h2>Null Handling & Deduplication</h2>
 <p><strong>Nulls:</strong> You must decide whether to drop rows with NULLs, fill them with a default value (e.g., `0` or `"Unknown"`), or leave them. SQL handles NULLs weirdly (e.g., `NULL = NULL` is false).</p>
-<p><strong>Deduplication:</strong> Easiest done using the `ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC)` window function in SQL, filtering for `row_num = 1` to keep only the most recent version of a record.</p>"""
+<p><strong>Deduplication:</strong> Easiest done using the `ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC)` window function in SQL, filtering for `row_num = 1` to keep only the most recent version of a record.</p>
+        """
     },
-    {"id":"governance","title":"9. Data Governance & Observability","icon":"shield","description":"Lineage, cataloging, metadata, and access control.","content":"""
+    {
+        "id": "governance",
+        "title": "9. Data Governance & Observability",
+        "icon": "shield",
+        "description": "Lineage, cataloging, metadata, and access control.",
+        "content": """
 <h2>Data Lineage</h2>
 <p>Lineage tracks the lifecycle of data from its origin, through all transformations, to its final destination in a BI dashboard. It answers the question: <em>"If I change this source column, which downstream reports will break?"</em> Tools like dbt automatically generate DAGs (Directed Acyclic Graphs) that visualize this lineage.</p>
 
@@ -339,7 +392,7 @@ erDiagram
 <p>As a data platform grows to thousands of tables, users can't find what they need. A Data Catalog (e.g., Alation, Atlan, AWS Glue Catalog) is a searchable inventory of all data assets. It stores <strong>metadata</strong> (data about data): table descriptions, column definitions, owners, and tags.</p>
 
 <h2>Data Observability</h2>
-<p>Inspired by software observability (Datadog/New Relic). It's the practice of monitoring the health of data pipelines automatically. Good observability tools (like Monte Carlo) use machine learning to detect anomalies without manual tests (e.g.,"This table usually receives 10,000 rows a day, but today it received 0. Send an alert!").</p>
+<p>Inspired by software observability (Datadog/New Relic). It's the practice of monitoring the health of data pipelines automatically. Good observability tools (like Monte Carlo) use machine learning to detect anomalies without manual tests (e.g., "This table usually receives 10,000 rows a day, but today it received 0. Send an alert!").</p>
 
 <h2>Access Control (RBAC vs ABAC)</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6 not-prose">
@@ -349,7 +402,7 @@ erDiagram
     </div>
     <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
         <h3 class="font-bold text-slate-900 dark:text-white mb-2">Attribute-Based Access Control (ABAC)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400">Dynamic permissions based on attributes. (e.g.,"A user can only see sales data if `user.region == data.region`"). Complex but highly secure.</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Dynamic permissions based on attributes. (e.g., "A user can only see sales data if `user.region == data.region`"). Complex but highly secure.</p>
     </div>
 </div>
 
@@ -359,9 +412,15 @@ erDiagram
     <li><strong>Masking:</strong> Replacing parts of data (e.g., `***-**-1234`).</li>
     <li><strong>Hashing:</strong> Running data through a one-way algorithm (e.g., SHA-256) so it's anonymized but still joinable across tables.</li>
     <li><strong>Tokenization:</strong> Replacing sensitive data with a random token, storing the mapping securely in a separate vault.</li>
-</ul>"""
+</ul>
+        """
     },
-    {"id":"architecture-patterns","title":"10. Pipeline Architecture Patterns","icon":"layers","description":"Lambda, Kappa, Medallion, and Event-driven architectures.","content":"""
+    {
+        "id": "architecture-patterns",
+        "title": "10. Pipeline Architecture Patterns",
+        "icon": "layers",
+        "description": "Lambda, Kappa, Medallion, and Event-driven architectures.",
+        "content": """
 <h2>Lambda Architecture</h2>
 <p>An older architecture designed to handle both massive historical data and real-time data simultaneously.</p>
 <ul>
@@ -383,7 +442,7 @@ erDiagram
     </div>
     <div class="p-4 bg-slate-300/20 border-l-4 border-slate-400 rounded-r-xl">
         <h3 class="font-bold text-slate-700 dark:text-slate-300 m-0">Silver (Cleaned & Conformed)</h3>
-        <p class="text-sm mt-1 mb-0">Data is filtered, cleaned, deduplicated, and normalized. Joined to reference data. The"single source of truth" for the enterprise.</p>
+        <p class="text-sm mt-1 mb-0">Data is filtered, cleaned, deduplicated, and normalized. Joined to reference data. The "single source of truth" for the enterprise.</p>
     </div>
     <div class="p-4 bg-amber-200/20 border-l-4 border-amber-500 rounded-r-xl">
         <h3 class="font-bold text-amber-700 dark:text-amber-400 m-0">Gold (Aggregated & Business-ready)</h3>
@@ -396,9 +455,15 @@ erDiagram
 
 <h2>Microservices vs Monolithic Pipelines</h2>
 <p><strong>Monolithic:</strong> A single massive Spark script reads data, cleans it, joins it, and writes it. Hard to debug and scale.</p>
-<p><strong>Microservices (Modular):</strong> Breaking the pipeline into small, independent tasks (e.g., Task A extracts, Task B validates, Task C transforms). Managed by an orchestrator like Airflow. If Task B fails, you only rerun Task B.</p>"""
+<p><strong>Microservices (Modular):</strong> Breaking the pipeline into small, independent tasks (e.g., Task A extracts, Task B validates, Task C transforms). Managed by an orchestrator like Airflow. If Task B fails, you only rerun Task B.</p>
+        """
     },
-    {"id":"performance-scalability","title":"11. Performance & Scalability","icon":"zap","description":"Scaling strategies, CAP theorem, and optimization techniques.","content":"""
+    {
+        "id": "performance-scalability",
+        "title": "11. Performance & Scalability",
+        "icon": "zap",
+        "description": "Scaling strategies, CAP theorem, and optimization techniques.",
+        "content": """
 <h2>Horizontal vs Vertical Scaling</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6 not-prose">
     <div class="p-5 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm">
@@ -433,9 +498,15 @@ erDiagram
 </ul>
 
 <h2>The Small File Problem</h2>
-<p>HDFS and S3 hate millions of tiny 10KB files. They cause massive metadata overhead, making listing and reading agonizingly slow. Big data engines (like Spark) perform best with files around 128MB to 1GB. <br><strong>Solution:</strong> Run periodic compaction jobs that read thousands of tiny streaming files and rewrite them as a few large Parquet files.</p>"""
+<p>HDFS and S3 hate millions of tiny 10KB files. They cause massive metadata overhead, making listing and reading agonizingly slow. Big data engines (like Spark) perform best with files around 128MB to 1GB. <br><strong>Solution:</strong> Run periodic compaction jobs that read thousands of tiny streaming files and rewrite them as a few large Parquet files.</p>
+        """
     },
-    {"id":"devops","title":"12. DevOps for DE","icon":"settings","description":"CI/CD, testing, monitoring, and SLAs for pipelines.","content":"""
+    {
+        "id": "devops",
+        "title": "12. DevOps for DE",
+        "icon": "settings",
+        "description": "CI/CD, testing, monitoring, and SLAs for pipelines.",
+        "content": """
 <h2>Version Control for Pipelines</h2>
 <p>Data engineering has evolved. We no longer write stored procedures manually in a production database. All SQL queries, Spark scripts, and infrastructure configurations (Terraform) must be committed to Git. This provides an audit trail, rollback capabilities, and peer review via Pull Requests.</p>
 
@@ -462,10 +533,11 @@ erDiagram
 <h2>SLA / SLO / SLI for Pipelines</h2>
 <p>Borrowed from Site Reliability Engineering (SRE):</p>
 <div class="my-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 not-prose">
-    <p><strong>Service Level Indicator (SLI):</strong> The actual metric you measure. (e.g.,"The pipeline finishes by 8:00 AM on 95% of days").</p>
-    <p class="mt-2"><strong>Service Level Objective (SLO):</strong> The internal target you want to hit. (e.g.,"We aim for 99% completion by 8:00 AM").</p>
-    <p class="mt-2"><strong>Service Level Agreement (SLA):</strong> The external, legally binding promise to stakeholders. (e.g.,"If the dashboard is not updated by 9:00 AM, we owe a financial penalty").</p>
-</div>"""
+    <p><strong>Service Level Indicator (SLI):</strong> The actual metric you measure. (e.g., "The pipeline finishes by 8:00 AM on 95% of days").</p>
+    <p class="mt-2"><strong>Service Level Objective (SLO):</strong> The internal target you want to hit. (e.g., "We aim for 99% completion by 8:00 AM").</p>
+    <p class="mt-2"><strong>Service Level Agreement (SLA):</strong> The external, legally binding promise to stakeholders. (e.g., "If the dashboard is not updated by 9:00 AM, we owe a financial penalty").</p>
+</div>
+        """
     }
 ]
 
@@ -506,7 +578,8 @@ hub_template = '''<!DOCTYPE html>
                     <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
                         DE <span class="bg-gradient-to-r from-violet-600 to-violet-400 bg-clip-text text-transparent">Fundamentals</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">"The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
+                    <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl leading-relaxed mb-0 font-medium italic">
+                        "The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
                     </p>
                 </div>
             </header>
@@ -568,23 +641,23 @@ subpage_template = '''<!DOCTYPE html>
 # 1. Build Hub Page
 subpages.sort(key=lambda x: int(x['title'].split('.')[0]))
 phases = [
-    {"name":"The Foundation","items": [subpages[0]]},
-    {"name":"Pipeline Basics","items": [subpages[1]]},
-    {"name":"Storage Strategy","items": [subpages[2]]},
-    {"name":"Data Modelling","items": [subpages[3]]},
-    {"name":"Ingestion Patterns","items": [subpages[4]]},
-    {"name":"Processing Core","items": [subpages[5]]},
-    {"name":"Streaming Mastery","items": [subpages[6]]},
-    {"name":"Data Quality","items": [subpages[7]]},
-    {"name":"Governance & Observability","items": [subpages[8]]},
-    {"name":"Advanced Architectures","items": [subpages[9]]},
-    {"name":"Performance & DevOps","items": [subpages[10], subpages[11]]}
+    {"name": "The Foundation", "items": [subpages[0]]},
+    {"name": "Pipeline Basics", "items": [subpages[1]]},
+    {"name": "Storage Strategy", "items": [subpages[2]]},
+    {"name": "Data Modelling", "items": [subpages[3]]},
+    {"name": "Ingestion Patterns", "items": [subpages[4]]},
+    {"name": "Processing Core", "items": [subpages[5]]},
+    {"name": "Streaming Mastery", "items": [subpages[6]]},
+    {"name": "Data Quality", "items": [subpages[7]]},
+    {"name": "Governance & Observability", "items": [subpages[8]]},
+    {"name": "Advanced Architectures", "items": [subpages[9]]},
+    {"name": "Performance & DevOps", "items": [subpages[10], subpages[11]]}
 ]
 
-phases_html =""
+phases_html = ""
 for i, phase in enumerate(phases):
     num = i + 1
-    items_html =""
+    items_html = ""
     for page in phase["items"]:
         items_html += f"""
         <a href="de-fundamentals/{page['id']}.html" class="flex items-center gap-3 p-3 bg-violet-50/30 dark:bg-slate-900 border border-violet-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-violet-50 dark:hover:bg-violet-900/20 hover:border-violet-200 group/item no-underline">
@@ -630,7 +703,8 @@ hub_template = '''<!DOCTYPE html>
                 <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
                     DE <span class="bg-gradient-to-r from-violet-600 to-violet-400 bg-clip-text text-transparent">Fundamentals</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">"The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
+                    "The definitive guide to the foundational principles of Data Engineering. From lifecycles and storage to distributed computing and observability."
                 </p>
             </header>
 
@@ -639,7 +713,9 @@ hub_template = '''<!DOCTYPE html>
                 {phases_html}
             </div>
             
-            
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase text-[10px]">\u00a9 2026 Data Cake \u2022 Foundations Mastery</p>
+            </footer>
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -648,7 +724,7 @@ hub_template = '''<!DOCTYPE html>
 
 hub_content = hub_template.format(phases_html=phases_html)
 os.makedirs("pages/learn", exist_ok=True)
-with open("pages/learn/de-fundamentals.html","w", encoding="utf-8") as f:
+with open("pages/learn/de-fundamentals.html", "w", encoding="utf-8") as f:
     f.write(hub_content)
 
 print("Created Hub: pages/learn/de-fundamentals.html")
@@ -660,7 +736,7 @@ for i, page in enumerate(subpages):
     prev_page = subpages[i-1] if i > 0 else None
     next_page = subpages[i+1] if i < len(subpages)-1 else None
 
-    prev_html =""
+    prev_html = ""
     if prev_page:
         prev_html = f"""
         <a href="{prev_page['id']}.html" class="nav-card prev">
@@ -668,7 +744,7 @@ for i, page in enumerate(subpages):
             <span class="nav-title">{prev_page["title"]}</span>
         </a>"""
         
-    next_html =""
+    next_html = ""
     if next_page:
         next_html = f"""
         <a href="{next_page['id']}.html" class="nav-card next">
@@ -679,7 +755,7 @@ for i, page in enumerate(subpages):
     # Build list of all topics for the sidebar
     topics_html = '<div class="toc-title mt-8">Fundamentals</div><ul class="toc-list">'
     for p in subpages:
-        active_cls ="active" if p['id'] == page['id'] else""
+        active_cls = "active" if p['id'] == page['id'] else ""
         topics_html += f'<li><a href="{p["id"]}.html" class="toc-link {active_cls}">{p["title"]}</a></li>'
     topics_html += '</ul>'
 
@@ -693,13 +769,14 @@ for i, page in enumerate(subpages):
     # Inject Navigation Cards
     nav_html = f"""
     <div class="nav-container">
-        {prev_html if prev_html else"<div></div>"}
-        {next_html if next_html else"<div></div>"}
-    </div>"""
+        {prev_html if prev_html else "<div></div>"}
+        {next_html if next_html else "<div></div>"}
+    </div>
+    """
     content = content.replace('</main>', nav_html + '</main>')
 
-    path = os.path.join("pages","learn","de-fundamentals", f"{page['id']}.html")
-    with open(path,"w", encoding="utf-8") as f:
+    path = os.path.join("pages", "learn", "de-fundamentals", f"{page['id']}.html")
+    with open(path, "w", encoding="utf-8") as f:
         f.write(content)
     print(f"Created Subpage: {path}")
 

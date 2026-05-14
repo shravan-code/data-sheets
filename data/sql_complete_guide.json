@@ -832,22 +832,7 @@
         "topics": [
           {
             "name": "SELECT",
-            "explanation": "The SELECT statement is used to retrieve data from one or more tables. While often perceived as simple, mastering SELECT involves understanding logical query processing, optimization techniques, and its role as the foundation of data analysis.",
-            "diagram": "graph LR\n    A[FROM / JOIN] --> B[WHERE]\n    B --> C[GROUP BY]\n    C --> D[HAVING]\n    D --> E[SELECT]\n    E --> F[DISTINCT]\n    F --> G[ORDER BY]\n    G --> H[LIMIT / OFFSET]",
-            "pro_tip": "Always explicitly name your columns instead of using SELECT *. This reduces unnecessary I/O, prevents data leakage, and ensures your application doesn't break when a new column is added to the table.",
-            "warning": "SELECT DISTINCT requires the database to sort the entire result set to identify duplicates. On multi-billion row tables, this can cause significant performance degradation or disk spills.",
-            "components": [
-              {
-                "name": "Logical Query Processing",
-                "explanation": "SQL is a declarative language, not procedural. The database engine decides the optimal way to execute your query, but conceptually follows a specific order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY.",
-                "use_case": "Explains why you cannot use a column alias defined in SELECT inside the WHERE clause."
-              }
-            ],
-            "best_practices": [
-              "Use meaningful aliases (AS) to make result sets more readable for downstream analytics.",
-              "Only select the columns you actually need for your specific task.",
-              "Use table aliases (e.g., FROM employees e) to keep your code concise, especially in JOINs."
-            ],
+            "explanation": "The SELECT statement is used to retrieve data from one or more tables. It is the most frequently used SQL command and serves as the foundation for data analysis, allowing you to specify exactly which columns and rows should be returned.",
             "examples": [
               {
                 "description": "Select all columns",
@@ -1690,10 +1675,7 @@
         "topics": [
           {
             "name": "INNER JOIN",
-            "explanation": "INNER JOIN is the most fundamental join type. It returns only the rows that have matching values in both tables. This is the mathematical 'Intersection' of two sets, ensuring that data is only returned when a valid relationship exists between the records.",
-            "diagram": "graph LR\n    A[Table A] -- Match --> C{Intersection}\n    B[Table B] -- Match --> C\n    C --> D[Result Set]\n    style C fill:#3b82f6,stroke:#1d4ed8,color:#fff",
-            "pro_tip": "Joining on non-indexed columns is one of the most common causes of slow queries. Always ensure your Foreign Key columns have B-tree indexes to allow the engine to use efficient 'Merge Join' or 'Hash Join' algorithms.",
-            "warning": "INNER JOIN excludes records from both tables if they don't have a match. If you need to keep all records from a specific table, use a LEFT or RIGHT join instead.",
+            "explanation": "The INNER JOIN is used to combine rows from two or more tables based on a related column between them. This is essential for working with normalized databases where information is spread across multiple tables to reduce redundancy.",
             "example": {
               "sql": "SELECT e.name, d.dept_name FROM employees e\nINNER JOIN departments d ON e.dept_id = d.dept_id;",
               "output": [
@@ -1741,10 +1723,7 @@
           },
           {
             "name": "LEFT JOIN",
-            "explanation": "LEFT JOIN (or LEFT OUTER JOIN) is essential for preserving every record from a primary source table, regardless of whether a matching record exists in the joined table. It returns all rows from the left table, and matching rows from the right table. If no match is found, the result is NULL for the right-side columns.",
-            "diagram": "graph LR\n    A[Table A (All Rows)] --> C{Join}\n    B[Table B (Matches)] -- \"If No Match, NULL\" --> C\n    C --> D[Result Set]\n    style A fill:#3b82f6,stroke:#1d4ed8,color:#fff",
-            "pro_tip": "A powerful use of LEFT JOIN is the 'Anti-Join' pattern. You can find records in Table A that DO NOT exist in Table B by using a LEFT JOIN followed by 'WHERE B.column IS NULL'.",
-            "warning": "Be careful when applying filters to the right-hand table in the WHERE clause. Doing so can inadvertently turn your LEFT JOIN into an INNER JOIN because NULL values will be filtered out. Always apply such filters within the ON clause or in a subquery.",
+            "explanation": "The LEFT JOIN is used to combine rows from two or more tables based on a related column between them. This is essential for working with normalized databases where information is spread across multiple tables to reduce redundancy.",
             "example": {
               "sql": "SELECT e.name, d.dept_name FROM employees e\nLEFT JOIN departments d ON e.dept_id = d.dept_id;",
               "output": [

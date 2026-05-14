@@ -2,11 +2,32 @@ import json
 import os
 
 # Icon mapping for each topic
-TOPIC_ICONS = {"intro":"terminal","basics":"code","variables":"variable","operators":"calculator","control_flow":"git-branch","functions":"command","pipeline":"arrow-right-left","error_handling":"alert-circle","file_system":"folder","regex":"search","modules":"package","remoting":"wifi","classes":"layers","wmi_cim":"cpu","security":"shield","networking":"network","scheduled_tasks":"clock","formatting_output":"monitor","projects":"folder-kanban","cheatsheet":"layout",
+TOPIC_ICONS = {
+    "intro":             "terminal",
+    "basics":            "code",
+    "variables":         "variable",
+    "operators":         "calculator",
+    "control_flow":      "git-branch",
+    "functions":         "command",
+    "pipeline":          "arrow-right-left",
+    "error_handling":    "alert-circle",
+    "file_system":       "folder",
+    "regex":             "search",
+    "modules":           "package",
+    "remoting":          "wifi",
+    "classes":           "layers",
+    "wmi_cim":           "cpu",
+    "security":          "shield",
+    "networking":        "network",
+    "scheduled_tasks":   "clock",
+    "formatting_output": "monitor",
+    "projects":          "folder-kanban",
+    "cheatsheet":        "layout",
 }
 
-def render_topic_html(topic):"""Convert a topic dict (from powershell_guide.json) into HTML content."""
-    if topic["id"] =="cheatsheet":
+def render_topic_html(topic):
+    """Convert a topic dict (from powershell_guide.json) into HTML content."""
+    if topic["id"] == "cheatsheet":
         return render_cheatsheet_html(topic)
         
     parts = []
@@ -21,8 +42,8 @@ def render_topic_html(topic):"""Convert a topic dict (from powershell_guide.json
         for ex in sub.get("examples", []):
             parts.append(f'<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">{ex["title"]}</h3>\n')
             
-            raw_code = ex.get("code","")
-            raw_output = ex.get("output","")
+            raw_code = ex.get("code", "")
+            raw_output = ex.get("output", "")
             
             # Check if output is already in comments
             output_in_comments = False
@@ -32,7 +53,7 @@ def render_topic_html(topic):"""Convert a topic dict (from powershell_guide.json
                     # PowerShell comments can be # or <# #> but we check # for simple cases
                     code_comments = [line.split('#', 1)[1].strip() for line in raw_code.split('\n') if '#' in line]
                     # Check if all non-empty output lines are represented in comments
-                    prefixes = ["Output:","Result:","->","=>"]
+                    prefixes = ["Output:", "Result:", "->", "=>"]
                     found_count = 0
                     for o_line in output_lines:
                         matched = False
@@ -49,8 +70,8 @@ def render_topic_html(topic):"""Convert a topic dict (from powershell_guide.json
                     if found_count == len(output_lines):
                         output_in_comments = True
 
-            code = raw_code.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-            output = raw_output.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+            code = raw_code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            output = raw_output.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             
             if output and not output_in_comments:
                 # Combined Code + Output Card
@@ -71,7 +92,7 @@ def render_topic_html(topic):"""Convert a topic dict (from powershell_guide.json
         
         parts.append(f'</div>\n')
         
-    return"".join(parts)
+    return "".join(parts)
 
 
 def render_cheatsheet_html(topic):
@@ -89,7 +110,7 @@ def render_cheatsheet_html(topic):
         parts.append('<tbody>')
 
         for ex in sub.get("examples", []):
-            code = ex["code"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+            code = ex["code"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             lines = code.strip().split('\n')
             for line in lines:
                 if '# --- BASH ---' in line:
@@ -114,34 +135,34 @@ def render_cheatsheet_html(topic):
         parts.append('</table>')
         parts.append('</div>')
         parts.append("<br>\n")
-    return"".join(parts)
+    return "".join(parts)
 
 
 def build_powershell_hub(topics):
     # Group topics into 11 Phases for the full premium roadmap experience
     phases = [
-        {"name":"Getting Started","topic_ids": ["intro"]},
-        {"name":"Syntax Fundamentals","topic_ids": ["basics"]},
-        {"name":"Variables & Objects","topic_ids": ["variables"]},
-        {"name":"Logic & Flow Control","topic_ids": ["operators","control_flow"]},
-        {"name":"The Power of Pipeline","topic_ids": ["pipeline","formatting_output"]},
-        {"name":"Professional Scripting","topic_ids": ["functions","error_handling"]},
-        {"name":"Modular Automation","topic_ids": ["modules"]},
-        {"name":"System & Infrastructure","topic_ids": ["wmi_cim","remoting","scheduled_tasks"]},
-        {"name":"Security & Networking","topic_ids": ["security","networking"]},
-        {"name":"Advanced Data & OOP","topic_ids": ["classes","regex"]},
-        {"name":"Practical Projects","topic_ids": ["projects","cheatsheet"]}
+        {"name": "Getting Started", "topic_ids": ["intro"]},
+        {"name": "Syntax Fundamentals", "topic_ids": ["basics"]},
+        {"name": "Variables & Objects", "topic_ids": ["variables"]},
+        {"name": "Logic & Flow Control", "topic_ids": ["operators", "control_flow"]},
+        {"name": "The Power of Pipeline", "topic_ids": ["pipeline", "formatting_output"]},
+        {"name": "Professional Scripting", "topic_ids": ["functions", "error_handling"]},
+        {"name": "Modular Automation", "topic_ids": ["modules"]},
+        {"name": "System & Infrastructure", "topic_ids": ["wmi_cim", "remoting", "scheduled_tasks"]},
+        {"name": "Security & Networking", "topic_ids": ["security", "networking"]},
+        {"name": "Advanced Data & OOP", "topic_ids": ["classes", "regex"]},
+        {"name": "Practical Projects", "topic_ids": ["projects", "cheatsheet"]}
     ]
 
-    phases_html =""
+    phases_html = ""
     for i, phase in enumerate(phases):
         num = i + 1
-        items_html =""
+        items_html = ""
         for tid in phase["topic_ids"]:
             topic = next((t for t in topics if t["id"] == tid), None)
             if not topic: continue
             
-            icon = TOPIC_ICONS.get(tid,"file-code")
+            icon = TOPIC_ICONS.get(tid, "file-code")
             items_html += f"""
             <a href="powershell/{tid}.html" class="flex items-center gap-3 p-3 bg-blue-50/30 dark:bg-slate-900 border border-blue-100/50 dark:border-slate-800 rounded-xl transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline">
                 <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all">
@@ -186,7 +207,8 @@ def build_powershell_hub(topics):
                 <h1 class="font-display text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-tight">
                     PowerShell <span class="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Scripting</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">"Master the art of automation. From local cmdlets to enterprise-scale remote orchestration."
+                <p class="text-xl md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium italic">
+                    "Master the art of automation. From local cmdlets to enterprise-scale remote orchestration."
                 </p>
             </header>
 
@@ -195,7 +217,9 @@ def build_powershell_hub(topics):
                 {phases_html}
             </div>
 
-            
+            <footer class="mt-20 py-10 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-medium text-xs tracking-widest uppercase text-[10px]">\u00a9 2026 Data Cake \u2022 Automation Mastery</p>
+            </footer>
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -205,7 +229,7 @@ def build_powershell_hub(topics):
 
     output_path = os.path.join('pages', 'learn', 'powershell.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path,"w", encoding="utf-8") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(hub_template)
     print(f"Built PowerShell Hub (Roadmap Style): {output_path}")
 
@@ -217,7 +241,7 @@ def build_powershell_subpages(topics):
         # Build list of all topics for the sidebar
         topics_html = '<div class="toc-title mt-8">PowerShell Topics</div><ul class="toc-list">'
         for t in topics:
-            active_cls ="active" if t['id'] == topic['id'] else""
+            active_cls = "active" if t['id'] == topic['id'] else ""
             topics_html += f'<li><a href="{t["id"]}.html" class="toc-link {active_cls}">{t["title"]}</a></li>'
         topics_html += '</ul>'
 
@@ -230,13 +254,13 @@ def build_powershell_subpages(topics):
             <a href="{prev_topic['id']}.html" class="nav-card prev">
                 <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
                 <span class="nav-title">{prev_topic['title']}</span>
-            </a>""" if prev_topic else"<div></div>"
+            </a>""" if prev_topic else "<div></div>"
 
         next_html = f"""
             <a href="{next_topic['id']}.html" class="nav-card next">
                 <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
                 <span class="nav-title">{next_topic['title']}</span>
-            </a>""" if next_topic else"<div></div>"
+            </a>""" if next_topic else "<div></div>"
 
         content_html = render_topic_html(topic)
 
@@ -291,15 +315,15 @@ def build_powershell_subpages(topics):
 </html>"""
 
         file_path = os.path.join('pages', 'learn', 'powershell', f"{topic['id']}.html")
-        with open(file_path,"w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             f.write(html_content)
         print(f"Built subpage: {file_path}")
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     data_path = os.path.join('data', 'powershell_guide.json')
     if os.path.exists(data_path):
-        with open(data_path,"r", encoding="utf-8") as f:
+        with open(data_path, "r", encoding="utf-8") as f:
             guide = json.load(f)
 
         topics = guide["topics"]

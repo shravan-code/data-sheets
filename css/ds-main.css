@@ -1,4 +1,4 @@
-/* DS_SHARED_SIDEBAR_STYLES */
+﻿/* DS_SHARED_SIDEBAR_STYLES */
 body {
     font-family: 'Inter', sans-serif;
 }
@@ -398,7 +398,7 @@ a.group:focus-visible .ds-logo-cake::after {
 
 #profile-btn.profile-pill:hover,
 #profile-btn.profile-pill:focus-visible {
-    width: 11.5rem;
+    width: 13.75rem;
     justify-content: flex-start;
     padding-left: 0.55rem;
     padding-right: 0.75rem;
@@ -568,9 +568,24 @@ pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
 }
 
-/* ── Hide Sidebar (Replaced by Topnav) ── */
-#ds-sidebar, #sidebar-overlay, #sidebar-toggle {
-    display: none !important;
+@media(min-width:1024px) {
+    body.sidebar-open #ds-main-content,
+    #ds-main-content {
+        padding-left: 15rem !important;
+    }
+
+    #sidebar-toggle {
+        display: none !important;
+    }
+
+    #ds-sidebar.sidebar-hidden {
+        transform: translateX(0) !important;
+    }
+
+    #ds-sidebar {
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+    }
 }
 
 /* â”€â”€ Navigation Cards (Bottom of Page) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -986,7 +1001,6 @@ body.sidebar-open #sidebar-toggle .line:last-child {
         margin: 2rem -1rem !important;
         opacity: 0.1 !important;
     }
-}
 
 /* Prevent flash of subpage sidebar menus before JS removes them */
 #guide-topics {
@@ -999,236 +1013,4 @@ body.sidebar-open #sidebar-toggle .line:last-child {
 }
 .sb-cat[class*="bg-slate-"]:not(:has(~ nav a[href*="portfolio.html"])) + nav {
     display: none !important;
-}
-
-/* ====================================================
-   TOPNAV -- Horizontal navigation with dropdowns
-   ==================================================== */
-
-/* The second row inside #ds-nav */
-#ds-topnav {
-    
-    
-    
-    overflow: visible;
-}
-
-#ds-topnav-inner {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2px;
-    padding: 0 1rem;
-    min-height: 38px;
-}
-
-.tnav-item {
-    position: relative;
-    flex-shrink: 0;
-}
-
-.tnav-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: #475569;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.tnav-btn i { width: 14px; height: 14px; flex-shrink: 0; }
-
-.tnav-btn .tnav-chevron {
-    width: 12px;
-    height: 12px;
-    opacity: 0.5;
-    transition: transform 0.2s ease, opacity 0.15s;
-}
-
-.tnav-btn:hover { background: #f1f5f9; color: #0f172a; }
-.tnav-btn:hover .tnav-chevron { opacity: 1; }
-
-.tnav-item.active .tnav-btn {
-    color: #4f46e5;
-    background: #eef2ff;
-    font-weight: 700;
-}
-
-.tnav-item.open .tnav-btn .tnav-chevron {
-    transform: rotate(180deg);
-    opacity: 1;
-}
-
-.tnav-dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    min-width: 190px;
-    background: white;
-    border: 1px solid rgba(226,232,240,0.8);
-    border-radius: 14px;
-    box-shadow: 0 16px 40px -8px rgba(15,23,42,0.14), 0 4px 8px rgba(15,23,42,0.06);
-    padding: 6px;
-    z-index: 200;
-    opacity: 0;
-    transform: translateY(-6px) scale(0.97);
-    transform-origin: top left;
-    pointer-events: none;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-.tnav-item.open .tnav-dropdown {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-
-.tnav-item:nth-last-child(-n+3) .tnav-dropdown {
-    left: auto;
-    right: 0;
-    transform-origin: top right;
-}
-
-.tnav-link {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 7px 10px;
-    border-radius: 9px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: #475569;
-    text-decoration: none;
-    transition: background 0.12s, color 0.12s;
-    white-space: nowrap;
-}
-.tnav-link i { width: 13px; height: 13px; flex-shrink: 0; }
-.tnav-link:hover { background: rgba(59,130,246,0.06); color: #0f172a; }
-.tnav-link.active { background: rgba(37,99,235,0.09); color: #2563eb; font-weight: 700; }
-
-/* Mobile drawer */
-#ds-topnav-mobile-drawer {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 180;
-    pointer-events: none;
-}
-#ds-topnav-mobile-drawer.open { pointer-events: auto; }
-
-#ds-topnav-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(15,23,42,0.45);
-    backdrop-filter: blur(3px);
-    opacity: 0;
-    transition: opacity 0.25s;
-}
-#ds-topnav-mobile-drawer.open #ds-topnav-overlay { opacity: 1; }
-
-#ds-topnav-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100%;
-    background: white;
-    box-shadow: 8px 0 40px rgba(15,23,42,0.14);
-    transform: translateX(-100%);
-    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
-    overflow-y: auto;
-    padding-bottom: 2rem;
-}
-#ds-topnav-mobile-drawer.open #ds-topnav-panel { transform: translateX(0); }
-#ds-topnav-panel-inner { padding: 1rem 0.75rem 2rem; }
-
-.tnav-mob-cat {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 10px 6px;
-    margin-top: 6px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    border-top: 1px solid rgba(226,232,240,0.5);
-}
-.tnav-mob-cat:first-child { border-top: none; margin-top: 0; }
-.tnav-mob-cat .icon-wrap {
-    width: 20px; height: 20px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-}
-.tnav-mob-cat i { width: 11px; height: 11px; }
-
-.tnav-mob-link {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 8px 10px;
-    border-radius: 9px;
-    font-size: 0.84rem;
-    font-weight: 500;
-    color: #475569;
-    text-decoration: none;
-    transition: background 0.12s, color 0.12s;
-}
-.tnav-mob-link i { width: 13px; height: 13px; flex-shrink: 0; }
-.tnav-mob-link:hover { background: rgba(59,130,246,0.06); color: #0f172a; }
-.tnav-mob-link.active { background: rgba(37,99,235,0.09); color: #2563eb; font-weight: 700; }
-
-/* Mobile hamburger */
-#ds-topnav-mob-btn { display: none; }
-
-@media (max-width: 767px) {
-    #ds-topnav-inner { display: none; }
-    #ds-topnav-mob-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: #475569;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        height: 38px;
-    }
-    #ds-topnav-mob-btn:hover { background: rgba(59,130,246,0.06); }
-    #ds-topnav-mobile-drawer { display: block; }
-
-    #ds-topnav {
-        padding: 0 0.75rem;
-        display: flex;
-        align-items: center;
-    }
-}
-
-/* Desktop top padding accounting for two-row nav (~96px total) */
-@media (min-width: 768px) {
-    main.pt-28,
-    main.pt-24,
-    #ds-main-content main {
-        padding-top: 7rem !important;
-    }
-}
-
-.tnav-sep {
-    width: 1px; height: 16px;
-    background: rgba(226,232,240,0.8);
-    flex-shrink: 0; margin: 0 4px;
 }

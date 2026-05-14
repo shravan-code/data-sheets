@@ -3,51 +3,51 @@ import json
 import re
 
 PART_ICONS = {
-    1:"database",
-    2:"plus-square",
-    3:"edit-3",
-    4:"search",
-    5:"lock",
-    6:"refresh-cw",
-    7:"filter",
-    8:"git-merge",
-    9:"bar-chart-2",
-    10:"layers",
-    11:"copy",
-    12:"type",
-    13:"table",
-    14:"code",
-    15:"activity",
-    16:"clock",
-    17:"layout",
-    18:"zap",
-    19:"gauge",
-    20:"cpu",
-    21:"component",
-    22:"git-branch",
-    23:"settings",
-    24:"info",
-    25:"shield",
-    26:"terminal",
-    27:"globe",
-    28:"codesandbox",
-    29:"help-circle",
-    30:"award",
+    1: "database",
+    2: "plus-square",
+    3: "edit-3",
+    4: "search",
+    5: "lock",
+    6: "refresh-cw",
+    7: "filter",
+    8: "git-merge",
+    9: "bar-chart-2",
+    10: "layers",
+    11: "copy",
+    12: "type",
+    13: "table",
+    14: "code",
+    15: "activity",
+    16: "clock",
+    17: "layout",
+    18: "zap",
+    19: "gauge",
+    20: "cpu",
+    21: "component",
+    22: "git-branch",
+    23: "settings",
+    24: "info",
+    25: "shield",
+    26: "terminal",
+    27: "globe",
+    28: "codesandbox",
+    29: "help-circle",
+    30: "award",
 }
 
 def slugify(text):
     s = text.lower()
-    s = s.replace("","-").replace("&","and").replace("/","-")
+    s = s.replace(" ", "-").replace("&", "and").replace("/", "-")
     s = re.sub(r'[^a-z0-9\-]', '', s)
     return s.strip("-")
 
 def render_sql_table(data, title=""):
     if not data or not isinstance(data, list):
-        return""
+        return ""
     
     headers = data[0].keys() if data else []
     if not headers:
-        return""
+        return ""
     
     parts = []
     if title:
@@ -65,16 +65,16 @@ def render_sql_table(data, title=""):
     for row in data:
         parts.append('<tr class="hover:bg-slate-50/50 transition-colors">')
         for h in headers:
-            val = row.get(h,"")
+            val = row.get(h, "")
             if val is None: val = '<span class="text-slate-300">NULL</span>'
             parts.append(f'<td class="p-3 text-slate-600 font-mono text-xs">{val}</td>')
         parts.append('</tr>')
     parts.append('</tbody></table></div>')
-    return"\n".join(parts)
+    return "\n".join(parts)
 
 def render_example(ex):
     if isinstance(ex, str):
-        ex_clean = ex.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        ex_clean = ex.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         return f'<div class="my-8 group"><div class="relative rounded-xl overflow-hidden bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md p-6"><pre class="language-sql"><code>{ex_clean}</code></pre></div></div>'
     
     parts = []
@@ -82,17 +82,17 @@ def render_example(ex):
         parts.append(f'<h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">{ex["description"]}</h3>')
     
     if ex.get("sql"):
-        sql = ex["sql"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        sql = ex["sql"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         
         # Determine output type
-        output_html =""
+        output_html = ""
         if ex.get("output_table") is not None:
-            output_html = render_sql_table(ex["output_table"],"Output Table")
+            output_html = render_sql_table(ex["output_table"], "Output Table")
         elif ex.get("output") is not None:
             if isinstance(ex["output"], list):
-                output_html = render_sql_table(ex["output"],"Output Result")
+                output_html = render_sql_table(ex["output"], "Output Result")
             else:
-                out_str = str(ex["output"]).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                out_str = str(ex["output"]).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                 output_html = f"""
                 <div class="mt-6 pt-6 border-t border-slate-100 bg-slate-50/50 -mx-6 -mb-6 px-6 pb-6">
                     <div class="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-bold flex items-center gap-2"><i data-lucide="terminal" class="w-3 h-3"></i> Output</div>
@@ -100,11 +100,11 @@ def render_example(ex):
                 </div>"""
         
         # Before/After tables
-        before_after_html =""
+        before_after_html = ""
         if ex.get("before"):
-            before_after_html += render_sql_table(ex["before"],"Before")
+            before_after_html += render_sql_table(ex["before"], "Before")
         if ex.get("after"):
-            before_after_html += render_sql_table(ex["after"],"After")
+            before_after_html += render_sql_table(ex["after"], "After")
 
         # Combine into a card
         parts.append(f'<div class="my-8 group">')
@@ -124,18 +124,31 @@ def render_example(ex):
     if ex.get("note"):
         parts.append(f'<p class="text-sm italic text-slate-500 mb-4 bg-slate-100 p-3 rounded-lg border-l-4 border-blue-400">{ex["note"]}</p>')
 
-    return"\n".join(parts)
+    return "\n".join(parts)
 
 def render_topic_content(topic):
     parts = []
     
     # 1. Primary Explanation/Description
-    for key in ["explanation","description"]:
+    for key in ["explanation", "description"]:
         if topic.get(key):
             parts.append(f'<p class="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">{topic[key]}</p>')
             
     # 2. Core Conceptual Sections (Theory First)
-    theory_sections = {"normal_forms":"Normal Forms","anomalies":"Database Anomalies","benefits":"Key Benefits","use_cases":"Common Use Cases","structure":"Logical Structure","components":"Core Components","difference_from_star":"Snowflake vs Star Schema","lock_types":"Locking Mechanisms","levels":"Isolation Levels","types":"Available Types","key_nodes":"Internal Structure","frame_options":"Window Frame Options","rows_vs_range":"ROWS vs RANGE Comparison"
+    theory_sections = {
+        "normal_forms": "Normal Forms",
+        "anomalies": "Database Anomalies",
+        "benefits": "Key Benefits",
+        "use_cases": "Common Use Cases",
+        "structure": "Logical Structure",
+        "components": "Core Components",
+        "difference_from_star": "Snowflake vs Star Schema",
+        "lock_types": "Locking Mechanisms",
+        "levels": "Isolation Levels",
+        "types": "Available Types",
+        "key_nodes": "Internal Structure",
+        "frame_options": "Window Frame Options",
+        "rows_vs_range": "ROWS vs RANGE Comparison"
     }
     
     for key, title in theory_sections.items():
@@ -144,20 +157,21 @@ def render_topic_content(topic):
             val = topic[key]
             
             # Special case for Normal Forms
-            if key =="normal_forms":
+            if key == "normal_forms":
                 parts.append('<div class="space-y-10 my-8">')
                 for nf in val:
                     parts.append(f"""
                     <div class="p-8 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
                         <h3 class="text-2xl font-black text-slate-900 mb-3">{nf.get('form', 'Normal Form')}</h3>
-                        <p class="text-slate-600 mb-8 text-lg leading-relaxed">{nf.get('rule', '')}</p>""")
+                        <p class="text-slate-600 mb-8 text-lg leading-relaxed">{nf.get('rule', '')}</p>
+                    """)
                     if nf.get("applies_to"):
                          parts.append(f'<div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold mb-6"><i data-lucide="info" class="w-3 h-3"></i> Applies to: {nf["applies_to"]}</div>')
                          
                     if nf.get("bad_example"):
                         parts.append(f'<div class="text-[10px] uppercase tracking-widest text-rose-500 font-black mb-3 ml-1">The Bad Approach</div>')
                         if isinstance(nf["bad_example"], (dict, list)):
-                            json_bad = json.dumps(nf["bad_example"], indent=2).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                            json_bad = json.dumps(nf["bad_example"], indent=2).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                             parts.append(f'<div class="rounded-2xl overflow-hidden mb-8 border border-rose-100"><pre class="language-json !bg-rose-50/30 !m-0"><code>{json_bad}</code></pre></div>')
                         else:
                             parts.append(f'<div class="p-5 bg-rose-50/50 text-rose-700 rounded-2xl mb-8 border border-rose-100 font-mono text-sm leading-relaxed">{nf["bad_example"]}</div>')
@@ -167,7 +181,7 @@ def render_topic_content(topic):
                         if isinstance(nf["good_example"], list):
                             parts.append(render_sql_table(nf["good_example"]))
                         elif isinstance(nf["good_example"], dict):
-                            json_good = json.dumps(nf["good_example"], indent=2).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                            json_good = json.dumps(nf["good_example"], indent=2).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                             parts.append(f'<div class="rounded-2xl overflow-hidden mb-8 border border-emerald-100"><pre class="language-json !bg-emerald-50/30 !m-0"><code>{json_good}</code></pre></div>')
                         else:
                             parts.append(f'<div class="p-5 bg-emerald-50/50 text-emerald-700 rounded-2xl mb-8 border border-emerald-100 font-mono text-sm leading-relaxed">{nf["good_example"]}</div>')
@@ -197,7 +211,7 @@ def render_topic_content(topic):
 
     # 3. Syntax
     if topic.get("syntax"):
-        syntax = topic["syntax"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        syntax = topic["syntax"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         parts.append(f'<div class="bg-slate-900 rounded-2xl p-8 mb-12 border border-slate-800 shadow-xl">')
         parts.append(f'<div class="text-[10px] uppercase tracking-widest text-blue-400 mb-4 font-black">General Syntax</div>')
         parts.append(f'<pre class="!m-0 !p-0 !bg-transparent text-emerald-400 font-mono text-base leading-relaxed"><code>{syntax}</code></pre>')
@@ -217,7 +231,7 @@ def render_topic_content(topic):
         parts.append('</div>')
 
     if topic.get("comparison_table"):
-        parts.append(render_sql_table(topic["comparison_table"],"Comparison"))
+        parts.append(render_sql_table(topic["comparison_table"], "Comparison"))
 
     if topic.get("categories"):
         for cat in topic["categories"]:
@@ -234,7 +248,7 @@ def render_topic_content(topic):
         parts.append('</div>')
 
     if topic.get("execution_order"):
-        parts.append(render_sql_table(topic["execution_order"],"Execution Order"))
+        parts.append(render_sql_table(topic["execution_order"], "Execution Order"))
 
     # Examples
     if topic.get("example"):
@@ -248,17 +262,17 @@ def render_topic_content(topic):
     if topic.get("questions"):
         for q in topic["questions"]:
             parts.append(f'<div class="mb-10 p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-shadow">')
-            q_id = q.get("id", q.get("q_no","?"))
+            q_id = q.get("id", q.get("q_no", "?"))
             parts.append(f'<h3 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 flex items-start gap-4 font-display">')
             parts.append(f'<span class="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-base font-black">{q_id}</span>')
             parts.append(f'<span class="pt-1.5">{q["question"]}</span></h3>')
             
             if q.get("sql"):
-                sql = q["sql"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                sql = q["sql"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                 parts.append(f'<pre class="language-sql mb-4"><code>{sql}</code></pre>')
                 
             if q.get("alternative"):
-                alt = q["alternative"].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                alt = q["alternative"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                 parts.append(f'<div class="text-[10px] uppercase tracking-widest text-slate-400 mb-2 font-bold">Alternative Approach</div>')
                 parts.append(f'<pre class="language-sql mb-4"><code>{alt}</code></pre>')
 
@@ -317,12 +331,12 @@ def render_topic_content(topic):
         parts.append('</div></div>')
 
     # 7. Specialized handlers for dialects
-    dialects = ["postgresql","mysql","mssql"]
+    dialects = ["postgresql", "mysql", "mssql"]
     if any(d in topic for d in dialects):
         parts.append('<div class="grid grid-cols-1 gap-6 mb-12">')
         for d in dialects:
             if topic.get(d):
-                code = str(topic[d]).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                code = str(topic[d]).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                 parts.append(f"""
                 <div class="rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white">
                     <div class="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
@@ -339,64 +353,68 @@ def render_topic_content(topic):
          parts.append(f'<div class="p-4 bg-amber-50 border-l-4 border-amber-400 text-amber-900 text-sm mb-8 rounded-r-xl">{topic["note"]}</div>')
 
     # Catch-all for other keys to ensure full data coverage
-    exclude_keys = ["name","title","topic","explanation","description","syntax","properties","comparison_table","categories","written_order","execution_order","example","examples","questions","note","setup_note","setup_table","setup_tables","section_title","section_id","postgresql","mysql","mssql","id","pros","cons","tips","common_issues","sql","code","query","pattern"] + list(theory_sections.keys())
+    exclude_keys = ["name", "title", "topic", "explanation", "description", "syntax", "properties", "comparison_table", 
+                    "categories", "written_order", "execution_order", "example", "examples", "questions", 
+                    "note", "setup_note", "setup_table", "setup_tables", "section_title", "section_id",
+                    "postgresql", "mysql", "mssql", "id", "pros", "cons", "tips", "common_issues",
+                    "sql", "code", "query", "pattern"] + list(theory_sections.keys())
     
     for key, value in topic.items():
         if key not in exclude_keys and value:
-            key_title = key.replace("_","").title()
+            key_title = key.replace("_", " ").title()
             if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
                 parts.append(f'<h4 class="text-lg font-bold text-slate-800 mb-2 mt-6">{key_title}</h4>')
                 parts.append(render_sql_table(value))
             elif isinstance(value, dict):
                 parts.append(f'<h4 class="text-lg font-bold text-slate-800 mb-2 mt-6">{key_title}</h4>')
-                json_str = json.dumps(value, indent=2).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                json_str = json.dumps(value, indent=2).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                 parts.append(f'<pre class="language-json"><code>{json_str}</code></pre>')
             else:
                 parts.append(f'<div class="mt-8">')
                 parts.append(f'<span class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">{key_title}</span>')
                 
                 # Check if value looks like SQL
-                if isinstance(value, str) and ("SELECT" in value.upper() or"CREATE" in value.upper() or"UPDATE" in value.upper()):
-                    code = value.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                if isinstance(value, str) and ("SELECT" in value.upper() or "CREATE" in value.upper() or "UPDATE" in value.upper()):
+                    code = value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                     parts.append(f'<div class="rounded-xl overflow-hidden border border-slate-200"><pre class="language-sql !m-0"><code>{code}</code></pre></div>')
                 else:
                     parts.append(f'<p class="text-slate-600 italic border-l-2 border-slate-200 pl-4">{value}</p>')
                 parts.append(f'</div>')
 
-    return"\n".join(parts)
+    return "\n".join(parts)
 
 def build_sql_hub(data):
     sections = data["guide"]["sections"]
     
     # 11 Phases for the roadmap
     phases = [
-        {"name":"Foundations","section_ids": [1]},
-        {"name":"Core Language","section_ids": [2, 3, 4, 5, 6]},
-        {"name":"Filtering & Joins","section_ids": [7, 8]},
-        {"name":"Aggregations & Subqueries","section_ids": [9, 10]},
-        {"name":"Set Ops & Data Types","section_ids": [11, 12, 13]},
-        {"name":"Programming & Logic","section_ids": [14, 15, 16]},
-        {"name":"Advanced Window Functions","section_ids": [17, 18]},
-        {"name":"Optimization & Internals","section_ids": [19, 20]},
-        {"name":"Design & Hierarchy","section_ids": [21, 22]},
-        {"name":"System & Metadata","section_ids": [23, 24, 25]},
-        {"name":"Professional SQL","section_ids": [26, 27, 28, 29, 30]}
+        {"name": "Foundations", "section_ids": [1]},
+        {"name": "Core Language", "section_ids": [2, 3, 4, 5, 6]},
+        {"name": "Filtering & Joins", "section_ids": [7, 8]},
+        {"name": "Aggregations & Subqueries", "section_ids": [9, 10]},
+        {"name": "Set Ops & Data Types", "section_ids": [11, 12, 13]},
+        {"name": "Programming & Logic", "section_ids": [14, 15, 16]},
+        {"name": "Advanced Window Functions", "section_ids": [17, 18]},
+        {"name": "Optimization & Internals", "section_ids": [19, 20]},
+        {"name": "Design & Hierarchy", "section_ids": [21, 22]},
+        {"name": "System & Metadata", "section_ids": [23, 24, 25]},
+        {"name": "Professional SQL", "section_ids": [26, 27, 28, 29, 30]}
     ]
     
-    phases_html =""
+    phases_html = ""
     for i, phase in enumerate(phases):
         num = i + 1
-        items_html =""
+        items_html = ""
         for sid in phase["section_ids"]:
             section = next((s for s in sections if s["id"] == sid), None)
             if not section: continue
             
-            icon = PART_ICONS.get(sid,"database")
+            icon = PART_ICONS.get(sid, "database")
             
             # For large sections like interview questions, maybe link to the section title
             if section.get("topics"):
                 for topic in section["topics"]:
-                    title = topic.get("name", topic.get("title", topic.get("topic","Topic")))
+                    title = topic.get("name", topic.get("title", topic.get("topic", "Topic")))
                     slug = slugify(title)
                     items_html += f"""
                     <a href="sql/{slug}.html" id="{slug}" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
@@ -408,7 +426,7 @@ def build_sql_hub(data):
                         </div>
                     </a>"""
             else:
-                title = section.get("title","Section")
+                title = section.get("title", "Section")
                 slug = slugify(title)
                 items_html += f"""
                 <a href="sql/{slug}.html" id="{slug}" style="scroll-margin-top: 100px;" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl transition-all hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:border-blue-200 group/item no-underline shadow-sm hover:shadow-md">
@@ -466,7 +484,9 @@ def build_sql_hub(data):
                 {phases_html}
             </div>
 
-            
+            <footer class="mt-32 py-12 border-t border-slate-200 dark:border-slate-800 text-center">
+                <p class="text-slate-400 font-bold tracking-widest uppercase text-[10px]">Data Cake Documentation \u2022 2026</p>
+            </footer>
         </main>
     </div>
     <script>lucide.createIcons();</script>
@@ -475,7 +495,7 @@ def build_sql_hub(data):
     
     output_path = os.path.join('pages', 'learn', 'sql.html')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path,"w", encoding="utf-8") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(hub_template)
     print(f"Built SQL Hub: {output_path}")
 
@@ -503,13 +523,13 @@ def build_sql_subpages(data):
     # Sidebar
     sidebar_html = '<div class="toc-title mt-8">SQL Guide</div><ul class="toc-list">'
     for t in all_topics:
-        title = t.get("name", t.get("title", t.get("topic","Topic")))
+        title = t.get("name", t.get("title", t.get("topic", "Topic")))
         slug = slugify(title)
         sidebar_html += f'<li><a href="{slug}.html" class="toc-link">{title}</a></li>'
     sidebar_html += '</ul>'
     
     for i, topic in enumerate(all_topics):
-        title = topic.get("name", topic.get("title", topic.get("topic","Topic")))
+        title = topic.get("name", topic.get("title", topic.get("topic", "Topic")))
         slug = slugify(title)
         file_path = os.path.join('pages', 'learn', 'sql', f"{slug}.html")
         
@@ -517,9 +537,9 @@ def build_sql_subpages(data):
         prev_topic = all_topics[i-1] if i > 0 else None
         next_topic = all_topics[i+1] if i < len(all_topics)-1 else None
         
-        prev_html =""
+        prev_html = ""
         if prev_topic:
-            p_title = prev_topic.get("name", prev_topic.get("title", prev_topic.get("topic","Topic")))
+            p_title = prev_topic.get("name", prev_topic.get("title", prev_topic.get("topic", "Topic")))
             pslug = slugify(p_title)
             prev_html = f"""
             <a href="{pslug}.html" class="nav-card prev">
@@ -527,9 +547,9 @@ def build_sql_subpages(data):
                 <span class="nav-title">{p_title}</span>
             </a>"""
             
-        next_html =""
+        next_html = ""
         if next_topic:
-            n_title = next_topic.get("name", next_topic.get("title", next_topic.get("topic","Topic")))
+            n_title = next_topic.get("name", next_topic.get("title", next_topic.get("topic", "Topic")))
             nslug = slugify(n_title)
             next_html = f"""
             <a href="{nslug}.html" class="nav-card next">
@@ -559,7 +579,7 @@ def build_sql_subpages(data):
             content_parts.append('</div>')
 
         content_parts.append(render_topic_content(topic))
-        content ="\n".join(content_parts)
+        content = "\n".join(content_parts)
             
         active_sidebar = sidebar_html.replace(f'href="{slug}.html" class="toc-link"', f'href="{slug}.html" class="toc-link active"')
         
@@ -614,7 +634,7 @@ def build_sql_subpages(data):
         <aside class="toc-container">
             <div class="toc-title">On this page</div>
             <ul class="toc-list"></ul>
-            
+            {active_sidebar}
         </aside>
     </div>
 
@@ -624,12 +644,12 @@ def build_sql_subpages(data):
 </body>
 </html>"""
         
-        with open(file_path,"w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             f.write(html)
             
     print(f"Built {len(all_topics)} SQL subpages.")
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     data_file = os.path.join('data', 'sql_complete_guide.json')
     if os.path.exists(data_file):
         with open(data_file, 'r', encoding='utf-8') as f:
