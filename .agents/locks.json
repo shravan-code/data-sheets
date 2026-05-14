@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-14T23:56:34Z",
+  "last_updated": "2026-05-14T18:49:58.298803Z",
   "global_lock": {
     "locked": false,
     "reason": null,
@@ -114,6 +114,17 @@
       "files": [
         "index.html",
         "css/ds-home.css"
+      ]
+    },
+    "portfolio": {
+      "locked": true,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "pages/portfolio.html",
+        "pages/my-portfolio/projects-experienced.html",
+        "pages/my-portfolio/projects-self.html"
       ]
     },
     "core_site": {

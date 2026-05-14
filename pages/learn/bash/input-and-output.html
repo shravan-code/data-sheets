@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 <head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <title>Input & Output — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +12,11 @@
     <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784592">
     <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
     <script src="../../../js/modules/universal-nav.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-surface text-on-surface min-h-screen">
     <div id="nav-universal"></div>
@@ -73,14 +79,14 @@
                 <article class="prose max-w-none pb-20">
                     <div class="section-container border-l border-outline-variant/50 pl-8 md:pl-12 ml-0.5 mb-24 relative group/section">
 <div class="absolute left-[-2px] top-0 w-1 h-12 bg-secondary-fixed/50 rounded-full group-hover/section:h-full transition-all duration-500"></div>
-<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors">Reading User Input</h2>
+<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors border-b border-on-surface/10 pb-2">Reading User Input</h2>
 <p class="text-on-surface-variant/70 mb-10 leading-relaxed text-base">The read command reads input from stdin. It can read into single or multiple variables.</p>
 <div class="code-block-wrapper mb-8"><div class="code-header"><span>BASH</span><button onclick="copyCode(this)"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button></div><pre class="language-bash"><code>read -p "Enter your name: " name
 echo "Hello, $name!"</code></pre></div>
 </div>
 <div class="section-container border-l border-outline-variant/50 pl-8 md:pl-12 ml-0.5 mb-24 relative group/section">
 <div class="absolute left-[-2px] top-0 w-1 h-12 bg-secondary-fixed/50 rounded-full group-hover/section:h-full transition-all duration-500"></div>
-<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors">Output with echo and printf</h2>
+<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors border-b border-on-surface/10 pb-2">Output with echo and printf</h2>
 <p class="text-on-surface-variant/70 mb-10 leading-relaxed text-base">echo is simple; printf provides C-style formatted output with more control.</p>
 <div class="code-block-wrapper mb-8"><div class="code-header"><span>BASH</span><button onclick="copyCode(this)"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button></div><pre class="language-bash"><code>echo "Simple output"
 echo -n "No newline"    # no newline
@@ -89,7 +95,7 @@ echo -e "\033[32mGreen Text\033[0m"  # colored</code></pre></div>
 </div>
 <div class="section-container border-l border-outline-variant/50 pl-8 md:pl-12 ml-0.5 mb-24 relative group/section">
 <div class="absolute left-[-2px] top-0 w-1 h-12 bg-secondary-fixed/50 rounded-full group-hover/section:h-full transition-all duration-500"></div>
-<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors">Redirection</h2>
+<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors border-b border-on-surface/10 pb-2">Redirection</h2>
 <p class="text-on-surface-variant/70 mb-10 leading-relaxed text-base">Redirect stdout, stderr, and stdin using >, >>, 2>, &>, and <.</p>
 <div class="code-block-wrapper mb-8"><div class="code-header"><span>BASH</span><button onclick="copyCode(this)"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button></div><pre class="language-bash"><code>echo "Hello" &gt; output.txt       # overwrite
 echo "World" &gt;&gt; output.txt      # append
@@ -98,7 +104,7 @@ ls /nonexistent &amp;&gt; all.txt      # both stdout+stderr</code></pre></div>
 </div>
 <div class="section-container border-l border-outline-variant/50 pl-8 md:pl-12 ml-0.5 mb-24 relative group/section">
 <div class="absolute left-[-2px] top-0 w-1 h-12 bg-secondary-fixed/50 rounded-full group-hover/section:h-full transition-all duration-500"></div>
-<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors">Pipes</h2>
+<h2 class="text-3xl font-bold text-on-surface mb-8 tracking-tight group-hover/section:text-secondary-fixed transition-colors border-b border-on-surface/10 pb-2">Pipes</h2>
 <p class="text-on-surface-variant/70 mb-10 leading-relaxed text-base">Pipes (|) connect stdout of one command to stdin of another, enabling powerful command chaining.</p>
 <div class="code-block-wrapper mb-8"><div class="code-header"><span>BASH</span><button onclick="copyCode(this)"><i data-lucide="copy" class="w-3 h-3"></i> Copy</button></div><pre class="language-bash"><code>ls -la | grep ".sh" | sort</code></pre></div>
 </div>
@@ -118,5 +124,7 @@ ls /nonexistent &amp;&gt; all.txt      # both stdout+stderr</code></pre></div>
     </div>
 
     <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>

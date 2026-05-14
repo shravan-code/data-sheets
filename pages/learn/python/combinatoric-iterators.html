@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 <head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <title>Combinatoric Iterators — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +12,12 @@
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784578">
     <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
     <script src="../../../js/modules/universal-nav.js" defer></script>
     <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-surface text-on-surface min-h-screen">
     <div id="nav-universal"></div>
@@ -28,7 +34,7 @@
                 </header>
                 <article class="prose max-w-none pb-20">
                     <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 product</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Cartesian product of input iterables.</p>
 <pre class="language-python"><code>from itertools import product
@@ -40,7 +46,7 @@ print(list(product(range(2), repeat=3)))</code></pre>
 [(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1)]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 permutations</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Successive r-length permutations of elements in an iterable.</p>
 <pre class="language-python"><code>from itertools import permutations
@@ -52,7 +58,7 @@ print(f'Count: {len(list(permutations([1,2,3,4])))}')</code></pre>
 Count: 24</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 combinations</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Successive r-length combinations of elements in an iterable.</p>
 <pre class="language-python"><code>from itertools import combinations, combinations_with_replacement
@@ -64,7 +70,7 @@ print(list(combinations_with_replacement('AB', 3)))</code></pre>
 [('A','A','A'),('A','A','B'),('A','B','B'),('B','B','B')]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 groupby</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Group consecutive elements by a key. Input MUST be sorted by same key.</p>
 <pre class="language-python"><code>from itertools import groupby
@@ -91,7 +97,7 @@ b: ['banana', 'blueberry']
 c: ['cherry']</code></pre>
 </div>
 <div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
-<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
 <div class="grid grid-cols-[2rem_1fr] gap-x-2">
 <div class="text-secondary-fixed font-bold text-sm">Q:</div>
 <h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the most common mistake with groupby?</h3>
@@ -116,5 +122,7 @@ c: ['cherry']</code></pre>
         <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
     </div>
     <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>

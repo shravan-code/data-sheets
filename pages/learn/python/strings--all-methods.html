@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 <head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <title>Strings — All Methods — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +12,12 @@
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784581">
     <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
     <script src="../../../js/modules/universal-nav.js" defer></script>
     <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-surface text-on-surface min-h-screen">
     <div id="nav-universal"></div>
@@ -29,7 +35,7 @@
                 <article class="prose max-w-none pb-20">
                     <p class="text-base text-on-surface-variant mb-8">Strings in Python are immutable sequences of Unicode characters. They have a rich set of methods for manipulation.</p>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 String Creation & Slicing</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Strings can be created with single, double, or triple quotes. Slicing uses [start:stop:step].</p>
 <pre class="language-python"><code>s = 'Hello, World!'
@@ -50,7 +56,7 @@ Hlo ol!
 !dlroW ,olleH</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Case Methods: upper & lower</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Convert the entire string to uppercase or lowercase. Useful for case-insensitive comparisons or normalizing user input.</p>
 <pre class="language-python"><code>s = 'hello WORLD'
@@ -58,7 +64,7 @@ print(s.upper())        # HELLO WORLD
 print(s.lower())        # hello world</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Case Methods: capitalize & title</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">capitalize() uppers only the first character; title() uppers the first character of each word. Perfect for formatting names or headings.</p>
 <pre class="language-python"><code>s = 'hello world'
@@ -66,7 +72,7 @@ print(s.capitalize())   # Hello world
 print(s.title())        # Hello World</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Search: find & index</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Locate a substring. find() returns -1 if missing, whereas index() raises an error. Use find() when absence is expected, and index() when it should be present.</p>
 <pre class="language-python"><code>s = 'hello world'
@@ -75,7 +81,7 @@ print(s.find('xyz'))     # -1
 print(s.index('world'))  # 6</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Search: count</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Count non-overlapping occurrences of a substring. Useful for basic frequency analysis.</p>
 <pre class="language-python"><code>s = 'banana'
@@ -83,7 +89,7 @@ print(s.count('a'))      # 3
 print(s.count('na'))     # 2</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Search: startswith & endswith</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Check if a string starts or ends with a specific prefix/suffix. Faster and more readable than manual slicing.</p>
 <pre class="language-python"><code>filename = 'data.csv'
@@ -91,7 +97,7 @@ print(filename.startswith('data')) # True
 print(filename.endswith('.csv'))   # True</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Check Methods: isalpha & isdigit</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Validate if string contains only letters or only digits. Critical for input validation (e.g., age vs name).</p>
 <pre class="language-python"><code>print('Python'.isalpha()) # True
@@ -103,7 +109,7 @@ True
 False</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Modify: strip, lstrip, rstrip</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Remove leading/trailing whitespace or specific characters. Essential for cleaning data from files or user input.</p>
 <pre class="language-python"><code>s = '  clean me  '
@@ -111,7 +117,7 @@ print(repr(s.strip()))    # 'clean me'
 print('***hi***'.strip('*')) # hi</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Modify: replace</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Replace all occurrences of a substring with another. Useful for template filling or correcting data.</p>
 <pre class="language-python"><code>s = 'hello world'
@@ -119,7 +125,7 @@ print(s.replace('world', 'Python')) # hello Python
 print('1,2,3'.replace(',', ';'))    # 1;2;3</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Split & Join</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">split() converts a string into a list; join() merges a list back into a string. The foundation of text processing in Python.</p>
 <pre class="language-python"><code>s = 'apple,banana,cherry'
@@ -130,7 +136,7 @@ print(lst)                # ['apple', 'banana', 'cherry']
 print(' -&gt; '.join(lst))   # apple -&gt; banana -&gt; cherry</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Alignment: center, ljust, rjust</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Pad strings with spaces or characters to a fixed width. Essential for creating aligned tables or reports in text-based interfaces.</p>
 <pre class="language-python"><code>s = 'hi'
@@ -139,14 +145,14 @@ print(s.ljust(10, '.'))    # hi........
 print(s.rjust(10, '.'))    # ........hi</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Alignment: zfill</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Pad numeric strings with leading zeros. Primarily used for formatting IDs, serial numbers, or fixed-width numerical data.</p>
 <pre class="language-python"><code>print('42'.zfill(5))       # 00042
 print('-42'.zfill(5))      # -0042</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 String Formatting: f-strings</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">The modern and fastest way to embed expressions in string literals. Introduced in Python 3.6.</p>
 <pre class="language-python"><code>name, price = 'Widget', 19.99
@@ -157,7 +163,7 @@ print(f'2 + 2 = {2 + 2}')</code></pre>
 2 + 2 = 4</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 String Formatting: .format()</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">A powerful formatting method that preceded f-strings. Still useful for reusable templates.</p>
 <pre class="language-python"><code>tpl = 'ID: {id}, Status: {st}'
@@ -166,14 +172,14 @@ print(tpl.format(id=101, st='Active'))</code></pre>
 <pre class="language-output"><code>ID: 101, Status: Active</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Partitioning</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">split into exactly 3 parts: (before, separator, after). Safer than split() when you only need to divide at the first occurrence.</p>
 <pre class="language-python"><code>s = 'user@example.com'
 print(s.partition('@'))    # ('user', '@', 'example.com')</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Translate & Maketrans</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Efficiently map multiple characters at once. Perfect for complex character replacements or deletions.</p>
 <pre class="language-python"><code>table = str.maketrans('aeiou', '12345')
@@ -182,7 +188,7 @@ print('hello world'.translate(table))</code></pre>
 <pre class="language-output"><code>h2ll4 w4rld</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Encode/Decode</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Convert between str and bytes.</p>
 <pre class="language-python"><code>s = 'hello'
@@ -203,7 +209,7 @@ hello
 b'caf\xc3\xa9'</code></pre>
 </div>
 <div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
-<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
 <div class="grid grid-cols-[2rem_1fr] gap-x-2">
 <div class="text-secondary-fixed font-bold text-sm">Q:</div>
 <h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why is string concatenation in a loop bad? What's the alternative?</h3>
@@ -235,5 +241,7 @@ b'caf\xc3\xa9'</code></pre>
         <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
     </div>
     <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>

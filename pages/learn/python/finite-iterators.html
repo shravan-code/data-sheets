@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 <head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <title>Finite Iterators — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +12,12 @@
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784579">
     <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
     <script src="../../../js/modules/universal-nav.js" defer></script>
     <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-surface text-on-surface min-h-screen">
     <div id="nav-universal"></div>
@@ -28,7 +34,7 @@
                 </header>
                 <article class="prose max-w-none pb-20">
                     <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 accumulate</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Running totals or custom accumulation.</p>
 <pre class="language-python"><code>from itertools import accumulate
@@ -54,7 +60,7 @@ print(list(accumulate(nums, initial=100)))</code></pre>
 [100, 101, 103, 106, 110, 115]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 chain and chain.from_iterable</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Flatten/concatenate iterables without building intermediate lists.</p>
 <pre class="language-python"><code>from itertools import chain
@@ -78,7 +84,7 @@ print(flat)</code></pre>
 [1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 compress</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Filters elements from data using a selectors iterable as a boolean mask.</p>
 <pre class="language-python"><code>from itertools import compress
@@ -90,7 +96,7 @@ print(list(compress(data, mask)))</code></pre>
 <pre class="language-output"><code>['a', 'c', 'e']</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 takewhile</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Yields elements from an iterable as long as the predicate is true.</p>
 <pre class="language-python"><code>from itertools import takewhile
@@ -100,7 +106,7 @@ print(list(takewhile(lambda x: x &lt; 5, [1,2,3,4,5,6,1])))</code></pre>
 <pre class="language-output"><code>[1, 2, 3, 4]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 dropwhile</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Drops elements from an iterable as long as the predicate is true, then yields the rest.</p>
 <pre class="language-python"><code>from itertools import dropwhile
@@ -110,7 +116,7 @@ print(list(dropwhile(lambda x: x &lt; 5, [1,2,3,4,5,6,1])))</code></pre>
 <pre class="language-output"><code>[5, 6, 1]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 filterfalse</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Yields elements from an iterable for which the predicate is false.</p>
 <pre class="language-python"><code>from itertools import filterfalse
@@ -120,7 +126,7 @@ print(list(filterfalse(lambda x: x%2==0, range(10))))</code></pre>
 <pre class="language-output"><code>[1, 3, 5, 7, 9]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 islice</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Yields selected elements from an iterable, like list slicing but lazy.</p>
 <pre class="language-python"><code>from itertools import islice
@@ -133,7 +139,7 @@ print(list(islice(gen, 2, 8, 2))) # [25, 49, 81]</code></pre>
 [25, 49, 81]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 starmap</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Applies a function to arguments unpacked from an iterable.</p>
 <pre class="language-python"><code>from itertools import starmap
@@ -147,7 +153,7 @@ print(list(starmap(operator.mul, [(2,3),(4,5),(6,7)])))</code></pre>
 [6, 20, 42]</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 zip_longest</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Zips iterables together, filling missing values with a fillvalue.</p>
 <pre class="language-python"><code>from itertools import zip_longest
@@ -160,7 +166,7 @@ for a,b in zip_longest([1,2,3], ['a','b'], fillvalue='N/A'):
 3 N/A</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 pairwise and batched</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Newer itertools additions for windowing and chunking.</p>
 <pre class="language-python"><code>from itertools import pairwise  # Python 3.10+
@@ -196,5 +202,7 @@ print(list(batched(range(10), 3)))</code></pre>
         <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
     </div>
     <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>

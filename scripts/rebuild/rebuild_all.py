@@ -23,6 +23,7 @@ if __name__ == "__main__":
         "rebuild_practice_roadmaps.py",
         "rebuild_agents.py",
         "rebuild_skills.py",
+        "rebuild_portfolio.py",
         # Add more here as they are created
     ]
     

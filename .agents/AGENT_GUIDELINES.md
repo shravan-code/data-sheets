@@ -27,6 +27,7 @@ Locks are organized by modules. A lock on a module covers its data files and cor
 -   **de_architectures**: `data/de_architectures_complete_guide.json`
 -   **powershell**: `data/powershell_guide.json`
 -   **home_page**: `index.html`, `css/ds-home.css`
+-   **portfolio**: `pages/portfolio.html`, `pages/my-portfolio/*.html`
 -   **core_site**: `js/json-guide.js`, `css/ds-main.css`, `css/index.css`
 
 ## 3. Global Lock

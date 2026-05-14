@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 <head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
     <title>Dictionaries — All Methods — Data Cake</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +12,12 @@
     <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../../css/ds-main.css">
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784579">
     <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
     <script src="../../../js/modules/universal-nav.js" defer></script>
     <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 <body class="bg-surface text-on-surface min-h-screen">
     <div id="nav-universal"></div>
@@ -29,7 +35,7 @@
                 <article class="prose max-w-none pb-20">
                     <p class="text-base text-on-surface-variant mb-8">Dictionaries are hash maps: O(1) average for get/set/delete. Ordered by insertion since Python 3.7.</p>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Accessing Data: get & setdefault</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">get() provides safe access with a default value to avoid KeyError. setdefault() returns the value if present, otherwise inserts the default.</p>
 <pre class="language-python"><code>d = {'a': 1}
@@ -38,7 +44,7 @@ print(d.setdefault('b', 2)) # 2
 print(d)                # {'a': 1, 'b': 2}</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Modifying: update, pop, popitem</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">update() merges another dict. pop() removes by key. popitem() removes the last inserted item (Python 3.7+).</p>
 <pre class="language-python"><code>d = {'a': 1, 'b': 2}
@@ -48,7 +54,7 @@ print(d.popitem())      # ('c', 3)
 print(d)                # {'a': 0}</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Dict Views: keys, values, items</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Return dynamic view objects that reflect changes in the dictionary. items() is perfect for iterating through pairs.</p>
 <pre class="language-python"><code>d = {'a': 1, 'b': 2}
@@ -62,7 +68,7 @@ for k, v in d.items():
 a:1 b:2</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Dict Merging (Python 3.9+)</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">New operators for merging dicts.</p>
 <pre class="language-python"><code>d1 = {'a': 1, 'b': 2}
@@ -85,7 +91,7 @@ print(merged2)</code></pre>
 {'a': 1, 'b': 3, 'c': 4}</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 defaultdict</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Dict that auto-initializes missing keys with a factory function.</p>
 <pre class="language-python"><code>from collections import defaultdict
@@ -114,7 +120,7 @@ print(dict(tree['fruits']))</code></pre>
 {'apple': 1, 'banana': 2}</code></pre>
 </div>
 <div class="mb-16">
-<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/10 pb-2">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
 Counter</h2>
 <p class="text-on-surface-variant mb-6 leading-relaxed">Specialized dict for counting hashable objects.</p>
 <pre class="language-python"><code>from collections import Counter
@@ -154,7 +160,7 @@ Counter({'b': 4, 'a': 3, 'c': 1})
 ['a', 'a', 'b']</code></pre>
 </div>
 <div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
-<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8">Interview Mastery</h2>
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
 <div class="grid grid-cols-[2rem_1fr] gap-x-2">
 <div class="text-secondary-fixed font-bold text-sm">Q:</div>
 <h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the time complexity of dict operations?</h3>
@@ -179,5 +185,7 @@ Counter({'b': 4, 'a': 3, 'c': 1})
         <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
     </div>
     <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>
