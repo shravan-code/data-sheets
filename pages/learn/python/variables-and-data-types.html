@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Variables & Data Types — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784983">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 1: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Variables & Data Types</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Python uses dynamic typing — variables don't have fixed types. Types are inferred at runtime and can change.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Basic Types: Numbers</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python handles integers (int), decimals (float), and complex numbers (complex) automatically. Perfect for scientific computing or financial calculations.</p>
+<pre class="language-python"><code>x = 42           # int
+y = 3.14         # float
+z = 2 + 3j       # complex
+print(type(x), type(y), type(z))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'int'&gt; &lt;class 'float'&gt; &lt;class 'complex'&gt;</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Basic Types: Booleans & None</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">bool represents True/False; None represents the absence of a value (null). Critical for control flow and status tracking.</p>
+<pre class="language-python"><code>b = True         # bool
+n = None         # NoneType
+print(type(b), type(n))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'bool'&gt; &lt;class 'NoneType'&gt;</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Dynamic Typing</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Variables can be reassigned to different types. Use type() and isinstance() to check types.</p>
+<pre class="language-python"><code>x = 10
+print(type(x))   # int
+x = 'hello'
+print(type(x))   # str now
+
+print(isinstance(42, int))       # True
+print(isinstance(42, (int, float)))  # True - checks multiple</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'int'&gt;
+&lt;class 'str'&gt;
+True
+True</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Type Casting</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Convert between types explicitly using constructor functions.</p>
+<pre class="language-python"><code>print(int('42'))        # str -&gt; int
+print(float('3.14'))    # str -&gt; float
+print(str(100))         # int -&gt; str
+print(bool(0))          # 0 -&gt; False
+print(bool(1))          # 1 -&gt; True
+print(bool(''))         # empty str -&gt; False
+print(bool('hello'))    # non-empty -&gt; True
+print(int(3.9))         # truncates, not rounds -&gt; 3
+print(list('abc'))      # str -&gt; list of chars</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>42
+3.14
+100
+False
+True
+False
+True
+3
+['a', 'b', 'c']</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Mutable vs Immutable</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Immutable types: int, float, str, tuple, frozenset, bytes. Mutable types: list, dict, set. Immutability affects assignment behavior and hashability.</p>
+<pre class="language-python"><code># Immutable - reassignment creates new object
+a = 'hello'
+b = a
+a = a + ' world'  # new string object
+print(b)          # b unchanged
+
+# Mutable - both point to same object
+list1 = [1, 2, 3]
+list2 = list1
+list1.append(4)
+print(list2)      # list2 also changed!</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>hello
+[1, 2, 3, 4]</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between mutable and immutable types?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Mutable objects (list, dict, set) can be changed after creation. Immutable objects (int, str, tuple, frozenset) cannot. Immutability makes objects hashable (usable as dict keys). When you 'modify' an immutable, Python creates a new object.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What does `is` vs `==` check?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">`==` checks value equality. `is` checks identity (same object in memory via id()). Example: `a = [1,2]; b = [1,2]; a == b` is True but `a is b` is False. Small integers (-5 to 256) and interned strings may share identity due to caching.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="introduction-to-python.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Introduction to Python</span></a>
+                    <a href="operators.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Operators</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

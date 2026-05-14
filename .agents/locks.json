@@ -1,0 +1,143 @@
+{
+  "last_updated": "2026-05-14T18:56:40.369240Z",
+  "global_lock": {
+    "locked": false,
+    "reason": null,
+    "owner": null,
+    "timestamp": null
+  },
+  "modules": {
+    "python": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/python_complete_guide.json",
+        "scripts/build_python_guide.py"
+      ]
+    },
+    "sql": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/sql_complete_guide.json",
+        "scripts/build_sql_guide.py"
+      ]
+    },
+    "airflow": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/airflow_complete_guide.json"
+      ]
+    },
+    "bash": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/bash_guide.json",
+        "data/bash_subpages_data.json",
+        "scripts/build_bash_guide.py"
+      ]
+    },
+    "databricks": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/databricks_complete_guide.json"
+      ]
+    },
+    "de_architectures": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/de_architectures_complete_guide.json",
+        "scripts/build_de_fundamentals.py"
+      ]
+    },
+    "powershell": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/powershell_guide.json",
+        "scripts/build_powershell_guide.py"
+      ]
+    },
+    "agents": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/agents_complete_guide.json",
+        "scripts/build_agents_guide.py"
+      ]
+    },
+    "skills": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/skills_complete_guide.json",
+        "scripts/build_skills_guide.py"
+      ]
+    },
+    "data_pipeline": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "data/data_pipeline_guide.md",
+        "scripts/build_pipeline_design.py"
+      ]
+    },
+    "home_page": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "index.html",
+        "css/ds-home.css"
+      ]
+    },
+    "portfolio": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "pages/portfolio.html",
+        "pages/my-portfolio/projects-experienced.html",
+        "pages/my-portfolio/projects-self.html"
+      ]
+    },
+    "core_site": {
+      "locked": false,
+      "reason": null,
+      "owner": null,
+      "timestamp": null,
+      "files": [
+        "js/json-guide.js",
+        "css/ds-main.css",
+        "css/index.css",
+        "js/modules/universal-nav.js"
+      ]
+    }
+  }
+}

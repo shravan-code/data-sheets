@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Memory Management — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784981">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 13: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Memory Management</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Reference Counting and Garbage Collection</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">CPython uses reference counting as primary memory management, with a cyclic garbage collector for cycles.</p>
+<pre class="language-python"><code>import sys
+import gc
+
+# Reference counting
+a = [1, 2, 3]
+print(sys.getrefcount(a))  # 2 (a + getrefcount arg)
+b = a
+print(sys.getrefcount(a))  # 3
+del b
+print(sys.getrefcount(a))  # 2
+
+# Object size
+print(sys.getsizeof([]))          # 56
+print(sys.getsizeof([1,2,3]))     # 88
+print(sys.getsizeof('hello'))     # 54
+print(sys.getsizeof({}))          # 64
+
+# Garbage collector (handles cycles)
+class Node:
+    def __init__(self):
+        self.ref = None
+
+a = Node()
+b = Node()
+a.ref = b  # a -&gt; b
+b.ref = a  # b -&gt; a (cycle!)
+
+del a, b
+print(gc.collect())   # collects cyclic garbage
+
+# GC settings
+print(gc.get_threshold())  # (700, 10, 10) - generation thresholds
+print(gc.get_count())      # objects in each generation</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>2
+3
+2
+56
+88
+54
+64
+4
+(700, 10, 10)
+(42, 3, 1)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+__slots__ — Memory Optimization</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">__slots__ replaces per-instance __dict__ with fixed-size array, reducing memory significantly.</p>
+<pre class="language-python"><code>import sys
+
+# Normal class - uses __dict__
+class PointDict:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+# Slots class - no __dict__
+class PointSlots:
+    __slots__ = ('x', 'y')
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+d = PointDict(1, 2)
+s = PointSlots(1, 2)
+
+print(sys.getsizeof(d))          # ~48
+print(sys.getsizeof(s))          # ~56 (smaller for many instances)
+print(hasattr(d, '__dict__'))    # True
+print(hasattr(s, '__dict__'))    # False
+
+# Memory for 1M objects
+import tracemalloc
+tracemalloc.start()
+
+points_dict  = [PointDict(i, i) for i in range(100000)]
+current, peak = tracemalloc.get_traced_memory()
+print(f'Dict: {peak/1024/1024:.1f} MB')
+tracemalloc.reset_peak()
+
+points_slots = [PointSlots(i, i) for i in range(100000)]
+current, peak = tracemalloc.get_traced_memory()
+print(f'Slots: {peak/1024/1024:.1f} MB')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>48
+56
+True
+False
+Dict: 28.4 MB
+Slots: 12.1 MB</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Object Interning</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python caches small integers (-5 to 256) and interned strings for memory efficiency.</p>
+<pre class="language-python"><code># Integer interning (-5 to 256)
+a = 256
+b = 256
+print(a is b)   # True (same object)
+
+c = 257
+d = 257
+print(c is d)   # False (different objects)
+
+# String interning
+s1 = 'hello'
+s2 = 'hello'
+print(s1 is s2)  # True (interned automatically)
+
+s3 = 'hello world'  # may or may not be interned
+s4 = 'hello world'
+print(s3 is s4)     # implementation-dependent
+
+# Force intern
+import sys
+s5 = sys.intern('force interned string')
+s6 = sys.intern('force interned string')
+print(s5 is s6)  # True</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>True
+False
+True
+False
+True</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How does Python manage memory?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">CPython uses reference counting: each object tracks how many references point to it. When count hits 0, memory is freed immediately. For cyclic references (A->B->A), a generational garbage collector runs periodically using gc module. Python also has a private heap and memory pools (pymalloc) for small objects.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When would you use __slots__?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Use __slots__ when creating many instances of a class (millions) to reduce memory. It prevents dynamic attribute creation (no __dict__), reduces per-instance memory by ~30-50%, and slightly speeds up attribute access. Downside: cannot add arbitrary attributes, complicates multiple inheritance.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="async-programming-asyncio.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Async Programming (asyncio)</span></a>
+                    <a href="metaclasses.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Metaclasses</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Creational Patterns — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784979">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 16: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Creational Patterns</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Singleton, Factory, Builder</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Creational patterns deal with object creation mechanisms.</p>
+<pre class="language-python"><code># Singleton - only one instance
+class Singleton:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+a = Singleton()
+b = Singleton()
+print(a is b)  # True
+
+# Thread-safe Singleton
+import threading
+
+class ThreadSafeSingleton:
+    _instance = None
+    _lock = threading.Lock()
+    
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+        return cls._instance
+
+# Factory Method
+class Animal:
+    def speak(self): pass
+
+class Dog(Animal):
+    def speak(self): return 'Woof!'
+
+class Cat(Animal):
+    def speak(self): return 'Meow!'
+
+def animal_factory(animal_type: str) -&gt; Animal:
+    animals = {'dog': Dog, 'cat': Cat}
+    cls = animals.get(animal_type.lower())
+    if cls is None:
+        raise ValueError(f'Unknown animal: {animal_type}')
+    return cls()
+
+for t in ['dog', 'cat']:
+    animal = animal_factory(t)
+    print(animal.speak())
+
+# Builder Pattern
+class QueryBuilder:
+    def __init__(self):
+        self._table = ''
+        self._conditions = []
+        self._columns = ['*']
+        self._limit = None
+    
+    def from_table(self, table):
+        self._table = table
+        return self  # return self for chaining!
+    
+    def select(self, *columns):
+        self._columns = list(columns)
+        return self
+    
+    def where(self, condition):
+        self._conditions.append(condition)
+        return self
+    
+    def limit(self, n):
+        self._limit = n
+        return self
+    
+    def build(self):
+        cols = ', '.join(self._columns)
+        sql = f'SELECT {cols} FROM {self._table}'
+        if self._conditions:
+            sql += ' WHERE ' + ' AND '.join(self._conditions)
+        if self._limit:
+            sql += f' LIMIT {self._limit}'
+        return sql
+
+query = (QueryBuilder()
+    .from_table('users')
+    .select('name', 'email')
+    .where('age &gt; 18')
+    .where('active = 1')
+    .limit(10)
+    .build())
+print(query)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>True
+Woof!
+Meow!
+SELECT name, email FROM users WHERE age &gt; 18 AND active = 1 LIMIT 10</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="optimization-techniques.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Optimization Techniques</span></a>
+                    <a href="structural-patterns.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Structural Patterns</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

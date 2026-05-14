@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Context Managers — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784979">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 13: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Context Managers</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Context Manager Protocol and contextlib</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">__enter__ and __exit__ implement the with statement protocol.</p>
+<pre class="language-python"><code>import contextlib
+import time
+
+# Class-based context manager
+class Timer:
+    def __enter__(self):
+        self.start = time.perf_counter()
+        return self  # value bound to 'as' variable
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.elapsed = time.perf_counter() - self.start
+        print(f'Elapsed: {self.elapsed:.4f}s')
+        return False  # don't suppress exceptions
+
+with Timer() as t:
+    sum(range(1000000))
+print(f'Timer says: {t.elapsed:.4f}s')
+
+# Generator-based with contextlib
+@contextlib.contextmanager
+def managed_resource(name):
+    print(f'Acquiring {name}')
+    resource = {'name': name, 'active': True}
+    try:
+        yield resource  # code in 'with' block runs here
+    finally:
+        resource['active'] = False
+        print(f'Releasing {name}')
+
+with managed_resource('DB Connection') as r:
+    print(f'Using {r["name"]}')
+print(f'Active: {r["active"]}')
+
+# contextlib.suppress - swallow specific exceptions
+with contextlib.suppress(FileNotFoundError):
+    open('nonexistent.txt')
+print('Continued after suppressed error')
+
+# contextlib.nullcontext - conditional context manager
+def process(use_timer=True):
+    ctx = Timer() if use_timer else contextlib.nullcontext()
+    with ctx:
+        return sum(range(100000))
+
+process(use_timer=True)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Elapsed: 0.0234s
+Timer says: 0.0234s
+Acquiring DB Connection
+Using DB Connection
+Releasing DB Connection
+Active: False
+Continued after suppressed error
+Elapsed: 0.0012s</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What should __exit__ return?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Return True to suppress exceptions raised in the with block. Return False (or None) to propagate them. exc_type, exc_val, exc_tb are None if no exception occurred. The finally clause in @contextmanager always runs, making cleanup guaranteed.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="descriptors.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Descriptors</span></a>
+                    <a href="unittest.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">unittest</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

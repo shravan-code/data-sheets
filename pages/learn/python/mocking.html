@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Mocking — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784981">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 14: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Mocking</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+unittest.mock — Mock, MagicMock, patch</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Mocking replaces real objects/functions with controllable fakes for isolated testing.</p>
+<pre class="language-python"><code>from unittest.mock import Mock, MagicMock, patch, call
+import pytest
+
+# Basic Mock
+m = Mock()
+m.method(1, 2, key='value')
+print(m.method.called)              # True
+print(m.method.call_count)          # 1
+print(m.method.call_args)           # call(1, 2, key='value')
+
+# Configure return value and side_effect
+m2 = Mock()
+m2.fetch.return_value = {'data': 42}
+print(m2.fetch('url'))              # {'data': 42}
+
+m3 = Mock()
+m3.connect.side_effect = ConnectionError('Failed')
+try:
+    m3.connect()
+except ConnectionError as e:
+    print(e)
+
+# MagicMock - supports magic methods
+mm = MagicMock()
+mm.__len__.return_value = 5
+print(len(mm))  # 5
+
+# patch - replace real objects in tests
+class UserService:
+    def get_user(self, user_id):
+        import requests
+        response = requests.get(f'https://api.example.com/users/{user_id}')
+        return response.json()
+
+# Test without real HTTP call
+with patch('requests.get') as mock_get:
+    mock_get.return_value.json.return_value = {'id': 1, 'name': 'Alice'}
+    service = UserService()
+    user = service.get_user(1)
+    print(user)
+    mock_get.assert_called_once_with('https://api.example.com/users/1')
+
+# patch as decorator
+@patch('requests.get')
+def test_get_user(mock_get):
+    mock_get.return_value.json.return_value = {'id': 1, 'name': 'Bob'}
+    service = UserService()
+    result = service.get_user(1)
+    assert result['name'] == 'Bob'
+
+test_get_user()</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>True
+1
+call(1, 2, key='value')
+{'data': 42}
+Failed
+5
+{'id': 1, 'name': 'Alice'}</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between Mock and MagicMock?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Mock is a basic mock object. MagicMock is a subclass that pre-configures all magic methods (__len__, __iter__, __str__, __enter__, __exit__, etc.) making it work with len(), for loops, with statements, etc. Use MagicMock when the code under test calls magic methods on the mock.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between pytest fixtures and setUp/tearDown?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">pytest fixtures: composable (inject multiple), have scope (function/class/module/session), use yield for teardown, can be shared via conftest.py, and are more granular. setUp/tearDown run for every test in the class. pytest fixtures are more flexible and Pythonic.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="pytest.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">pytest</span></a>
+                    <a href="profiling.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Profiling</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

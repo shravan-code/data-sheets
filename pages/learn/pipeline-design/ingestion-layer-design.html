@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>3. Ingestion Layer Design — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784997">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">3. Ingestion Layer Design</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">How data enters the system: CDC, API, Files, and Events.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Full Load vs Incremental Load</h2>
+<br>
+<h3>Full Load</h3>
+<p>Re-ingest the entire source dataset every run. Simple but expensive at scale.</p>
+<br>
+<pre><code class="language-python">
+def full_load(source_conn, target_conn, table: str):
+    """Truncate-and-reload pattern."""
+    df = pd.read_sql(f"SELECT * FROM {table}", source_conn)
+    with target_conn.begin() as conn:
+        conn.execute(f"TRUNCATE TABLE {table}_snapshot")
+    df.to_sql(f"{table}_snapshot", target_conn, if_exists="append", index=False)
+    print(f"Full load complete: {len(df)} rows")
+</code></pre>
+<br>
+<h3>Incremental Load</h3>
+<p>Only fetch new/changed records since the last run.</p>
+<br>
+<pre><code class="language-python">
+import json
+from pathlib import Path
+from datetime import datetime, timedelta
+
+WATERMARK_FILE = Path("/tmp/pipeline_watermarks.json")
+
+def get_watermark(source: str) -&gt; datetime:
+    """Load the last successful ingestion timestamp."""
+    if WATERMARK_FILE.exists():
+        watermarks = json.loads(WATERMARK_FILE.read_text())
+        ts_str = watermarks.get(source)
+        if ts_str:
+            return datetime.fromisoformat(ts_str)
+    return datetime(2020, 1, 1)  # default start
+
+def save_watermark(source: str, ts: datetime):
+    """Persist watermark after successful run."""
+    watermarks = {}
+    if WATERMARK_FILE.exists():
+        watermarks = json.loads(WATERMARK_FILE.read_text())
+    watermarks[source] = ts.isoformat()
+    WATERMARK_FILE.write_text(json.dumps(watermarks))
+
+def incremental_load(source_conn, target_conn, table: str):
+    """Load only records updated since last watermark."""
+    last_run = get_watermark(table)
+    run_start = datetime.utcnow()
+    
+    query = f"""
+        SELECT * FROM {table}
+        WHERE updated_at &gt; '{last_run.isoformat()}'
+        ORDER BY updated_at ASC
+    """
+    df = pd.read_sql(query, source_conn)
+    
+    if df.empty:
+        print(f"No new records for {table} since {last_run}")
+        return
+    
+    # Upsert to target
+    # (actual upsert logic depends on target DB)
+    df.to_sql(f"{table}_incremental", target_conn, if_exists="append", index=False)
+    save_watermark(table, run_start)
+    print(f"Loaded {len(df)} new records")
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Change Data Capture (CDC)</h2>
+<br>
+<p>CDC captures every row-level INSERT, UPDATE, DELETE from a source database with minimal overhead.</p>
+<br>
+<p><strong>Two main approaches:</strong></p>
+<ul class="list-disc pl-5 my-4">
+<li><strong>Log-based CDC:</strong> Reads the database binary/write-ahead log (Debezium, AWS DMS). Low latency, no source queries.</li>
+<li><strong>Query-based CDC:</strong> Polls source with <code>WHERE updated_at > last_run</code>. Higher source load, misses hard deletes.</li>
+</ul>
+<br>
+<pre><code class="language-python">
+# Simulating CDC event consumption from Kafka (produced by Debezium)
+from kafka import KafkaConsumer
+import json
+
+consumer = KafkaConsumer(
+    "dbserver1.inventory.orders",  # Debezium topic: server.db.table
+    bootstrap_servers=["kafka:9092"],
+    group_id="cdc-consumer",
+    auto_offset_reset="earliest",
+    value_deserializer=lambda m: json.loads(m.decode("utf-8"))
+)
+
+def handle_cdc_event(event: dict):
+    op = event.get("op")       # 'c'=create, 'u'=update, 'd'=delete, 'r'=snapshot
+    before = event.get("before")
+    after = event.get("after")
+    
+    if op == "c":
+        print(f"INSERT: {after}")
+        # upsert_to_warehouse(after)
+    elif op == "u":
+        print(f"UPDATE: {before} → {after}")
+        # upsert_to_warehouse(after)
+    elif op == "d":
+        print(f"DELETE: {before}")
+        # soft_delete_in_warehouse(before["id"])
+    elif op == "r":
+        print(f"SNAPSHOT: {after}")
+        # bulk_load_to_warehouse(after)
+
+for message in consumer:
+    handle_cdc_event(message.value)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>API-based Ingestion</h2>
+<br>
+<pre><code class="language-python">
+import requests
+import time
+from typing import Generator
+
+def paginated_api_ingest(
+    base_url: str,
+    headers: dict,
+    params: dict,
+    page_size: int = 100
+) -&gt; Generator[list, None, None]:
+    """Generator-based paginated API ingestion with rate limiting."""
+    cursor = None
+    
+    while True:
+        if cursor:
+            params["cursor"] = cursor
+        params["limit"] = page_size
+        
+        response = requests.get(base_url, headers=headers, params=params)
+        
+        if response.status_code == 429:
+            retry_after = int(response.headers.get("Retry-After", 60))
+            print(f"Rate limited. Waiting {retry_after}s...")
+            time.sleep(retry_after)
+            continue
+        
+        response.raise_for_status()
+        data = response.json()
+        
+        records = data.get("data", [])
+        if not records:
+            break
+        
+        yield records
+        
+        cursor = data.get("next_cursor")
+        if not cursor:
+            break
+        
+        time.sleep(0.1)  # polite rate limiting
+
+# Usage
+all_data = []
+for page in paginated_api_ingest(
+    "https://api.example.com/orders",
+    headers={"Authorization": "Bearer TOKEN"},
+    params={"status": "completed"}
+):
+    all_data.extend(page)
+
+df = pd.DataFrame(all_data)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>File-based Ingestion</h2>
+<br>
+<pre><code class="language-python">
+import boto3
+import pandas as pd
+from io import BytesIO
+from pathlib import Path
+
+def ingest_from_s3(bucket: str, prefix: str, file_pattern: str = "*.parquet") -&gt; pd.DataFrame:
+    """Ingest all matching files from S3 prefix into a single DataFrame."""
+    s3 = boto3.client("s3")
+    
+    paginator = s3.get_paginator("list_objects_v2")
+    pages = paginator.paginate(Bucket=bucket, Prefix=prefix)
+    
+    dfs = []
+    for page in pages:
+        for obj in page.get("Contents", []):
+            key = obj["Key"]
+            if not key.endswith(".parquet"):
+                continue
+            
+            print(f"Reading: s3://{bucket}/{key}")
+            response = s3.get_object(Bucket=bucket, Key=key)
+            df = pd.read_parquet(BytesIO(response["Body"].read()))
+            df["_source_file"] = key
+            dfs.append(df)
+    
+    return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+
+# PySpark version for large-scale file ingestion
+def spark_ingest_s3(spark, bucket: str, prefix: str) -&gt; "DataFrame":
+    """PySpark: read all parquet files from S3 prefix with schema inference."""
+    path = f"s3://{bucket}/{prefix}/*.parquet"
+    return spark.read \
+        .option("mergeSchema", "true") \
+        .parquet(path)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Event-based Ingestion</h2>
+<br>
+<pre><code class="language-python">
+# Kafka producer: push events as they happen
+from kafka import KafkaProducer
+import json
+from datetime import datetime
+
+producer = KafkaProducer(
+    bootstrap_servers=["kafka:9092"],
+    value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+    acks="all",          # wait for all replicas to acknowledge
+    retries=5,
+    compression_type="gzip"
+)
+
+def emit_order_event(order: dict):
+    """Emit an order event to Kafka."""
+    event = {
+        **order,
+        "_event_time": datetime.utcnow().isoformat(),
+        "_event_type": "order_created"
+    }
+    future = producer.send("orders-topic", value=event, key=str(order["order_id"]).encode())
+    result = future.get(timeout=10)  # block to confirm delivery
+    print(f"Emitted to partition {result.partition} offset {result.offset}")
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Push vs Pull Ingestion</h2>
+<br>
+<div class="overflow-x-auto my-6"><table class="min-w-full text-sm text-left border-collapse border border-slate-200 dark:border-slate-800"><thead class="bg-slate-50 dark:bg-slate-800/50"><tr><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Push</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Pull</th></tr></thead><tbody><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>How</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Source sends data to pipeline</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Pipeline queries source</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Latency</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Lower (event-driven)</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Higher (polling interval)</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Source load</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Minimal</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Can be significant</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Examples</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Webhooks, Kafka, Kinesis</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">REST API polling, DB queries</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Failure risk</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Data lost if receiver down</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Can replay by adjusting watermark</td></tr></tbody></table></div>
+<br>
+<pre><code class="language-python">
+# Push: webhook receiver (Flask)
+from flask import Flask, request, jsonify
+from kafka import KafkaProducer
+import json
+
+app = Flask(__name__)
+producer = KafkaProducer(
+    bootstrap_servers=["kafka:9092"],
+    value_serializer=lambda v: json.dumps(v).encode()
+)
+
+@app.route("/webhook/orders", methods=["POST"])
+def receive_order_webhook():
+    """Receive pushed order events and forward to Kafka."""
+    payload = request.get_json()
+    
+    # Validate signature (HMAC check)
+    sig = request.headers.get("X-Signature")
+    if not validate_signature(payload, sig):
+        return jsonify({"error": "Invalid signature"}), 401
+    
+    producer.send("orders-topic", value=payload)
+    return jsonify({"status": "accepted"}), 200
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="pipeline-types.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">2. Pipeline Types</span>
+            </a>
+            
+            <a href="processing-layer-design.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">4. Processing Layer Design</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

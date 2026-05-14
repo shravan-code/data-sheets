@@ -1,1102 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<script>(function(){
-        const s=localStorage.getItem('ds-theme');
-        const isL = s==='light';
-        if(isL) document.documentElement.classList.remove('dark');
-        else document.documentElement.classList.add('dark');
-        
-        // Immediate Prism theme sync
-        window.addEventListener('DOMContentLoaded', () => {
-            const l = document.getElementById('prism-theme-light');
-            const d = document.getElementById('prism-theme-dark');
-            if(l && d) {
-                l.disabled = !isL;
-                d.disabled = isL;
-            }
-        });
-    })();</script>
-    <title>Experienced Projects | Shravan Portfolio</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Work | Shravan Kumar Tela</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <link rel="stylesheet" href="../../css/ds-main.css?v=1777291479">
-    
+    <link rel="stylesheet" href="../../css/ds-main.css">
+    <link rel="stylesheet" href="../../css/ds-home.css">
+    <link rel="stylesheet" href="../../css/modules/code-blocks.css">
+    <script src="../../js/modules/universal-nav.js" defer></script>
+    <script src="../../js/modules/code-blocks.js" defer></script>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
-
-<!-- NAV -->
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <!-- LEFT: Toggle, Logo and Page Title -->
-        <div class="flex items-center gap-4">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-            </button>
-
-            <a href="../../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
-                <div class="flex items-center">
-                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-                        <span class="font-light text-slate-500">Data</span>
-                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
-                    </span>
-                </div>
-            </a>
-
-            <div class="hidden md:flex items-center gap-3 ml-2">
-                <div class="h-4 w-[1px] bg-slate-200"></div>
-                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    Experienced Projects
-                </span>
-            </div>
-        </div>
-
-        <!-- RIGHT: Profile Icon -->
-        <div class="flex items-center">
-            <a href="../portfolio.html" id="profile-btn" title="Profile"
-                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-                <i data-lucide="user" class="w-5 h-5"></i>
-            </a>
-        </div>
-    </div>
-</nav>
-
-<!-- SIDEBAR OVERLAY (mobile) -->
-<div id="sidebar-overlay"
-    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-
-<!-- SIDEBAR -->
-<aside id="ds-sidebar"
-    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
-           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
-
-    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-
-    <div class="py-5 px-3 flex flex-col h-full">
-        <div class="flex-1">
-
-            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
-                </span>
-                Programming
-            </div>
-            <nav class="pl-2">
-                <a href="../python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
-                <a href="../sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
-                <a href="../bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
-                <a href="../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
-                </span>
-                Concepts
-            </div>
-            <nav class="pl-2">
-                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
-                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
-                </span>
-                Tools
-            </div>
-            <nav class="pl-2">
-                <a href="../spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
-                <a href="../flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
-                <a href="../kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
-                <a href="../dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
-                <a href="../pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
-                <a href="../numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
-                <a href="../airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
-                <a href="../regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
-                </span>
-                Cloud
-            </div>
-            <nav class="pl-2">
-                <a href="../aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
-                <a href="../gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
-                <a href="../azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
-                <a href="../snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
-                <a href="../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
-                </span>
-                CI / CD
-            </div>
-            <nav class="pl-2">
-                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
-                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
-                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
-                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
-                </span>
-                Design
-            </div>
-            <nav class="pl-2">
-                <a href="../system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
-                <a href="../pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
-                <a href="../de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
-                </span>
-                Roadmaps
-            </div>
-            <nav class="pl-2">
-                <a href="../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
-                <a href="../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
-                <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
-                </span>
-                Practice
-            </div>
-            <nav class="pl-2">
-                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
-                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
-                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
-            </nav>
-
-            <div class="mt-4 pt-4 border-t border-slate-200">
-                <a href="../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
-                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
-                    </span>
-                    My Portfolio
-                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-16 pb-20 px-6 w-full max-w-4xl">
+                <a href="../portfolio.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Portfolio
                 </a>
-            </div>
-
-            <!-- Guide Specific Topics (e.g. Bash Topics) -->
-            <div id="guide-topics" class="mt-6 hidden">
                 
-            </div>
-        </div>
+                <header class="mb-20">
+                    <div class="text-[10px] font-mono text-on-surface-variant uppercase tracking-[0.3em] mb-4">Shravan Kumar Tela / Projects</div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">
+                        Professional <span class="text-secondary-fixed">Work</span>
+                    </h1>
+                </header>
 
+                <article class="prose max-w-none">
+                    
+                <section id="cloud-native-batch-system" class="mb-24 scroll-mt-24">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                            <i data-lucide="server" class="w-6 h-6 text-blue-500"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">Cloud-Native Batch System</h2>
+                    </div>
+                    
+                    <div class="prose max-w-none mb-8">
+                        <p class="text-lg text-on-surface-variant leading-relaxed">
+                            Architected an event-driven, serverless-first batch processing platform on AWS using Lambda, Batch, and Terraform.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Core Impact
+                            </h4>
+                            <p class="text-sm font-bold text-on-surface leading-snug">Improved incident response by 60% through real-time monitoring and automated recovery.</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Status
+                            </h4>
+                            <p class="text-sm font-bold text-secondary-fixed leading-snug tracking-wider">PRODUCTION_READY</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-3.5 h-3.5"></i> Stack
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider">AWS</span>
+<span class="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider">TERRAFORM</span>
+<span class="px-2 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded text-[10px] font-bold uppercase tracking-wider">LAMBDA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-black text-on-surface-variant uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <span class="w-4 h-px bg-outline-variant"></span> Technical Highlights
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-blue-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Implemented a robust API → Lambda → Batch → S3 flow.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-blue-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Used Flask for REST interfaces and managed job lifecycle states in DynamoDB.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-blue-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Built a real-time notification engine using Google Chat Webhooks and CloudWatch.</p></div>
+                        </div>
+                    </div>
+                </section>
+                <section id="etl-modernization" class="mb-24 scroll-mt-24">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                            <i data-lucide="refresh-cw" class="w-6 h-6 text-emerald-500"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">ETL Modernization</h2>
+                    </div>
+                    
+                    <div class="prose max-w-none mb-8">
+                        <p class="text-lg text-on-surface-variant leading-relaxed">
+                            Engineered a Python-based framework to replace legacy Oracle PL/SQL systems.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Core Impact
+                            </h4>
+                            <p class="text-sm font-bold text-on-surface leading-snug">Integrated AI-assisted testing that reduced manual QA efforts by 80%.</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Status
+                            </h4>
+                            <p class="text-sm font-bold text-secondary-fixed leading-snug tracking-wider">MIGRATED_OK</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-3.5 h-3.5"></i> Stack
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded text-[10px] font-bold uppercase tracking-wider">PYTHON</span>
+<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded text-[10px] font-bold uppercase tracking-wider">ORACLE</span>
+<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded text-[10px] font-bold uppercase tracking-wider">AI_TESTING</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-black text-on-surface-variant uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <span class="w-4 h-px bg-outline-variant"></span> Technical Highlights
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-emerald-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Developed LLM-powered agents to auto-generate 80% of unit tests.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-emerald-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Decoupled business logic from Oracle-specific functions.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-emerald-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Ensured total functional parity with mission-critical legacy systems.</p></div>
+                        </div>
+                    </div>
+                </section>
+                <section id="parallel-csv-processor" class="mb-24 scroll-mt-24">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                            <i data-lucide="radio" class="w-6 h-6 text-amber-500"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">Parallel CSV Processor</h2>
+                    </div>
+                    
+                    <div class="prose max-w-none mb-8">
+                        <p class="text-lg text-on-surface-variant leading-relaxed">
+                            Built a high-performance engine for cleansing and transforming massive (~3GB) unstructured datasets.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Core Impact
+                            </h4>
+                            <p class="text-sm font-bold text-on-surface leading-snug">Achieved 70% runtime reduction using vectorized operations and multiprocessing.</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Status
+                            </h4>
+                            <p class="text-sm font-bold text-secondary-fixed leading-snug tracking-wider">IO_OPTIMIZED</p>
+                        </div>
+                        <div class="p-6 bg-surface-container border border-outline-variant rounded-2xl">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-3.5 h-3.5"></i> Stack
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded text-[10px] font-bold uppercase tracking-wider">PANDAS</span>
+<span class="px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded text-[10px] font-bold uppercase tracking-wider">MP</span>
+<span class="px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded text-[10px] font-bold uppercase tracking-wider">NUMPY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-black text-on-surface-variant uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <span class="w-4 h-px bg-outline-variant"></span> Technical Highlights
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-amber-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Optimized concurrent API workloads via advanced multithreading patterns.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-amber-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Leveraged vectorized operations in Pandas for massive speedups.</p></div><div class="flex items-start gap-3 p-4 bg-surface-container/50 border border-outline-variant/50 rounded-xl hover:border-amber-500/30 transition-colors"><i data-lucide="check-circle" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"></i><p class="text-sm text-on-surface-variant leading-relaxed">Implemented robust error handling for malformed dataset rows.</p></div>
+                        </div>
+                    </div>
+                </section>
+                </article>
+
+                <div class="mt-20 pt-10 border-t border-outline-variant flex justify-center">
+                    <a href="../portfolio.html" class="px-8 py-4 bg-surface-container border border-outline-variant rounded-2xl font-bold hover:border-secondary-fixed transition-all">
+                        Explore More Sections
+                    </a>
+                </div>
+            </main>
         </div>
+        <aside class="toc-container">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#cloud-native-batch-system" class="toc-link">Cloud-Native Batch System</a></li><li class="toc-item"><a href="#etl-modernization" class="toc-link">ETL Modernization</a></li><li class="toc-item"><a href="#parallel-csv-processor" class="toc-link">Parallel CSV Processor</a></li>
+            </ul>
+        </aside>
     </div>
-</aside>
-
-<button id="scroll-top" title="Back to top"
-    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
-           bg-gradient-to-br from-blue-500 to-violet-600 text-white
-           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
-    <i data-lucide="arrow-up" class="w-4 h-4"></i>
-</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- NAV -->
-
-
-<!-- SIDEBAR OVERLAY -->
-
-
-
-
-<div id="ds-main-content" class="transition-all duration-300 w-full min-w-0">
-    <main class="pt-24 pb-20 px-4 md:px-8 max-w-5xl mx-auto">
-        <!-- BACK LINK -->
-        <div class="mb-10">
-            <a href="../portfolio.html" class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors group">
-                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
-                Back to Portfolio
-            </a>
-        </div>
-
-        <!-- HERO SECTION -->
-        <header class="mb-16">
-            <h1 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900 dark:text-white">
-                Professional Work
-            </h1>
-            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                Enterprise-grade data solutions and systems engineered during my tenure at 
-                <span class="text-blue-600 dark:text-blue-400 font-bold">Tata Consultancy Services</span> and 
-                <span class="text-slate-900 dark:text-white font-bold">Crown Solutions</span>.
-            </p>
-        </header>
-
-        <div class="space-y-16">
-            <!-- PROJECT 1: TCS BATCH SYSTEM -->
-            <section class="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 md:p-12 rounded-[32px] shadow-sm hover:shadow-xl hover:border-blue-500/30 transition-all duration-500">
-                <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-10">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
-                                <i data-lucide="server" class="w-6 h-6 text-blue-500"></i>
-                            </div>
-                            <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white">Cloud-Native Batch System</h2>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                            Architected an event-driven, serverless-first batch processing platform to handle high-throughput data workflows with automated infrastructure.
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-bold uppercase tracking-wider">AWS Batch</span>
-                            <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-bold uppercase tracking-wider">Terraform</span>
-                            <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-bold uppercase tracking-wider">Lambda</span>
-                            <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-bold uppercase tracking-wider">Flask</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 w-full md:w-64">
-                        <h4 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">Core Impact</h4>
-                        <ul class="space-y-3">
-                            <li class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-500"></i> 60% Faster Alerts
-                            </li>
-                            <li class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-500"></i> 100% Automated
-                            </li>
-                            <li class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-emerald-500"></i> Scale-on-Demand
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <i data-lucide="git-branch" class="w-4 h-4 text-indigo-500"></i> Architectural Logic
-                        </h4>
-                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Implemented a robust <strong>API → Lambda → Batch → S3</strong> flow. Used Flask for REST interfaces and managed job lifecycle states in DynamoDB to ensure idempotency and fault tolerance.
-                        </p>
-                    </div>
-                    <div class="space-y-4">
-                        <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <i data-lucide="shield-check" class="w-4 h-4 text-indigo-500"></i> Reliability Engineering
-                        </h4>
-                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Built a real-time notification engine using Google Chat Webhooks and CloudWatch. Optimized concurrent API workloads via advanced multithreading patterns.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- PIPELINE VISUAL -->
-                <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
-                    <div class="bg-slate-50 dark:bg-slate-800/30 p-8 rounded-3xl border border-slate-200/50 dark:border-slate-700/50 overflow-x-auto">
-                        <div class="flex items-center justify-between min-w-[600px] gap-4">
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-center">
-                                    <i data-lucide="send" class="w-6 h-6 text-indigo-500"></i>
-                                </div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Trigger</span>
-                            </div>
-                            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300"></i>
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-center">
-                                    <i data-lucide="zap" class="w-6 h-6 text-amber-500"></i>
-                                </div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Lambda</span>
-                            </div>
-                            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300"></i>
-                            <div class="flex flex-col items-center gap-3 bg-blue-500 p-0.5 rounded-[18px]">
-                                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-center">
-                                    <i data-lucide="cpu" class="w-6 h-6 text-blue-500"></i>
-                                </div>
-                            </div>
-                            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300"></i>
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-center">
-                                    <i data-lucide="database" class="w-6 h-6 text-emerald-500"></i>
-                                </div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Result</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PROJECT 2: LEGACY MIGRATION -->
-            <section class="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 md:p-12 rounded-[32px] shadow-sm hover:shadow-xl hover:border-emerald-500/30 transition-all duration-500">
-                <div class="flex flex-col md:flex-row justify-between items-start gap-8">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-                                <i data-lucide="refresh-cw" class="w-6 h-6 text-emerald-500"></i>
-                            </div>
-                            <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white">Legacy ETL Modernization</h2>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                            Engineered a Python-based framework to replace legacy Oracle PL/SQL systems, enabling scalable data operations and automated testing.
-                        </p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl">
-                                <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-sm mb-2 flex items-center gap-2">
-                                    <i data-lucide="bot" class="w-4 h-4"></i> AI-Driven Testing
-                                </h4>
-                                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                                    Developed AI agents to auto-generate 80% of unit tests, ensuring total functional parity with legacy systems.
-                                </p>
-                            </div>
-                            <div class="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl">
-                                <h4 class="font-bold text-emerald-600 dark:text-emerald-400 text-sm mb-2 flex items-center gap-2">
-                                    <i data-lucide="unplug" class="w-4 h-4"></i> Vendor Independence
-                                </h4>
-                                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                                    Decoupled business logic from Oracle-specific functions, allowing the client to run workloads on any cloud provider.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PROJECT 3: CROWN SOLUTIONS -->
-            <section class="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 md:p-12 rounded-[32px] shadow-sm hover:shadow-xl transition-all duration-500">
-                <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-10">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                                <i data-lucide="radio" class="w-6 h-6 text-orange-500"></i>
-                            </div>
-                            <h2 class="font-display text-2xl font-bold text-slate-900 dark:text-white">Parallel CSV Processor</h2>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Built a high-performance Python engine for cleansing and transforming massive (~3GB) unstructured datasets using vectorized operations.
-                        </p>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-4">
-                    <div class="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <i data-lucide="gauge" class="w-4 h-4 text-orange-500"></i>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-300">70% Runtime Reduction</span>
-                    </div>
-                    <div class="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <i data-lucide="maximize" class="w-4 h-4 text-orange-500"></i>
-                        <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Multiprocessing Enabled</span>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-</div>
-
-<footer class="py-12 border-t border-slate-200 dark:border-slate-800 text-center">
-    <p class="text-slate-500 dark:text-slate-400 font-medium">© 2026 Shravan Kumar Tela • Experienced Portfolio</p>
-</footer>
-
-<script src="../../js/ds-main.js?v=1777291479" defer></script>
+    <script src="../../js/ds-main.js" defer></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if(window.lucide) lucide.createIcons();
+        });
+    </script>
 </body>
 </html>

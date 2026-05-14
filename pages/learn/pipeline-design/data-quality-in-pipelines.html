@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>10. Data Quality in Pipelines — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784997">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">10. Data Quality in Pipelines</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Validation, schema enforcement, and quarantine patterns.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Validation at Ingestion</h2>
+<br>
+<pre><code class="language-python">
+import pandas as pd
+from dataclasses import dataclass, field
+from typing import List
+
+@dataclass
+class ValidationResult:
+    passed: bool
+    errors: List[str] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+    row_count: int = 0
+    valid_row_count: int = 0
+
+def validate_ingested_data(df: pd.DataFrame) -&gt; ValidationResult:
+    """Run validation checks on ingested data."""
+    result = ValidationResult(passed=True, row_count=len(df))
+    errors = []
+    warnings = []
+    
+    # Check 1: Required columns
+    required_cols = {"order_id", "customer_id", "amount", "order_date"}
+    missing = required_cols - set(df.columns)
+    if missing:
+        errors.append(f"Missing required columns: {missing}")
+    
+    # Check 2: Null rates
+    null_rates = df.isnull().mean()
+    for col, rate in null_rates.items():
+        if col in required_cols and rate &gt; 0:
+            errors.append(f"Required column '{col}' has {rate:.1%} nulls")
+        elif rate &gt; 0.2:
+            warnings.append(f"Column '{col}' has high null rate: {rate:.1%}")
+    
+    # Check 3: Duplicates
+    dup_count = df.duplicated(subset=["order_id"]).sum()
+    if dup_count &gt; 0:
+        errors.append(f"{dup_count} duplicate order_ids found")
+    
+    # Check 4: Value ranges
+    if "amount" in df.columns:
+        invalid_amounts = (df["amount"] &lt;= 0).sum()
+        if invalid_amounts &gt; 0:
+            errors.append(f"{invalid_amounts} records with non-positive amount")
+    
+    # Check 5: Freshness
+    if "order_date" in df.columns:
+        max_date = pd.to_datetime(df["order_date"]).max()
+        staleness = (pd.Timestamp.now() - max_date).days
+        if staleness &gt; 2:
+            warnings.append(f"Data may be stale: latest record is {staleness} days old")
+    
+    result.errors = errors
+    result.warnings = warnings
+    result.passed = len(errors) == 0
+    result.valid_row_count = len(df.dropna(subset=list(required_cols &amp; set(df.columns))))
+    
+    return result
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Data Quality Gates</h2>
+<br>
+<pre><code class="language-python">
+# Airflow DQ gate: fail pipeline if quality checks don't pass
+from airflow.exceptions import AirflowException
+
+def run_quality_gate(date: str, **context):
+    """Data quality gate — fails the pipeline if checks don't pass."""
+    df = load_processed_data(date)
+    result = validate_ingested_data(df)
+    
+    for warning in result.warnings:
+        print(f"[WARNING] {warning}")
+    
+    if not result.passed:
+        error_summary = "\n".join(result.errors)
+        raise AirflowException(
+            f"Data quality gate FAILED for {date}:\n{error_summary}"
+        )
+    
+    print(f"[PASS] Quality gate passed: {result.valid_row_count}/{result.row_count} valid rows")
+
+quality_gate = PythonOperator(
+    task_id="data_quality_gate",
+    python_callable=run_quality_gate,
+    op_kwargs={"date": "{{ ds }}"},
+)
+
+transform &gt;&gt; quality_gate &gt;&gt; load
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Quarantine Pattern</h2>
+<br>
+<pre><code class="language-python">
+def quarantine_bad_records(df: pd.DataFrame, rules: list) -&gt; tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Split records into clean and quarantined sets.
+    Quarantined records are stored for review without blocking the pipeline.
+    """
+    mask = pd.Series([True] * len(df), index=df.index)
+    
+    for rule_name, rule_fn in rules:
+        failed = ~rule_fn(df)
+        df.loc[failed, "_quarantine_reason"] = rule_name
+        mask &amp;= ~failed
+    
+    clean_df = df[mask].drop(columns=["_quarantine_reason"], errors="ignore")
+    quarantine_df = df[~mask]
+    
+    return clean_df, quarantine_df
+
+# Usage
+rules = [
+    ("positive_amount", lambda df: df["amount"] &gt; 0),
+    ("valid_customer_id", lambda df: df["customer_id"].str.match(r"^CUST\d{6}$")),
+    ("not_duplicate", lambda df: ~df.duplicated(subset=["order_id"], keep="first")),
+]
+
+clean, quarantined = quarantine_bad_records(raw_df, rules)
+
+# Store quarantined records for review
+quarantined.to_parquet(f"s3://bucket/quarantine/date={run_date}/records.parquet")
+print(f"Clean: {len(clean)}, Quarantined: {len(quarantined)}")
+
+# Process only clean records
+process_and_load(clean)
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="orchestration-design.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">9. Orchestration Design</span>
+            </a>
+            
+            <a href="pipeline-observability.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">11. Pipeline Observability</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

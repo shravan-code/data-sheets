@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Structural Patterns — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784983">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 16: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Structural Patterns</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Decorator, Adapter, Observer</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Structural patterns compose classes and objects into larger structures.</p>
+<pre class="language-python"><code># Decorator Pattern (structural, not Python decorator)
+class Coffee:
+    def cost(self): return 2.0
+    def description(self): return 'Coffee'
+
+class MilkDecorator:
+    def __init__(self, coffee):
+        self._coffee = coffee
+    def cost(self): return self._coffee.cost() + 0.5
+    def description(self): return self._coffee.description() + ' + Milk'
+
+class SugarDecorator:
+    def __init__(self, coffee):
+        self._coffee = coffee
+    def cost(self): return self._coffee.cost() + 0.25
+    def description(self): return self._coffee.description() + ' + Sugar'
+
+brew = SugarDecorator(MilkDecorator(Coffee()))
+print(brew.description())
+print(f'${brew.cost():.2f}')
+
+# Observer Pattern
+class EventEmitter:
+    def __init__(self):
+        self._listeners = {}
+    
+    def on(self, event, callback):
+        self._listeners.setdefault(event, []).append(callback)
+    
+    def emit(self, event, *args, **kwargs):
+        for cb in self._listeners.get(event, []):
+            cb(*args, **kwargs)
+
+bus = EventEmitter()
+bus.on('user_login', lambda u: print(f'Log: {u} logged in'))
+bus.on('user_login', lambda u: print(f'Email: Welcome back {u}!'))
+bus.emit('user_login', 'Alice')
+
+# Strategy Pattern
+class Sorter:
+    def __init__(self, strategy):
+        self._strategy = strategy
+    
+    def sort(self, data):
+        return self._strategy(data)
+
+bubble = Sorter(sorted)
+quick  = Sorter(lambda d: sorted(d, key=lambda x: -x))
+
+data = [3,1,4,1,5,9,2,6]
+print(bubble.sort(data))
+print(quick.sort(data))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Coffee + Milk + Sugar
+$2.75
+Log: Alice logged in
+Email: Welcome back Alice!
+[1, 1, 2, 3, 4, 5, 6, 9]
+[9, 6, 5, 4, 3, 2, 1, 1]</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How do Python's first-class functions affect design patterns?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Many Gang of Four patterns become simpler in Python. Strategy pattern: pass a function instead of a strategy object. Command pattern: use callables. Observer: pass callbacks. Factory: use dict of classes. Python's first-class functions, closures, and decorators replace much boilerplate that OOP patterns require in Java/C++.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is EAFP vs LBYL in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">EAFP (Easier to Ask Forgiveness than Permission): try/except — Pythonic. `try: x = d['key'] except KeyError: ...`. LBYL (Look Before You Leap): check before acting — `if 'key' in d: x = d['key']`. EAFP is generally preferred in Python since it avoids race conditions and is more readable for common cases.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="creational-patterns.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Creational Patterns</span></a>
+                    <a href="working-with-apis.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Working with APIs</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

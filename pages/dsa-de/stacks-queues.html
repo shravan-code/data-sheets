@@ -1,6 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en" class="">
 <head>
+<script data-cake-theme>(function(){
+            var t = localStorage.getItem('theme');
+            if (t === 'light') { document.documentElement.classList.remove('dark'); }
+            else { document.documentElement.classList.add('dark'); }
+        })();</script>
+<script>(function(){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('ds-theme', 'dark');
+        })();</script>
 <script>(function(){
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
@@ -22,7 +31,7 @@
 
 
     
-<script src="../../../js/ds-main.js?v=1777291469" defer></script>
+<script src="../../js/ds-main.js?v=1778774012" defer></script>
 </body>
 </html>
 

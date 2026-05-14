@@ -1,0 +1,69 @@
+{
+  "description": "Master the architecture of autonomous systems. From simple ReAct loops to complex multi-agent state machines.",
+  "content": {
+    "guide": {
+      "parts": [
+        {
+          "part": 1,
+          "title": "Agent Foundations",
+          "explanation": "Understanding the core loop and reasoning patterns of AI agents.",
+          "topics": [
+            {
+              "title": "What is an AI Agent?",
+              "category": "Foundations",
+              "description": "Beyond simple LLM completion.",
+              "explanation": "An AI Agent is a system that uses a Large Language Model (LLM) as its central reasoning engine to autonomously achieve goals by interacting with environment through tools and loops.",
+              "subtopics": [
+                {
+                  "title": "The Agent Loop",
+                  "explanation": "Agents operate in a continuous cycle: Perceive -> Reason -> Act -> Observe. Unlike standard chatbots, agents can decide when to stop or when to retry a failed tool call."
+                },
+                {
+                  "title": "ReAct Pattern",
+                  "explanation": "Reasoning + Acting. The agent verbalizes its 'Thought' before performing an 'Action', then processes the 'Observation'. This significantly improves performance on complex reasoning tasks."
+                }
+              ],
+              "interview_qa": [
+                {
+                  "question": "What is the difference between a Chain and an Agent?",
+                  "answer": "A Chain is a hardcoded sequence of steps (DAG), whereas an Agent uses the LLM to dynamically decide the next step based on the current state."
+                }
+              ]
+            },
+            {
+              "title": "Tool Definition & Selection",
+              "category": "Foundations",
+              "description": "Teaching models how to use external APIs.",
+              "explanation": "Tool use allows agents to extend their capabilities beyond their training data by calling external functions, searching the web, or executing code.",
+              "subtopics": [
+                {
+                  "title": "Semantic Tool Selection",
+                  "explanation": "The model uses the tool's description to understand when it should be called. Clear, descriptive names and docstrings are critical for agent reliability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part": 2,
+          "title": "Advanced Architectures",
+          "explanation": "Scaling agentic systems with state management and collaboration.",
+          "topics": [
+            {
+              "title": "LangGraph & State Machines",
+              "category": "Architectures",
+              "description": "Controlled autonomy with graph-based logic.",
+              "explanation": "LangGraph allows developers to build agents as state machines, providing fine-grained control over loops, persistence, and human-in-the-loop interactions.",
+              "subtopics": [
+                {
+                  "title": "Multi-Agent Collaboration",
+                  "explanation": "Breaking down large tasks into smaller sub-tasks handled by specialized agents (e.g., a 'Researcher' agent and a 'Writer' agent)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

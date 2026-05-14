@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Multiprocessing — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784981">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 12: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Multiprocessing</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Process and Pool</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">multiprocessing bypasses the GIL for true CPU parallelism by using separate processes.</p>
+<pre class="language-python"><code>from multiprocessing import Process, Pool, Queue, Value, Array
+import os
+
+def cpu_work(n):
+    # CPU-bound: sum of squares
+    return sum(i*i for i in range(n))
+
+# Pool.map - parallel map
+if __name__ == '__main__':  # required guard on Windows/macOS
+    with Pool(processes=4) as pool:
+        results = pool.map(cpu_work, [10**6, 10**6, 10**6, 10**6])
+        print(results[:2])
+    
+    # Pool.starmap - multiple args
+    def add(a, b): return a + b
+    with Pool(4) as pool:
+        results = pool.starmap(add, [(1,2),(3,4),(5,6)])
+        print(results)
+    
+    # Pool.apply_async - non-blocking
+    with Pool(2) as pool:
+        async_result = pool.apply_async(cpu_work, (10**5,))
+        print('Submitted, doing other work...')
+        print(async_result.get(timeout=10))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[333332833333500000, 333332833333500000]
+[3, 7, 11]
+Submitted, doing other work...
+333328333350000</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+ProcessPoolExecutor and Inter-process Communication</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">High-level process pool and IPC mechanisms.</p>
+<pre class="language-python"><code>from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import Queue, Pipe
+
+def heavy_compute(x):
+    return x ** 2
+
+# ProcessPoolExecutor (similar to ThreadPoolExecutor API)
+if __name__ == '__main__':
+    with ProcessPoolExecutor(max_workers=4) as executor:
+        results = list(executor.map(heavy_compute, range(10)))
+        print(results)
+
+# Queue - safe IPC
+def producer(queue):
+    for i in range(5):
+        queue.put(i)
+    queue.put(None)  # sentinel
+
+def consumer(queue):
+    while True:
+        item = queue.get()
+        if item is None:
+            break
+        print(f'Consumed: {item}')
+
+if __name__ == '__main__':
+    q = Queue()
+    p = Process(target=producer, args=(q,))
+    c = Process(target=consumer, args=(q,))
+    p.start(); c.start()
+    p.join(); c.join()</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+Consumed: 0
+Consumed: 1
+Consumed: 2
+Consumed: 3
+Consumed: 4</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When use threading vs multiprocessing?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Threading: I/O-bound tasks (network requests, file operations, DB queries) where threads wait most of the time. Multiprocessing: CPU-bound tasks (number crunching, image processing, ML) where you need true parallelism. Multiprocessing has higher overhead (process creation, IPC) but bypasses the GIL.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="threading.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Threading</span></a>
+                    <a href="async-programming-asyncio.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Async Programming (asyncio)</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

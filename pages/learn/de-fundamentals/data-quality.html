@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8. Data Quality — Data Cake</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784995">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+        <a href="../de-fundamentals.html" class="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to DE Fundamentals
+        </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">8. Data Quality</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">Validation, profiling, schema evolution, and data contracts.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            
+<h2>Dimensions of Data Quality</h2>
+<p>Data quality is usually measured across these key dimensions:</p>
+<ul>
+    <li><strong>Accuracy:</strong> Does the data represent reality? (e.g., A negative user age is inaccurate).</li>
+    <li><strong>Completeness:</strong> Is required data missing? (e.g., Too many NULL values in the email column).</li>
+    <li><strong>Consistency:</strong> Is the data the same across different systems?</li>
+    <li><strong>Timeliness:</strong> Is the data available when expected? (Stale data is useless).</li>
+    <li><strong>Uniqueness:</strong> Are there accidental duplicate records?</li>
+</ul>
+
+<h2>Data Validation & Profiling</h2>
+<p><strong>Profiling</strong> involves analyzing your raw data to understand its distribution, min/max values, and null rates (e.g., using Pandas Profiling or Great Expectations).<br>
+<strong>Validation</strong> is the automated testing of data against rules. In dbt, this means writing tests to assert that `id` is `NOT NULL` and `UNIQUE`, or that `status IN ('active', 'pending', 'deleted')`.</p>
+
+<h2>Schema Enforcement & Evolution</h2>
+<p>When the upstream source adds a new column, or changes an `int` to a `string`, what happens?</p>
+<ul>
+    <li><strong>Schema Enforcement:</strong> The pipeline strictly rejects any data that doesn't match the expected schema (saving the warehouse from corruption).</li>
+    <li><strong>Schema Evolution:</strong> The pipeline automatically detects the new column and safely alters the destination table to add it dynamically. Supported strongly by Delta Lake and Avro.</li>
+</ul>
+
+<h2>Data Contracts</h2>
+<p>An emerging best practice. A Data Contract is an agreement between the Software Engineers (who generate data) and Data Engineers (who consume it). It defines the strict schema of events. If a software engineer tries to deploy a code change that breaks the contract (e.g., dropping a required field), the CI/CD pipeline fails, preventing data engineering pipelines from breaking in production.</p>
+
+<h2>Null Handling & Deduplication</h2>
+<p><strong>Nulls:</strong> You must decide whether to drop rows with NULLs, fill them with a default value (e.g., `0` or `"Unknown"`), or leave them. SQL handles NULLs weirdly (e.g., `NULL = NULL` is false).</p>
+<p><strong>Deduplication:</strong> Easiest done using the `ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC)` window function in SQL, filtering for `row_num = 1` to keep only the most recent version of a record.</p>
+        
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="streaming-concepts.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">7. Streaming Concepts</span>
+        </a>
+        
+        <a href="governance.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">9. Data Governance & Observability</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

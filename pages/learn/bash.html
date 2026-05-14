@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>Bash Mastery — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../css/ds-main.css">
+    <link rel="stylesheet" href="../../css/modules/code-blocks.css">
+    <script src="../../js/modules/universal-nav.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-32 pb-20 px-6 w-full max-w-6xl mx-auto">
+            
+        <header class="mb-24 text-center relative">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-secondary-fixed/10 blur-[120px] -z-10 rounded-full"></div>
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-secondary-fixed/20 bg-secondary-fixed/5 text-secondary-fixed text-[10px] font-black uppercase tracking-[0.2em] mb-10 shadow-[0_0_20px_rgba(91,255,161,0.1)]">
+                <i data-lucide="terminal" class="w-4 h-4"></i> SHELL AUTOMATION
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold text-on-surface mb-10 tracking-tight leading-tight">
+                Bash <span class="text-secondary-fixed">Scripting</span>
+            </h1>
+            <p class="text-xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed opacity-80 font-medium">
+                The language of the cloud. From simple pipes to production-grade automation engines.
+            </p>
+        </header>
+
+            <div class="space-y-4">
+                
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    1
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Shell Foundations</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 1</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/introduction-to-bash.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Introduction to Bash</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    2
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Variable Mastery</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 2</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/variables.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="variable" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Variables</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    3
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Input & Output</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 3</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/input-and-output.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Input & Output</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    4
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Data Structures</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 4</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/data-types-and-strings.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="variable" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Data Types & Strings</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    5
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Arithmetic & Logic</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 5</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/operators-and-arithmetic.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="calculator" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Operators & Arithmetic</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    6
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Control Flow</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 6</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/control-flow.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="git-branch" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Control Flow</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    7
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Reusable Functions</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 7</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/functions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="command" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Functions</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    8
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Text Processing Suite</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 8</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/string-manipulation.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="search" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">String Manipulation</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    9
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Regex Mastery</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 9</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/regular-expressions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Regular Expressions</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    10
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">System & Robustness</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 10</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/file-and-directory-operations.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="folder" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">File & Directory Operations</span>
+                </div>
+            </a>
+            <a href="bash/process-management.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Process Management</span>
+                </div>
+            </a>
+            <a href="bash/error-handling.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Error Handling</span>
+                </div>
+            </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    11
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Advanced & Practical</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 11</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+            <a href="bash/debugging.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Debugging</span>
+                </div>
+            </a>
+            <a href="bash/advanced-topics.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Advanced Topics</span>
+                </div>
+            </a>
+            <a href="bash/script-best-practices.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Script Best Practices</span>
+                </div>
+            </a>
+            <a href="bash/projects.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Projects</span>
+                </div>
+            </a>
+            <a href="bash/bash-vs-powershell-cheatsheet.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Bash vs PowerShell Cheatsheet</span>
+                </div>
+            </a>
+            </div>
+        </section>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/ds-main.js"></script>
+</body>
+</html>

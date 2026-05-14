@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script data-cake-theme>(function(){
+            var t = localStorage.getItem('theme');
+            if (t === 'light') { document.documentElement.classList.remove('dark'); }
+            else { document.documentElement.classList.add('dark'); }
+        })();</script>
+<script>(function(){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('ds-theme', 'dark');
+        })();</script>
 <script>(function(){
             document.documentElement.classList.remove('dark');
             localStorage.setItem('ds-theme', 'light');
@@ -10,194 +18,221 @@
     <title>Databricks — Data Cake</title>
     <meta name="description" content="Unified analytics and data engineering platform built on Apache Spark with Delta Lake.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-<link rel="stylesheet" href="../css/ds-main.css?v=1777291468">
+<link rel="stylesheet" href="../css/ds-main.css?v=1778774008">
+    
+    
+    <link rel="stylesheet" href="../css/modules/code-blocks.css">
+    <script src="../js/modules/universal-nav.js" defer></script>
+    <script src="../js/modules/code-blocks.js" defer></script>
+
+
+
+
+
+
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+<body class="bg-surface text-on-surface min-h-screen">
+
+<div id="nav-universal"></div>
+
+
 
 <!-- NAV -->
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <!-- LEFT: Toggle, Logo and Page Title -->
-        <div class="flex items-center gap-4">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-            </button>
 
-            <a href="../index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
-                <div class="flex items-center">
-                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-                        <span class="font-light text-slate-500">Data</span>
-                        <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left">Cake</span>
-                    </span>
-                </div>
-            </a>
 
-            <div class="hidden md:flex items-center gap-3 ml-2">
-                <div class="h-4 w-[1px] bg-slate-200"></div>
-                <span class="text-sm font-semibold text-slate-500 whitespace-nowrap">
-                    Databricks
-                </span>
-            </div>
-        </div>
-
-        <!-- RIGHT: Profile Icon -->
-        <div class="flex items-center">
-            <a href="./portfolio.html" id="profile-btn" title="Profile"
-                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-                <i data-lucide="user" class="w-5 h-5"></i>
-            </a>
-        </div>
+<!-- MOBILE SIDEBAR (hidden on desktop) -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-surface/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+<aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-72 z-50 overflow-y-auto bg-surface border-r border-outline-variant transform -translate-x-full transition-transform duration-300 lg:hidden">
+    <div class="flex items-center justify-between px-4 h-14 border-b border-outline-variant">
+        <span class="font-bold text-on-surface uppercase tracking-wider text-sm">Navigation</span>
+        <button id="mobile-sidebar-close" class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-on-surface">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
     </div>
-</nav>
-
-<!-- SIDEBAR OVERLAY (mobile) -->
-<div id="sidebar-overlay"
-    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-
-<!-- SIDEBAR -->
-<aside id="ds-sidebar"
-    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
-           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
-
-    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-
-    <div class="py-5 px-3 flex flex-col h-full">
-        <div class="flex-1">
-
-            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
-                </span>
-                Programming
+    <div class="py-4 px-3">
+        <!-- Mobile category sections -->
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="code-2" class="w-4 h-4"></i> Programming
             </div>
             <nav class="pl-2">
-                <a href="./python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
-                <a href="./sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
-                <a href="./bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
-                <a href="./powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+                <a href="../pages/learn/python.html" class="sb-link">Python</a>
+                <a href="../pages/learn/sql.html" class="sb-link">SQL</a>
+                <a href="../pages/learn/bash.html" class="sb-link">Bash</a>
+                <a href="../pages/learn/powershell.html" class="sb-link">PowerShell</a>
             </nav>
-
-            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
-                </span>
-                Concepts
-            </div>
-            <nav class="pl-2">
-                <a href="./de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
-                <a href="./dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
-                </span>
-                Tools
-            </div>
-            <nav class="pl-2">
-                <a href="./spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
-                <a href="./flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
-                <a href="./kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
-                <a href="./dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
-                <a href="./pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
-                <a href="./numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
-                <a href="./airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
-                <a href="./regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
-                </span>
-                Cloud
-            </div>
-            <nav class="pl-2">
-                <a href="./aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
-                <a href="./gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
-                <a href="./azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
-                <a href="./snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
-                <a href="./databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
-                </span>
-                CI / CD
-            </div>
-            <nav class="pl-2">
-                <a href="./docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
-                <a href="./kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
-                <a href="./terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
-                <a href="./github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
-                </span>
-                Design
-            </div>
-            <nav class="pl-2">
-                <a href="./system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
-                <a href="./pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
-                <a href="./de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
-                </span>
-                Roadmaps
-            </div>
-            <nav class="pl-2">
-                <a href="../roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
-                <a href="../roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
-                <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
-                </span>
-                Practice
-            </div>
-            <nav class="pl-2">
-                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
-                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
-                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
-            </nav>
-
-            <div class="mt-4 pt-4 border-t border-slate-200">
-                <a href="./portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
-                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
-                    </span>
-                    My Portfolio
-                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
-                </a>
-            </div>
-
-            <!-- Guide Specific Topics (e.g. Bash Topics) -->
-            <div id="guide-topics" class="mt-6 hidden">
-                
-            </div>
         </div>
-
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layers" class="w-4 h-4"></i> Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../pages/learn/de-fundamentals.html" class="sb-link">DE Fundamentals</a>
+                <a href="../pages/learn/dsa-de.html" class="sb-link">DSA for DE</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Tools
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/spark.html" class="sb-link">Spark</a>
+                <a href="../pages/learn/flink.html" class="sb-link">Flink</a>
+                <a href="../pages/learn/kafka.html" class="sb-link">Kafka</a>
+                <a href="../pages/learn/dbt.html" class="sb-link">dbt</a>
+                <a href="../pages/learn/pandas.html" class="sb-link">Pandas</a>
+                <a href="../pages/learn/numpy.html" class="sb-link">NumPy</a>
+                <a href="../pages/learn/airflow.html" class="sb-link">Airflow</a>
+                <a href="../pages/learn/regex.html" class="sb-link">Regex</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="cloud" class="w-4 h-4"></i> Cloud
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/aws.html" class="sb-link">AWS</a>
+                <a href="../pages/learn/gcp.html" class="sb-link">GCP</a>
+                <a href="../pages/learn/azure.html" class="sb-link">Azure</a>
+                <a href="../pages/learn/snowflake.html" class="sb-link">Snowflake</a>
+                <a href="../pages/learn/databricks.html" class="sb-link">Databricks</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="git-pull-request" class="w-4 h-4"></i> CI / CD
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/docker.html" class="sb-link">Docker</a>
+                <a href="../pages/learn/kubernetes.html" class="sb-link">Kubernetes</a>
+                <a href="../pages/learn/terraform.html" class="sb-link">Terraform</a>
+                <a href="../pages/learn/github.html" class="sb-link">GitHub</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layout" class="w-4 h-4"></i> Design
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/system-design.html" class="sb-link">System Design</a>
+                <a href="../pages/learn/pipeline-design.html" class="sb-link">Pipeline Design</a>
+                <a href="../pages/learn/de-architectures.html" class="sb-link">DE Architectures</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="map" class="w-4 h-4"></i> Roadmaps
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/roadmaps/data-engineering.html" class="sb-link">Data Engineering</a>
+                <a href="../pages/roadmaps/ml-engineer.html" class="sb-link">ML Engineer</a>
+                <a href="../pages/roadmaps/ai-engineer.html" class="sb-link">AI Engineer</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/practice.html" class="sb-link">Practice Hub</a>
+                <a href="../pages/practice/list-comprehensions.html" class="sb-link">Python Challenges</a>
+                <a href="../pages/practice/sql-window-functions.html" class="sb-link">SQL Challenges</a>
+            </nav>
+        </div>
+        <div class="mt-6 pt-4 border-t border-outline-variant">
+            <a href="../pages/portfolio.html" class="sb-section text-on-surface-variant hover:text-on-surface no-underline">
+                <i data-lucide="folder-closed" class="w-4 h-4"></i>
+                My Portfolio
+            </a>
+        </div>
+        <!-- Guide Specific Topics -->
+        <div id="guide-topics" class="mt-6 hidden">
+            
         </div>
     </div>
 </aside>
 
-<button id="scroll-top" title="Back to top"
-    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
-           bg-gradient-to-br from-blue-500 to-violet-600 text-white
-           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
-    <i data-lucide="arrow-up" class="w-4 h-4"></i>
-</button>
+
+
+
+<div id="nav-universal"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- NAV -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -314,7 +349,7 @@
 <div id="ds-main-content" class="transition-all duration-300 w-full min-w-0"><main class="relative z-10 pt-24 pb-20 px-6 max-w-6xl mx-auto">
 
     <!-- Hero Section with Databricks Branding -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FF3621] via-[#FF5722] to-[#F97316] p-8 md:p-12 mb-12">
+    <div class="relative overflow-hidden rounded-3xl bg-none from-[#FF3621] via-[#FF5722] to-[#F97316] p-8 md:p-12 mb-12">
         <div class="absolute inset-0 opacity-10">
             <svg viewBox="0 0 800 400" class="w-full h-full">
                 <defs>
@@ -343,24 +378,20 @@
                 </svg>
             </div>
             <div class="text-white text-center md:text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold mb-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface/20 backdrop-blur-sm rounded-full text-xs font-bold mb-4">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     Lakehouse Platform
                 </div>
                 <h1 class="text-4xl md:text-5xl font-black mb-3">Databricks</h1>
                 <p class="text-white/90 text-lg max-w-xl">Master the unified analytics platform for data engineering, ML, AI, and BI with structured learning paths.</p>
             </div>
-        </div>
-    </div>
 
     <div id="databricks-guide" class="space-y-8" data-mode="index" data-guide-path="../../data/databricks_complete_guide.json" data-section-base="databricks">
-        <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
-            <div class="flex items-center gap-3 text-cyan-600 dark:text-cyan-400 transition-colors">
+        <div class="bg-surface  border border-outline-variant  rounded-2xl p-8 transition-colors shadow-sm ">
+            <div class="flex items-center gap-3 text-cyan-600  transition-colors">
                 <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
                 <p class="text-sm font-semibold">Loading Databricks guide from JSON...</p>
             </div>
-        </div>
-    </div>
 </main>
 </div>
 <script type="application/json" id="databricks-legacy-inline-renderer-disabled">
@@ -376,23 +407,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         .replace(/'/g, '&#39;');
 
     const renderList = (items) => (items || []).map((item) => `
-        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-100 dark:border-cyan-900 text-xs font-semibold text-cyan-700 dark:text-cyan-300">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-50  border border-cyan-100  text-xs font-semibold text-cyan-700 ">
             <i data-lucide="check" class="w-3.5 h-3.5"></i>${escapeHtml(item)}
         </span>
     `).join('');
 
     const renderExamples = (examples) => (examples || []).map((example) => `
-        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 p-4">
-            <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-2">${escapeHtml(example.title)}</h4>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">${escapeHtml(example.explanation)}</p>
+        <div class="rounded-xl border border-outline-variant  bg-surface  p-4">
+            <h4 class="font-bold text-on-surface  text-sm mb-2">${escapeHtml(example.title)}</h4>
+            <p class="text-sm text-on-surface-variant  mb-3 leading-relaxed">${escapeHtml(example.explanation)}</p>
             <pre class="overflow-x-auto rounded-lg bg-slate-950 text-slate-100 p-4 text-xs leading-relaxed"><code>${escapeHtml(example.code)}</code></pre>
         </div>
     `).join('');
 
     const renderDrawbacks = (items) => (items || []).map((item) => `
-        <div class="rounded-xl border border-amber-200 dark:border-amber-900/70 bg-amber-50/70 dark:bg-amber-950/20 p-4">
-            <p class="text-sm text-slate-700 dark:text-slate-300"><strong class="text-amber-700 dark:text-amber-300">Drawback:</strong> ${escapeHtml(item.drawback)}</p>
-            <p class="text-sm text-slate-700 dark:text-slate-300 mt-2"><strong class="text-emerald-700 dark:text-emerald-300">Solution:</strong> ${escapeHtml(item.solution)}</p>
+        <div class="rounded-xl border border-amber-200  bg-amber-50/70  p-4">
+            <p class="text-sm text-on-surface "><strong class="text-amber-700 ">Drawback:</strong> ${escapeHtml(item.drawback)}</p>
+            <p class="text-sm text-on-surface  mt-2"><strong class="text-secondary-fixed ">Solution:</strong> ${escapeHtml(item.solution)}</p>
         </div>
     `).join('');
 
@@ -406,14 +437,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const diagrams = guide.diagrams || [];
 
         root.innerHTML = `
-            <section class="bg-white dark:bg-slate-900/80 border border-cyan-200 dark:border-cyan-900/60 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
+            <section class="bg-surface  border border-cyan-200  rounded-2xl p-8 transition-colors shadow-sm ">
                 <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-5">
                     <div>
-                        <div class="flex items-center gap-3 mb-3 text-cyan-600 dark:text-cyan-400 transition-colors">
+                        <div class="flex items-center gap-3 mb-3 text-cyan-600  transition-colors">
                             <i data-lucide="book-open-check" class="w-6 h-6"></i>
-                            <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white transition-colors">${escapeHtml(guide.title)}</h2>
+                            <h2 class=" font-bold text-2xl text-on-surface  transition-colors">${escapeHtml(guide.title)}</h2>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed transition-colors max-w-3xl">${escapeHtml(guide.description)}</p>
+                        <p class="text-on-surface-variant  text-sm leading-relaxed transition-colors max-w-3xl">${escapeHtml(guide.description)}</p>
                     </div>
                     <a href="../../data/databricks_complete_guide.json" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-cyan-600 text-white font-semibold text-sm hover:bg-cyan-700 transition-colors no-underline" target="_blank" rel="noopener">
                         <i data-lucide="file-json" class="w-4 h-4"></i>Open JSON
@@ -422,29 +453,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             </section>
 
             <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors shadow-sm dark:shadow-none">
-                    <div class="text-3xl font-black text-cyan-600 dark:text-cyan-400 font-display">${sections.length}</div>
-                    <div class="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1">Guide Sections</div>
+                <div class="bg-surface  border border-outline-variant  rounded-2xl p-5 transition-colors shadow-sm ">
+                    <div class="text-3xl font-black text-cyan-600  ">${sections.length}</div>
+                    <div class="text-sm font-semibold text-on-surface  mt-1">Guide Sections</div>
                 </div>
-                <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors shadow-sm dark:shadow-none">
-                    <div class="text-3xl font-black text-cyan-600 dark:text-cyan-400 font-display">${questions.length}</div>
-                    <div class="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1">Interview Q&A</div>
+                <div class="bg-surface  border border-outline-variant  rounded-2xl p-5 transition-colors shadow-sm ">
+                    <div class="text-3xl font-black text-cyan-600  ">${questions.length}</div>
+                    <div class="text-sm font-semibold text-on-surface  mt-1">Interview Q&A</div>
                 </div>
-                <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 transition-colors shadow-sm dark:shadow-none">
-                    <div class="text-3xl font-black text-cyan-600 dark:text-cyan-400 font-display">${diagrams.length}</div>
-                    <div class="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1">Architecture Diagrams</div>
+                <div class="bg-surface  border border-outline-variant  rounded-2xl p-5 transition-colors shadow-sm ">
+                    <div class="text-3xl font-black text-cyan-600  ">${diagrams.length}</div>
+                    <div class="text-sm font-semibold text-on-surface  mt-1">Architecture Diagrams</div>
                 </div>
             </section>
 
-            <section class="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
-                <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-5 transition-colors">Guide Sections</h2>
+            <section class="bg-surface  border border-outline-variant  rounded-2xl p-8 transition-colors shadow-sm ">
+                <h2 class=" font-bold text-xl text-on-surface  mb-5 transition-colors">Guide Sections</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     ${sections.map((section) => `
-                        <a href="#${escapeHtml(section.slug)}" class="flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 rounded-2xl transition-all hover:bg-cyan-50/60 dark:hover:bg-cyan-900/20 hover:border-cyan-200 group/item no-underline shadow-sm hover:shadow-md">
-                            <div class="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-900/50 flex items-center justify-center text-cyan-600 dark:text-cyan-400 group-hover/item:bg-cyan-600 group-hover/item:text-white transition-all">
+                        <a href="#${escapeHtml(section.slug)}" class="flex items-center gap-3 p-4 bg-surface  border border-outline-variant/70  rounded-2xl transition-all hover:bg-cyan-50/60  hover:border-cyan-200 group/item topic-card no-underline shadow-sm hover:shadow-md">
+                            <div class="icon-box-inner w-10 h-10 rounded-xl bg-cyan-50  flex items-center justify-center text-cyan-600  group-hover/item:bg-cyan-600 group-hover/item:text-white transition-all">
                                 <i data-lucide="${escapeHtml(section.icon || 'book-open')}" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover/item:text-cyan-700 transition-colors">${section.id}. ${escapeHtml(section.title)}</span>
+                            <span class="text-sm font-bold text-on-surface  group-hover/item:text-cyan-700 transition-colors">${section.id}. ${escapeHtml(section.title)}</span>
                         </a>
                     `).join('')}
                 </div>
@@ -452,50 +483,50 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <section class="space-y-6">
                 ${sections.map((section) => `
-                    <article id="${escapeHtml(section.slug)}" class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none scroll-mt-24">
+                    <article id="${escapeHtml(section.slug)}" class="bg-surface  border border-outline-variant  rounded-2xl p-8 transition-colors shadow-sm  scroll-mt-24">
                         <div class="flex items-start gap-4 mb-5">
-                            <div class="w-11 h-11 rounded-xl bg-cyan-50 dark:bg-cyan-900/50 flex items-center justify-center text-cyan-600 dark:text-cyan-400 flex-shrink-0">
+                            <div class="w-11 h-11 rounded-xl bg-cyan-50  flex items-center justify-center text-cyan-600  flex-shrink-0">
                                 <i data-lucide="${escapeHtml(section.icon || 'book-open')}" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-black uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-1">Section ${section.id}</p>
-                                <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white transition-colors">${escapeHtml(section.title)}</h2>
+                                <p class="text-xs font-black uppercase tracking-widest text-cyan-600  mb-1">Section ${section.id}</p>
+                                <h2 class=" font-bold text-2xl text-on-surface  transition-colors">${escapeHtml(section.title)}</h2>
                             </div>
                         </div>
-                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-7 mb-6 transition-colors">${escapeHtml(section.detailed_explanation)}</p>
+                        <p class="text-on-surface-variant  text-sm leading-7 mb-6 transition-colors">${escapeHtml(section.detailed_explanation)}</p>
                         <div class="flex flex-wrap gap-2 mb-6">${renderList(section.topics)}</div>
-                        ${(section.examples || []).length ? `<h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-3">Examples</h3><div class="grid grid-cols-1 gap-4 mb-6">${renderExamples(section.examples)}</div>` : ''}
-                        ${(section.drawbacks_and_solutions || []).length ? `<h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mb-3">Drawbacks & Solutions</h3><div class="grid grid-cols-1 gap-3">${renderDrawbacks(section.drawbacks_and_solutions)}</div>` : ''}
+                        ${(section.examples || []).length ? `<h3 class=" font-bold text-lg text-on-surface  mb-3">Examples</h3><div class="grid grid-cols-1 gap-4 mb-6">${renderExamples(section.examples)}</div>` : ''}
+                        ${(section.drawbacks_and_solutions || []).length ? `<h3 class=" font-bold text-lg text-on-surface  mb-3">Drawbacks & Solutions</h3><div class="grid grid-cols-1 gap-3">${renderDrawbacks(section.drawbacks_and_solutions)}</div>` : ''}
                     </article>
                 `).join('')}
             </section>
 
-            <section class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
-                <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white mb-5 transition-colors">Architecture Diagrams</h2>
+            <section class="bg-surface  border border-outline-variant  rounded-2xl p-8 transition-colors shadow-sm ">
+                <h2 class=" font-bold text-2xl text-on-surface  mb-5 transition-colors">Architecture Diagrams</h2>
                 <div class="grid grid-cols-1 gap-4">
                     ${diagrams.map((diagram) => `
-                        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 p-4">
-                            <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-3">${escapeHtml(diagram.title)}</h3>
+                        <div class="rounded-xl border border-outline-variant  bg-surface  p-4">
+                            <h3 class="font-bold text-on-surface  text-sm mb-3">${escapeHtml(diagram.title)}</h3>
                             <pre class="overflow-x-auto rounded-lg bg-slate-950 text-slate-100 p-4 text-xs leading-relaxed"><code>${escapeHtml(diagram.diagram)}</code></pre>
                         </div>
                     `).join('')}
                 </div>
             </section>
 
-            <section class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 transition-colors shadow-sm dark:shadow-none">
-                <h2 class="font-display font-bold text-2xl text-slate-900 dark:text-white mb-5 transition-colors">Top 100 Interview Questions</h2>
+            <section class="bg-surface  border border-outline-variant  rounded-2xl p-8 transition-colors shadow-sm ">
+                <h2 class=" font-bold text-2xl text-on-surface  mb-5 transition-colors">Top 100 Interview Questions</h2>
                 <div class="space-y-3">
                     ${questions.map((item) => `
-                        <details class="group rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40 p-4">
+                        <details class="group rounded-xl border border-outline-variant  bg-surface  p-4">
                             <summary class="cursor-pointer list-none flex items-start gap-3">
-                                <span class="w-8 h-8 rounded-lg bg-cyan-100 dark:bg-cyan-900/60 text-cyan-700 dark:text-cyan-300 flex items-center justify-center text-xs font-black flex-shrink-0">${item.id}</span>
+                                <span class="w-8 h-8 rounded-lg bg-cyan-100  text-cyan-700  flex items-center justify-center text-xs font-black flex-shrink-0">${item.id}</span>
                                 <span class="flex-1">
-                                    <span class="block text-xs font-bold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 mb-1">${escapeHtml(item.category)}</span>
-                                    <span class="block text-sm font-bold text-slate-800 dark:text-slate-100">${escapeHtml(item.question)}</span>
+                                    <span class="block text-xs font-bold uppercase tracking-wide text-cyan-600  mb-1">${escapeHtml(item.category)}</span>
+                                    <span class="block text-sm font-bold text-on-surface ">${escapeHtml(item.question)}</span>
                                 </span>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-on-surface-variant group-open:rotate-180 transition-transform"></i>
                             </summary>
-                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-7 mt-4 pl-11">${escapeHtml(item.answer)}</p>
+                            <p class="text-sm text-on-surface-variant  leading-7 mt-4 pl-11">${escapeHtml(item.answer)}</p>
                         </details>
                     `).join('')}
                 </div>
@@ -505,8 +536,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (typeof lucide !== 'undefined') lucide.createIcons();
     } catch (error) {
         root.innerHTML = `
-            <div class="bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 rounded-2xl p-8 text-rose-700 dark:text-rose-300">
-                <h2 class="font-display font-bold text-xl mb-2">Unable to load Databricks guide</h2>
+            <div class="bg-rose-50  border border-rose-200  rounded-2xl p-8 text-rose-700 ">
+                <h2 class=" font-bold text-xl mb-2">Unable to load Databricks guide</h2>
                 <p class="text-sm">${escapeHtml(error.message)}</p>
             </div>
         `;
@@ -514,6 +545,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 <script src="../../js/databricks-guide.js?v=1777291468" defer></script>
-<script src="../../js/ds-main.js?v=1777291468" defer></script>
+<script src="../js/ds-main.js?v=1778774008" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>

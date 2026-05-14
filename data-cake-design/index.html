@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head><script data-cake-theme>(function(){
+            var t = localStorage.getItem('theme');
+            if (t === 'light') { document.documentElement.classList.remove('dark'); }
+            else { document.documentElement.classList.add('dark'); }
+        })();</script>
+<script>(function(){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        })();</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  <link rel="stylesheet" href="../css/ds-main.css?v=1778774005">
+    <link rel="stylesheet" href="../css/modules/code-blocks.css">
+    <script src="../js/modules/universal-nav.js" defer></script>
+    <script src="../js/modules/code-blocks.js" defer></script>
+
+
+
+
+
+
+</head>
+  <body>
+
+<div id="nav-universal"></div>
+
+
+
+<!-- NAV -->
+
+
+<!-- MOBILE SIDEBAR (hidden on desktop) -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-surface/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+<aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-72 z-50 overflow-y-auto bg-surface border-r border-outline-variant transform -translate-x-full transition-transform duration-300 lg:hidden">
+    <div class="flex items-center justify-between px-4 h-14 border-b border-outline-variant">
+        <span class="font-bold text-on-surface uppercase tracking-wider text-sm">Navigation</span>
+        <button id="mobile-sidebar-close" class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-on-surface">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </div>
+    <div class="py-4 px-3">
+        <!-- Mobile category sections -->
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="code-2" class="w-4 h-4"></i> Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../pages/learn/python.html" class="sb-link">Python</a>
+                <a href="../pages/learn/sql.html" class="sb-link">SQL</a>
+                <a href="../pages/learn/bash.html" class="sb-link">Bash</a>
+                <a href="../pages/learn/powershell.html" class="sb-link">PowerShell</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layers" class="w-4 h-4"></i> Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../pages/learn/de-fundamentals.html" class="sb-link">DE Fundamentals</a>
+                <a href="../pages/learn/dsa-de.html" class="sb-link">DSA for DE</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Tools
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/spark.html" class="sb-link">Spark</a>
+                <a href="../pages/learn/flink.html" class="sb-link">Flink</a>
+                <a href="../pages/learn/kafka.html" class="sb-link">Kafka</a>
+                <a href="../pages/learn/dbt.html" class="sb-link">dbt</a>
+                <a href="../pages/learn/pandas.html" class="sb-link">Pandas</a>
+                <a href="../pages/learn/numpy.html" class="sb-link">NumPy</a>
+                <a href="../pages/learn/airflow.html" class="sb-link">Airflow</a>
+                <a href="../pages/learn/regex.html" class="sb-link">Regex</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="cloud" class="w-4 h-4"></i> Cloud
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/aws.html" class="sb-link">AWS</a>
+                <a href="../pages/learn/gcp.html" class="sb-link">GCP</a>
+                <a href="../pages/learn/azure.html" class="sb-link">Azure</a>
+                <a href="../pages/learn/snowflake.html" class="sb-link">Snowflake</a>
+                <a href="../pages/learn/databricks.html" class="sb-link">Databricks</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="git-pull-request" class="w-4 h-4"></i> CI / CD
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/docker.html" class="sb-link">Docker</a>
+                <a href="../pages/learn/kubernetes.html" class="sb-link">Kubernetes</a>
+                <a href="../pages/learn/terraform.html" class="sb-link">Terraform</a>
+                <a href="../pages/learn/github.html" class="sb-link">GitHub</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layout" class="w-4 h-4"></i> Design
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/learn/system-design.html" class="sb-link">System Design</a>
+                <a href="../pages/learn/pipeline-design.html" class="sb-link">Pipeline Design</a>
+                <a href="../pages/learn/de-architectures.html" class="sb-link">DE Architectures</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="map" class="w-4 h-4"></i> Roadmaps
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/roadmaps/data-engineering.html" class="sb-link">Data Engineering</a>
+                <a href="../pages/roadmaps/ml-engineer.html" class="sb-link">ML Engineer</a>
+                <a href="../pages/roadmaps/ai-engineer.html" class="sb-link">AI Engineer</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../pages/practice.html" class="sb-link">Practice Hub</a>
+                <a href="../pages/practice/list-comprehensions.html" class="sb-link">Python Challenges</a>
+                <a href="../pages/practice/sql-window-functions.html" class="sb-link">SQL Challenges</a>
+            </nav>
+        </div>
+        <div class="mt-6 pt-4 border-t border-outline-variant">
+            <a href="../pages/portfolio.html" class="sb-section text-on-surface-variant hover:text-on-surface no-underline">
+                <i data-lucide="folder-closed" class="w-4 h-4"></i>
+                My Portfolio
+            </a>
+        </div>
+        <!-- Guide Specific Topics -->
+        <div id="guide-topics" class="mt-6 hidden">
+            
+        </div>
+    </div>
+</aside>
+
+
+
+
+<div id="nav-universal"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  <script src="../js/ds-main.js?v=1778774005" defer></script>
+</body>
+</html>
+

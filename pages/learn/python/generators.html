@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Generators — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784980">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 4: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Generators</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+yield and Generator Functions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">A function with yield is a generator — returns values lazily.</p>
+<pre class="language-python"><code>def countdown(n):
+    while n &gt; 0:
+        yield n
+        n -= 1
+
+gen = countdown(5)
+print(next(gen))  # 5
+print(next(gen))  # 4
+for val in gen:   # continues from 3
+    print(val, end=' ')
+print()
+
+# Infinite generator
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+fib = fibonacci()
+print([next(fib) for _ in range(10)])</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>5
+4
+3 2 1 
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+yield from</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Delegates to a sub-generator.</p>
+<pre class="language-python"><code>def flatten(nested):
+    for item in nested:
+        if isinstance(item, list):
+            yield from flatten(item)
+        else:
+            yield item
+
+nested = [1, [2, [3, 4], 5], [6, 7]]
+print(list(flatten(nested)))
+
+# yield from with return value
+def subgen():
+    yield 1
+    yield 2
+    return 'done'
+
+def gen():
+    result = yield from subgen()
+    print(f'subgen returned: {result}')
+    yield 3
+
+print(list(gen()))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[1, 2, 3, 4, 5, 6, 7]
+subgen returned: done
+[1, 2, 3]</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Generator Pipeline</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Chain generators for memory-efficient data pipelines.</p>
+<pre class="language-python"><code>def read_numbers(n):
+    for i in range(n):
+        yield i
+
+def square(nums):
+    for n in nums:
+        yield n ** 2
+
+def filter_even(nums):
+    for n in nums:
+        if n % 2 == 0:
+            yield n
+
+# Compose pipeline - nothing runs until consumed
+pipeline = filter_even(square(read_numbers(20)))
+print(list(pipeline))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[0, 4, 16, 36, 64, 100, 144, 196, 256, 324]</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between yield and return?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">return exits the function completely. yield pauses execution, returns a value, and resumes from the same point on the next call to next(). A function with yield is a generator — calling it returns a generator object, not the result.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">How would you implement an infinite sequence in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Use a generator: `def naturals(): n=0; while True: yield n; n+=1`. Generators are lazy so they don't compute all values. Combine with itertools.islice to take a finite portion.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="decorators.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Decorators</span></a>
+                    <a href="classes-and-objects.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Classes & Objects</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

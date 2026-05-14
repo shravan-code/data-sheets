@@ -1,43 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script data-cake-theme>(function(){
+            var t = localStorage.getItem('theme');
+            if (t === 'light') { document.documentElement.classList.remove('dark'); }
+            else { document.documentElement.classList.add('dark'); }
+        })();</script>
+<script>(function(){
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('ds-theme', 'dark');
+        })();</script>
 <script>(function(){document.documentElement.classList.remove('dark');localStorage.setItem('ds-theme','light');})();</script>
 <title>Architecture Trade-offs &amp; Decision Framework — DE Architectures — Data Cake</title>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.395.0"></script>
-<link rel="stylesheet" href="../../css/ds-main.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<link rel="stylesheet" href="../../css/ds-main.css?v=1778774010">
+    <link rel="stylesheet" href="../../css/modules/code-blocks.css">
+    <script src="../../js/modules/universal-nav.js" defer></script>
+    <script src="../../js/modules/code-blocks.js" defer></script>
+
+
+
+
+
+
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200">
-  <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 hover:bg-slate-50 rounded-full">
-        <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-        <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-      </button>
-      <a href="../../index.html" class="no-underline group flex items-center gap-3 hover:scale-105 transition-transform">
-        <span style="font-family:'Outfit',sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-          <span class="font-light text-slate-500">Data</span>
-          <span class="font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3">Cake</span>
-        </span>
-      </a>
-      <div class="hidden md:flex items-center gap-3 ml-2">
-        <div class="h-4 w-px bg-slate-200"></div>
-        <span class="text-sm font-semibold text-slate-500">Architecture Trade-offs &amp; Decision Framework</span>
-      </div>
+<body class="bg-surface text-on-surface min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+
+<!-- NAV -->
+
+
+<!-- MOBILE SIDEBAR (hidden on desktop) -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-surface/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+<aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-72 z-50 overflow-y-auto bg-surface border-r border-outline-variant transform -translate-x-full transition-transform duration-300 lg:hidden">
+    <div class="flex items-center justify-between px-4 h-14 border-b border-outline-variant">
+        <span class="font-bold text-on-surface uppercase tracking-wider text-sm">Navigation</span>
+        <button id="mobile-sidebar-close" class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-on-surface">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
     </div>
-    <a href="../portfolio.html" id="profile-btn" title="Profile" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-      <i data-lucide="user" class="w-5 h-5"></i>
-    </a>
-  </div>
-</nav>
-<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-<aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-white border-r border-slate-200/80 shadow-xl">
-  <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
+    <div class="py-4 px-3">
+        <!-- Mobile category sections -->
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="code-2" class="w-4 h-4"></i> Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../../pages/learn/python.html" class="sb-link">Python</a>
+                <a href="../../pages/learn/sql.html" class="sb-link">SQL</a>
+                <a href="../../pages/learn/bash.html" class="sb-link">Bash</a>
+                <a href="../../pages/learn/powershell.html" class="sb-link">PowerShell</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layers" class="w-4 h-4"></i> Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../../pages/learn/de-fundamentals.html" class="sb-link">DE Fundamentals</a>
+                <a href="../../pages/learn/dsa-de.html" class="sb-link">DSA for DE</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Tools
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/learn/spark.html" class="sb-link">Spark</a>
+                <a href="../../pages/learn/flink.html" class="sb-link">Flink</a>
+                <a href="../../pages/learn/kafka.html" class="sb-link">Kafka</a>
+                <a href="../../pages/learn/dbt.html" class="sb-link">dbt</a>
+                <a href="../../pages/learn/pandas.html" class="sb-link">Pandas</a>
+                <a href="../../pages/learn/numpy.html" class="sb-link">NumPy</a>
+                <a href="../../pages/learn/airflow.html" class="sb-link">Airflow</a>
+                <a href="../../pages/learn/regex.html" class="sb-link">Regex</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="cloud" class="w-4 h-4"></i> Cloud
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/learn/aws.html" class="sb-link">AWS</a>
+                <a href="../../pages/learn/gcp.html" class="sb-link">GCP</a>
+                <a href="../../pages/learn/azure.html" class="sb-link">Azure</a>
+                <a href="../../pages/learn/snowflake.html" class="sb-link">Snowflake</a>
+                <a href="../../pages/learn/databricks.html" class="sb-link">Databricks</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="git-pull-request" class="w-4 h-4"></i> CI / CD
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/learn/docker.html" class="sb-link">Docker</a>
+                <a href="../../pages/learn/kubernetes.html" class="sb-link">Kubernetes</a>
+                <a href="../../pages/learn/terraform.html" class="sb-link">Terraform</a>
+                <a href="../../pages/learn/github.html" class="sb-link">GitHub</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layout" class="w-4 h-4"></i> Design
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/learn/system-design.html" class="sb-link">System Design</a>
+                <a href="../../pages/learn/pipeline-design.html" class="sb-link">Pipeline Design</a>
+                <a href="../../pages/learn/de-architectures.html" class="sb-link">DE Architectures</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="map" class="w-4 h-4"></i> Roadmaps
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/roadmaps/data-engineering.html" class="sb-link">Data Engineering</a>
+                <a href="../../pages/roadmaps/ml-engineer.html" class="sb-link">ML Engineer</a>
+                <a href="../../pages/roadmaps/ai-engineer.html" class="sb-link">AI Engineer</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="../../pages/practice.html" class="sb-link">Practice Hub</a>
+                <a href="../../pages/practice/list-comprehensions.html" class="sb-link">Python Challenges</a>
+                <a href="../../pages/practice/sql-window-functions.html" class="sb-link">SQL Challenges</a>
+            </nav>
+        </div>
+        <div class="mt-6 pt-4 border-t border-outline-variant">
+            <a href="../../pages/portfolio.html" class="sb-section text-on-surface-variant hover:text-on-surface no-underline">
+                <i data-lucide="folder-closed" class="w-4 h-4"></i>
+                My Portfolio
+            </a>
+        </div>
+        <!-- Guide Specific Topics -->
+        <div id="guide-topics" class="mt-6 hidden">
+            
+        </div>
+    </div>
+</aside>
+
+
+
+
+<div id="nav-universal"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- NAV -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<aside id="ds-sidebar" class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto bg-surface border-r border-outline-variant/80 shadow-xl">
+  <div class="h-0.5 w-full bg-none from-blue-500 via-violet-500 to-rose-500"></div>
   <div class="py-5 px-3">
 
 <div class="sb-section sb-cat bg-fuchsia-50 text-fuchsia-700 hover:bg-fuchsia-100 cursor-pointer">
@@ -68,7 +251,7 @@
     </nav>
 
 
-                <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
+                <div class="sb-section sb-cat bg-blue-50 text-accent-blue hover:bg-blue-100 cursor-pointer collapsed">
                 <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
                     <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
                 </span>
@@ -81,15 +264,15 @@
                 <a href="../powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
             </nav>
 
-            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
+            <div class="sb-section sb-cat bg-secondary-fixed text-secondary-fixed hover:bg-secondary-fixed cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-secondary-fixed flex items-center justify-center flex-shrink-0">
                     <i data-lucide="layers" class="w-3 h-3 text-white"></i>
                 </span>
                 Concepts
             </div>
             <nav class="pl-2">
-                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
-                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
+                <a href="../de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>DE Fundamentals</a>
+                <a href="../dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>DSA for DE</a>
             </nav>
 
             <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
@@ -123,17 +306,17 @@
                 <a href="../databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
             </nav>
 
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+            <div class="sb-section sb-cat bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-surface-container0 flex items-center justify-center flex-shrink-0">
                     <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
                 </span>
                 CI / CD
             </div>
             <nav class="pl-2">
-                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
-                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
-                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
-                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
+                <a href="../docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>Docker</a>
+                <a href="../kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>Kubernetes</a>
+                <a href="../terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>Terraform</a>
+                <a href="../github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>GitHub</a>
             </nav>
 
             <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
@@ -160,52 +343,46 @@
                 <a href="../roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
             </nav>
 
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
+            <div class="sb-section sb-cat bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer collapsed">
+                <span class="w-6 h-6 rounded-md bg-surface-container0 flex items-center justify-center flex-shrink-0">
                     <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
                 </span>
                 Practice
             </div>
             <nav class="pl-2">
-                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
-                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
-                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
+                <a href="../practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>Practice Hub</a>
+                <a href="../practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>Python Challenges</a>
+                <a href="../practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-secondary-fixed flex-shrink-0"></i>SQL Challenges</a>
             </nav>
             
     
 
-    <div class="mt-4 pt-4 border-t border-slate-200">
-      <a href="../portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
-        <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0"><i data-lucide="user" class="w-3 h-3 text-white"></i></span>My Portfolio<i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
+    <div class="mt-4 pt-4 border-t border-outline-variant">
+      <a href="../portfolio.html" class="sb-section bg-surface-container text-on-surface hover:bg-slate-200">
+        <span class="w-6 h-6 rounded-md bg-surface0 flex items-center justify-center flex-shrink-0"><i data-lucide="user" class="w-3 h-3 text-white"></i></span>My Portfolio<i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
       </a>
     </div>
   </div>
 </aside>
-<button id="scroll-top" title="Back to top" class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 text-white shadow-lg hover:scale-110 scale-90 transition-all duration-200">
-  <i data-lucide="arrow-up" class="w-4 h-4"></i>
-</button>
+
 <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
   <div id="ds-main-content" class="transition-all duration-300 min-w-0">
     <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
-      <a href="../de-architectures.html" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors mb-6 group no-underline"><i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>Back to DE Architectures</a>
+      <a href="../de-architectures.html" class="inline-flex items-center gap-2 text-sm font-medium text-accent-blue hover:text-accent-blue transition-colors mb-6 group no-underline"><i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>Back to DE Architectures</a>
       <header class="mb-12">
-        <div class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 flex items-center gap-2"><span class="w-8 h-px bg-slate-300"></span>Section 17 of 18</div>
-        <h1 class="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tighter font-display">Architecture Trade-offs &amp; Decision Framework</h1>
-        <p class="text-slate-400 mt-3 text-sm">4 topics</p>
+        <div class="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant mb-4 flex items-center gap-2"><span class="w-8 h-px bg-slate-300"></span>Section 17 of 18</div>
+        <h1 class="text-4xl md:text-6xl font-black text-on-surface leading-tight tracking-tighter ">Architecture Trade-offs &amp; Decision Framework</h1>
+        <p class="text-on-surface-variant mt-3 text-sm">4 topics</p>
       </header>
-      <article><div class="mb-16 pb-16 border-b border-slate-100 last:border-0">
-    <div class="flex items-start gap-4 mb-6"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight font-display flex-1 pt-1">Consistency vs Availability Trade-offs</h2></div>
-    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🧭</span><h3 class="text-lg font-bold text-slate-800">Decision Framework</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-blue-600 font-black text-xs">1</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Financial transactions (payments, billing)</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Choose</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Consistency (CP)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Reason</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Wrong balance is worse than temporary unavailability</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-violet-600 font-black text-xs">2</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">User social feed, shopping cart</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Choose</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Availability (AP)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Reason</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Showing slightly stale data is better than error</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="text-emerald-600 font-black text-xs">3</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Inventory management</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Choose</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">CP for writes, AP for reads</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Reason</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Must be accurate for writes, ok to show slightly stale stock count</p></div></div></div></div></div>
-  </div><div class="mb-16 pb-16 border-b border-slate-100 last:border-0">
-    <div class="flex items-start gap-4 mb-6"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight font-display flex-1 pt-1">Latency vs Throughput Trade-offs</h2></div>
-    <div class="my-6 p-6 border-l-4 border-blue-500 bg-blue-50/50 rounded-r-2xl"><p class="text-slate-700 text-base leading-relaxed font-medium">Optimizing for low latency (fast individual response) often conflicts with optimizing for high throughput (many requests per second).</p></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📌</span><h3 class="text-lg font-bold text-slate-800">Examples</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-blue-600 font-black text-xs">1</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Batch vs streaming</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Latency</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Streaming (ms)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Throughput</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Batch (higher for same compute)</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-violet-600 font-black text-xs">2</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Micro-batching frequency</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Latency</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Smaller batch = lower latency</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Throughput</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Smaller batch = more overhead = lower throughput</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="text-emerald-600 font-black text-xs">3</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Kafka acks=all vs acks=1</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Latency</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">acks=1 is faster</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Throughput</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">acks=1 allows more messages/sec</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Compression</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Latency</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">No compression = faster write</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Throughput</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Compression = less I/O = more throughput on large datasets</p></div></div></div></div></div>
-  </div><div class="mb-16 pb-16 border-b border-slate-100 last:border-0">
-    <div class="flex items-start gap-4 mb-6"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight font-display flex-1 pt-1">Choosing the Right Architecture</h2></div>
-    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🌳</span><h3 class="text-lg font-bold text-slate-800">Decision Tree</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-blue-600 font-black text-xs">1</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">What is your latency requirement?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Seconds To Hours</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Batch or micro-batch pipeline</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Milliseconds</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Streaming architecture (Kafka + Flink)</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-violet-600 font-black text-xs">2</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Data types?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Structured Only</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Data Warehouse (Snowflake/Redshift/BigQuery)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Mixed</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Data Lakehouse (Delta/Iceberg)</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="text-emerald-600 font-black text-xs">3</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Team size and skills?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Small Sql Heavy</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Modern Data Stack (Fivetran + Snowflake + dbt)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Large Engineering</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Custom lakehouse on Databricks or open-source</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Domain ownership model?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Centralized</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Medallion architecture with central DE team</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Federated</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Data Mesh with domain-owned data products</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0"><span class="text-orange-600 font-black text-xs">5</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Budget?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Limited</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Open-source stack (Spark + Iceberg + Airflow on EC2)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">If Flexible</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Managed SaaS (Databricks + dbt Cloud + Fivetran)</p></div></div></div></div></div>
-  </div><div class="mb-16 pb-16 border-b border-slate-100 last:border-0">
-    <div class="flex items-start gap-4 mb-6"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight font-display flex-1 pt-1">Common Anti-Patterns</h2></div>
-    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🚫</span><h3 class="text-lg font-bold text-slate-800">Anti Patterns</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-blue-600 font-black text-xs">1</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Data Swamp</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Data lake with no governance, no catalog, no lineage — data exists but nobody knows what it means or trusts it</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Implement data catalog, lineage, data contracts, and data quality checks from day 1</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-violet-600 font-black text-xs">2</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Too Many Point-to-Point Pipelines</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Every team builds direct pipelines to every other team's data. N*(N-1) pipelines = spaghetti</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Central event bus (Kafka) or data platform layer. All producers publish to platform; consumers read from platform</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="text-emerald-600 font-black text-xs">3</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Over-Engineering for Day 1</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Building Data Mesh microservices for a 5-person startup with 1GB data</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Start simple (Postgres + dbt + Metabase). Scale architecture as data volume and team grow</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Missing Idempotency</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Non-idempotent pipelines create duplicate data on reruns after failures</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">UPSERT patterns, deterministic write paths, watermark-based incremental loads</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0"><span class="text-orange-600 font-black text-xs">5</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">No Schema Management</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Source system changes column name → all downstream pipelines silently break or produce wrong results</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Schema Registry, data contracts, schema evolution testing in CI/CD</p></div></div><div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-cyan-100 flex items-center justify-center flex-shrink-0"><span class="text-cyan-600 font-black text-xs">6</span></div><h4 class="font-bold text-slate-800 text-sm leading-snug">Ignoring Data Skew</h4></div><p class="text-slate-600 text-sm leading-relaxed mb-3">Hash partition on a skewed key → 90% data in 1 partition → 1 slow task holds up entire job</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Solution</span><p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Salt keys, repartition, use salted joins, choose high-cardinality partition keys</p></div></div></div></div></div>
-  </div></article>
+      <article><div class="mb-16 pb-16 border-b border-outline-variant last:border-0">
+    <div class="flex items-start gap-4 mb-6"><div class="icon-box-inner w-10 h-10 rounded-xl bg-none from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-on-surface leading-tight tracking-tight  flex-1 pt-1">Consistency vs Availability Trade-offs</h2></div>
+    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🧭</span><h3 class="text-lg font-bold text-on-surface">Decision Framework</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-accent-blue font-black text-xs">1</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Financial transactions (payments, billing)</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Choose</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Consistency (CP)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Reason</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Wrong balance is worse than temporary unavailability</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">2</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">User social feed, shopping cart</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Choose</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Availability (AP)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Reason</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Showing slightly stale data is better than error</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">3</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Inventory management</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Choose</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">CP for writes, AP for reads</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Reason</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Must be accurate for writes, ok to show slightly stale stock count</p></div><div class="mb-16 pb-16 border-b border-outline-variant last:border-0">
+    <div class="flex items-start gap-4 mb-6"><div class="icon-box-inner w-10 h-10 rounded-xl bg-none from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-on-surface leading-tight tracking-tight  flex-1 pt-1">Latency vs Throughput Trade-offs</h2></div>
+    <div class="my-6 p-6 border-l-4 border-blue-500 bg-blue-50/50 rounded-r-2xl"><p class="text-on-surface text-base leading-relaxed font-medium">Optimizing for low latency (fast individual response) often conflicts with optimizing for high throughput (many requests per second).</p></div><div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">📌</span><h3 class="text-lg font-bold text-on-surface">Examples</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-accent-blue font-black text-xs">1</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Batch vs streaming</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Latency</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Streaming (ms)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Throughput</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Batch (higher for same compute)</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">2</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Micro-batching frequency</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Latency</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Smaller batch = lower latency</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Throughput</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Smaller batch = more overhead = lower throughput</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">3</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Kafka acks=all vs acks=1</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Latency</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">acks=1 is faster</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Throughput</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">acks=1 allows more messages/sec</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Compression</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Latency</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">No compression = faster write</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Throughput</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Compression = less I/O = more throughput on large datasets</p></div><div class="mb-16 pb-16 border-b border-outline-variant last:border-0">
+    <div class="flex items-start gap-4 mb-6"><div class="icon-box-inner w-10 h-10 rounded-xl bg-none from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-on-surface leading-tight tracking-tight  flex-1 pt-1">Choosing the Right Architecture</h2></div>
+    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🌳</span><h3 class="text-lg font-bold text-on-surface">Decision Tree</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-accent-blue font-black text-xs">1</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">What is your latency requirement?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Seconds To Hours</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Batch or micro-batch pipeline</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Milliseconds</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Streaming architecture (Kafka + Flink)</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">2</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Data types?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Structured Only</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Data Warehouse (Snowflake/Redshift/BigQuery)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Mixed</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Data Lakehouse (Delta/Iceberg)</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">3</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Team size and skills?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Small Sql Heavy</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Modern Data Stack (Fivetran + Snowflake + dbt)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Large Engineering</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Custom lakehouse on Databricks or open-source</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Domain ownership model?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Centralized</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Medallion architecture with central DE team</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Federated</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Data Mesh with domain-owned data products</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0"><span class="text-orange-600 font-black text-xs">5</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Budget?</h4></div> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Limited</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Open-source stack (Spark + Iceberg + Airflow on EC2)</p></div><div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">If Flexible</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Managed SaaS (Databricks + dbt Cloud + Fivetran)</p></div><div class="mb-16 pb-16 border-b border-outline-variant last:border-0">
+    <div class="flex items-start gap-4 mb-6"><div class="icon-box-inner w-10 h-10 rounded-xl bg-none from-slate-100 to-slate-200 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><h2 class="text-2xl md:text-3xl font-black text-on-surface leading-tight tracking-tight  flex-1 pt-1">Common Anti-Patterns</h2></div>
+    <div class="my-8"><div class="flex items-center gap-3 mb-4"><span class="text-2xl">🚫</span><h3 class="text-lg font-bold text-on-surface">Anti Patterns</h3></div><div><div class="grid grid-cols-1 gap-4 my-6"><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="text-accent-blue font-black text-xs">1</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Data Swamp</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Data lake with no governance, no catalog, no lineage — data exists but nobody knows what it means or trusts it</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Implement data catalog, lineage, data contracts, and data quality checks from day 1</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">2</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Too Many Point-to-Point Pipelines</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Every team builds direct pipelines to every other team's data. N*(N-1) pipelines = spaghetti</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Central event bus (Kafka) or data platform layer. All producers publish to platform; consumers read from platform</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center flex-shrink-0"><span class="text-secondary-fixed font-black text-xs">3</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Over-Engineering for Day 1</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Building Data Mesh microservices for a 5-person startup with 1GB data</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Start simple (Postgres + dbt + Metabase). Scale architecture as data volume and team grow</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0"><span class="text-rose-600 font-black text-xs">4</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Missing Idempotency</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Non-idempotent pipelines create duplicate data on reruns after failures</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">UPSERT patterns, deterministic write paths, watermark-based incremental loads</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0"><span class="text-orange-600 font-black text-xs">5</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">No Schema Management</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Source system changes column name → all downstream pipelines silently break or produce wrong results</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Schema Registry, data contracts, schema evolution testing in CI/CD</p></div></div><div class="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"><div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 rounded-lg bg-cyan-100 flex items-center justify-center flex-shrink-0"><span class="text-cyan-600 font-black text-xs">6</span></div><h4 class="font-bold text-on-surface text-sm leading-snug">Ignoring Data Skew</h4></div><p class="text-on-surface-variant text-sm leading-relaxed mb-3">Hash partition on a skewed key → 90% data in 1 partition → 1 slow task holds up entire job</p> <div class="mt-2"><span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Solution</span><p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Salt keys, repartition, use salted joins, choose high-cardinality partition keys</p></div></article>
       <div class="nav-container">
         <a href="real-world-reference-architectures.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Real-World Reference Architectures</span></a>
         <a href="top-50-interview-questions-with-answers.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Top 50 Interview Questions with Answers</span></a>
@@ -217,5 +394,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 <script>lucide.createIcons();</script>
-<script src="../../js/ds-main.js" defer></script>
+<script src="../../js/ds-main.js?v=1778774010" defer></script>
 </body></html>

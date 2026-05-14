@@ -1,0 +1,51 @@
+{
+  "description": "Essential technical skills for modern data engineering. From advanced SQL patterns to distributed system mastery.",
+  "content": {
+    "guide": {
+      "parts": [
+        {
+          "part": 1,
+          "title": "SQL Mastery",
+          "explanation": "Advanced analytical patterns and performance optimization.",
+          "topics": [
+            {
+              "title": "Window Functions Deep Dive",
+              "category": "SQL",
+              "description": "Performing complex analytics without self-joins.",
+              "explanation": "Window functions allow you to perform calculations across a set of table rows that are somehow related to the current row.",
+              "subtopics": [
+                {
+                  "title": "Ranking and Paging",
+                  "explanation": "Using ROW_NUMBER(), RANK(), and DENSE_RANK() to handle duplicates and pagination at scale."
+                },
+                {
+                  "title": "Moving Averages",
+                  "explanation": "Calculating rolling metrics using ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part": 2,
+          "title": "Data Modeling",
+          "explanation": "Designing scalable and maintainable data architectures.",
+          "topics": [
+            {
+              "title": "Dimensional Modeling",
+              "category": "Design",
+              "description": "Star schemas and Snowflake schemas for data warehousing.",
+              "explanation": "Dimensional modeling is a design technique for data warehouses that aims to optimize data retrieval for analytical purposes.",
+              "subtopics": [
+                {
+                  "title": "Fact vs Dimension",
+                  "explanation": "Facts represent quantitative data (e.g., sales amount), while dimensions provide context (e.g., date, product, customer)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

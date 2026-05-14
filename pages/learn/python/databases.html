@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Databases — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784980">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 17: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Databases</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+sqlite3 and SQLAlchemy</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Database access using built-in sqlite3 and SQLAlchemy ORM.</p>
+<pre class="language-python"><code>import sqlite3
+from contextlib import contextmanager
+
+# sqlite3 - built-in
+@contextmanager
+def get_db(path=':memory:'):
+    conn = sqlite3.connect(path)
+    conn.row_factory = sqlite3.Row  # access by column name
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+with get_db() as db:
+    # Create table
+    db.execute('''CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE,
+        age INTEGER
+    )''')
+    
+    # Insert with parameterized queries (prevent SQL injection)
+    db.execute('INSERT INTO users (name, email, age) VALUES (?,?,?)',
+               ('Alice', 'alice@example.com', 30))
+    db.executemany('INSERT INTO users (name, email, age) VALUES (?,?,?)',
+                   [('Bob', 'bob@example.com', 25),
+                    ('Carol', 'carol@example.com', 35)])
+    
+    # Query
+    cursor = db.execute('SELECT * FROM users WHERE age &gt; ?', (24,))
+    for row in cursor:
+        print(dict(row))
+    
+    # Aggregate
+    result = db.execute('SELECT AVG(age) as avg_age FROM users').fetchone()
+    print(f'Avg age: {result["avg_age"]:.1f}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'id': 1, 'name': 'Alice', 'email': 'alice@example.com', 'age': 30}
+{'id': 2, 'name': 'Bob', 'email': 'bob@example.com', 'age': 25}
+{'id': 3, 'name': 'Carol', 'email': 'carol@example.com', 'age': 35}
+Avg age: 30.0</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is SQL injection and how do you prevent it?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">SQL injection is when user input is embedded directly in SQL strings, allowing attackers to modify queries. Prevent by ALWAYS using parameterized queries: `cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))` — NEVER f-strings or string concatenation for SQL.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="working-with-apis.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Working with APIs</span></a>
+                    <a href="file-and-data-handling.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">File & Data Handling</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

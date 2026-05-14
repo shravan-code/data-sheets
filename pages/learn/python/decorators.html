@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Decorators — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784980">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 4: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Decorators</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Basic Decorator</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">A decorator wraps a function to add behavior before/after it.</p>
+<pre class="language-python"><code>import functools
+
+def timer(func):
+    @functools.wraps(func)  # preserve metadata
+    def wrapper(*args, **kwargs):
+        import time
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        print(f'{func.__name__} took {end-start:.6f}s')
+        return result
+    return wrapper
+
+@timer
+def slow_add(a, b):
+    return a + b
+
+result = slow_add(3, 4)
+print(result)
+print(slow_add.__name__)  # 'slow_add' (preserved by wraps)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>slow_add took 0.000002s
+7
+slow_add</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Decorator with Arguments</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Add a layer of wrapping to accept decorator arguments.</p>
+<pre class="language-python"><code>def repeat(n):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say(msg):
+    print(msg)
+
+say('Hello!')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Hello!
+Hello!
+Hello!</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Stacked Decorators</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Decorators are applied bottom-up.</p>
+<pre class="language-python"><code>def bold(func):
+    @functools.wraps(func)
+    def wrapper(*a, **kw):
+        return '&lt;b&gt;' + func(*a, **kw) + '&lt;/b&gt;'
+    return wrapper
+
+def italic(func):
+    @functools.wraps(func)
+    def wrapper(*a, **kw):
+        return '&lt;i&gt;' + func(*a, **kw) + '&lt;/i&gt;'
+    return wrapper
+
+@bold       # applied second
+@italic     # applied first
+def text(s):
+    return s
+
+print(text('Hello'))   # &lt;b&gt;&lt;i&gt;Hello&lt;/i&gt;&lt;/b&gt;</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Class-based Decorator</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Use a class with __call__ as a decorator.</p>
+<pre class="language-python"><code>class retry:
+    def __init__(self, max_attempts=3):
+        self.max_attempts = max_attempts
+    
+    def __call__(self, func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(self.max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f'Attempt {attempt+1} failed: {e}')
+            raise RuntimeError('All attempts failed')
+        return wrapper
+
+@retry(max_attempts=3)
+def flaky_function():
+    import random
+    if random.random() &lt; 0.7:
+        raise ValueError('Random failure')
+    return 'Success!'
+
+# try running (may succeed or exhaust retries)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Attempt 1 failed: Random failure
+Attempt 2 failed: Random failure
+'Success!' (or RuntimeError)</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why use @functools.wraps in decorators?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Without it, the wrapper function replaces the original, losing __name__, __doc__, __module__, etc. This breaks introspection, documentation tools, and debugging. @wraps copies these attributes from the wrapped function to the wrapper.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between a decorator and a context manager?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Decorators modify or wrap a function's behavior permanently. Context managers manage resources for a block of code using with statement — they guarantee setup/teardown (like file closing). Both can be implemented similarly but serve different use cases.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="scope-and-closures.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Scope & Closures</span></a>
+                    <a href="generators.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Generators</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

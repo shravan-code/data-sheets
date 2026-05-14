@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){
+        const s=localStorage.getItem('ds-theme');
+        const isL = s==='light';
+        if(isL) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
+        
+        // Immediate Prism theme sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const l = document.getElementById('prism-theme-light');
+            const d = document.getElementById('prism-theme-dark');
+            if(l && d) {
+                l.disabled = !isL;
+                d.disabled = isL;
+            }
+        });
+    })();</script>
+    <title>6. Queues — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        const isDark = document.documentElement.classList.contains('dark');
+        mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', themeVariables: { fontFamily: 'Inter' } });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784996">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-32 px-6 w-full max-w-3xl">
+            <a href="../dsa-de.html" class="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors mb-6 group no-underline">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to DSA
+            </a>
+
+        <h1 class="font-display font-bold text-4xl md:text-5xl text-slate-900 dark:text-white mb-4 leading-tight">6. Queues</h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-12">FIFO principle, enqueue, dequeue, and Breadth-First Search.</p>
+        
+        <div class="prose prose-slate dark:prose-invert prose-lg max-w-none">
+            <h2>Understanding Queues</h2>
+<p>A Queue is a collection of elements that follows the <strong>FIFO</strong> (First In, First Out) principle. Think of a line at a coffee shop: you join the back of the line and get served from the front.</p>
+
+<div class="my-8 p-6 border border-slate-200 dark:border-slate-700 rounded-xl not-prose bg-white dark:bg-slate-900/50">
+<div class="mermaid text-center">
+flowchart LR
+    subgraph Queue
+        direction LR
+        Enqueue["Enqueue (Add)"] --> Back["Back"]
+        Back --> Front["Front"]
+        Front --> Dequeue["Dequeue (Remove)"]
+    end
+</div>
+</div>
+
+<h3>Core Operations</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 not-prose">
+    <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg">
+        <h4 class="font-bold text-indigo-800 dark:text-indigo-400 text-sm">ENQUEUE</h4>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Adds an element to the <strong>Back</strong> of the queue.</p>
+    </div>
+    <div class="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800 rounded-lg">
+        <h4 class="font-bold text-orange-800 dark:text-orange-400 text-sm">DEQUEUE</h4>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Removes the <strong>Front</strong> element (the one that was there the longest).</p>
+    </div>
+</div>
+
+<h3>What problem does it solve?</h3>
+<p>Queues are used for scheduling and ordering tasks fairly. If multiple users want to print a document, the printer uses a queue. They are also heavily used in web server requests, task scheduling (like Celery/RabbitMQ), and algorithms like Breadth-First Search (BFS).</p>
+
+<h3>Python Example: Basic Queue using Deque</h3>
+<p>In Python, while you <em>could</em> use a list, removing from the front of a list is very slow <code>O(N)</code>. Instead, we use <code>collections.deque</code> which makes adding and removing from both ends instant <code>O(1)</code>.</p>
+<pre><code class="language-python">from collections import deque
+
+def simulate_printer_queue():
+    # Initialize a queue
+    printer_queue = deque()
+    
+    # Enqueue (Add to back)
+    print("Adding jobs to queue...")
+    printer_queue.append("Job 1: Resume.pdf")
+    printer_queue.append("Job 2: Invoice.docx")
+    printer_queue.append("Job 3: Photo.png")
+    
+    # Dequeue (Remove from front)
+    print("
+Processing jobs:")
+    while printer_queue: # While queue is not empty
+        current_job = printer_queue.popleft() # O(1) removal
+        print(f"Printing -> {current_job}")
+
+simulate_printer_queue()
+# Output:
+# Printing -> Job 1: Resume.pdf
+# Printing -> Job 2: Invoice.docx
+# Printing -> Job 3: Photo.png
+</code></pre>
+        </div>
+        
+        <div class="mt-20"></div>
+    
+    <div class="nav-container">
+        
+        <a href="stacks.html" class="nav-card prev">
+            <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+            <span class="nav-title">5. Stacks</span>
+        </a>
+        
+        <a href="linked-list.html" class="nav-card next">
+            <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+            <span class="nav-title">7. Linked List</span>
+        </a>
+    </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

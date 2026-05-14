@@ -1,0 +1,159 @@
+{
+  "profile": {
+    "name": "Shravan Kumar Tela",
+    "title": "Data Engineer",
+    "description": "Data Engineer with 4+ years of experience building scalable ETL pipelines and cloud-native data platforms. Specialized in processing large-scale datasets, distributed systems, and performance optimization.",
+    "email": "shra1.mywork@gmail.com",
+    "linkedin": "https://linkedin.com/in/sk404",
+    "github": "https://github.com/ShravanKumar-404"
+  },
+  "arsenal": [
+    {
+      "id": "01",
+      "category": "Data Processing",
+      "icon": "layers",
+      "color": "emerald",
+      "description": "PySpark, Pandas, NumPy, and advanced ETL patterns for high-throughput workloads.",
+      "skills": ["PySpark", "Pandas", "NumPy", "Multiprocessing"]
+    },
+    {
+      "id": "02",
+      "category": "Cloud Native",
+      "icon": "cloud",
+      "color": "blue",
+      "description": "AWS Lambda, Glue, S3, EMR, and Databricks. Infrastructure as Code with Terraform.",
+      "skills": ["AWS Lambda", "AWS Glue", "S3", "EMR", "Terraform", "Databricks"]
+    },
+    {
+      "id": "03",
+      "category": "Core Systems",
+      "icon": "database",
+      "color": "amber",
+      "description": "Python 3.x, PostgreSQL, SQL Optimization, System Design, and Dockerization.",
+      "skills": ["Python 3.x", "PostgreSQL", "SQL Optimization", "System Design", "Docker"]
+    }
+  ],
+  "journey": [
+    {
+      "role": "Data Engineer",
+      "company": "Tata Consultancy Services (TCS)",
+      "period": "2023 — Present",
+      "icon": "briefcase",
+      "color": "blue",
+      "description": "Architecting cloud-native batch systems and AI-assisted migration frameworks.",
+      "highlights": [
+        "Designed and deployed a serverless batch processing architecture on AWS reducing operational overhead by 40%.",
+        "Built AI-assisted test automation suites that reduced manual QA efforts for legacy migrations by 80%."
+      ]
+    },
+    {
+      "role": "Python Developer",
+      "company": "Crown Solutions",
+      "period": "2021 — 2023",
+      "icon": "terminal",
+      "color": "slate",
+      "description": "Engineering high-throughput processing engines for multi-gigabyte unstructured datasets.",
+      "highlights": [
+        "Pioneered high-throughput data processing engines for unstructured CSV datasets.",
+        "Utilized multiprocessing and vectorized operations to handle multi-gigabyte files efficiently."
+      ]
+    }
+  ],
+  "projects": {
+    "professional": [
+      {
+        "id": "01",
+        "title": "Cloud-Native Batch System",
+        "icon": "server",
+        "color": "blue",
+        "description": "Architected an event-driven, serverless-first batch processing platform on AWS using Lambda, Batch, and Terraform.",
+        "impact": "Improved incident response by 60% through real-time monitoring and automated recovery.",
+        "tags": ["AWS", "TERRAFORM", "LAMBDA"],
+        "status": "PRODUCTION_READY",
+        "details": [
+          "Implemented a robust API → Lambda → Batch → S3 flow.",
+          "Used Flask for REST interfaces and managed job lifecycle states in DynamoDB.",
+          "Built a real-time notification engine using Google Chat Webhooks and CloudWatch."
+        ]
+      },
+      {
+        "id": "02",
+        "title": "ETL Modernization",
+        "icon": "refresh-cw",
+        "color": "emerald",
+        "description": "Engineered a Python-based framework to replace legacy Oracle PL/SQL systems.",
+        "impact": "Integrated AI-assisted testing that reduced manual QA efforts by 80%.",
+        "tags": ["PYTHON", "ORACLE", "AI_TESTING"],
+        "status": "MIGRATED_OK",
+        "details": [
+          "Developed LLM-powered agents to auto-generate 80% of unit tests.",
+          "Decoupled business logic from Oracle-specific functions.",
+          "Ensured total functional parity with mission-critical legacy systems."
+        ]
+      },
+      {
+        "id": "03",
+        "title": "Parallel CSV Processor",
+        "icon": "radio",
+        "color": "amber",
+        "description": "Built a high-performance engine for cleansing and transforming massive (~3GB) unstructured datasets.",
+        "impact": "Achieved 70% runtime reduction using vectorized operations and multiprocessing.",
+        "tags": ["PANDAS", "MP", "NUMPY"],
+        "status": "IO_OPTIMIZED",
+        "details": [
+          "Optimized concurrent API workloads via advanced multithreading patterns.",
+          "Leveraged vectorized operations in Pandas for massive speedups.",
+          "Implemented robust error handling for malformed dataset rows."
+        ]
+      }
+    ],
+    "self_taught": [
+      {
+        "id": "01",
+        "title": "Distributed Healthcare Pipeline",
+        "icon": "activity",
+        "color": "emerald",
+        "description": "Orchestrating 10GB+ patient data using Spark on AWS EMR.",
+        "impact": "Achieved 50% query speedup via Parquet partitioning and Athena optimization.",
+        "tags": ["PYSPARK", "AWS_EMR", "ATHENA"],
+        "status": "RESEARCH_COMPLETE",
+        "details": [
+          "Deployed a distributed Spark cluster for CSV to Parquet conversion.",
+          "Leveraged lazy evaluation and broadcast joins for complex hospital-level aggregations.",
+          "Visualized trends via AWS QuickSight dashboards."
+        ]
+      },
+      {
+        "id": "02",
+        "title": "Autonomous Data Agents",
+        "icon": "bot",
+        "color": "violet",
+        "description": "Building ReAct-based agents for automated data quality checks and metadata discovery.",
+        "impact": "Experimental framework for autonomous data governance and metadata cataloging.",
+        "tags": ["LANGCHAIN", "AUTONOMOUS", "OPENAI"],
+        "status": "EXPERIMENTAL_STATE",
+        "details": [
+          "Developed LLM-powered agents for automated metadata extraction.",
+          "Implemented automated data quality rules generation.",
+          "Integrated with metadata catalogs for seamless discovery."
+        ]
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "name": "AWS Certified Data Engineer",
+      "issuer": "Amazon Web Services",
+      "badge_link": "https://www.credly.com/badges/89754bfe-39d0-40be-af0c-b7afb15fdd33",
+      "date": "Associate 2025",
+      "color": "blue"
+    },
+    {
+      "name": "Databricks Data Engineer",
+      "issuer": "Databricks",
+      "badge_link": "https://credentials.databricks.com/f7ff6d08-52cf-4873-87d8-c6cdc146b0aa",
+      "date": "Associate 2025",
+      "color": "orange"
+    }
+  ]
+}

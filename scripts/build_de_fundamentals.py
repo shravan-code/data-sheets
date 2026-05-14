@@ -95,11 +95,11 @@ flowchart LR
         <h4 class="font-bold text-slate-900 dark:text-white">1. Idempotency</h4>
         <p class="text-sm text-slate-600 dark:text-slate-400">An idempotent pipeline produces the exact same result whether it is run once or a hundred times for the same time window. It prevents duplicate data if a job crashes and restarts.</p>
     </div>
-    <div class="border-l-4 border-blue-500 pl-4 py-2">
+    <div class="border-l-4 border-emerald-500 pl-4 py-2">
         <h4 class="font-bold text-slate-900 dark:text-white">2. Replayability</h4>
         <p class="text-sm text-slate-600 dark:text-slate-400">The ability to easily re-run past data. If a bug is discovered in a transformation logic, you should be able to "replay" the pipeline for the last 30 days to fix the historical data.</p>
     </div>
-    <div class="border-l-4 border-violet-500 pl-4 py-2">
+    <div class="border-l-4 border-emerald-500 pl-4 py-2">
         <h4 class="font-bold text-slate-900 dark:text-white">3. Backfilling</h4>
         <p class="text-sm text-slate-600 dark:text-slate-400">The process of loading historical data into a new pipeline or table. A well-designed pipeline allows you to pass a custom date range to compute past data.</p>
     </div>

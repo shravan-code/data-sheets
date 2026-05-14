@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>TypeVar and Generics — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784983">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 9: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">TypeVar and Generics</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+TypeVar — Generic Functions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">TypeVar allows writing functions that work with multiple types while preserving type information.</p>
+<pre class="language-python"><code>from typing import TypeVar, Generic, Sequence
+
+T = TypeVar('T')        # any type
+N = TypeVar('N', int, float)  # constrained to int or float
+
+# Generic function - preserves type
+def first(lst: list[T]) -&gt; T:
+    return lst[0]
+
+result_int: int = first([1, 2, 3])     # returns int
+result_str: str = first(['a', 'b'])    # returns str
+print(result_int, result_str)
+
+# Bound TypeVar
+Comparable = TypeVar('Comparable', bound='Comparable')
+
+def largest(items: Sequence[T]) -&gt; T:
+    return max(items)
+
+print(largest([3, 1, 4, 1, 5, 9]))
+print(largest(['banana', 'apple', 'cherry']))
+
+# Generic Class
+class Stack(Generic[T]):
+    def __init__(self) -&gt; None:
+        self._items: list[T] = []
+    
+    def push(self, item: T) -&gt; None:
+        self._items.append(item)
+    
+    def pop(self) -&gt; T:
+        return self._items.pop()
+    
+    def is_empty(self) -&gt; bool:
+        return len(self._items) == 0
+
+stack: Stack[int] = Stack()
+stack.push(1)
+stack.push(2)
+print(stack.pop())
+print(stack.is_empty())</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>1 a
+9
+cherry
+2
+False</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="basic-type-annotations.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Basic Type Annotations</span></a>
+                    <a href="protocol--structural-subtyping.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Protocol — Structural Subtyping</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

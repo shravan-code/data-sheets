@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Defining Functions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784980">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 4: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Defining Functions</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Arguments: Positional & Keyword</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Standard arguments where order matters (positional) or names are specified (keyword). Keyword arguments improve readability.</p>
+<pre class="language-python"><code>def greet(name, greeting='Hello'):
+    return f'{greeting}, {name}!'
+
+print(greet('Alice'))              # positional
+print(greet(name='Bob', greeting='Hi')) # keyword</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Hello, Alice!
+Hi, Bob!</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Variable Arguments: *args</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Accept any number of positional arguments as a tuple. Perfect for functions like sum() or join().</p>
+<pre class="language-python"><code>def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1, 2, 3, 4, 5))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>15</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Variable Keyword Arguments: **kwargs</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Accept any number of named arguments as a dictionary. Useful for handling optional configurations or passing settings.</p>
+<pre class="language-python"><code>def print_config(**kwargs):
+    for key, value in kwargs.items():
+        print(f'{key}: {value}')
+
+print_config(host='localhost', port=8080)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>host: localhost
+port: 8080</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Keyword-only and Positional-only Parameters</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">* forces keyword-only; / forces positional-only (Python 3.8+).</p>
+<pre class="language-python"><code># Keyword-only: params after *
+def config(host, port, *, debug=False, timeout=30):
+    print(host, port, debug, timeout)
+
+config('localhost', 8080, debug=True)
+# config('localhost', 8080, True)  # TypeError!
+
+# Positional-only: params before /
+def add(a, b, /):
+    return a + b
+add(1, 2)       # OK
+# add(a=1, b=2)  # TypeError!
+
+# Both
+def full(pos_only, /, normal, *, kw_only):
+    print(pos_only, normal, kw_only)
+full(1, 2, kw_only=3)
+full(1, normal=2, kw_only=3)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>localhost 8080 True 30
+1 2 3
+1 2 3</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Returning Multiple Values</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python returns a tuple when using multiple return values.</p>
+<pre class="language-python"><code>def min_max(lst):
+    return min(lst), max(lst)  # returns tuple
+
+result = min_max([3, 1, 4, 1, 5, 9])
+print(result)           # (1, 9)
+print(type(result))     # tuple
+
+# Unpack directly
+low, high = min_max([3, 1, 4, 1, 5, 9])
+print(low, high)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>(1, 9)
+&lt;class 'tuple'&gt;
+1 9</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the mutable default argument trap?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Default arguments are evaluated ONCE at function definition, not each call. `def f(lst=[]):` shares the same list across calls. Fix: `def f(lst=None): if lst is None: lst = []`.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="sets--all-methods.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Sets — All Methods</span></a>
+                    <a href="scope-and-closures.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Scope & Closures</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

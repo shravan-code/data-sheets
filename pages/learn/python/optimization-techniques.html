@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Optimization Techniques — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784982">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 15: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Optimization Techniques</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Common Python Optimizations</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Key patterns for writing faster Python code.</p>
+<pre class="language-python"><code>import timeit
+from functools import lru_cache
+
+# 1. Local variable lookup is faster than global/attribute
+def slow_loop(n):
+    result = []
+    append = result.append  # cache method lookup!
+    for i in range(n):
+        append(i)
+    return result
+
+# 2. Use built-ins (implemented in C)
+nums = list(range(1000))
+
+# Slow: Python loop
+def py_sum(lst):
+    total = 0
+    for x in lst:
+        total += x
+    return total
+
+# Fast: built-in
+t1 = timeit.timeit(lambda: py_sum(nums), number=10000)
+t2 = timeit.timeit(lambda: sum(nums), number=10000)
+print(f'loop: {t1:.3f}s, sum(): {t2:.3f}s')
+
+# 3. String join over concatenation
+def bad_concat(parts):
+    s = ''
+    for p in parts:
+        s += p  # O(n^2) - new object each time
+    return s
+
+def good_join(parts):
+    return ''.join(parts)  # O(n)
+
+parts = ['word'] * 1000
+t1 = timeit.timeit(lambda: bad_concat(parts), number=1000)
+t2 = timeit.timeit(lambda: good_join(parts), number=1000)
+print(f'concat: {t1:.3f}s, join: {t2:.3f}s')
+
+# 4. Memoization with lru_cache
+@lru_cache(maxsize=None)
+def fib(n):
+    if n &lt; 2: return n
+    return fib(n-1) + fib(n-2)
+
+print(fib(50))  # instant
+
+# 5. Use sets for membership testing O(1) vs list O(n)
+nums_list = list(range(10000))
+nums_set  = set(range(10000))
+
+t1 = timeit.timeit(lambda: 9999 in nums_list, number=100000)
+t2 = timeit.timeit(lambda: 9999 in nums_set,  number=100000)
+print(f'list: {t1:.3f}s, set: {t2:.3f}s')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>loop: 0.432s, sum(): 0.089s
+concat: 1.234s, join: 0.045s
+12586269025
+list: 0.823s, set: 0.012s</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What are the most impactful Python performance optimizations?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">1) Use built-in functions (sum, map, filter) over loops — they're C-implemented. 2) Use sets for O(1) membership testing. 3) Use ''.join() not string concatenation. 4) Cache expensive results with lru_cache. 5) Use generators for large data. 6) Profile first — never guess. 7) For numeric heavy-lifting, use NumPy vectorization.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="profiling.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Profiling</span></a>
+                    <a href="creational-patterns.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Creational Patterns</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

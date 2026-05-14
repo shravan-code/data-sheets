@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Comprehensions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784979">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 2: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Comprehensions</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+List Comprehensions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Concise way to create lists. [expression for item in iterable if condition]</p>
+<pre class="language-python"><code># Basic
+squares = [x**2 for x in range(10)]
+print(squares)
+
+# With condition
+evens = [x for x in range(20) if x % 2 == 0]
+print(evens)
+
+# Nested
+matrix = [[i*j for j in range(1,4)] for i in range(1,4)]
+for row in matrix:
+    print(row)
+
+# Flatten nested list
+nested = [[1,2],[3,4],[5,6]]
+flat = [x for sub in nested for x in sub]
+print(flat)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+[1, 2, 3]
+[2, 4, 6]
+[3, 6, 9]
+[1, 2, 3, 4, 5, 6]</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Dict & Set Comprehensions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Comprehension syntax for dictionaries and sets.</p>
+<pre class="language-python"><code># Dict comprehension
+words = ['hello', 'world', 'python']
+word_len = {w: len(w) for w in words}
+print(word_len)
+
+# Invert a dict
+orig = {'a': 1, 'b': 2, 'c': 3}
+inverted = {v: k for k, v in orig.items()}
+print(inverted)
+
+# Set comprehension
+nums = [1, 2, 2, 3, 3, 4]
+unique_squares = {x**2 for x in nums}
+print(unique_squares)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'hello': 5, 'world': 5, 'python': 6}
+{1: 'a', 2: 'b', 3: 'c'}
+{1, 4, 9, 16}</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Generator Expressions</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Like list comprehensions but lazy — values computed on demand. Use () instead of [].</p>
+<pre class="language-python"><code># Generator expression - memory efficient
+gen = (x**2 for x in range(1000000))
+print(type(gen))      # generator object
+print(next(gen))      # 0
+print(next(gen))      # 1
+
+# sum of squares without creating full list
+total = sum(x**2 for x in range(1000))
+print(total)
+
+# Memory comparison
+import sys
+list_comp = [x**2 for x in range(1000)]
+gen_exp   = (x**2 for x in range(1000))
+print(f'List: {sys.getsizeof(list_comp)} bytes')
+print(f'Gen:  {sys.getsizeof(gen_exp)} bytes')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'generator'&gt;
+0
+1
+332833500
+List: 8856 bytes
+Gen:  104 bytes</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">When should you NOT use list comprehensions?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Avoid when: (1) logic is complex — use a regular loop for readability, (2) you need side effects like printing (use a loop), (3) you only need to iterate once — use a generator expression instead to save memory.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the difference between a generator expression and a list comprehension?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">List comprehension creates the full list in memory immediately. Generator expression is lazy — yields one item at a time. Use generators for large datasets or infinite sequences. Generators are also faster when you don't need all items (e.g., using `any()` or `next()`).</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="loops.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Loops</span></a>
+                    <a href="lists--all-methods.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Lists — All Methods</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

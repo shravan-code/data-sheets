@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Tuples — All Methods — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784983">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 3: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Tuples — All Methods</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Tuple Methods & Operations</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Tuples are immutable sequences. Only two methods: count and index.</p>
+<pre class="language-python"><code>t = (1, 2, 3, 2, 4, 2)
+
+# count
+print(t.count(2))       # 3
+
+# index
+print(t.index(3))       # 2
+print(t.index(2, 3))    # 3 (search from index 3)
+
+# Unpacking
+a, b, c = (1, 2, 3)
+print(a, b, c)
+
+# Extended unpacking
+first, *rest = (1, 2, 3, 4, 5)
+print(first, rest)
+
+head, *middle, tail = (1, 2, 3, 4, 5)
+print(head, middle, tail)
+
+# Swap using tuple
+x, y = 10, 20
+x, y = y, x
+print(x, y)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>3
+2
+3
+1 2 3
+1 [2, 3, 4, 5]
+1 [2, 3, 4] 5
+20 10</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+namedtuple</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Named tuple creates a tuple subclass with named fields.</p>
+<pre class="language-python"><code>from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(3, 4)
+
+print(p.x, p.y)          # 3 4
+print(p[0], p[1])        # 3 4 (index access still works)
+print(p)                 # Point(x=3, y=4)
+
+# _asdict
+print(p._asdict())       # {'x': 3, 'y': 4}
+
+# _replace (returns new tuple)
+p2 = p._replace(x=10)
+print(p2)                # Point(x=10, y=4)
+
+# _fields
+print(Point._fields)     # ('x', 'y')
+
+# _make - class method
+p3 = Point._make([5, 6])
+print(p3)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>3 4
+3 4
+Point(x=3, y=4)
+OrderedDict([('x', 3), ('y', 4)])
+Point(x=10, y=4)
+('x', 'y')
+Point(x=5, y=6)</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Why use tuples instead of lists?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Tuples: (1) are immutable so hashable — usable as dict keys or set elements, (2) slightly faster than lists due to fixed size, (3) signal intent that data shouldn't change (e.g., coordinates, RGB values), (4) can be used for multiple return values.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="lists--all-methods.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Lists — All Methods</span></a>
+                    <a href="dictionaries--all-methods.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Dictionaries — All Methods</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

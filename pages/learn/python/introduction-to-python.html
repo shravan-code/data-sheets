@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Introduction to Python — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784981">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 1: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Introduction to Python</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <p class="text-base text-on-surface-variant mb-8">Python is a high-level, interpreted, dynamically-typed programming language created by Guido van Rossum in 1991. It emphasizes code readability and simplicity, following the Zen of Python philosophy.</p>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Zen of Python</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">The guiding principles of Python's design, accessible via `import this`.</p>
+<pre class="language-python"><code>import this</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>The Zen of Python, by Tim Peters
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex...</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Python 2 vs Python 3</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python 3 (released 2008) is the current standard. Key differences include print as a function, true division, unicode strings by default, and range returning an iterator.</p>
+<pre class="language-python"><code># Python 3 specifics
+print(type(5/2))   # float division
+print(type(5//2))  # integer division
+print(type('hello'))  # str is unicode by default</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>&lt;class 'float'&gt;
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Running Python</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python can be run interactively (REPL), as scripts, or in notebooks.</p>
+<pre class="language-python"><code># Check Python version
+import sys
+print(sys.version)
+print(sys.version_info)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>3.11.0 (main, Oct 24 2022)
+sys.version_info(major=3, minor=11, micro=0, releaselevel='final', serial=0)</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+High-Level Language</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python is a high-level language, meaning it abstracts away complex details like memory management and CPU instructions. It uses English-like syntax, making it more readable for humans and allowing developers to focus on 'what' to do rather than 'how' the hardware should do it.</p>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Interpreted vs Compiled</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">In Compiled languages (C, C++), code is converted to machine code before running. In Interpreted languages (PHP, Ruby), code is executed line-by-line. Python is a hybrid: Source code (.py) is first compiled into intermediate Bytecode (.pyc), which is then interpreted by the Python Virtual Machine (PVM).</p>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Global Interpreter Lock (GIL)</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">The GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecodes at once. While it makes CPython's memory management simpler, it means that even on multi-core systems, only one thread runs at a time for CPU-bound tasks.</p>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Dynamic Typing</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python is dynamically typed, meaning variable types are determined at runtime. You don't need to declare whether a variable is an int, str, or list; the interpreter figures it out based on the value assigned. This allows for rapid development but requires discipline to avoid type errors.</p>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Execution Flow: Source to Machine</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Python's execution flow involves a compilation step to bytecode followed by interpretation by the PVM. This hybrid approach provides portability and ease of development.</p>
+<pre class="language-python"><code>┌─────────────┐      ┌──────────────┐      ┌──────────────┐
+│ Source Code │ ---&gt; │   Compiler   │ ---&gt; │   Bytecode   │
+│ (.py)       │      │ (Syntax/AST) │      │   (.pyc)     │
+└─────────────┘      └──────────────┘      └──────┬───────┘
+                                                  │
+                                                  v
+┌─────────────┐      ┌──────────────┐      ┌──────────────┐
+│ Machine Code│ &lt;--- │ Interpreter  │ &lt;--- │   PVM Load   │
+│ (CPU Binary)│      │    (PVM)     │      │ (Memory)     │
+└─────────────┘      └──────────────┘      └──────────────┘</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code># Step-by-step transformation process</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Bytecode vs Machine Code</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Bytecode is a low-level, platform-independent set of instructions for the PVM. Machine Code is the binary code (0s and 1s) specific to your computer's hardware (e.g., Intel vs. ARM). You can view Python's bytecode using the 'dis' module.</p>
+<pre class="language-python"><code>import dis
+
+def add(a, b):
+    return a + b
+
+# Display the bytecode instructions
+dis.dis(add)</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>  2           0 LOAD_FAST                0 (a)
+              2 LOAD_FAST                1 (b)
+              4 BINARY_ADD
+              6 RETURN_VALUE</code></pre>
+</div>
+<div class="mt-16 p-6 bg-surface-container border border-outline-variant rounded-xl">
+<h2 class="text-lg font-bold text-secondary-fixed mt-0 mb-8 border-b border-on-surface/5 pb-2">Interview Mastery</h2>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">What is the GIL in Python?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">The Global Interpreter Lock (GIL) is a mutex in CPython that allows only one thread to execute Python bytecode at a time. It simplifies memory management but limits multi-threaded CPU-bound performance. Use multiprocessing or async for parallelism.</p>
+</div>
+<div class="h-px bg-on-surface/5 my-6"></div>
+<div class="grid grid-cols-[2rem_1fr] gap-x-2">
+<div class="text-secondary-fixed font-bold text-sm">Q:</div>
+<h3 class="text-sm font-bold text-on-surface mb-3 leading-relaxed">Is Python interpreted or compiled?</h3>
+<div class="text-on-surface-variant/50 font-bold text-sm">A:</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Python is both. Source code is compiled to bytecode (.pyc files) which is then interpreted by the CPython virtual machine. This is why Python is often called 'interpreted' but technically it has a compilation step.</p>
+</div>
+</div>
+                </article>
+                <div class="nav-container">
+                    
+                    <a href="variables-and-data-types.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Variables & Data Types</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

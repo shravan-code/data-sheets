@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>8. CDC Pipeline Design — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784997">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">8. CDC Pipeline Design</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Log-based CDC, Debezium, and handling schema changes.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>What is CDC?</h2>
+<br>
+<p>Change Data Capture (CDC) tracks every data modification (INSERT, UPDATE, DELETE) at the database level and streams these changes to downstream systems in near real-time.</p>
+<br>
+<p><strong>Use cases:</strong> Real-time data sync, audit trails, cache invalidation, ETL without full scans.</p>
+<br>
+<hr>
+<br>
+<h2>Log-based CDC vs Query-based CDC</h2>
+<br>
+<div class="overflow-x-auto my-6"><table class="min-w-full text-sm text-left border-collapse border border-slate-200 dark:border-slate-800"><thead class="bg-slate-50 dark:bg-slate-800/50"><tr><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Log-based CDC</th><th class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-bold">Query-based CDC</th></tr></thead><tbody><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Mechanism</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Reads DB binary/WAL log</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Polls table with <code>updated_at > last_run</code></td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Latency</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Milliseconds</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Minutes (polling interval)</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Source load</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Very low</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Higher (full/incremental scans)</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Handles deletes</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Yes</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">No (hard deletes are invisible)</td></tr><tr><td class="px-4 py-2 border border-slate-200 dark:border-slate-700"><strong>Tools</strong></td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Debezium, AWS DMS</td><td class="px-4 py-2 border border-slate-200 dark:border-slate-700">Airbyte, Fivetran, custom scripts</td></tr></tbody></table></div>
+<br>
+<hr>
+<br>
+<h2>CDC with Debezium</h2>
+<br>
+<pre><code class="language-yaml">
+# Debezium connector config (registered via Kafka Connect REST API)
+{
+  "name": "mysql-orders-cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "database.hostname": "mysql-host",
+    "database.port": "3306",
+    "database.user": "debezium_user",
+    "database.password": "secret",
+    "database.server.id": "12345",
+    "database.server.name": "mydb",
+    "database.include.list": "shop",
+    "table.include.list": "shop.orders",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "schema-changes.shop",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false"
+  }
+}
+</code></pre>
+<br>
+<pre><code class="language-python">
+# Consuming Debezium CDC events from Kafka
+from kafka import KafkaConsumer
+import json
+
+consumer = KafkaConsumer(
+    "mydb.shop.orders",
+    bootstrap_servers=["kafka:9092"],
+    group_id="cdc-warehouse-sync",
+    value_deserializer=lambda m: json.loads(m.decode("utf-8")),
+    auto_offset_reset="earliest",
+)
+
+def sync_to_warehouse(conn, event: dict):
+    """Apply CDC event to data warehouse."""
+    op = event.get("op")
+    after = event.get("after", {})
+    before = event.get("before", {})
+    
+    if op in ("c", "r"):  # create / snapshot read
+        conn.execute("""
+            INSERT INTO orders_dw (order_id, customer_id, amount, status, updated_at)
+            VALUES (%(order_id)s, %(customer_id)s, %(amount)s, %(status)s, %(updated_at)s)
+            ON CONFLICT (order_id) DO NOTHING
+        """, after)
+    
+    elif op == "u":  # update
+        conn.execute("""
+            INSERT INTO orders_dw (order_id, customer_id, amount, status, updated_at)
+            VALUES (%(order_id)s, %(customer_id)s, %(amount)s, %(status)s, %(updated_at)s)
+            ON CONFLICT (order_id) DO UPDATE SET
+                customer_id = EXCLUDED.customer_id,
+                amount = EXCLUDED.amount,
+                status = EXCLUDED.status,
+                updated_at = EXCLUDED.updated_at
+        """, after)
+    
+    elif op == "d":  # delete
+        conn.execute("""
+            UPDATE orders_dw
+            SET is_deleted = TRUE, deleted_at = NOW()
+            WHERE order_id = %(order_id)s
+        """, before)
+
+for msg in consumer:
+    event = msg.value
+    with db_conn.begin():
+        sync_to_warehouse(db_conn, event)
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Handling Schema Changes in CDC</h2>
+<br>
+<pre><code class="language-python">
+# Schema Registry integration with Avro for schema evolution
+from confluent_kafka.schema_registry import SchemaRegistryClient
+from confluent_kafka.schema_registry.avro import AvroDeserializer
+
+schema_registry_client = SchemaRegistryClient({"url": "http://schema-registry:8081"})
+
+def get_current_schema(topic: str) -&gt; dict:
+    """Fetch the latest schema for a topic from Schema Registry."""
+    subject = f"{topic}-value"
+    schema = schema_registry_client.get_latest_version(subject)
+    return json.loads(schema.schema.schema_str)
+
+# Handle backward-compatible schema changes:
+# - Adding nullable columns: safe, set default in DW
+# - Renaming columns: use aliases in consumers
+# - Removing columns: consumer must handle missing keys gracefully
+
+def safe_extract(event: dict, field: str, default=None):
+    """Extract field with fallback for schema evolution."""
+    return event.get(field, default)
+
+def apply_cdc_event_resilient(event: dict) -&gt; dict:
+    return {
+        "order_id": safe_extract(event, "order_id"),
+        "customer_id": safe_extract(event, "customer_id"),
+        "amount": safe_extract(event, "amount", 0.0),
+        "new_field": safe_extract(event, "new_field", "default_value"),  # new column
+    }
+</code></pre>
+<br>
+<hr>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="streaming-pipeline-design.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">7. Streaming Pipeline Design</span>
+            </a>
+            
+            <a href="orchestration-design.html" class="nav-card next">
+                <span class="nav-label">Next <i data-lucide="arrow-right"></i></span>
+                <span class="nav-title">9. Orchestration Design</span>
+            </a>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>15. Classic Pipeline Design Problems — Data Pipeline Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+            fontFamily: 'Inter',
+            themeVariables: { fontFamily: 'Inter', fontSize: '13px' }
+        });
+    </script>
+
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784997">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css?v=1778781625">
+    <script src="../../../js/modules/universal-nav.js?v=1778781625" defer></script>
+    <script src="../../../js/modules/code-blocks.js?v=1778781625" defer></script>
+    
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen">
+
+<div id="nav-universal"></div>
+
+
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-60 z-0"></div>
+
+<div class="flex justify-center max-w-[1440px] mx-auto">
+    <div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+        <a href="../pipeline-design.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors mb-6 group no-underline">
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+            Back to Pipeline Design
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight tracking-tight">15. Classic Pipeline Design Problems</h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 font-medium">Practical scenarios and architectural challenges.</p>
+        </header>
+
+        <article class="prose dark:prose-invert max-w-none pb-20">
+            <h2>Problem 1: Batch Ingestion Pipeline (S3 → Glue → Redshift)</h2>
+<br>
+<pre><code class="language-python">
+# Architecture: S3 (raw) → AWS Glue (transform) → Redshift (DW)
+
+# Step 1: Glue Job (PySpark on AWS Glue)
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "run_date", "s3_input", "redshift_table"])
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args["JOB_NAME"], args)
+
+# Read raw data from S3
+datasource = glueContext.create_dynamic_frame.from_options(
+    connection_type="s3",
+    connection_options={"paths": [f"{args['s3_input']}/date={args['run_date']}/"]},
+    format="parquet"
+)
+
+# Apply transformations
+from awsglue.dynamicframe import DynamicFrame
+
+df = datasource.toDF()
+df_transformed = df \
+    .dropDuplicates(["order_id"]) \
+    .filter("amount &gt; 0") \
+    .withColumn("run_date", F.lit(args["run_date"]))
+
+# Write to Redshift
+glueContext.write_dynamic_frame.from_jdbc_conf(
+    frame=DynamicFrame.fromDF(df_transformed, glueContext, "output"),
+    catalog_connection="my_redshift_conn",
+    connection_options={
+        "dbtable": args["redshift_table"],
+        "database": "analytics_db",
+        "preactions": f"DELETE FROM {args['redshift_table']} WHERE run_date = '{args['run_date']}'"
+    },
+    redshift_tmp_dir="s3://my-bucket/glue-temp/"
+)
+job.commit()
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 2: Real-time Streaming Pipeline (Kafka → Spark → S3)</h2>
+<br>
+<pre><code class="language-python">
+# Full implementation of Kafka → PySpark Structured Streaming → S3 Delta Lake
+
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.types import *
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("streaming_pipeline")
+
+spark = SparkSession.builder \
+    .appName("RealtimeOrdersPipeline") \
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+    .config("spark.sql.shuffle.partitions", "100") \
+    .getOrCreate()
+
+schema = StructType([
+    StructField("order_id", StringType(), False),
+    StructField("customer_id", StringType(), False),
+    StructField("amount", DoubleType()),
+    StructField("region", StringType()),
+    StructField("product_id", StringType()),
+    StructField("event_time", TimestampType()),
+    StructField("status", StringType()),
+])
+
+# Read from Kafka
+stream = spark.readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "kafka:9092") \
+    .option("subscribe", "orders") \
+    .option("startingOffsets", "latest") \
+    .option("maxOffsetsPerTrigger", "10000") \
+    .load()
+
+# Parse and clean
+orders = (
+    stream
+    .select(F.from_json(F.col("value").cast("string"), schema).alias("d"))
+    .select("d.*")
+    .filter(F.col("order_id").isNotNull() &amp; (F.col("amount") &gt; 0))
+    .withColumn("processing_time", F.current_timestamp())
+    .withWatermark("event_time", "15 minutes")
+)
+
+# Write raw stream to Delta (Bronze)
+bronze_query = orders.writeStream \
+    .outputMode("append") \
+    .format("delta") \
+    .option("path", "s3://datalake/delta/bronze/orders/") \
+    .option("checkpointLocation", "s3://datalake/checkpoints/bronze/orders/") \
+    .partitionBy("region") \
+    .trigger(processingTime="30 seconds") \
+    .start()
+
+# Aggregate to Gold
+windowed_revenue = (
+    orders
+    .groupBy(
+        F.window("event_time", "1 hour", "15 minutes"),
+        "region"
+    )
+    .agg(
+        F.sum("amount").alias("revenue"),
+        F.count("order_id").alias("order_count"),
+        F.avg("amount").alias("avg_order_value")
+    )
+    .select("window.start", "window.end", "region", "revenue", "order_count", "avg_order_value")
+)
+
+gold_query = windowed_revenue.writeStream \
+    .outputMode("append") \
+    .format("delta") \
+    .option("path", "s3://datalake/delta/gold/hourly_revenue/") \
+    .option("checkpointLocation", "s3://datalake/checkpoints/gold/hourly_revenue/") \
+    .trigger(processingTime="1 minute") \
+    .start()
+
+spark.streams.awaitAnyTermination()
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 3: CDC Pipeline (MySQL → Debezium → Kafka → DW)</h2>
+<br>
+<pre><code class="language-python">
+# Step 1: Register Debezium connector (via Kafka Connect REST API)
+import requests
+
+connector_config = {
+    "name": "mysql-cdc-connector",
+    "config": {
+        "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+        "database.hostname": "mysql-prod",
+        "database.port": "3306",
+        "database.user": "debezium",
+        "database.password": "${file:/opt/secrets.properties:mysql.password}",
+        "database.server.id": "1",
+        "database.server.name": "prod",
+        "database.include.list": "ecommerce",
+        "table.include.list": "ecommerce.orders,ecommerce.customers",
+        "database.history.kafka.bootstrap.servers": "kafka:9092",
+        "database.history.kafka.topic": "schema-history.ecommerce",
+        "snapshot.mode": "initial",
+        "transforms": "unwrap",
+        "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    }
+}
+requests.post("http://kafka-connect:8083/connectors", json=connector_config)
+
+# Step 2: PySpark Structured Streaming consumer → Redshift
+def cdc_to_redshift_pipeline(spark):
+    """Consume CDC events from Kafka, apply to Redshift incrementally."""
+    
+    cdc_schema = StructType([
+        StructField("order_id", LongType()),
+        StructField("customer_id", LongType()),
+        StructField("amount", DoubleType()),
+        StructField("status", StringType()),
+        StructField("updated_at", LongType()),
+        StructField("__op", StringType()),  # Debezium operation flag
+        StructField("__deleted", StringType()),
+    ])
+    
+    stream = (
+        spark.readStream
+        .format("kafka")
+        .option("kafka.bootstrap.servers", "kafka:9092")
+        .option("subscribe", "prod.ecommerce.orders")
+        .load()
+        .select(F.from_json(F.col("value").cast("string"), cdc_schema).alias("d"))
+        .select("d.*")
+    )
+    
+    def process_micro_batch(batch_df, batch_id):
+        """Upsert CDC micro-batch to Redshift."""
+        if batch_df.isEmpty():
+            return
+        
+        # Separate deletes from upserts
+        deletes = batch_df.filter(F.col("__deleted") == "true")
+        upserts = batch_df.filter(F.col("__deleted") != "true")
+        
+        # Write upserts to staging table in Redshift
+        upserts.write \
+            .format("jdbc") \
+            .option("url", "jdbc:redshift://host:5439/db") \
+            .option("dbtable", "staging_orders_cdc") \
+            .option("user", "admin") \
+            .option("password", get_secret("redshift/password")["password"]) \
+            .mode("overwrite") \
+            .save()
+        
+        # Apply MERGE in Redshift
+        redshift_merge_sql = """
+            MERGE INTO orders_dw USING staging_orders_cdc AS src
+            ON orders_dw.order_id = src.order_id
+            WHEN MATCHED THEN UPDATE SET
+                customer_id = src.customer_id,
+                amount = src.amount,
+                status = src.status,
+                updated_at = src.updated_at
+            WHEN NOT MATCHED THEN INSERT
+                (order_id, customer_id, amount, status, updated_at)
+                VALUES (src.order_id, src.customer_id, src.amount, src.status, src.updated_at)
+        """
+        execute_redshift_sql(redshift_merge_sql)
+        print(f"Applied batch {batch_id}: {upserts.count()} upserts, {deletes.count()} deletes")
+    
+    stream.writeStream \
+        .foreachBatch(process_micro_batch) \
+        .option("checkpointLocation", "s3://bucket/checkpoints/cdc/orders/") \
+        .trigger(processingTime="1 minute") \
+        .start() \
+        .awaitTermination()
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 4: Airflow Orchestrated ELT Pipeline</h2>
+<br>
+<pre><code class="language-python">
+# Full ELT pipeline: S3 → Snowflake (raw) → dbt transforms
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.operators.bash import BashOperator
+from datetime import datetime, timedelta
+
+with DAG(
+    "elt_pipeline",
+    schedule_interval="0 2 * * *",
+    start_date=datetime(2024, 1, 1),
+    catchup=False,
+    default_args={"retries": 2, "retry_delay": timedelta(minutes=5)},
+) as dag:
+
+    # E: Load raw files from S3 → Snowflake (COPY INTO)
+    load_raw = SnowflakeOperator(
+        task_id="load_raw_to_snowflake",
+        snowflake_conn_id="snowflake_conn",
+        sql="""
+            COPY INTO RAW.ORDERS
+            FROM @my_s3_stage/orders/date={{ ds }}/
+            FILE_FORMAT = (TYPE = 'PARQUET')
+            ON_ERROR = 'CONTINUE'
+            PURGE = FALSE;
+        """,
+    )
+    
+    # L: Validate load
+    validate_load = SnowflakeOperator(
+        task_id="validate_raw_load",
+        snowflake_conn_id="snowflake_conn",
+        sql="""
+            SELECT CASE WHEN COUNT(*) &gt; 0 THEN 'PASS' ELSE 'FAIL' END AS status
+            FROM RAW.ORDERS
+            WHERE DATE(loaded_at) = '{{ ds }}'
+        """,
+    )
+    
+    # T: Run dbt transformations
+    dbt_run = BashOperator(
+        task_id="dbt_transform",
+        bash_command=(
+            "cd /opt/dbt/project &amp;&amp; "
+            "dbt run --models orders+ --vars '{run_date: {{ ds }}}' "
+            "--profiles-dir /opt/dbt/profiles"
+        ),
+    )
+    
+    dbt_test = BashOperator(
+        task_id="dbt_test",
+        bash_command="cd /opt/dbt/project &amp;&amp; dbt test --models orders+",
+    )
+    
+    load_raw &gt;&gt; validate_load &gt;&gt; dbt_run &gt;&gt; dbt_test
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 5: Multi-hop Medallion Pipeline</h2>
+<br>
+<pre><code class="language-python">
+# Full Medallion: Bronze → Silver → Gold with Airflow orchestration
+from airflow import DAG
+from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from datetime import datetime
+
+with DAG(
+    "medallion_pipeline",
+    schedule_interval="0 4 * * *",
+    start_date=datetime(2024, 1, 1),
+    catchup=False,
+) as dag:
+
+    ingest_bronze = SparkSubmitOperator(
+        task_id="ingest_bronze",
+        application="s3://code/spark/ingest_bronze.py",
+        application_args=["--date", "{{ ds }}", "--source", "orders"],
+        conf={"spark.executor.memory": "4g", "spark.executor.instances": "5"},
+    )
+
+    transform_silver = SparkSubmitOperator(
+        task_id="bronze_to_silver",
+        application="s3://code/spark/bronze_to_silver.py",
+        application_args=["--date", "{{ ds }}"],
+        conf={"spark.executor.memory": "8g", "spark.executor.instances": "10"},
+    )
+
+    aggregate_gold = SparkSubmitOperator(
+        task_id="silver_to_gold",
+        application="s3://code/spark/silver_to_gold.py",
+        application_args=["--date", "{{ ds }}"],
+    )
+
+    quality_check = PythonOperator(
+        task_id="gold_quality_check",
+        python_callable=run_gold_quality_checks,
+        op_kwargs={"date": "{{ ds }}"},
+    )
+
+    ingest_bronze &gt;&gt; transform_silver &gt;&gt; aggregate_gold &gt;&gt; quality_check
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 6: Data Quality Pipeline</h2>
+<br>
+<pre><code class="language-python">
+# Dedicated DQ pipeline with Great Expectations
+import great_expectations as gx
+from great_expectations.checkpoint import Checkpoint
+
+context = gx.get_context()
+
+# Define expectations for orders table
+def define_orders_expectations(context, suite_name: str):
+    suite = context.create_expectation_suite(suite_name, overwrite_existing=True)
+    validator = context.get_validator(
+        datasource_name="my_spark_datasource",
+        data_asset_name="orders",
+        expectation_suite=suite,
+    )
+    
+    validator.expect_column_to_exist("order_id")
+    validator.expect_column_values_to_not_be_null("order_id")
+    validator.expect_column_values_to_be_unique("order_id")
+    validator.expect_column_values_to_be_between("amount", min_value=0, max_value=1_000_000)
+    validator.expect_column_values_to_be_in_set("status", ["pending", "completed", "cancelled"])
+    validator.expect_table_row_count_to_be_between(min_value=1000, max_value=10_000_000)
+    
+    validator.save_expectation_suite()
+    return suite
+
+# Run in Airflow
+def run_great_expectations_checkpoint(date: str, **kwargs):
+    results = context.run_checkpoint(
+        checkpoint_name="orders_daily_checkpoint",
+        batch_request={"runtime_parameters": {"query": f"SELECT * FROM orders WHERE date = '{date}'"}},
+    )
+    
+    if not results["success"]:
+        failed = [
+            r["expectation_config"]["expectation_type"]
+            for r in results["results"]
+            if not r["success"]
+        ]
+        raise AirflowException(f"Great Expectations FAILED: {failed}")
+    
+    print("All DQ checks passed!")
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Problem 7: Reverse ETL Pipeline</h2>
+<br>
+<pre><code class="language-python">
+# Full Reverse ETL: Snowflake segment → Salesforce CRM sync
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+import requests
+import pandas as pd
+
+def extract_segment_from_dw(**context):
+    """Query Snowflake for customer segment updates."""
+    from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
+    hook = SnowflakeHook(snowflake_conn_id="snowflake_conn")
+    
+    df = hook.get_pandas_df("""
+        SELECT 
+            customer_id,
+            email,
+            ltv_score,
+            segment,
+            predicted_churn_probability,
+            updated_at
+        FROM GOLD.CUSTOMER_SEGMENTS
+        WHERE DATE(updated_at) = '{{ ds }}'
+        AND segment != prev_segment  -- only changed segments
+    """)
+    
+    return df.to_dict("records")
+
+def sync_to_salesforce(records: list, **context):
+    """Upsert records to Salesforce via REST API."""
+    from airflow.models import Variable
+    
+    sf_token = Variable.get("salesforce_access_token", deserialize_json=False)
+    sf_instance = Variable.get("salesforce_instance_url")
+    
+    headers = {
+        "Authorization": f"Bearer {sf_token}",
+        "Content-Type": "application/json"
+    }
+    
+    success_count, fail_count = 0, 0
+    
+    for rec in records:
+        try:
+            # Upsert using external ID (customer_id mapped to External_ID__c)
+            response = requests.patch(
+                f"{sf_instance}/services/data/v57.0/sobjects/Contact/External_ID__c/{rec['customer_id']}",
+                json={
+                    "LTV_Score__c": rec["ltv_score"],
+                    "Segment__c": rec["segment"],
+                    "Churn_Risk__c": rec["predicted_churn_probability"],
+                },
+                headers=headers
+            )
+            if response.status_code in (200, 201, 204):
+                success_count += 1
+            else:
+                fail_count += 1
+                print(f"Failed {rec['customer_id']}: {response.text}")
+        except Exception as e:
+            fail_count += 1
+    
+    print(f"Sync complete: {success_count} success, {fail_count} failures")
+
+with DAG("reverse_etl_to_salesforce", schedule_interval="@daily", start_date=datetime(2024,1,1)) as dag:
+    extract = PythonOperator(task_id="extract_segments", python_callable=extract_segment_from_dw)
+    sync = PythonOperator(task_id="sync_to_salesforce", python_callable=sync_to_salesforce,
+                          op_args=["{{ ti.xcom_pull(task_ids='extract_segments') }}"])
+    extract &gt;&gt; sync
+</code></pre>
+<br>
+<hr>
+<br>
+<h2>Interview Quick Reference</h2>
+<br>
+<h3>Common Interview Questions & Key Points</h3>
+<br>
+<p><strong>Q: How do you ensure idempotency in a batch pipeline?</strong></p>
+<blockquote>Delete the target partition before inserting. Use <code>overwrite</code> with dynamic partition mode in Spark. Use MERGE/UPSERT in databases. Never use plain APPEND.</blockquote>
+<br>
+<p><strong>Q: What is watermarking in stream processing?</strong></p>
+<blockquote>Watermarks define how long the engine waits for late-arriving data before finalizing a time window. <code>withWatermark("event_time", "10 minutes")</code> means windows won't be finalized until 10 minutes after the max event time seen.</blockquote>
+<br>
+<p><strong>Q: ETL vs ELT — when to use each?</strong></p>
+<blockquote>ETL when: sensitive data (transform before loading), limited DW compute, complex transformations. ELT when: modern cloud DW with cheap compute (BigQuery, Snowflake), dbt-based transformations, need to preserve raw data.</blockquote>
+<br>
+<p><strong>Q: How do you handle late data in a streaming pipeline?</strong></p>
+<blockquote>Use watermarks to define tolerance window. Use <code>append</code> output mode for finalized results. Store late events in a separate late-data topic for reprocessing if needed.</blockquote>
+<br>
+<p><strong>Q: What's the difference between Lambda and Kappa architecture?</strong></p>
+<blockquote>Lambda has two separate code paths (batch + streaming) which adds complexity but provides high accuracy. Kappa uses only streaming (single code path) with Kafka retention for replay — simpler but requires sufficient Kafka retention for historical reprocessing.</blockquote>
+<br>
+<p><strong>Q: How do you backfill a daily pipeline 6 months retroactively?</strong></p>
+<blockquote>Set <code>catchup=True</code> and <code>start_date</code> in Airflow. Use <code>max_active_runs</code> to limit concurrency. Ensure the pipeline is idempotent. Run <code>airflow dags backfill</code> CLI or trigger via Airflow UI with date range.</blockquote>
+<br>
+<p><strong>Q: What metrics do you monitor for a production pipeline?</strong></p>
+<blockquote>Freshness lag, record count (vs expected), error rate, task duration (vs SLA), DLQ size, null rates on critical columns, duplicate rate.</blockquote>
+<br>
+<hr>
+<br>
+<p>*End of Data Pipeline Design Complete Guide*</p>
+        </article>
+
+        <div class="nav-container">
+            
+            <a href="pipeline-design-patterns.html" class="nav-card prev">
+                <span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span>
+                <span class="nav-title">14. Pipeline Design Patterns</span>
+            </a>
+            <div></div>
+        </div>
+    </main>
+</div>
+
+    <aside class="toc-container">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list"></ul>
+        
+    </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="../../../js/ds-main.js?v=1778781625" defer></script>
+</body>
+</html>

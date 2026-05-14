@@ -1,378 +1,159 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="">
-<head>
-<script>(function(){
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('ds-theme', 'light');
-        })();</script>
+<head><script data-cake-theme>
+        (function() {
+            var t = localStorage.getItem('theme') || 'dark';
+            if (t === 'light') document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Cake</title>
-    <meta name="description" content="Technical resources and cheat sheets for Data Engineering and Software Architecture.">
-    
+    <meta name="description" content="Dev-first learning platform. Master system design, algorithms, and backend architecture.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-    tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui'],display:['Outfit','system-ui']}}}}
+    tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.395.0"></script>
-    <style>
-        body{font-family:'Inter',sans-serif;}
-        h1,h2,h3,.font-display{font-family:'Outfit',sans-serif;}
-        .grid-bg{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:40px 40px;}
-        .dark .grid-bg{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);}
-        /* Sidebar scrollbar matches theme */
-        #ds-sidebar{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
-        #ds-sidebar::-webkit-scrollbar{width:4px;}
-        #ds-sidebar::-webkit-scrollbar-track{background:transparent;}
-        #ds-sidebar::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px;}
-        .dark #ds-sidebar::-webkit-scrollbar-thumb{background:#334155;}
-        /* Scroll-to-top btn */
-        #scroll-top{opacity:0;pointer-events:none;transition:opacity .25s;}
-        #scroll-top.visible{opacity:1;pointer-events:auto;}
-        /* card hover */
-        .topic-card{transition:all 0.25s cubic-bezier(.4,0,.2,1);}
-        .topic-card:hover{transform:translateY(-4px);}
-        .dark .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(59,130,246,.12);border-color:rgba(96,165,250,.3);}
-        .topic-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:rgba(96,165,250,.3);}
-        
-        /* Home page interactive grid */
-        .animate-grid {
-            inset: 0 !important;
-            width: 100%;
-            height: 100%;
-            pointer-events: auto !important;
-            overflow: hidden;
-        }
+    <link rel="stylesheet" href="css/ds-main.css?v=1778784979">
+    <link rel="stylesheet" href="css/ds-home.css?v=1778777550">
+    <link rel="stylesheet" href="css/modules/code-blocks.css">
+    <script src="js/modules/universal-nav.js" defer></script>
+    <script src="js/modules/code-blocks.js" defer></script>
 
-        .grid-cells-layer {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 40px);
-            grid-template-rows: repeat(auto-fill, 40px);
-            z-index: 0;
-            opacity: 0.6;
-        }
 
-        .traveling-blocks-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0.4;
-        }
-        .grid-cell {
-            width: 40px;
-            height: 40px;
-            transition: background-color 0.8s ease, opacity 0.8s ease;
-        }
-        .grid-cell:hover {
-            background-color: rgba(96, 165, 250, 0.4);
-            transition: background-color 0s;
-        }
-        .dark .grid-cell:hover {
-            background-color: rgba(96, 165, 250, 0.2);
-        }
 
-        /* Traveling Blocks */
-        .traveling-block {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(59, 130, 246, 0.25);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            pointer-events: none;
-            z-index: 10;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
-            border-radius: 4px;
-        }
-        .dark .traveling-block {
-            background-color: rgba(96, 165, 250, 0.2);
-            border-color: rgba(96, 165, 250, 0.3);
-            box-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
-        }
 
-        /* Shifting Pulse Animation */
-        .grid-cell.animate {
-            animation: gridPulse 8s ease-in-out infinite;
-        }
 
-        @keyframes gridPulse {
-            0%, 100% { background-color: transparent; }
-            50% { background-color: rgba(59, 130, 246, 0.12); }
-        }
-        .dark @keyframes gridPulse {
-            0%, 100% { background-color: transparent; }
-            50% { background-color: rgba(96, 165, 250, 0.08); }
-        }
 
-        /* Feature Cards Style */
-        .feature-card {
-            background: white;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 1.5rem;
-            padding: 1.25rem 1.75rem;
-            text-align: left;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none !important;
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12);
-        }
-
-        .feature-card .icon-box {
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s ease;
-            flex-shrink: 0;
-        }
-
-        .feature-card:hover .icon-box {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .feature-card.practice .icon-box { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
-        .feature-card.portfolio .icon-box { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-
-        .feature-card.practice:hover { border-color: #8b5cf6; }
-        .feature-card.portfolio:hover { border-color: #10b981; }
-
-        .feature-card .card-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #1e293b;
-        }
-
-        .feature-card .card-arrow {
-            margin-left: auto;
-            color: #94a3b8;
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover .card-arrow {
-            transform: translateX(4px);
-        }
-
-        .feature-card.practice .card-arrow { color: #8b5cf6; }
-        .feature-card.portfolio .card-arrow { color: #10b981; }
-
-        .dark .feature-card {
-            background: rgba(30, 41, 59, 0.4);
-            border-color: rgba(51, 65, 85, 0.5);
-            backdrop-blur: xl;
-        }
-
-        .dark .feature-card:hover {
-            border-color: rgba(96, 165, 250, 0.4);
-            background: rgba(30, 41, 59, 0.6);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
-        }
-
-        .dark .feature-card .card-title { color: white; }
-        .dark .feature-card .card-desc { color: #94a3b8; }
-    </style>
-    
-    
-<link rel="stylesheet" href="css/ds-main.css?v=1777291467">
-<link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
+<body class="bg-surface text-on-surface min-h-screen flex flex-col overflow-x-hidden">
+
+<div id="nav-universal"></div>
+
+
 
 <!-- NAV -->
-<nav id="ds-nav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200 transition-colors duration-300">
-    <div class="px-4 md:px-6 py-3.5 flex items-center justify-between">
-        <!-- LEFT: Toggle, Logo and Page Title -->
-        <div class="flex items-center gap-4">
-            <button id="sidebar-toggle" aria-label="Toggle sidebar" class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-slate-50 rounded-full">
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-                <span class="line w-5 h-0.5 bg-slate-600 rounded-full transition-all"></span>
-            </button>
 
-            <a href="index.html" class="no-underline group flex items-center gap-3 transition-transform duration-300 hover:scale-105">
-                <div class="flex items-center">
-                    <span style="font-family: 'Outfit', sans-serif;" class="text-[24px] md:text-[28px] tracking-tighter flex items-center">
-                        <span class="font-light text-slate-500">Data</span>
-                        <span class="ds-logo-cake font-black bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 bg-clip-text text-transparent ml-1.5 inline-block -rotate-3 origin-bottom-left" data-text="Cake">Cake</span>
-                    </span>
-                </div>
-            </a>
 
-            
-        </div>
-
-        <!-- RIGHT: Profile Icon -->
-        <div class="flex items-center">
-            <a href="pages/portfolio.html" id="profile-btn" title="Profile"
-                class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all border border-slate-200/60 no-underline">
-                <i data-lucide="user" class="w-5 h-5"></i>
-            </a>
-        </div>
+<!-- MOBILE SIDEBAR (hidden on desktop) -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-surface/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+<aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-72 z-50 overflow-y-auto bg-surface border-r border-outline-variant transform -translate-x-full transition-transform duration-300 lg:hidden">
+    <div class="flex items-center justify-between px-4 h-14 border-b border-outline-variant">
+        <span class="font-bold text-on-surface uppercase tracking-wider text-sm">Navigation</span>
+        <button id="mobile-sidebar-close" class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-on-surface">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
     </div>
-</nav>
-
-<!-- SIDEBAR OVERLAY (mobile) -->
-<div id="sidebar-overlay"
-    class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-
-<!-- SIDEBAR -->
-<aside id="ds-sidebar"
-    class="fixed top-[57px] left-0 h-[calc(100vh-57px)] w-60 z-40 overflow-y-auto
-           bg-white border-r border-slate-200/80 shadow-xl shadow-slate-200/50">
-
-    <div class="h-0.5 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-rose-500"></div>
-
-    <div class="py-5 px-3 flex flex-col h-full">
-        <div class="flex-1">
-
-            <div class="sb-section sb-cat bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="code-2" class="w-3 h-3 text-white"></i>
-                </span>
-                Programming
+    <div class="py-4 px-3">
+        <!-- Mobile category sections -->
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="code-2" class="w-4 h-4"></i> Programming
             </div>
             <nav class="pl-2">
-                <a href="pages/python.html"     class="sb-link"><i data-lucide="code-2"       class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Python</a>
-                <a href="pages/sql.html"        class="sb-link"><i data-lucide="database"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>SQL</a>
-                <a href="pages/bash.html"       class="sb-link"><i data-lucide="terminal"     class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>Bash</a>
-                <a href="pages/powershell.html" class="sb-link"><i data-lucide="terminal-square" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0"></i>PowerShell</a>
+                <a href="pages/learn/python.html" class="sb-link">Python</a>
+                <a href="pages/learn/sql.html" class="sb-link">SQL</a>
+                <a href="pages/learn/bash.html" class="sb-link">Bash</a>
+                <a href="pages/learn/powershell.html" class="sb-link">PowerShell</a>
             </nav>
-
-            <div class="sb-section sb-cat bg-emerald-50 text-emerald-700 hover:bg-emerald-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layers" class="w-3 h-3 text-white"></i>
-                </span>
-                Concepts
-            </div>
-            <nav class="pl-2">
-                <a href="pages/de-fundamentals.html" class="sb-link"><i data-lucide="layers"       class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DE Fundamentals</a>
-                <a href="pages/dsa-de.html"          class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>DSA for DE</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-orange-50 text-orange-700 hover:bg-orange-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="wrench" class="w-3 h-3 text-white"></i>
-                </span>
-                Tools
-            </div>
-            <nav class="pl-2">
-                <a href="pages/spark.html"   class="sb-link"><i data-lucide="zap"      class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Spark</a>
-                <a href="pages/flink.html"   class="sb-link"><i data-lucide="activity" class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Flink</a>
-                <a href="pages/kafka.html"   class="sb-link"><i data-lucide="radio"    class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Kafka</a>
-                <a href="pages/dbt.html"     class="sb-link"><i data-lucide="blocks"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>dbt</a>
-                <a href="pages/pandas.html"  class="sb-link"><i data-lucide="table-2"  class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Pandas</a>
-                <a href="pages/numpy.html"   class="sb-link"><i data-lucide="hash"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>NumPy</a>
-                <a href="pages/airflow.html" class="sb-link"><i data-lucide="wind"     class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Airflow</a>
-                <a href="pages/regex.html"   class="sb-link"><i data-lucide="search"   class="w-3.5 h-3.5 text-orange-400 flex-shrink-0"></i>Regex</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-cyan-50 text-cyan-700 hover:bg-cyan-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-cyan-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="cloud" class="w-3 h-3 text-white"></i>
-                </span>
-                Cloud
-            </div>
-            <nav class="pl-2">
-                <a href="pages/aws.html"        class="sb-link"><i data-lucide="cloud"         class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>AWS</a>
-                <a href="pages/gcp.html"        class="sb-link"><i data-lucide="cloud-sun"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>GCP</a>
-                <a href="pages/azure.html"      class="sb-link"><i data-lucide="cloud-cog"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Azure</a>
-                <a href="pages/snowflake.html"  class="sb-link"><i data-lucide="snowflake"     class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Snowflake</a>
-                <a href="pages/databricks.html" class="sb-link"><i data-lucide="box"           class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>Databricks</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="git-pull-request" class="w-3 h-3 text-white"></i>
-                </span>
-                CI / CD
-            </div>
-            <nav class="pl-2">
-                <a href="pages/docker.html"     class="sb-link"><i data-lucide="container"     class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Docker</a>
-                <a href="pages/kubernetes.html" class="sb-link"><i data-lucide="network"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Kubernetes</a>
-                <a href="pages/terraform.html"  class="sb-link"><i data-lucide="sliders"       class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Terraform</a>
-                <a href="pages/github.html"     class="sb-link"><i data-lucide="git-branch"    class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>GitHub</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-rose-50 text-rose-700 hover:bg-rose-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-rose-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="layout" class="w-3 h-3 text-white"></i>
-                </span>
-                Design
-            </div>
-            <nav class="pl-2">
-                <a href="pages/system-design.html"   class="sb-link"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>System Design</a>
-                <a href="pages/pipeline-design.html" class="sb-link"><i data-lucide="workflow"          class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>Pipeline Design</a>
-                <a href="pages/de-architectures.html" class="sb-link"><i data-lucide="cpu"             class="w-3.5 h-3.5 text-rose-400 flex-shrink-0"></i>DE Architectures</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-amber-50 text-amber-700 hover:bg-amber-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="map" class="w-3 h-3 text-white"></i>
-                </span>
-                Roadmaps
-            </div>
-            <nav class="pl-2">
-                <a href="pages/roadmaps/data-engineering.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>Data Engineering</a>
-                <a href="pages/roadmaps/ml-engineer.html"     class="sb-link"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>ML Engineer</a>
-                <a href="pages/roadmaps/ai-engineer.html"     class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>AI Engineer</a>
-            </nav>
-
-            <div class="sb-section sb-cat bg-violet-50 text-violet-700 hover:bg-violet-100 cursor-pointer collapsed">
-                <span class="w-6 h-6 rounded-md bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="hammer" class="w-3 h-3 text-white"></i>
-                </span>
-                Practice
-            </div>
-            <nav class="pl-2">
-                <a href="pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Practice Hub</a>
-                <a href="pages/practice/list-comprehensions.html" class="sb-link"><i data-lucide="code" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>Python Challenges</a>
-                <a href="pages/practice/sql-window-functions.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5 text-violet-400 flex-shrink-0"></i>SQL Challenges</a>
-            </nav>
-
-            <div class="mt-4 pt-4 border-t border-slate-200">
-                <a href="pages/portfolio.html" class="sb-section bg-slate-100 text-slate-700 hover:bg-slate-200">
-                    <span class="w-6 h-6 rounded-md bg-slate-500 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="user" class="w-3 h-3 text-white"></i>
-                    </span>
-                    My Portfolio
-                    <i data-lucide="external-link" class="w-2.5 h-2.5 ml-auto opacity-50"></i>
-                </a>
-            </div>
-
-            <!-- Guide Specific Topics (e.g. Bash Topics) -->
-            <div id="guide-topics" class="mt-6 hidden">
-                
-            </div>
         </div>
-
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layers" class="w-4 h-4"></i> Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="pages/learn/de-fundamentals.html" class="sb-link">DE Fundamentals</a>
+                <a href="pages/learn/dsa-de.html" class="sb-link">DSA for DE</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Tools
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/learn/spark.html" class="sb-link">Spark</a>
+                <a href="pages/learn/flink.html" class="sb-link">Flink</a>
+                <a href="pages/learn/kafka.html" class="sb-link">Kafka</a>
+                <a href="pages/learn/dbt.html" class="sb-link">dbt</a>
+                <a href="pages/learn/pandas.html" class="sb-link">Pandas</a>
+                <a href="pages/learn/numpy.html" class="sb-link">NumPy</a>
+                <a href="pages/learn/airflow.html" class="sb-link">Airflow</a>
+                <a href="pages/learn/regex.html" class="sb-link">Regex</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="cloud" class="w-4 h-4"></i> Cloud
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/learn/aws.html" class="sb-link">AWS</a>
+                <a href="pages/learn/gcp.html" class="sb-link">GCP</a>
+                <a href="pages/learn/azure.html" class="sb-link">Azure</a>
+                <a href="pages/learn/snowflake.html" class="sb-link">Snowflake</a>
+                <a href="pages/learn/databricks.html" class="sb-link">Databricks</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="git-pull-request" class="w-4 h-4"></i> CI / CD
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/learn/docker.html" class="sb-link">Docker</a>
+                <a href="pages/learn/kubernetes.html" class="sb-link">Kubernetes</a>
+                <a href="pages/learn/terraform.html" class="sb-link">Terraform</a>
+                <a href="pages/learn/github.html" class="sb-link">GitHub</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="layout" class="w-4 h-4"></i> Design
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/learn/system-design.html" class="sb-link">System Design</a>
+                <a href="pages/learn/pipeline-design.html" class="sb-link">Pipeline Design</a>
+                <a href="pages/learn/de-architectures.html" class="sb-link">DE Architectures</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="map" class="w-4 h-4"></i> Roadmaps
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/roadmaps/data-engineering.html" class="sb-link">Data Engineering</a>
+                <a href="pages/roadmaps/ml-engineer.html" class="sb-link">ML Engineer</a>
+                <a href="pages/roadmaps/ai-engineer.html" class="sb-link">AI Engineer</a>
+            </nav>
+        </div>
+        <div class="mb-4">
+            <div class="sb-section sb-cat text-on-surface-variant cursor-pointer" onclick="this.classList.toggle('collapsed');this.nextElementSibling.classList.toggle('hidden')">
+                <i data-lucide="hammer" class="w-4 h-4"></i> Practice
+            </div>
+            <nav class="pl-2 hidden">
+                <a href="pages/practice.html" class="sb-link">Practice Hub</a>
+                <a href="pages/practice/list-comprehensions.html" class="sb-link">Python Challenges</a>
+                <a href="pages/practice/sql-window-functions.html" class="sb-link">SQL Challenges</a>
+            </nav>
+        </div>
+        <div class="mt-6 pt-4 border-t border-outline-variant">
+            <a href="pages/portfolio.html" class="sb-section text-on-surface-variant hover:text-on-surface no-underline">
+                <i data-lucide="folder-closed" class="w-4 h-4"></i>
+                My Portfolio
+            </a>
+        </div>
+        <!-- Guide Specific Topics -->
+        <div id="guide-topics" class="mt-6 hidden">
+            
         </div>
     </div>
 </aside>
 
-<button id="scroll-top" title="Back to top"
-    class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-full
-           bg-gradient-to-br from-blue-500 to-violet-600 text-white
-           shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 scale-90 transition-all duration-200">
-    <i data-lucide="arrow-up" class="w-4 h-4"></i>
-</button>
 
 
 
+<div id="nav-universal"></div>
 
 
 
@@ -414,1336 +195,193 @@
 
 
 
+<!-- NAV -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Background -->
-<div class="fixed inset-0 grid-bg animate-grid opacity-100 z-0"></div>
-<div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
-<div class="fixed bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
-
-<!-- MAIN -->
-
-    <div id="ds-main-content" class="transition-all duration-300 pointer-events-none"><main data-sb-padded="1" class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-20 px-6 max-w-7xl mx-auto w-full pointer-events-none">
-        <div class="text-center max-w-3xl pointer-events-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-300 mb-8 transition-colors duration-300 shadow-sm dark:shadow-none">
-                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                Your personal data engineering companion
-            </div>
-            
-            <h1 class="font-display font-bold text-5xl md:text-7xl text-slate-900 dark:text-white mb-6 leading-tight transition-colors duration-300">
-                Master <span style="background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;">Data Engineering</span> Concepts
-            </h1>
-            
-            <p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed transition-colors duration-300">
-                Curated guides, architectural patterns, and practical cheat sheets covering everything from Python and SQL to Cloud and System Design.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 max-w-2xl mx-auto">
-                <a href="pages/practice.html" class="feature-card practice group">
-                    <div class="icon-box">
-                        <i data-lucide="hammer" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="card-title">Practice Skills</h3>
-                    </div>
-                    <div class="card-arrow">
-                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                    </div>
-                </a>
-
-                <a href="pages/portfolio.html" class="feature-card portfolio group">
-                    <div class="icon-box">
-                        <i data-lucide="user" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="card-title">My Portfolio</h3>
-                    </div>
-                    <div class="card-arrow">
-                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                    </div>
-                </a>
+<div id="ds-main-content" class="transition-all duration-300 min-w-0"><main class="flex-1 w-full">
+    <!-- HERO -->
+    <section class="w-full border-b border-outline-variant relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full border-l border-outline-variant opacity-20 pointer-events-none grid-bg"></div>
+        <div class="w-full max-w-[1200px] mx-auto px-4 md:px-10 py-24 md:py-32 relative z-10">
+            <div class="max-w-2xl">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="terminal" class="w-4 h-4 text-on-surface"></i>
+                    <span class="text-sm text-on-surface font-mono font-bold bg-surface-container px-2 py-1 rounded-md ring-1 ring-outline-variant">&gt; ./init_career.sh</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">
+                    Master the Stack.<br />
+                    Ace the Interview.
+                </h1>
+                
+                <p class="text-lg text-on-surface-variant mb-10 border-l-2 border-outline-variant pl-6 leading-relaxed max-w-xl">
+                    A developer-first learning platform engineered like your favorite IDE. 
+                    No fluff, just pure technical signal. Level up your system design, algorithms, and backend architecture.
+                </p>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- FEATURED PATHS -->
+    <section class="w-full max-w-[1200px] mx-auto px-4 md:px-10 py-16 md:py-24">
+        <div class="flex items-center gap-2 mb-10 border-b border-outline-variant pb-4">
+            <span class="text-sm font-mono text-on-surface-variant">#</span>
+            <h2 class="text-sm font-mono text-on-surface-variant uppercase tracking-[0.2em] border-b border-on-surface/10 pb-2">Featured_Paths</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Python Backend - Emerald -->
+            <a href="pages/learn/python.html" class="path-card emerald group">
+                <div class="accent-bar bg-none from-emerald-500 via-emerald-400 to-accent-emerald"></div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="icon-box">
+                        <i data-lucide="code-2" class="w-8 h-8 text-on-surface group-hover:text-accent-emerald transition-colors"></i>
+                    </div>
+                    <span class="text-xs font-mono text-on-surface-variant group-hover:text-accent-emerald transition-colors">[01]</span>
+                </div>
+                <h3 class="text-xl font-bold path-title mb-2 tracking-tight relative z-10">Python Backend</h3>
+                <p class="text-sm path-desc mb-8 flex-grow leading-relaxed relative z-10">
+                    Build scalable APIs, master asynchronous IO, and understand internal memory management deeply.
+                </p>
+                <div class="exec-module relative z-10">
+                    <span class="ready-badge">READY</span>
+                    <span class="group-hover:text-accent-emerald transition-colors">EXEC_MODULE</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all group-hover:text-accent-emerald"></i>
+                </div>
+                <div class="glow"></div>
+            </a>
+
+            <!-- Data Structures - Blue -->
+            <a href="pages/learn/dsa-de.html" class="path-card blue group">
+                <div class="accent-bar bg-none from-blue-500 via-accent-emerald to-blue-600"></div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="icon-box">
+                        <i data-lucide="git-merge" class="w-8 h-8 text-on-surface group-hover:text-blue-500 transition-colors"></i>
+                    </div>
+                    <span class="text-xs font-mono text-on-surface-variant group-hover:text-blue-500 transition-colors">[02]</span>
+                </div>
+                <h3 class="text-xl font-bold path-title mb-2 tracking-tight relative z-10">Data Structures</h3>
+                <p class="text-sm path-desc mb-8 flex-grow leading-relaxed relative z-10">
+                    Deep dive into trees, graphs, and advanced algorithmic patterns required for top-tier engineering roles.
+                </p>
+                <div class="exec-module relative z-10">
+                    <span class="ready-badge">READY</span>
+                    <span class="group-hover:text-blue-500 transition-colors">EXEC_MODULE</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all group-hover:text-blue-500"></i>
+                </div>
+                <div class="glow"></div>
+            </a>
+
+            <!-- System Design - Amber -->
+            <a href="pages/learn/system-design.html" class="path-card amber group">
+                <div class="accent-bar bg-none from-amber-500 via-amber-400 to-amber-600"></div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="icon-box">
+                        <i data-lucide="drafting-compass" class="w-8 h-8 text-on-surface group-hover:text-amber-500 transition-colors"></i>
+                    </div>
+                    <span class="text-xs font-mono text-on-surface-variant group-hover:text-amber-500 transition-colors">[03]</span>
+                </div>
+                <h3 class="text-xl font-bold path-title mb-2 tracking-tight relative z-10">System Design</h3>
+                <p class="text-sm path-desc mb-8 flex-grow leading-relaxed relative z-10">
+                    Architect distributed systems, handle massive scale gracefully, and dominate the whiteboarding phase.
+                </p>
+                <div class="exec-module relative z-10">
+                    <span class="ready-badge">READY</span>
+                    <span class="group-hover:text-amber-500 transition-colors">EXEC_MODULE</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all group-hover:text-amber-500"></i>
+                </div>
+                <div class="glow"></div>
+            </a>
+
+            <!-- AI Agents - Violet -->
+            <a href="pages/learn/agents.html" class="path-card group" style="--path-accent: #a78bfa;">
+                <div class="accent-bar bg-gradient-to-r from-violet-600 via-purple-500 to-violet-400"></div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="icon-box">
+                        <i data-lucide="bot" class="w-8 h-8 text-on-surface group-hover:text-violet-400 transition-colors"></i>
+                    </div>
+                    <span class="text-xs font-mono text-on-surface-variant group-hover:text-violet-400 transition-colors">[04]</span>
+                </div>
+                <h3 class="text-xl font-bold path-title mb-2 tracking-tight relative z-10">AI Agents</h3>
+                <p class="text-sm path-desc mb-8 flex-grow leading-relaxed relative z-10">
+                    Master autonomous systems, ReAct loops, and multi-agent collaboration with state-of-the-art architectures.
+                </p>
+                <div class="exec-module relative z-10">
+                    <span class="ready-badge">READY</span>
+                    <span class="group-hover:text-violet-400 transition-colors">EXEC_MODULE</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all group-hover:text-violet-400"></i>
+                </div>
+                <div class="glow"></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <section class="w-full max-w-[1200px] mx-auto px-4 md:px-10 pb-24">
+        <div class="flex items-center gap-2 mb-10 border-b border-outline-variant pb-4">
+            <span class="text-sm font-mono text-on-surface-variant">#</span>
+            <h2 class="text-sm font-mono text-on-surface-variant uppercase tracking-[0.2em] border-b border-on-surface/10 pb-2">Quick_Access</h2>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="pages/practice.html" class="feature-card flex-1 group no-underline">
+                <div class="icon-box w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface transition-all">
+                    <i data-lucide="hammer" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-on-surface text-sm">Practice Arena</div>
+                    <div class="text-xs text-on-surface-variant mt-0.5">Challenge yourself with coding exercises</div>
+                </div>
+                <i data-lucide="arrow-right" class="card-arrow w-5 h-5"></i>
+            </a>
+
+            <a href="pages/learn/skills.html" class="feature-card flex-1 group no-underline">
+                <div class="icon-box w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface transition-all">
+                    <i data-lucide="award" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-on-surface text-sm">Skills Arena</div>
+                    <div class="text-xs text-on-surface-variant mt-0.5">Master core data engineering competencies</div>
+                </div>
+                <i data-lucide="arrow-right" class="card-arrow w-5 h-5"></i>
+            </a>
+            
+            <a href="pages/portfolio.html" class="feature-card flex-1 group no-underline">
+                <div class="icon-box w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface transition-all">
+                    <i data-lucide="user-circle-2" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-on-surface text-sm">My Portfolio</div>
+                    <div class="text-xs text-on-surface-variant mt-0.5">About the creator behind Data Cake</div>
+                </div>
+                <i data-lucide="arrow-right" class="card-arrow w-5 h-5"></i>
+            </a>
+        </div>
+    </section>
+</main>
 </div>
 
+<footer class="bg-surface border-t border-outline-variant w-full mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center px-4 md:px-10 py-8 w-full max-w-[1200px] mx-auto gap-4">
+        <div class="flex flex-col items-center md:items-start gap-1">
+            <div class="flex items-center gap-2 text-on-surface">
+                <i data-lucide="code-2" class="w-5 h-5"></i>
+                <span class="font-bold text-lg uppercase tracking-wider">Data Cake</span>
+            </div>
+            <span class="text-[10px] uppercase font-mono tracking-widest text-on-surface-variant opacity-60">&copy; 2024 Data Cake. Dev-first learning.</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-[10px] uppercase font-mono tracking-widest text-on-surface-variant">
+            <a href="pages/learn/python.html" class="hover:text-on-surface hover:underline transition-all underline-offset-4">Python</a>
+            <a href="pages/learn/sql.html" class="hover:text-on-surface hover:underline transition-all underline-offset-4">SQL</a>
+            <a href="pages/learn/system-design.html" class="hover:text-on-surface hover:underline transition-all underline-offset-4">System Design</a>
+            <a href="pages/portfolio.html" class="hover:text-on-surface hover:underline transition-all underline-offset-4">About</a>
+        </div>
+    </div>
+</footer>
 
 
 
-
-
-
-    
-<script>
-    // Generate interactive grid cells
-    document.addEventListener('DOMContentLoaded', () => {
-        const gridContainer = document.querySelector('.animate-grid');
-        if (gridContainer) {
-            // Create layers
-            const cellsLayer = document.createElement('div');
-            cellsLayer.className = 'grid-cells-layer';
-            const blocksLayer = document.createElement('div');
-            blocksLayer.className = 'traveling-blocks-layer';
-            
-            gridContainer.appendChild(cellsLayer);
-            gridContainer.appendChild(blocksLayer);
-
-            const cols = Math.ceil((window.innerWidth * 1.2) / 40);
-            const rows = Math.ceil((window.innerHeight * 1.2) / 40);
-            const total = cols * rows;
-            
-            const fragment = document.createDocumentFragment();
-            for (let i = 0; i < total; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'grid-cell animate';
-                cell.style.animationDelay = `${Math.random() * 8}s`;
-                fragment.appendChild(cell);
-            }
-            cellsLayer.appendChild(fragment);
-
-            // Handle window resize
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    const newCols = Math.ceil((window.innerWidth * 1.2) / 40);
-                    const newRows = Math.ceil((window.innerHeight * 1.2) / 40);
-                    const newTotal = newCols * newRows;
-                    if (newTotal > cellsLayer.children.length) {
-                        const newFragment = document.createDocumentFragment();
-                        for (let i = cellsLayer.children.length; i < newTotal; i++) {
-                            const cell = document.createElement('div');
-                            cell.className = 'grid-cell animate';
-                            cell.style.animationDelay = `${Math.random() * 8}s`;
-                            newFragment.appendChild(cell);
-                        }
-                        cellsLayer.appendChild(newFragment);
-                    }
-                }, 200);
-            });
-
-            // Traveling Blocks Logic
-            const blocksCount = 25;
-            for (let i = 0; i < blocksCount; i++) {
-                createTravelingBlock(blocksLayer, cols, rows);
-            }
-        }
-
-        function createTravelingBlock(container, cols, rows) {
-            const block = document.createElement('div');
-            block.className = 'traveling-block';
-            
-            let x = Math.floor(Math.random() * cols);
-            let y = Math.floor(Math.random() * rows);
-            
-            const updatePos = () => {
-                block.style.left = `${x * 40}px`;
-                block.style.top = `${y * 40}px`;
-            };
-            
-            updatePos();
-            container.appendChild(block);
-            
-            const move = () => {
-                const direction = Math.floor(Math.random() * 4);
-                if (direction === 0 && x < cols - 1) x++;
-                else if (direction === 1 && x > 0) x--;
-                else if (direction === 2 && y < rows - 1) y++;
-                else if (direction === 3 && y > 0) y--;
-                
-                updatePos();
-                
-                if (Math.random() > 0.95) {
-                    block.style.opacity = '0';
-                    setTimeout(() => {
-                        x = Math.floor(Math.random() * cols);
-                        y = Math.floor(Math.random() * rows);
-                        updatePos();
-                        block.style.opacity = '1';
-                    }, 600);
-                }
-                
-                setTimeout(move, 1000 + Math.random() * 2000);
-            };
-            
-            setTimeout(move, Math.random() * 2000);
-        }
-    });
-</script>
-<script src="js/ds-main.js?v=1777291467" defer></script>
+<script src="js/ds-main.js?v=1778774005" defer></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
-
-
-

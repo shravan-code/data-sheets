@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Top 50 Conceptual Interview Questions — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784992">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <aside class="hidden lg:block w-64 pr-8 border-r border-outline-variant sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto">
+            
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="code-2" class="w-4 h-4"></i>
+                Programming
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/python.html" class="sb-link"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>Python</a>
+                <a href="../../../pages/learn/sql.html" class="sb-link"><i data-lucide="database" class="w-3.5 h-3.5"></i>SQL</a>
+                <a href="../../../pages/learn/bash.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>Bash</a>
+                <a href="../../../pages/learn/powershell.html" class="sb-link"><i data-lucide="terminal" class="w-3.5 h-3.5"></i>PowerShell</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                Concepts
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/de-fundamentals.html" class="sb-link"><i data-lucide="layers" class="w-3.5 h-3.5"></i>Fundamentals</a>
+                <a href="../../../pages/learn/dsa-de.html" class="sb-link"><i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i>DSA for DE</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="bot" class="w-4 h-4"></i>
+                Artificial Intelligence
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/learn/agents.html" class="sb-link"><i data-lucide="bot" class="w-3.5 h-3.5"></i>AI Agents</a>
+                <a href="../../../pages/roadmaps/ai-engineer.html" class="sb-link"><i data-lucide="map" class="w-3.5 h-3.5"></i>AI Roadmap</a>
+            </nav>
+
+            <div class="sb-section sb-cat text-on-surface-variant">
+                <i data-lucide="hammer" class="w-4 h-4"></i>
+                Practice
+            </div>
+            <nav class="pl-2">
+                <a href="../../../pages/practice.html" class="sb-link"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>Practice Hub</a>
+            </nav>
+        
+        </aside>
+
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0 flex-1">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl mx-auto">
+                <a href="../sql.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-[10px] font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-12 group no-underline uppercase tracking-widest">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to SQL Hub
+                </a>
+
+                <header class="mb-16">
+                    <div class="text-[10px] font-bold text-secondary-fixed uppercase tracking-[0.3em] mb-4 opacity-70">SQL Mastery • Section 29</div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-on-surface mb-8 tracking-tight leading-tight">
+                        Top 50 Conceptual Interview Questions
+                    </h1>
+                </header>
+
+                <article class="prose max-w-none pb-20">
+                    <div class="space-y-8 mt-20">
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between WHERE and HAVING?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">WHERE filters individual rows BEFORE aggregation (GROUP BY). HAVING filters groups AFTER aggregation. You cannot use aggregate functions in WHERE. Example: WHERE salary > 50000 filters rows; HAVING COUNT(*) > 2 filters groups.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a primary key vs a foreign key?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">PRIMARY KEY uniquely identifies each row in a table and cannot be NULL. FOREIGN KEY is a column that references the PRIMARY KEY of another table, enforcing referential integrity between tables.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is normalization? What are 1NF, 2NF, and 3NF?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Normalization organizes data to reduce redundancy. 1NF: atomic values, no repeating groups. 2NF: 1NF + no partial dependencies (all non-key columns depend on the full primary key). 3NF: 2NF + no transitive dependencies (non-key columns don't depend on other non-key columns).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between INNER JOIN and OUTER JOIN?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">INNER JOIN returns only matched rows from both tables. OUTER JOIN returns all rows from one or both tables, with NULLs where there's no match. LEFT OUTER JOIN: all rows from left + matched from right. RIGHT: vice versa. FULL: all rows from both.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is ACID? Explain each property.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Atomicity: all or nothing — if part fails, all rolls back. Consistency: data moves between valid states. Isolation: concurrent transactions don't interfere. Durability: committed data persists through failures.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between DELETE, TRUNCATE, and DROP?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">DELETE removes specific rows (logged, can be rolled back, WHERE clause supported). TRUNCATE removes all rows fast (minimal logging, cannot filter, resets sequences). DROP removes the entire table structure and data permanently.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What are window functions and how do they differ from GROUP BY?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Window functions compute values across related rows without collapsing them into groups. GROUP BY collapses rows into one per group — you lose individual row detail. Window functions keep all rows while adding computed columns (running totals, ranks, etc.).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a CTE and when would you use it over a subquery?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A CTE (WITH clause) is a named temporary result set. Use CTE over subquery when: the result is needed multiple times in the same query, for recursive queries, or to improve readability. CTEs are not inherently faster — they're a readability/organizational tool.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Explain the difference between RANK, DENSE_RANK, and ROW_NUMBER.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">ROW_NUMBER: unique sequential number (no ties). RANK: same rank for ties but skips the next rank (1,1,3). DENSE_RANK: same rank for ties but no gap (1,1,2).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is an index and how does it improve query performance?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">An index is a data structure (typically B-tree) that stores ordered pointers to rows. Instead of scanning the whole table (O(n)), the DB can navigate the B-tree (O(log n)) to find rows quickly. Trade-off: faster reads, slower writes (index must be maintained on INSERT/UPDATE/DELETE).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between a clustered and non-clustered index?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A clustered index determines the physical storage order of the table — one per table (in SQL Server it's the PRIMARY KEY). A non-clustered index is a separate structure with pointers back to the table. PostgreSQL uses heap storage (no clustered index by default, but CLUSTER command exists).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a covering index?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">An index that includes all columns needed by a query, so the query can be satisfied purely from the index without accessing the table data (index-only scan). Achieved using INCLUDE columns in PostgreSQL and SQL Server.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between a view and a materialized view?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A regular view is a stored SQL query that executes on every use — no physical data stored. A materialized view stores the query result physically. Materialized views are faster for reads but must be refreshed to reflect updated data.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What are transaction isolation levels? Name them in order.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">From lowest to highest isolation: Read Uncommitted, Read Committed, Repeatable Read, Serializable. Higher isolation prevents more anomalies (dirty reads, non-repeatable reads, phantom reads) but reduces concurrency.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a deadlock and how can it be prevented?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A deadlock occurs when two transactions each hold a lock the other needs, causing them to wait forever. Prevention: always acquire locks in the same order across transactions, use shorter transactions, use timeout parameters, or use SKIP LOCKED.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is MVCC?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Multi-Version Concurrency Control maintains multiple versions of rows simultaneously. Readers see a consistent snapshot of data without blocking writers, and writers don't block readers. PostgreSQL uses MVCC extensively. Old row versions are cleaned up by VACUUM.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between UNION and UNION ALL?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">UNION combines two result sets and removes duplicates (requires sorting/hashing). UNION ALL combines without removing duplicates and is faster. Use UNION ALL unless you specifically need duplicate removal.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the N+1 problem?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Making 1 query to fetch N records, then N additional queries to fetch related data for each. Total: N+1 queries. Solution: use JOINs or batch loading to fetch all data in fewer queries.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between correlated and non-correlated subqueries?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A non-correlated subquery executes independently once and returns a result used by the outer query. A correlated subquery references columns from the outer query and is executed once per row of the outer query — can be slow on large tables.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is denormalization and when would you use it?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Denormalization intentionally adds redundancy to improve read performance by reducing JOINs. Common in data warehouses where reads outnumber writes. Example: storing dept_name in the employees table to avoid joining departments every query.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between a Star Schema and a Snowflake Schema?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Star schema: fact table at center with denormalized dimension tables (fewer JOINs, simpler queries, more storage). Snowflake schema: dimension tables normalized into sub-dimensions (less redundancy, more JOINs, complex queries). Star is preferred for analytics.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is SCD Type 2?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Slowly Changing Dimension Type 2 tracks historical changes by inserting a new row for each change with start/end dates and an is_current flag. The old row is expired (end_date set). This preserves full history. Common for customer/product dimensions in data warehouses.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">How does SQL execution order differ from written order?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Written: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY. Executed: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT. This is why you cannot use a SELECT alias in a WHERE clause — WHERE runs before SELECT.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between OLTP and OLAP?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">OLTP (Online Transaction Processing): optimized for frequent, small, fast read/write operations. Highly normalized. Examples: transactional app databases. OLAP (Online Analytical Processing): optimized for complex analytical queries on large datasets. Denormalized, columnar. Examples: data warehouses.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a surrogate key vs natural key?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Natural key: a real-world attribute that uniquely identifies a record (e.g., SSN, email). Surrogate key: a system-generated identifier (e.g., SERIAL/AUTO_INCREMENT integer or UUID). Surrogate keys are preferred in data warehouses because natural keys can change and may expose PII.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a self-join and when would you use it?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A self-join is a join of a table to itself using aliases. Common for hierarchical data (org charts, category trees) where a row references another row in the same table via a manager_id or parent_id column.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between a stored procedure and a function?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A function returns a value (scalar or table) and can be used in SELECT. A stored procedure does not return a value (or uses OUT params), cannot be used in SELECT, but can commit/rollback transactions.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a trigger?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A trigger is a stored procedure that automatically fires in response to a DML event (INSERT, UPDATE, DELETE) on a table. Used for auditing, enforcing constraints, or propagating changes. Can be BEFORE or AFTER the event, and FOR EACH ROW or FOR EACH STATEMENT.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between optimistic and pessimistic locking?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Pessimistic locking locks the row when reading (SELECT FOR UPDATE), assuming a conflict will occur. Optimistic locking doesn't lock but uses a version column — at write time, checks that the version hasn't changed since reading. Pessimistic is safer under high contention; optimistic is more scalable under low contention.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is partition pruning?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">When querying a partitioned table, partition pruning is the optimizer skipping partitions that cannot contain the data matching the query predicate. For example, querying WHERE sale_date = '2024-06-01' on a date-partitioned table only scans the June 2024 partition.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a recursive CTE and when do you use it?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A recursive CTE references itself in its definition and consists of an anchor (base case) and a recursive member. Used for hierarchical or graph data: org charts, file systems, bill of materials, finding paths in a graph.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the purpose of the EXPLAIN ANALYZE command?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">EXPLAIN shows the query planner's estimated execution plan without executing. EXPLAIN ANALYZE actually executes the query and shows both estimated and actual rows/times per node. Used to identify bottlenecks: Seq Scans, expensive sorts, bad row estimates, slow joins.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is an idempotent query and why is it important in data engineering?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">An idempotent query produces the same result no matter how many times it is run. Critical in data pipelines because failures and retries are common — non-idempotent pipelines cause duplicate or incorrect data. Achieved with UPSERT, DELETE+INSERT, or TRUNCATE+INSERT patterns.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is CDC (Change Data Capture)?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">CDC captures row-level changes (inserts, updates, deletes) as they happen in a source system and streams or logs them for downstream consumption. Approaches: timestamp-based, log-based (Debezium reads DB transaction logs), trigger-based. Used in real-time data pipelines and event streaming.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between COALESCE and ISNULL/NVL?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">COALESCE is ANSI SQL standard and accepts multiple arguments — returns the first non-NULL. ISNULL (SQL Server) and NVL (Oracle) take only 2 arguments. COALESCE is preferred for portability: COALESCE(a, b, c) vs ISNULL(a, ISNULL(b, c)).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between CHAR and VARCHAR?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">CHAR(n) is fixed-length — always stores exactly n bytes, padding with spaces. VARCHAR(n) is variable-length — stores only the actual length, up to n bytes. CHAR is slightly faster for fixed-length data (e.g., country codes); VARCHAR saves space for variable-length strings.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a lateral join?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">LATERAL (in PostgreSQL) or CROSS APPLY/OUTER APPLY (in SQL Server) allows a subquery in the FROM clause to reference columns from preceding tables. It runs once per row, like a correlated subquery but in FROM. Useful for top-N per group or applying functions that return tables.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is NULLIF and what problem does it solve?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">NULLIF(a, b) returns NULL if a equals b, otherwise returns a. Most common use: prevent division by zero — NULLIF(denominator, 0) returns NULL instead of throwing an error when denominator is 0.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Explain the difference between ROWS and RANGE in window functions.</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">ROWS defines the window frame by physical row position (row count). RANGE defines it by the logical value range of the ORDER BY column. Example: with duplicates, ROWS BETWEEN 1 PRECEDING AND CURRENT ROW always includes exactly 2 rows; RANGE with duplicates may include more rows with the same ORDER BY value.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is query rewriting and how does the optimizer use it?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">The query optimizer internally rewrites queries to more efficient equivalent forms: converting NOT IN to NOT EXISTS, pushing predicates into subqueries, reordering joins, flattening subqueries into joins. Understanding this helps write queries the optimizer can rewrite effectively.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">How do you find duplicates in a table?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">Use GROUP BY with HAVING COUNT > 1: SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1. To delete duplicates keeping one row, use ROW_NUMBER() to assign ranks and delete rows where rank > 1.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a full text search and how does it differ from LIKE?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">LIKE does simple pattern matching on characters — can't rank by relevance, doesn't understand language. Full-text search tokenizes text, builds an inverted index, supports relevance ranking, stemming, stop words, and complex queries. Postgres uses tsvector/tsquery; MySQL has FULLTEXT indexes.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between ELT and ETL?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">ETL (Extract, Transform, Load): data is transformed before loading into the warehouse. ELT (Extract, Load, Transform): raw data is loaded first, then transformed inside the warehouse using SQL. ELT is common with cloud warehouses (BigQuery, Snowflake) where compute is powerful and cheap.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What are GROUPING SETS, ROLLUP, and CUBE?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">All are extensions of GROUP BY for multi-dimensional aggregation. ROLLUP: hierarchical subtotals + grand total. CUBE: all possible combinations of group by columns. GROUPING SETS: explicit list of grouping combinations — most flexible.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is a composite index and what is the leftmost prefix rule?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">A composite index covers multiple columns in order. The leftmost prefix rule states that a query must include the leftmost column(s) of the index to benefit from it. Index on (dept_id, salary): WHERE dept_id = 10 AND salary > 5000 uses it; WHERE salary > 5000 does not.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">Why does using a function on an indexed column prevent index usage?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">When you wrap an indexed column in a function (WHERE YEAR(hire_date) = 2024), the database must compute the function for every row and cannot use the index on hire_date directly. Solution: rewrite the condition to reference the column directly: WHERE hire_date BETWEEN '2024-01-01' AND '2024-12-31'.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between a clustered and non-clustered index in SQL Server?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">SQL Server clustered index: physically sorts the table data in key order — one per table, usually the primary key. Non-clustered: separate B-tree with leaf nodes containing pointers to the clustered key (or RID for heap tables). PostgreSQL always uses heaps; no native clustered index.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What are the differences between EXISTS and IN?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">IN evaluates the subquery and compares each row against the list — can be slow if the subquery returns many rows. EXISTS just checks whether any row matches — stops after the first match, generally faster for large subquery results. NOT EXISTS is often faster than NOT IN (which returns no results if any NULL exists in the subquery).</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the purpose of VACUUM in PostgreSQL?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">PostgreSQL's MVCC leaves behind dead row versions after UPDATE/DELETE. VACUUM reclaims the storage used by dead tuples and updates statistics used by the planner. VACUUM ANALYZE does both. AUTOVACUUM runs automatically but manual VACUUM is needed for heavily updated tables.</div>
+                    </div>
+                </div>
+</div>
+<div class="p-8 bg-surface-container/50 backdrop-blur-sm border border-outline-variant rounded-3xl group/q hover:border-secondary-fixed/30 transition-all duration-300">
+
+                <div class="flex items-start gap-6">
+                    <div class="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-xs font-black text-secondary-fixed shadow-inner group-hover/q:border-secondary-fixed/50 transition-colors">?</div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-on-surface mb-4 pt-1 leading-relaxed group-hover/q:text-secondary-fixed transition-colors">What is the difference between SAVEPOINT and ROLLBACK?</h3>
+                        <div class="text-on-surface-variant text-base leading-relaxed opacity-80">ROLLBACK undoes the entire current transaction back to the BEGIN. SAVEPOINT creates a named checkpoint within a transaction — ROLLBACK TO SAVEPOINT allows partial rollback to that point while keeping the transaction open. Useful when you want to undo only part of a transaction.</div>
+                    </div>
+                </div>
+</div>
+</div>
+                </article>
+
+                <div class="nav-container border-t border-outline-variant pt-10">
+                    <a href="syntax-cheatsheet.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">Syntax Cheatsheet</span></a>
+                    <a href="top-50-technical-coding-questions.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">Top 50 Technical Coding Questions</span></a>
+                </div>
+            </main>
+        </div>
+
+        <aside class="toc-container hidden xl:block w-64 pl-8 sticky top-24 h-[calc(100vh-6rem)]">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list border-l border-outline-variant"></ul>
+        </aside>
+    </div>
+
+    <script src="../../../js/ds-main.js" defer></script>
+</body>
+</html>

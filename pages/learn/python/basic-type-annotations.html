@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+<script>(function(){
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('ds-theme', 'light');
+        })();</script>
+    <title>Basic Type Annotations — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['JetBrains Mono','ui-monospace','monospace'],mono:['JetBrains Mono','ui-monospace','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../../css/ds-main.css?v=1778784979">
+    <link rel="stylesheet" href="../../../css/modules/code-blocks.css">
+    <script src="../../../js/modules/universal-nav.js" defer></script>
+    <script src="../../../js/modules/code-blocks.js" defer></script>
+    <link id="prism-theme-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <link id="prism-theme-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div class="flex flex-col lg:flex-row justify-center max-w-[1440px] mx-auto w-full">
+        <div id="ds-main-content" class="transition-all duration-300 min-w-0">
+            <main class="relative z-10 pt-28 pb-20 px-6 w-full max-w-4xl">
+                <a href="../python.html" class="inline-flex items-center gap-2.5 px-5 py-2.5 bg-surface-container border border-on-surface/10 rounded-xl text-xs font-bold text-on-surface-variant hover:text-secondary-fixed hover:border-secondary-fixed transition-all mb-10 group no-underline">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to Python
+                </a>
+                <header class="mb-12">
+                    <div class="text-xs font-mono text-on-surface-variant uppercase tracking-[0.2em] mb-2">Section 9: Programming</div>
+                    <h1 class="text-3xl md:text-5xl font-bold text-on-surface mb-6 leading-tight">Basic Type Annotations</h1>
+                </header>
+                <article class="prose max-w-none pb-20">
+                    <div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Variable and Function Annotations</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Type hints make code self-documenting and enable static analysis tools like mypy.</p>
+<pre class="language-python"><code>from typing import Optional, Union, Any
+
+# Variable annotations
+name: str = 'Alice'
+age: int = 30
+height: float = 5.7
+flags: list[bool] = [True, False]
+
+# Function annotations
+def greet(name: str, times: int = 1) -&gt; str:
+    return (name + ' ') * times
+
+print(greet('Hello', 3))
+
+# Optional (can be None)
+def find_user(user_id: int) -&gt; Optional[str]:
+    users = {1: 'Alice', 2: 'Bob'}
+    return users.get(user_id)  # returns str or None
+
+print(find_user(1))
+print(find_user(99))
+
+# Union (multiple types)
+def double(x: Union[int, float]) -&gt; Union[int, float]:
+    return x * 2
+
+# Python 3.10+ syntax (preferred)
+def double2(x: int | float) -&gt; int | float:
+    return x * 2
+
+print(double(3))
+print(double(2.5))</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>Hello Hello Hello 
+Alice
+None
+6
+5.0</code></pre>
+</div>
+<div class="mb-16">
+<h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-3 ml-0.5 border-b border-on-surface/5 pb-2">
+Generic Collections</h2>
+<p class="text-on-surface-variant mb-6 leading-relaxed">Annotate collections with their element types.</p>
+<pre class="language-python"><code>from typing import List, Dict, Tuple, Set, FrozenSet
+# Python 3.9+: use built-in list[int] instead of List[int]
+
+def process_scores(scores: list[int]) -&gt; dict[str, float]:
+    return {
+        'min': min(scores),
+        'max': max(scores),
+        'avg': sum(scores) / len(scores)
+    }
+
+print(process_scores([85, 92, 78, 96, 88]))
+
+# Nested generics
+Matrix = list[list[float]]
+
+def transpose(matrix: Matrix) -&gt; Matrix:
+    return [list(row) for row in zip(*matrix)]
+
+m = [[1.0, 2.0], [3.0, 4.0]]
+print(transpose(m))
+
+# Tuple with specific types
+def get_coordinates() -&gt; tuple[float, float]:
+    return (37.7749, -122.4194)
+
+# Variable-length tuple
+def get_all_scores() -&gt; tuple[int, ...]:
+    return (85, 92, 78, 96)
+
+coords = get_coordinates()
+print(f'Lat: {coords[0]}, Lon: {coords[1]}')</code></pre>
+<div class="ds-output-label">Output</div>
+<pre class="language-output"><code>{'min': 78, 'max': 96, 'avg': 87.8}
+[[1.0, 3.0], [2.0, 4.0]]
+Lat: 37.7749, Lon: -122.4194</code></pre>
+</div>
+                </article>
+                <div class="nav-container">
+                    <a href="singledispatch.html" class="nav-card prev"><span class="nav-label"><i data-lucide="arrow-left"></i> Previous</span><span class="nav-title">singledispatch</span></a>
+                    <a href="typevar-and-generics.html" class="nav-card next"><span class="nav-label">Next <i data-lucide="arrow-right"></i></span><span class="nav-title">TypeVar and Generics</span></a>
+                </div>
+            </main>
+        </div>
+        <aside class="toc-container"><div class="toc-title">On this page</div><ul class="toc-list"></ul></aside>
+    </div>
+    <script src="../../../js/ds-main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

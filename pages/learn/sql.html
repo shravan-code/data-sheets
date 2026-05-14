@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <title>SQL Mastery — Data Cake</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {"darkMode": "class", "theme": {"extend": {"fontFamily": {"sans": ["JetBrains Mono", "ui-monospace", "monospace"], "mono": ["JetBrains Mono", "ui-monospace", "monospace"]}, "colors": {"surface": "#0b141c", "surface-container": "#182028", "surface-container-high": "#222b33", "surface-container-highest": "#2d363e", "on-surface": "#dae3ee", "on-surface-variant": "#c6c6cb", "outline-variant": "#45474b", "secondary-fixed": "#5bffa1", "primary-container": "#0d1117"}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0"></script>
+    <link rel="stylesheet" href="../../css/ds-main.css">
+    <link rel="stylesheet" href="../../css/modules/code-blocks.css">
+    <script src="../../js/modules/universal-nav.js" defer></script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+    <div id="nav-universal"></div>
+    <div id="ds-main-content">
+        <main class="relative z-10 pt-32 pb-20 px-6 w-full max-w-6xl mx-auto">
+            
+        <header class="mb-24 text-center relative">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-secondary-fixed/10 blur-[120px] -z-10 rounded-full"></div>
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-secondary-fixed/20 bg-secondary-fixed/5 text-secondary-fixed text-[10px] font-black uppercase tracking-[0.2em] mb-10 shadow-[0_0_20px_rgba(91,255,161,0.1)]">
+                <i data-lucide="database" class="w-4 h-4"></i> EXPERT DATABASE DOCUMENTATION
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold text-on-surface mb-10 tracking-tight leading-tight">
+                SQL <span class="text-secondary-fixed">Mastery</span>
+            </h1>
+            <p class="text-xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed opacity-80 font-medium">
+                Master the bedrock of data engineering.
+            </p>
+        </header>
+
+            <div class="space-y-4">
+                
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    1
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Foundations</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 1</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/what-is-sql-and-relational-databases.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">What is SQL & Relational Databases</span>
+                        </div>
+                    </a>
+                    <a href="sql/sql-vs-nosql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SQL vs NoSQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/rdbms.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">RDBMS</span>
+                        </div>
+                    </a>
+                    <a href="sql/sql-data-types.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SQL Data Types</span>
+                        </div>
+                    </a>
+                    <a href="sql/sql-execution-order.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SQL Execution Order</span>
+                        </div>
+                    </a>
+                    <a href="sql/create.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CREATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/alter.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ALTER</span>
+                        </div>
+                    </a>
+                    <a href="sql/drop.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DROP</span>
+                        </div>
+                    </a>
+                    <a href="sql/truncate.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">TRUNCATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/rename.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">RENAME</span>
+                        </div>
+                    </a>
+                    <a href="sql/insert.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="edit-3" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">INSERT</span>
+                        </div>
+                    </a>
+                    <a href="sql/update.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="edit-3" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">UPDATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/delete.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="edit-3" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DELETE</span>
+                        </div>
+                    </a>
+                    <a href="sql/merge---upsert.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="edit-3" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">MERGE / UPSERT</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    2
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Filtering & Selection</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 2</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/select.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SELECT</span>
+                        </div>
+                    </a>
+                    <a href="sql/where.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">WHERE</span>
+                        </div>
+                    </a>
+                    <a href="sql/distinct.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DISTINCT</span>
+                        </div>
+                    </a>
+                    <a href="sql/order-by.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ORDER BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/limit---offset.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LIMIT / OFFSET</span>
+                        </div>
+                    </a>
+                    <a href="sql/fetch.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">FETCH</span>
+                        </div>
+                    </a>
+                    <a href="sql/grant.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="lock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">GRANT</span>
+                        </div>
+                    </a>
+                    <a href="sql/revoke.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="lock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">REVOKE</span>
+                        </div>
+                    </a>
+                    <a href="sql/acid-properties.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ACID Properties</span>
+                        </div>
+                    </a>
+                    <a href="sql/commit.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">COMMIT</span>
+                        </div>
+                    </a>
+                    <a href="sql/rollback.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ROLLBACK</span>
+                        </div>
+                    </a>
+                    <a href="sql/savepoint.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SAVEPOINT</span>
+                        </div>
+                    </a>
+                    <a href="sql/and---or---not.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">AND / OR / NOT</span>
+                        </div>
+                    </a>
+                    <a href="sql/in---not-in.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">IN / NOT IN</span>
+                        </div>
+                    </a>
+                    <a href="sql/between.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">BETWEEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/like---ilike.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LIKE / ILIKE</span>
+                        </div>
+                    </a>
+                    <a href="sql/is-null---is-not-null.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">IS NULL / IS NOT NULL</span>
+                        </div>
+                    </a>
+                    <a href="sql/case-when.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CASE WHEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/exists---not-exists.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="filter" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">EXISTS / NOT EXISTS</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    3
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Aggregations</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 3</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/inner-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">INNER JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/left-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LEFT JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/right-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">RIGHT JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/full-outer-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">FULL OUTER JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/cross-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CROSS JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/self-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SELF JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/natural-join.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">NATURAL JOIN</span>
+                        </div>
+                    </a>
+                    <a href="sql/multiple-joins.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Multiple Joins</span>
+                        </div>
+                    </a>
+                    <a href="sql/count-sum-avg-min-max.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">COUNT, SUM, AVG, MIN, MAX</span>
+                        </div>
+                    </a>
+                    <a href="sql/group-by.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">GROUP BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/having.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">HAVING</span>
+                        </div>
+                    </a>
+                    <a href="sql/rollup.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ROLLUP</span>
+                        </div>
+                    </a>
+                    <a href="sql/cube.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CUBE</span>
+                        </div>
+                    </a>
+                    <a href="sql/grouping-sets.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">GROUPING SETS</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    4
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Relational Joins</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 4</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/scalar-subquery.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Scalar Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/row-subquery.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Row Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/table-subquery.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Table Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/correlated-subquery.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Correlated Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/nested-subquery.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Nested Subquery</span>
+                        </div>
+                    </a>
+                    <a href="sql/subquery-in-select-where-from-having.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Subquery in SELECT, WHERE, FROM, HAVING</span>
+                        </div>
+                    </a>
+                    <a href="sql/basic-cte.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="copy" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Basic CTE</span>
+                        </div>
+                    </a>
+                    <a href="sql/multiple-ctes.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="copy" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Multiple CTEs</span>
+                        </div>
+                    </a>
+                    <a href="sql/recursive-cte.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="copy" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Recursive CTE</span>
+                        </div>
+                    </a>
+                    <a href="sql/cte-vs-subquery-vs-temp-table.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="copy" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CTE vs Subquery vs Temp Table</span>
+                        </div>
+                    </a>
+                    <a href="sql/rownumber.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ROW_NUMBER</span>
+                        </div>
+                    </a>
+                    <a href="sql/rank.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">RANK</span>
+                        </div>
+                    </a>
+                    <a href="sql/denserank.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DENSE_RANK</span>
+                        </div>
+                    </a>
+                    <a href="sql/ntile.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">NTILE</span>
+                        </div>
+                    </a>
+                    <a href="sql/lag.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LAG</span>
+                        </div>
+                    </a>
+                    <a href="sql/lead.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LEAD</span>
+                        </div>
+                    </a>
+                    <a href="sql/firstvalue.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">FIRST_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/lastvalue.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LAST_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/nthvalue.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">NTH_VALUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/sum---avg---count-as-window-functions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SUM / AVG / COUNT as Window Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/partition-by.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">PARTITION BY</span>
+                        </div>
+                    </a>
+                    <a href="sql/frame-clauses-rows-vs-range.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="type" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Frame Clauses (ROWS vs RANGE)</span>
+                        </div>
+                    </a>
+                    <a href="sql/union.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">UNION</span>
+                        </div>
+                    </a>
+                    <a href="sql/union-all.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">UNION ALL</span>
+                        </div>
+                    </a>
+                    <a href="sql/intersect.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">INTERSECT</span>
+                        </div>
+                    </a>
+                    <a href="sql/except---minus.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">EXCEPT / MINUS</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    5
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Modifying Data</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 5</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/concat.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CONCAT / ||</span>
+                        </div>
+                    </a>
+                    <a href="sql/substring.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SUBSTRING</span>
+                        </div>
+                    </a>
+                    <a href="sql/length---charlength.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">LENGTH / CHAR_LENGTH</span>
+                        </div>
+                    </a>
+                    <a href="sql/upper---lower.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">UPPER / LOWER</span>
+                        </div>
+                    </a>
+                    <a href="sql/trim---ltrim---rtrim.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">TRIM / LTRIM / RTRIM</span>
+                        </div>
+                    </a>
+                    <a href="sql/replace.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">REPLACE</span>
+                        </div>
+                    </a>
+                    <a href="sql/position---locate.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">POSITION / LOCATE</span>
+                        </div>
+                    </a>
+                    <a href="sql/splitpart.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SPLIT_PART</span>
+                        </div>
+                    </a>
+                    <a href="sql/regexpmatch---regexpreplace.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">REGEXP_MATCH / REGEXP_REPLACE</span>
+                        </div>
+                    </a>
+                    <a href="sql/format.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">FORMAT</span>
+                        </div>
+                    </a>
+                    <a href="sql/round.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ROUND</span>
+                        </div>
+                    </a>
+                    <a href="sql/ceil---floor.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CEIL / FLOOR</span>
+                        </div>
+                    </a>
+                    <a href="sql/abs.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ABS</span>
+                        </div>
+                    </a>
+                    <a href="sql/mod.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">MOD</span>
+                        </div>
+                    </a>
+                    <a href="sql/power.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">POWER</span>
+                        </div>
+                    </a>
+                    <a href="sql/sqrt.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SQRT</span>
+                        </div>
+                    </a>
+                    <a href="sql/random.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">RANDOM</span>
+                        </div>
+                    </a>
+                    <a href="sql/currentdate---now.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CURRENT_DATE / NOW</span>
+                        </div>
+                    </a>
+                    <a href="sql/datepart---extract.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DATE_PART / EXTRACT</span>
+                        </div>
+                    </a>
+                    <a href="sql/datetrunc.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DATE_TRUNC</span>
+                        </div>
+                    </a>
+                    <a href="sql/age.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">AGE</span>
+                        </div>
+                    </a>
+                    <a href="sql/dateadd---datesub---interval.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DATE_ADD / DATE_SUB / INTERVAL</span>
+                        </div>
+                    </a>
+                    <a href="sql/todate---totimestamp.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">TO_DATE / TO_TIMESTAMP</span>
+                        </div>
+                    </a>
+                    <a href="sql/datediff.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DATEDIFF</span>
+                        </div>
+                    </a>
+                    <a href="sql/timezone-handling.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">TIMEZONE handling</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    6
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Schema Design</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 6</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/case-when.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CASE WHEN</span>
+                        </div>
+                    </a>
+                    <a href="sql/coalesce.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">COALESCE</span>
+                        </div>
+                    </a>
+                    <a href="sql/nullif.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">NULLIF</span>
+                        </div>
+                    </a>
+                    <a href="sql/iif.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">IIF</span>
+                        </div>
+                    </a>
+                    <a href="sql/cast---convert.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CAST / CONVERT</span>
+                        </div>
+                    </a>
+                    <a href="sql/trycast.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">TRY_CAST</span>
+                        </div>
+                    </a>
+                    <a href="sql/what-is-an-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">What is an Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/b-tree-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">B-Tree Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/hash-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Hash Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/composite-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Composite Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/partial-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Partial Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/covering-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Covering Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/unique-index.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Unique Index</span>
+                        </div>
+                    </a>
+                    <a href="sql/when-to-use---avoid-indexes.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">When to use / avoid Indexes</span>
+                        </div>
+                    </a>
+                    <a href="sql/index-maintenance.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Index Maintenance</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    7
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Advanced Logic</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 7</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/primary-key.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">PRIMARY KEY</span>
+                        </div>
+                    </a>
+                    <a href="sql/foreign-key.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">FOREIGN KEY</span>
+                        </div>
+                    </a>
+                    <a href="sql/unique.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">UNIQUE</span>
+                        </div>
+                    </a>
+                    <a href="sql/not-null.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">NOT NULL</span>
+                        </div>
+                    </a>
+                    <a href="sql/check.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CHECK</span>
+                        </div>
+                    </a>
+                    <a href="sql/default.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">DEFAULT</span>
+                        </div>
+                    </a>
+                    <a href="sql/composite-constraints.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="gauge" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Composite Constraints</span>
+                        </div>
+                    </a>
+                    <a href="sql/simple-view.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Simple View</span>
+                        </div>
+                    </a>
+                    <a href="sql/complex-view.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Complex View</span>
+                        </div>
+                    </a>
+                    <a href="sql/materialized-view.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Materialized View</span>
+                        </div>
+                    </a>
+                    <a href="sql/updatable-view.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Updatable View</span>
+                        </div>
+                    </a>
+                    <a href="sql/view-vs-cte-vs-temp-table.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">View vs CTE vs Temp Table</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    8
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Analytical Windows</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 8</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/stored-procedures.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Stored Procedures</span>
+                        </div>
+                    </a>
+                    <a href="sql/user-defined-functions-udf.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">User Defined Functions (UDF)</span>
+                        </div>
+                    </a>
+                    <a href="sql/scalar-functions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Scalar Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/table-valued-functions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Table-Valued Functions</span>
+                        </div>
+                    </a>
+                    <a href="sql/triggers.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Triggers</span>
+                        </div>
+                    </a>
+                    <a href="sql/differences-between-procedure-and-function.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="component" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Differences between Procedure and Function</span>
+                        </div>
+                    </a>
+                    <a href="sql/acid-properties.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ACID Properties</span>
+                        </div>
+                    </a>
+                    <a href="sql/transaction-isolation-levels.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Transaction Isolation Levels</span>
+                        </div>
+                    </a>
+                    <a href="sql/deadlocks.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Deadlocks</span>
+                        </div>
+                    </a>
+                    <a href="sql/locks-row-table-shared-exclusive.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Locks (Row, Table, Shared, Exclusive)</span>
+                        </div>
+                    </a>
+                    <a href="sql/optimistic-vs-pessimistic-locking.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Optimistic vs Pessimistic Locking</span>
+                        </div>
+                    </a>
+                    <a href="sql/mvcc-multi-version-concurrency-control.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">MVCC (Multi-Version Concurrency Control)</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    9
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">System & Metadata</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 9</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/explain---explain-analyze.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">EXPLAIN / EXPLAIN ANALYZE</span>
+                        </div>
+                    </a>
+                    <a href="sql/query-execution-plan.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Query Execution Plan</span>
+                        </div>
+                    </a>
+                    <a href="sql/avoiding-full-table-scans.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Avoiding Full Table Scans</span>
+                        </div>
+                    </a>
+                    <a href="sql/join-optimization.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">JOIN Optimization</span>
+                        </div>
+                    </a>
+                    <a href="sql/partition-pruning.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Partition Pruning</span>
+                        </div>
+                    </a>
+                    <a href="sql/n1-problem.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">N+1 Problem</span>
+                        </div>
+                    </a>
+                    <a href="sql/statistics-and-vacuuming.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="settings" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Statistics & Vacuuming</span>
+                        </div>
+                    </a>
+                    <a href="sql/normalization.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Normalization</span>
+                        </div>
+                    </a>
+                    <a href="sql/denormalization.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Denormalization</span>
+                        </div>
+                    </a>
+                    <a href="sql/star-schema.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Star Schema</span>
+                        </div>
+                    </a>
+                    <a href="sql/snowflake-schema.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Snowflake Schema</span>
+                        </div>
+                    </a>
+                    <a href="sql/data-vault.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Data Vault</span>
+                        </div>
+                    </a>
+                    <a href="sql/slowly-changing-dimensions-scd-types.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Slowly Changing Dimensions (SCD Types)</span>
+                        </div>
+                    </a>
+                    <a href="sql/surrogate-vs-natural-keys.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="info" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Surrogate vs Natural Keys</span>
+                        </div>
+                    </a>
+                    <a href="sql/pivoting-and-unpivoting.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Pivoting & Unpivoting</span>
+                        </div>
+                    </a>
+                    <a href="sql/json-in-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">JSON in SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/array-data-types.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Array Data Types</span>
+                        </div>
+                    </a>
+                    <a href="sql/full-text-search.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Full Text Search</span>
+                        </div>
+                    </a>
+                    <a href="sql/lateral-joins.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Lateral Joins</span>
+                        </div>
+                    </a>
+                    <a href="sql/temporary-tables.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Temporary Tables</span>
+                        </div>
+                    </a>
+                    <a href="sql/table-partitioning.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Table Partitioning</span>
+                        </div>
+                    </a>
+            </div>
+        </section>
+        <section class="mb-20">
+            <div class="flex items-center gap-6 mb-10">
+                <div class="w-14 h-14 rounded-2xl border border-outline-variant flex items-center justify-center text-secondary-fixed font-black text-2xl bg-surface-container shadow-inner">
+                    10
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface tracking-tight">Professional SQL</h2>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest opacity-60 mt-1">PHASE 10</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="sql/incremental-loads.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Incremental Loads</span>
+                        </div>
+                    </a>
+                    <a href="sql/cdc-change-data-capture.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">CDC (Change Data Capture)</span>
+                        </div>
+                    </a>
+                    <a href="sql/idempotent-queries.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Idempotent Queries</span>
+                        </div>
+                    </a>
+                    <a href="sql/upsert-patterns.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Upsert Patterns</span>
+                        </div>
+                    </a>
+                    <a href="sql/data-deduplication.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Data Deduplication</span>
+                        </div>
+                    </a>
+                    <a href="sql/date-dimension-table.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Date Dimension Table</span>
+                        </div>
+                    </a>
+                    <a href="sql/elt-with-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="terminal" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">ELT with SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/postgresql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">PostgreSQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/mysql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">MySQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/sql-server-t-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">SQL Server (T-SQL)</span>
+                        </div>
+                    </a>
+                    <a href="sql/bigquery-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">BigQuery SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/snowflake-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Snowflake SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/spark-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Spark SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/redshift-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Redshift SQL</span>
+                        </div>
+                    </a>
+                    <a href="sql/presto---trino-sql.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                        <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                            <i data-lucide="globe" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Presto / Trino SQL</span>
+                        </div>
+                    </a>
+                <a href="sql/syntax-cheatsheet.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                    <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                        <i data-lucide="codesandbox" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Syntax Cheatsheet</span>
+                    </div>
+                </a>
+                <a href="sql/top-50-conceptual-interview-questions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                    <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                        <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Top 50 Conceptual Interview Questions</span>
+                    </div>
+                </a>
+                <a href="sql/top-50-technical-coding-questions.html" class="flex items-center gap-4 p-5 bg-surface-container border border-outline-variant rounded-2xl transition-all hover:border-secondary-fixed group/item no-underline">
+                    <div class="w-12 h-12 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover/item:text-secondary-fixed transition-all">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-on-surface group-hover/item:text-secondary-fixed transition-colors">Top 50 Technical Coding Questions</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/ds-main.js"></script>
+</body>
+</html>
