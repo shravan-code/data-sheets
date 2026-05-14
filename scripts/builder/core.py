@@ -1,6 +1,7 @@
 import os
 import json
 import re
+from datetime import datetime
 
 PART_ICONS = {
     1: "code", 2: "git-merge", 3: "layers", 4: "command", 5: "codesandbox",
@@ -222,7 +223,40 @@ class GuideBuilder:
         
         self.output_dir = os.path.join('pages', 'learn', section_id)
         self.hub_file = os.path.join('pages', 'learn', f"{section_id}.html")
+        
+        self._check_lock()
         os.makedirs(self.output_dir, exist_ok=True)
+
+    def _check_lock(self):
+        lock_file = os.path.join(os.path.dirname(__file__), '..', '..', '.agents', 'locks.json')
+        if not os.path.exists(lock_file):
+            return # Ignore if locking system not present
+            
+        try:
+            with open(lock_file, 'r') as f:
+                locks = json.load(f)
+            
+            # Check global lock
+            global_lock = locks.get('global_lock', {})
+            if global_lock.get('locked'):
+                print(f"!!! GLOBAL LOCK ACTIVE !!!")
+                print(f"Reason: {global_lock.get('reason')}")
+                print(f"Owner:  {global_lock.get('owner')}")
+                print(f"Build aborted to prevent conflicts.")
+                exit(1)
+
+            # Check module lock
+            module_lock = locks.get('modules', {}).get(self.section_id, {})
+            if module_lock.get('locked'):
+                # If we are the owner, we can proceed
+                # (This is a bit tricky to detect automatically, so we'll just warning or skip if locked by others)
+                print(f"--- Notice: Module '{self.section_id}' is currently locked ---")
+                print(f"Reason: {module_lock.get('reason')}")
+                print(f"Owner:  {module_lock.get('owner')}")
+                # We'll allow it for now but print a strong warning
+                print(f"Proceeding with build as it is read-only for data sources, but avoid manual edits.")
+        except Exception as e:
+            print(f"Warning: Could not check locks: {e}")
 
     def get_parts(self):
         parts_dict = self.data["content"]
