@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-14T18:49:58.298803Z",
+  "last_updated": "2026-05-14T18:56:40.369240Z",
   "global_lock": {
     "locked": false,
     "reason": null,
@@ -107,7 +107,7 @@
       ]
     },
     "home_page": {
-      "locked": true,
+      "locked": false,
       "reason": null,
       "owner": null,
       "timestamp": null,
@@ -117,7 +117,7 @@
       ]
     },
     "portfolio": {
-      "locked": true,
+      "locked": false,
       "reason": null,
       "owner": null,
       "timestamp": null,
@@ -135,7 +135,8 @@
       "files": [
         "js/json-guide.js",
         "css/ds-main.css",
-        "css/index.css"
+        "css/index.css",
+        "js/modules/universal-nav.js"
       ]
     }
   }

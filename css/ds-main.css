@@ -782,10 +782,10 @@ body {
   justify-content: center !important;
   gap: 0 !important;
   padding: 0 !important;
-  width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  border-radius: 999px !important;
+  width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  border-radius: 12px !important; /* Square-ish rounded looks more premium here */
   background: var(--surface-container-high) !important;
   border: 1px solid var(--outline-variant) !important;
   overflow: hidden !important;
@@ -793,13 +793,20 @@ body {
   position: relative !important;
 }
 
-.profile-pill:hover {
-  width: auto !important;
-  max-width: 300px !important;
-  padding: 0 16px 0 8px !important;
-  gap: 10px !important;
-  border-color: var(--accent-emerald) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+@media (min-width: 1024px) {
+  .profile-pill:hover {
+    width: auto !important;
+    max-width: 300px !important;
+    padding: 0 16px 0 8px !important;
+    gap: 10px !important;
+    border-color: var(--accent-emerald) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-pill:hover .profile-pill-text {
+    opacity: 1 !important;
+    max-width: 200px !important;
+  }
 }
 
 .profile-pill i {
@@ -825,9 +832,4 @@ body {
   overflow: hidden !important;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
   display: inline-block !important;
-}
-
-.profile-pill:hover .profile-pill-text {
-  opacity: 1 !important;
-  max-width: 200px !important;
 }
